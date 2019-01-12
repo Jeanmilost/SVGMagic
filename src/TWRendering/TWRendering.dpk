@@ -1,0 +1,52 @@
+package TWRendering;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$DEFINE USE_VCL}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Library containing generic functions to draw graphical objects on a canvas'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  TWCommon;
+
+contains
+  UTWRendererCommon in 'UTWRendererCommon.pas',
+  UTWControlFont in 'UTWControlFont.pas',
+  UTWRenderer in 'UTWRenderer.pas',
+  UTWRenderer_GDI in 'UTWRenderer_GDI.pas',
+  UTWGDIPlusGradient in 'UTWGDIPlusGradient.pas',
+  UTWRenderer_GDIPlus in 'UTWRenderer_GDIPlus.pas',
+  UTWGraphicPath in 'UTWGraphicPath.pas',
+  UTWBlur in 'UTWBlur.pas',
+  UTWControlRenderer in 'UTWControlRenderer.pas';
+
+end.
+
+
+

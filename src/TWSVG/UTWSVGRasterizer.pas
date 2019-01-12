@@ -1,0 +1,7358 @@
+{**
+ @abstract(@name provides a rasterizer to perform the painting of a Scalable Vector Graphics (SVG) image.)
+ @author(JMR)
+ @created(2016-2018 by Ursa Minor)
+}
+unit UTWSVGRasterizer;
+
+interface
+
+uses System.SysUtils,
+     System.Math,
+     System.Generics.Collections,
+     Vcl.Graphics,
+     Winapi.Windows,
+     UTWHelpers,
+     UTWColor,
+     UTWFillAndStroke,
+     UTWVector,
+     UTWMatrix,
+     UTWRect,
+     UTWGeometryTools,
+     UTWDateTime,
+     UTWSmartPointer,
+     UTWSVGTags,
+     UTWSVGCommon,
+     UTWSVGItems,
+     UTWSVGAttribute,
+     UTWSVGMeasure,
+     UTWSVGGradients,
+     UTWSVGAnimation,
+     UTWSVGProperties,
+     UTWSVGElements,
+     UTWSVGStyle,
+     UTWSVGParser,
+     UTWSVG,
+     UTWSVGAnimationDescriptor;
+
+const
+    //---------------------------------------------------------------------------
+    // Global defines
+    //---------------------------------------------------------------------------
+    C_SVG_Default_Color:   TColor               = clBlack;
+    C_SVG_Default_Display: TWSVGStyle.IEDisplay = TWSVGStyle.IEDisplay.IE_DI_Inline;
+    //---------------------------------------------------------------------------
+
+type
+    {**
+     Scalable Vector Graphics (SVG) rasterizer
+     @br @bold(NOTE) See http://www.w3.org/TR/SVGCompositing/
+    }
+    TWSVGRasterizer = class
+        public type
+            {**
+             Properties rules, determine how the prop item should be used in relation with his parent
+             @value(IE_PR_Default The default value is used)
+             @value(IE_PR_Inherit The value is inherited from the parent, set to default if no parent)
+             @value(IE_PR_Combine The value is merged with the value contained in the parent)
+            }
+            IEPropRule =
+            (
+                IE_PR_Default,
+                IE_PR_Inherit,
+                IE_PR_Combine
+            );
+
+            {**
+             Text anchoring
+             @value(IE_TA_Start Text is anchored on the left or top)
+             @value(IE_TA_Middle Text is anchored on the center)
+             @value(IE_TA_End Text is anchored on the right or bottom)
+            }
+            IETextAnchor =
+            (
+                IE_TA_Start,
+                IE_TA_Middle,
+                IE_TA_End
+            );
+
+            {**
+             Animation parameters structure. Custom data will be transmitted in OnAnimate callback
+            }
+            IAnimation = record
+                m_Position:    Double;
+                m_pCustomData: Pointer;
+            end;
+
+            {**
+             Called while animation is running
+             @param(pAnimDesc Animation description)
+             @param(pCustomData Custom data)
+             @returns(@true if animation can continue, otherwise @false)
+            }
+            ITfOnAnimate = function (pAnimDesc: TWSVGAnimationDescriptor; pCustomData: Pointer): Boolean of object;
+
+        protected type
+            IValuesF = TWSVGAttribute<Single>.IValues;
+
+            {**
+             Property item
+            }
+            IPropItem = class
+                private
+                    m_Rule: IEPropRule;
+
+                public
+                    {**
+                     Constructor
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(rule: IEPropRule = IE_PR_Inherit); virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; virtual;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); virtual;
+
+                public
+                    {**
+                     Get or set the item rule
+                    }
+                    property Rule: IEPropRule read m_Rule write m_Rule;
+            end;
+
+            {**
+             Boolean property item
+            }
+            IPropBoolItem = class(IPropItem)
+                private
+                    m_Value: Boolean;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(value: Boolean;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropBoolItem); virtual;
+
+                public
+                    {**
+                     Get or set value
+                    }
+                    property Value: Boolean read m_Value write m_Value;
+            end;
+
+            {**
+             Float property item
+            }
+            IPropFloatItem = class(IPropItem)
+                private
+                    m_Value: Single;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(value: Single;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropFloatItem); virtual;
+
+                public
+                    {**
+                     Get or set value
+                    }
+                    property Value: Single read m_Value write m_Value;
+            end;
+
+            {**
+             Color property item
+            }
+            IPropColorItem = class(IPropItem)
+                public type
+                {**
+                 Color merge mode
+                 @value(IE_MM_KeepThis The parent color will be ignored, the current color will be kept)
+                 @value(IE_MM_KeepParent The parent color will replace completely the current one)
+                 @value(IE_MM_ParentColor The color will be copied from parent, the current opacity is kept)
+                 @value(IE_MM_ParentOpacity The opacity will be copied from parent, the current color is kept)
+                }
+                IEMergeMode =
+                (
+                    IE_MM_KeepThis,
+                    IE_MM_KeepParent,
+                    IE_MM_ParentColor,
+                    IE_MM_ParentOpacity
+                );
+
+                private
+                    m_Value:     TWColor;
+                    m_MergeMode: IEMergeMode;
+
+                protected
+                    {**
+                     Get value
+                     @returns(Value)
+                    }
+                    function GetValue: PWColor; virtual;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(pValue Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(pValue: PWColor;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Set value
+                     @param(pValue Value)
+                    }
+                    procedure SetValue(const pValue: PWColor); virtual;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropColorItem); virtual;
+
+                public
+                    {**
+                     Get value
+                    }
+                    property Value: PWColor read GetValue;
+
+                    {**
+                     Get or set the merge mode
+                    }
+                    property MergeMode: IEMergeMode read m_MergeMode write m_MergeMode;
+            end;
+
+            {**
+             Matrix property item
+            }
+            IPropMatrixItem = class(IPropItem)
+                private
+                    m_Value: TWMatrix3x3;
+                    m_Type:  TWSVGPropMatrix.IEType;
+
+                protected
+                    {**
+                     Get value
+                     @returns(Value)
+                    }
+                    function GetValue: PWMatrix3x3; virtual;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(pValue Item value)
+                     @param(matrixType Matrix type (translate, ...))
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(const pValue: PWMatrix3x3; matrixType: TWSVGPropMatrix.IEType;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Set value
+                     @param(pValue Value)
+                    }
+                    procedure SetValue(const pValue: PWMatrix3x3); virtual;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropMatrixItem); virtual;
+
+                public
+                    {**
+                     Get value
+                    }
+                    property Value: PWMatrix3x3 read GetValue;
+            end;
+
+            {**
+             Fill rule property item
+            }
+            IPropFillRuleItem = class(IPropItem)
+                private
+                    m_Value: TWSVGFill.IERule;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(value: TWSVGFill.IERule;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropFillRuleItem); virtual;
+
+                public
+                    {**
+                     Get or set value
+                    }
+                    property Value: TWSVGFill.IERule read m_Value write m_Value;
+            end;
+
+            {**
+             Dash pattern property item
+            }
+            IPropDashPatternItem = class(IPropItem)
+                private
+                    m_pValue: TWDashPattern;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(pValue: TWDashPattern;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropDashPatternItem); virtual;
+
+                public
+                    {**
+                     Get the dash pattern
+                    }
+                    property Value: TWDashPattern read m_pValue;
+            end;
+
+            {**
+             Stroke linecap property item
+            }
+            IPropStrokeLineCapItem = class(IPropItem)
+                private
+                    m_Value: TWSVGStroke.IELineCap;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(value: TWSVGStroke.IELineCap;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropStrokeLineCapItem); virtual;
+
+                public
+                    {**
+                     Get or set value
+                    }
+                    property Value: TWSVGStroke.IELineCap read m_Value write m_Value;
+            end;
+
+            {**
+             Stroke line join property item
+            }
+            IPropStrokeLineJoinItem = class(IPropItem)
+                private
+                    m_Value: TWSVGStroke.IELineJoin;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(value: TWSVGStroke.IELineJoin;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropStrokeLineJoinItem); virtual;
+
+                public
+                    {**
+                     Get or set value
+                    }
+                    property Value: TWSVGStroke.IELineJoin read m_Value write m_Value;
+            end;
+
+            {**
+             Display property item
+            }
+            IPropDisplayItem = class(IPropItem)
+                private
+                    m_Value: TWSVGStyle.IEDisplay;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(value: TWSVGStyle.IEDisplay;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropDisplayItem); virtual;
+
+                public
+                    {**
+                     Get or set value
+                    }
+                    property Value: TWSVGStyle.IEDisplay read m_Value write m_Value;
+            end;
+
+            {**
+             Gradient stop
+            }
+            IGradientStop = class
+                private
+                    m_Color:  TWColor;
+                    m_Offset: Single;
+
+                protected
+                    {**
+                     Get color
+                     @returns(Color)
+                    }
+                    function GetColor: PWColor; virtual;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Set color
+                     @param(pColor Color)
+                    }
+                    procedure SetColor(const pColor: PWColor); virtual;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; virtual;
+
+                    {**
+                     Assign (i.e. copy) the content from another gradient stop
+                     @param(pOther Other gradient stop to copy from)
+                    }
+                    procedure Assign(const pOther: IGradientStop); virtual;
+
+                public
+                    {**
+                     Get the color property
+                    }
+                    property Color: PWColor read GetColor;
+
+                    {**
+                     Get or set the offset property
+                    }
+                    property Offset: Single read m_Offset write m_Offset;
+            end;
+
+            IGradientStops = TObjectList<IGradientStop>;
+
+            {**
+             Gradient
+             @br @bold(NOTE) The gradient unit also determines if the value should be read in percent
+                             or as coordinates. If IE_GU_ObjectBoundingBox is declared, then the values
+                             should be read in percent (between 0.0f and 1.0f). With IE_GU_UserSpaceOnUse,
+                             the values contain real coordinates, in the same units as the viewport
+            }
+            IGradient = class(IPropItem)
+                private
+                    m_pGradientStops: IGradientStops;
+                    m_Matrix:         TWMatrix3x3;
+                    m_MatrixType:     TWSVGPropMatrix.IEType;
+                    m_Unit:           TWSVGGradient.IEGradientUnit;
+                    m_SpreadMethod:   TWSVGGradient.IEGradientSpreadMethod;
+
+                protected
+                    {**
+                     Get the matrix
+                     @returns(The matrix)
+                    }
+                    function GetMatrix: PWMatrix3x3; virtual;
+
+                public
+                    {**
+                     Constructor
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(rule: IEPropRule = IE_PR_Inherit); override;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; virtual;
+
+                    {**
+                     Merge properties with another properties set
+                     @param(pOther Other properties set to merge with)
+                    }
+                    procedure Merge(const pOther: IGradient); virtual;
+
+                public
+                    {**
+                     Get the gradient stops property
+                    }
+                    property GradientStops: IGradientStops read m_pGradientStops;
+
+                    {**
+                     Get the matrix property
+                    }
+                    property Matrix: PWMatrix3x3 read GetMatrix;
+
+                    {**
+                     Get or set the matrix type property
+                    }
+                    property MatrixType: TWSVGPropMatrix.IEType read m_MatrixType write m_MatrixType;
+
+                    {**
+                     Get or set the gradient unit property
+                    }
+                    property GradientUnit: TWSVGGradient.IEGradientUnit read m_Unit write m_Unit;
+
+                    {**
+                     Get or set the spread method property
+                    }
+                    property SpreadMethod: TWSVGGradient.IEGradientSpreadMethod read m_SpreadMethod write m_SpreadMethod;
+            end;
+
+            {**
+             Linear gradient vector, it's a vector, defined by start and end points, onto which the
+             gradient stops are matched, and to which the gradient normal is perpendicular (before
+             applying any transform)
+            }
+            ILinearGradientVector = record
+                m_Start: TWVector2;
+                m_End:   TWVector2;
+            end;
+
+            IPLinearGradientVector = ^ILinearGradientVector;
+
+            {**
+             Linear gradient
+            }
+            ILinearGradient = class(IGradient)
+                private
+                    m_Vector: ILinearGradientVector;
+
+                protected
+                    {**
+                     Get the gradient vector
+                     @returns(Gradient vector)
+                    }
+                    function GetVector: IPLinearGradientVector; virtual;
+
+                    {**
+                     Set the gradient vector
+                     @param(pVector Gradient vector)
+                    }
+                    procedure SetVector(const pVector: IPLinearGradientVector); virtual;
+
+                public
+                    {**
+                     Constructor
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(rule: IEPropRule = IE_PR_Inherit); override;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IGradient); override;
+
+                public
+                    {**
+                     Get or set the gradient vector
+                    }
+                    property Vector: IPLinearGradientVector read GetVector write SetVector;
+            end;
+
+            {**
+             Radial gradient
+            }
+            IRadialGradient = class(IGradient)
+                private
+                    m_CX: Single;
+                    m_CY: Single;
+                    m_R:  Single;
+                    m_FX: Single;
+                    m_FY: Single;
+
+                public
+                    {**
+                     Constructor
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(rule: IEPropRule = IE_PR_Inherit); override;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IGradient); override;
+
+                public
+                    {**
+                     Get or set the center x property
+                    }
+                    property CX: Single read m_CX write m_CX;
+
+                    {**
+                     Get or set the center y property
+                    }
+                    property CY: Single read m_CY write m_CY;
+
+                    {**
+                     Get or set the radius property
+                    }
+                    property R: Single read m_R write m_R;
+
+                    {**
+                     Get or set the focus x property
+                    }
+                    property FX: Single read m_FX write m_FX;
+
+                    {**
+                     Get or set the focus y property
+                    }
+                    property FY: Single read m_FY write m_FY;
+            end;
+
+            {**
+             Brush, contains a solid color or a gradient to apply to a fill or stroke
+            }
+            IBrush = class
+                private
+                    m_pColor:          IPropColorItem;
+                    m_pLinearGradient: ILinearGradient;
+                    m_pRadialGradient: IRadialGradient;
+                    m_Type:            EBrushType;
+                    m_Rule:            IEPropRule;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; virtual;
+
+                    {**
+                     Merge properties with another properties set
+                     @param(pOther Other properties set to merge with)
+                    }
+                    procedure Merge(const pOther: IBrush); virtual;
+
+                public
+                    {**
+                     Get the color property
+                    }
+                    property Color: IPropColorItem read m_pColor;
+
+                    {**
+                     Get the linear gradient property
+                    }
+                    property LinearGradient: ILinearGradient read m_pLinearGradient;
+
+                    {**
+                     Get the radial gradient property
+                    }
+                    property RadialGradient: IRadialGradient read m_pRadialGradient;
+
+                    {**
+                     Get or set the brush type property
+                    }
+                    property BrushType: EBrushType read m_Type write m_Type;
+
+                    {**
+                     Get or set the rule property
+                    }
+                    property Rule: IEPropRule read m_Rule write m_Rule;
+            end;
+
+            {**
+             Fill parameters structure
+            }
+            IFill = class
+                private
+                    m_pBrush:  IBrush;
+                    m_pRule:   IPropFillRuleItem;
+                    m_pNoFill: IPropBoolItem;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; virtual;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IFill); virtual;
+
+                public
+                    {**
+                     Get the brush property
+                    }
+                    property Brush: IBrush read m_pBrush;
+
+                    {**
+                     Get the fill rule property
+                    }
+                    property FillRule: IPropFillRuleItem read m_pRule;
+
+                    {**
+                     Get the no fill property
+                    }
+                    property NoFill: IPropBoolItem read m_pNoFill;
+            end;
+
+            {**
+            * Stroke parameters structure
+            }
+            IStroke = class
+                private
+                    m_pBrush:       IBrush;
+                    m_pDashPattern: IPropDashPatternItem;
+                    m_pDashOffset:  IPropFloatItem;
+                    m_pWidth:       IPropFloatItem;
+                    m_pMiterLimit:  IPropFloatItem;
+                    m_pLineCap:     IPropStrokeLineCapItem;
+                    m_pLineJoin:    IPropStrokeLineJoinItem;
+                    m_pNoStroke:    IPropBoolItem;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; virtual;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IStroke); virtual;
+
+                public
+                    {**
+                     Get the brush property
+                    }
+                    property Brush: IBrush read m_pBrush;
+
+                    {**
+                     Get the dash pattern property
+                    }
+                    property DashPattern: IPropDashPatternItem read m_pDashPattern;
+
+                    {**
+                     Get the dash offset property
+                    }
+                    property DashOffset: IPropFloatItem read m_pDashOffset;
+
+                    {**
+                     Get the width property
+                    }
+                    property Width: IPropFloatItem read m_pWidth;
+
+                    {**
+                     Get the miter limit property
+                    }
+                    property MiterLimit: IPropFloatItem read m_pMiterLimit;
+
+                    {**
+                     Get the line cap property
+                    }
+                    property LineCap: IPropStrokeLineCapItem read m_pLineCap;
+
+                    {**
+                     Get the line join property
+                    }
+                    property LineJoin: IPropStrokeLineJoinItem read m_pLineJoin;
+
+                    {**
+                     Get the no stroke property
+                    }
+                    property NoStroke: IPropBoolItem read m_pNoStroke;
+            end;
+
+            {**
+             Style parameters structure
+            }
+            IStyle = class
+                private
+                    m_pFill:        IFill;
+                    m_pStroke:      IStroke;
+                    m_pOpacity:     IPropFloatItem;
+                    m_pDisplayMode: IPropDisplayItem;
+                    m_Width:        NativeInt;
+                    m_Height:       NativeInt;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; virtual;
+
+                    {**
+                     Merge properties with another properties set
+                     @param(pOther Other properties set to merge with)
+                    }
+                    procedure Merge(const pOther: IStyle); virtual;
+
+                    {**
+                     Get fill color, considering global opacity
+                     @returns(Fill color to apply)
+                    }
+                    function GetFillColor: TWColor; virtual;
+
+                    {**
+                     Get stroke color, considering global opacity
+                     @returns(Stroke color to apply)
+                    }
+                    function GetStrokeColor: TWColor; virtual;
+
+                public
+                    {**
+                     Get the fill properties
+                    }
+                    property Fill: IFill read m_pFill;
+
+                    {**
+                     Get the stroke properties
+                    }
+                    property Stroke: IStroke read m_pStroke;
+
+                    {**
+                     Get the opacity property
+                    }
+                    property Opacity: IPropFloatItem read m_pOpacity;
+
+                    {**
+                     Get the display mode property
+                    }
+                    property DisplayMode: IPropDisplayItem read m_pDisplayMode;
+
+                    {**
+                     Get the width
+                     @br @bold(NOTE) Altrough generally declared directly inside the header, the
+                                     width may also sometimes appear in the header style
+                    }
+                    property Width: NativeInt read m_Width;
+
+                    {**
+                     Get the height
+                     @br @bold(NOTE) Altrough generally declared directly inside the header, the
+                                     height may also sometimes appear in the header style
+                    }
+                    property Height: NativeInt read m_Height;
+            end;
+
+            {**
+             Group, switch or object properties
+            }
+            IProperties = class
+                private
+                    m_pStyle:  IStyle;
+                    m_pMatrix: IPropMatrixItem;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; virtual;
+
+                    {**
+                     Merge properties with another properties set
+                     @param(pOther Other properties set to merge with)
+                    }
+                    procedure Merge(const pOther: IProperties); virtual;
+
+                public
+                    {**
+                     Get the style properties
+                    }
+                    property Style: IStyle read m_pStyle;
+
+                    {**
+                     Get the matrix properties
+                    }
+                    property Matrix: IPropMatrixItem read m_pMatrix;
+            end;
+
+            {**
+             Animation data structure
+            }
+            IAnimationData = class
+                private
+                    m_pSetAnims:     TList<TWSVGAnimation>;
+                    m_pAttribAnims:  TList<TWSVGAnimation>;
+                    m_pColorAnims:   TList<TWSVGAnimation>;
+                    m_pMatrixAnims:  TList<TWSVGAnimation>;
+                    m_pUnknownAnims: TList<TWSVGAnimation>;
+                    m_ValueType:     TWSVGCommon.IEValueType;
+                    m_Position:      Double;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                public
+                    {**
+                     Get or set the value type
+                    }
+                    property ValueType: TWSVGCommon.IEValueType read m_ValueType write m_ValueType;
+
+                    {**
+                     Get or set the position, in percent (between 0.0 and 1.0)
+                    }
+                    property Position: Double read m_Position write m_Position;
+
+                    {**
+                     Get set animations
+                    }
+                    property SetAnims: TList<TWSVGAnimation> read m_pSetAnims;
+
+                    {**
+                     Get set animations
+                    }
+                    property AttribAnims: TList<TWSVGAnimation> read m_pAttribAnims;
+
+                    {**
+                     Get set animations
+                    }
+                    property ColorAnims: TList<TWSVGAnimation> read m_pColorAnims;
+
+                    {**
+                     Get set animations
+                    }
+                    property MatrixAnims: TList<TWSVGAnimation> read m_pMatrixAnims;
+
+                    {**
+                     Get set animations
+                    }
+                    property UnknownAnims: TList<TWSVGAnimation> read m_pUnknownAnims;
+            end;
+
+        private type
+            {**
+             Animation cache item
+            }
+            IAnimCacheItem = class
+                private
+                    m_ClearingValue: Double;
+                    m_LastPos:       Double;
+                    m_Started:       Boolean;
+                    m_Ended:         Boolean;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+            end;
+
+            IAnimCache = TObjectDictionary<TWSVGAnimation, IAnimCacheItem>;
+
+            {**
+             SVG cache item
+            }
+            ICacheItem = class
+                private
+                    m_pAnimCache:   IAnimCache;
+                    m_AnimDuration: NativeUInt;
+                    m_LastPos:      Double;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+            end;
+
+            ICache = TObjectDictionary<UnicodeString, ICacheItem>;
+
+        private
+            m_UUID:       UnicodeString;
+            m_pCache:     ICache;
+            m_fOnAnimate: ITfOnAnimate;
+
+            {**
+             Convert global animation position to sub-animation position
+             @param(animDuration Animation duration)
+             @param(pAnimItem Animation cache item)
+             @param(animationData Animation data)
+             @param(pAnimDesc Animation description)
+             @return(Position in local sub-animation system, in percent (between 0.0 and 1.0))
+            }
+            function LocalPosToGlobalPos(animDuration: NativeUInt; pAnimItem: IAnimCacheItem;
+                    const animationData: IAnimationData; const pAnimDesc: TWSVGAnimationDescriptor): Double;
+
+            {**
+             Get linked element
+             @param(pLink Link containing the element identifier to find)
+             @returns(Linked element, @nil if not found or on error)
+            }
+            function GetLinkedElement(const pLink: TWSVGPropLink): TWSVGElement;
+
+        protected
+            m_Animate: Boolean;
+
+            {**
+             Initialize SVG to rasterize
+             @param(pSVG - SVG)
+            }
+            procedure Initialize(const pSVG: TWSVG); virtual;
+
+            {**
+             Set the combine mode to use for a color with animated opacity
+             @param(colorItem @bold([in, out]) Volor item containing the properties to update
+            }
+            procedure SetAnimatedOpacityCombineMode(pColorItem: IPropColorItem); virtual;
+
+            {**
+             Get size from header
+             @param(pHeader Header to extract from)
+             @returns(Size)
+            }
+            function GetSize(const pHeader: TWSVGParser.IHeader): TSize; overload; virtual;
+
+            {**
+             Get view box from header
+             @param(pHeader Header to extract from)
+             @returns(View box)
+            }
+            function GetViewBox(const pHeader: TWSVGParser.IHeader): TWRectF; virtual;
+
+            {**
+             Get generic position and size properties
+             @param(pElement SVG element to extract from)
+             @param(x @bold([out]) Element x position)
+             @param(y @bold([out]) Element y position)
+             @param(width @bold([out]) Element width )
+             @param(height @bold([out]) Element height)
+             @param(pAnimationData Animation data)
+             @param(pCustomData Custom data)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetPosAndSizeProps(const pElement: TWSVGElement; out x: Single; out y: Single;
+                    out width: Single; out height:Single; pAnimationData: IAnimationData;
+                    pCustomData: Pointer): Boolean;
+
+            {**
+             Get rectangle properties
+             @param(pRect SVG rect to extract from)
+             @param(x @bold([out]) Rect x position)
+             @param(y @bold([out]) Rect y position)
+             @param(width @bold([out]) Rect width)
+             @param(height @bold([out]) Rect height)
+             @param(rx @bold([out]) x radius)
+             @param(ry @bold([out]) y radius)
+             @param(pAnimationData Animation data)
+             @param(pCustomData Custom data)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetRectProps(const pRect: TWSVGRect; out x: Single; out y: Single;
+                    out width: Single; out height: Single; out rx: Single; out ry: Single;
+                    pAnimationData: IAnimationData; pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Get circle properties
+             @param(pCircle SVG circle to extract from)
+             @param(x @bold([out]) Circle x position)
+             @param(y @bold([out]) Circle y position)
+             @param(radius @bold([out]) Circle radius)
+             @param(pAnimationData Animation data)
+             @param(pCustomData Custom data)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetCircleProps(const pCircle: TWSVGCircle; out x: Single; out y: Single;
+                    out radius: Single; pAnimationData: IAnimationData;
+                    pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Get ellipse properties
+             @param(pEllipse SVG ellipse to extract from)
+             @param(x @bold([out]) Ellipse x position)
+             @param(y @bold([out]) Ellipse y position)
+             @param(rx @bold([out]) Ellipse x radius)
+             @param(ry @bold([out]) Ellipse y radius)
+             @param(pAnimationData Animation data)
+             @param(pCustomData Custom data)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetEllipseProps(const pEllipse: TWSVGEllipse; out x: Single; out y: Single;
+                    out rx: Single; out ry: Single; pAnimationData: IAnimationData;
+                    pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Get line properties
+             @param(pLine SVG line to extract from)
+             @param(x1 @bold([out]) Line start x position)
+             @param(y1 @bold([out]) Line start y position)
+             @param(x2 @bold([out]) Line end x position)
+             @param(y2 @bold([out]) Line end y position)
+             @param(pAnimationData Animation data)
+             @param(pCustomData Custom data)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetLineProps(const pLine: TWSVGLine; out x1: Single; out y1: Single; out x2: Single;
+                    out y2: Single; pAnimationData: IAnimationData;
+                    pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Get text properties
+             @param(pText SVG text to extract from)
+             @param(x @bold([out]) Text start x position)
+             @param(y @bold([out]) Text start y position)
+             @param(fontFamily @bold([out]) Text font family name to use)
+             @param(fontSize @bold([out]) Text font size)
+             @param(anchor @bold([out]) Text anchor)
+             @param(pAnimationData Animation data)
+             @param(pCustomData Custom data)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetTextProps(const pText: TWSVGText; out x: Single; out y: Single;
+                    out fontFamily: UnicodeString; out fontSize: Single; out anchor: IETextAnchor;
+                    pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+
+            {**
+             Get element properties
+             @param(pElement Element to extract from)
+             @param(pProperties Element properties to use)
+             @param(pAnimationData Animation data)
+             @param(pCustomData Custom data)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetElementProps(const pElement: TWSVGElement; pProperties: IProperties;
+                    pAnimationData: IAnimationData; pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Get style properties
+             @param(pStyle Style to extract from)
+             @param(pProperties Style properties to use)
+             @param(pAnimationData Animation data)
+             @param(pCustomData Custom data)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetStyleProps(const pStyle: TWSVGStyle; pProperties: IProperties;
+                    pAnimationData: IAnimationData; pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Get use properties
+             @param(pUse SVG use instruction to extract from)
+             @param(pElement @bold([out]) Element to use)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetLinkedElementToUse(const pUse: TWSVGUse; out pElement: TWSVGElement): Boolean; virtual;
+
+            {**
+             Merge the properties contained in the use instruction in the destination element
+             @param(pUse Use instruction containing the properties to merge)
+             @param(pElement Element in which the properties should be merged)
+             @returns(@true on success, otherwise @false)
+            }
+            function MergeUseProperties(const pUse: TWSVGUse; pElement: TWSVGElement): Boolean; virtual;
+
+            {**
+             Get the color from a link
+             @param(pLink Link of the color object to parse)
+             @param(pBrush Brush to populate)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetColorFromLink(const pLink: TWSVGPropLink; pBrush: IBrush): Boolean; virtual;
+
+            {**
+             Get the gradient stops
+             @param(pGradient SVG gradient containing the gradient stops to extract)
+             @param(pGradientStops Gradient stop list to populate)
+            }
+            procedure GetGradientStops(const pGradient: TWSVGGradient; pGradientStops: IGradientStops); virtual;
+
+            {**
+             Get animations from container
+             @param(pContainer Container to extract from)
+             @param(pAnimationData Animation data)
+            }
+            procedure GetAnimations(const pContainer: TWSVGContainer; pAnimationData: IAnimationData); virtual;
+
+            {**
+             Populate animation values
+             @param(pAnimation Animation to extract from)
+             @param(attribName @bold([out]) SVG attribute name to animate, if empty animation is global)
+             @param(pAnimDesc Animation description to populate)
+             @param(callOnAnimate If @true, OnAnimate will be called, if defined)
+             @param(pCustomData Custom data)
+             @returns(@true if animation is allowed to continue, otherwise @false)
+            }
+            function PopulateAnimation(const pAnimation: TWSVGAnimation; out attribName: UnicodeString;
+                    pAnimDesc: TWSVGAnimationDescriptor; callOnAnimate: Boolean;
+                    pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Get animation duration
+             @param(pHeader SVG header to populate, populated header when function ends)
+             @param(pElements Elements to search duration in)
+             @param(switchMode If @true, function will return after first element is drawn (because reading switch statement))
+             @param(durationMax @bold([out]) Highest duration found in svg in milliseconds, 0 if duration is indefinite)
+            }
+            procedure GetAnimationDuration(pHeader: TWSVGParser.IHeader;
+                    const pElements: TWSVGContainer.IElements; switchMode: Boolean;
+                    out durationMax: NativeUInt); overload; virtual;
+
+            {**
+             Get animation duration
+             @param(pAnimationData Animation data)
+             @returns(Animation duration in milliseconds, 0 if duration is indefinite)
+            }
+            function GetAnimationDuration(const pAnimationData: IAnimationData): NativeUInt; overload; virtual;
+
+            {**
+             Measure the animation duration
+             @param(pAnimation Animation to measure)
+             @param(pAnimDesc Animation description)
+             @param(duration @bold([in, out]) Animation duration, new measured duration on function ends)
+            }
+            procedure MeasureDuration(pAnimation: TWSVGAnimation; var duration: NativeUInt); overload; virtual;
+            procedure MeasureDuration(const pAnimation: TWSVGAnimation; pAnimDesc: TWSVGAnimationDescriptor;
+                    var duration: NativeUInt); overload; virtual;
+
+            {**
+             Transform point using matrix
+             @param(pMatrix Matrix to apply)
+             @param(point @bold([in, out]) Point to transform, transformed point on function ends)
+             @returns(@true on success, otherwise @false)
+            }
+            function Transform(const pMatrix: TWSVGPropMatrix; var point: TWVector2): Boolean; virtual;
+
+            {**
+             Calculate at which percent the animation begins
+             @param(pAnimDesc Animation description)
+             @returns(Animation begin point in percent (between 0.0 and 1.0))
+             @br @bold(NOTE) Returned value can be negative
+            }
+            function BeginAt(const pAnimDesc: TWSVGAnimationDescriptor): Double; virtual;
+
+            {**
+             Calculate at which percent the animation ends
+             @param(animDesc Animation description)
+             @returns(Animation end point in percent (between 0.0 and 1.0))
+            }
+            function EndAt(const pAnimDesc: TWSVGAnimationDescriptor): Double; virtual;
+
+            {**
+             Get animation position and check if animation is running
+             @param(animationData Animation data)
+             @param(animDesc Animation description)
+             @param(position @bold([in, out]) Animation position in percent (between 0.0 and 1.0))
+             @returns(@true if animation is running, otherwise @false)
+            }
+            function GetAnimPos(const pAnimationData: IAnimationData;
+                    const pAnimDesc: TWSVGAnimationDescriptor; var position: Double): Boolean; virtual;
+
+        public
+            {**
+             Constructor
+            }
+            constructor Create; virtual;
+
+            {**
+             Destructor
+            }
+            destructor Destroy; override;
+
+            {**
+             Draw SVG on canvas
+             @param(pSVG SVG to draw)
+             @param(pos Draw position in pixels)
+             @param(scale Scale factor)
+             @param(antialiasing If @true, antialiasing should be used (if possible))
+             @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
+             @param(pCanvas Canvas to draw on)
+             @returns(@true on success, otherwise @false)
+            }
+            function Draw(const pSVG: TWSVG; const pos: TPoint; scale: Single; antialiasing: Boolean;
+                    const animation: IAnimation; pCanvas: TCustomCanvas): Boolean; overload; virtual; abstract;
+
+            {**
+             Draw SVG on canvas
+             @param(pSVG SVG to draw)
+             @param(rect Rect in which svg will be drawn)
+             @param(proportional If @true, svg proportions will be conserved)
+             @param(antialiasing If @true, antialiasing should be used (if possible))
+             @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
+             @param(pCanvas Canvas to draw on)
+             @returns(@true on success, otherwise @false)
+            }
+            function Draw(const pSVG: TWSVG; const rect: TRect; proportional, antialiasing: Boolean;
+                    const animation: IAnimation; pCanvas: TCustomCanvas): Boolean; overload; virtual; abstract;
+
+            {**
+             Get SVG size
+             @param(pSVG SVG to measure)
+             @returns(SVG size, empty size on error)
+            }
+            function GetSize(const pSVG: TWSVG): TSize; overload; virtual;
+
+            {**
+             Get SVG page style
+             @param(pSVG SVG to get from)
+             @param(pageColor @bold([out]) Page color (in other words it's the background color))
+             @param(borderColor @bold([out]) Page border color)
+             @param(borderOpacity @bold([out]) Page border opacity)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetPageStyle(const pSVG: TWSVG; out pageColor: TWColor; out borderColor: TWColor;
+                    out borderOpacity: Single): Boolean; virtual;
+
+            {**
+             Get animation duration
+             @param(pSVG SVG to get duration from)
+             @returns(Animation duration in milliseconds)
+            }
+            function GetAnimationDuration(const pSVG: TWSVG): NativeUInt; overload; virtual;
+
+            {**
+             Enable or disable animation
+             @param(value If @true, animation will be enabled, disabled otherwise)
+            }
+            procedure EnableAnimation(value: Boolean); virtual;
+
+            {**
+             Check if animation is enabled
+             @returns(@true if animation is enabled, otherwise @false)
+            }
+            function IsAnimationEnabled: Boolean; virtual;
+
+        public
+            {**
+             Get or set the OnAnimate event
+            }
+            property OnAnimate: ITfOnAnimate read m_fOnAnimate write m_fOnAnimate;
+    end;
+
+implementation
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropItem.Create(rule: IEPropRule);
+begin
+    inherited Create;
+
+    m_Rule := rule;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropItem.Clear;
+begin
+    m_Rule := IE_PR_Inherit;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropItem.Assign(const pOther: IPropItem);
+begin
+    if (not Assigned(pOther)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    m_Rule := pOther.m_Rule;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropBoolItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropBoolItem.Create;
+begin
+    inherited Create;
+
+    m_Value := False;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropBoolItem.Create(value: Boolean; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropBoolItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropBoolItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value := False;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropBoolItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropBoolItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropBoolItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropBoolItem;
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropBoolItem.Merge(const pOther: IPropBoolItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value := pOther.m_Value;
+            Rule    := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropFloatItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropFloatItem.Create;
+begin
+    inherited Create;
+
+    m_Value := 0.0;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropFloatItem.Create(value: Single; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropFloatItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropFloatItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value := 0.0;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropFloatItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropFloatItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropFloatItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropFloatItem;
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropFloatItem.Merge(const pOther: IPropFloatItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value := pOther.m_Value;
+            m_Rule  := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropColorItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropColorItem.Create;
+begin
+    inherited Create;
+
+    m_Value     := TWColor.GetDefault;
+    m_MergeMode := IE_MM_KeepThis;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropColorItem.Create(pValue: PWColor; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value.Assign(pValue^);
+    m_MergeMode := IE_MM_KeepThis;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropColorItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropColorItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value     := TWColor.GetDefault;
+    m_MergeMode := IE_MM_KeepThis;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropColorItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropColorItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropColorItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropColorItem;
+
+    m_Value.Assign(pSource.m_Value);
+    m_MergeMode := pSource.m_MergeMode;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.IPropColorItem.GetValue: PWColor;
+begin
+    Result := @m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropColorItem.SetValue(const pValue: PWColor);
+begin
+    m_Value.Assign(pValue^);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropColorItem.Merge(const pOther: IPropColorItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value.Assign(pOther.m_Value);
+            m_Rule := IE_PR_Default;
+            Exit;
+        end;
+
+        IE_PR_Combine:
+        begin
+            case (m_MergeMode) of
+                IE_MM_KeepParent:
+                begin
+                    m_Value := pOther.m_Value;
+                    Exit;
+                end;
+
+                IE_MM_ParentColor:
+                begin
+                    // keep the parent color but retain the opacity
+                    m_Value.SetColor(pOther.m_Value.GetRed, pOther.m_Value.GetGreen,
+                            pOther.m_Value.GetBlue, m_Value.GetAlpha);
+                    Exit;
+                end;
+
+                IE_MM_ParentOpacity:
+                begin
+                    // keep the parent opacity but retain the color
+                    m_Value.SetColor(m_Value.GetRed, m_Value.GetGreen, m_Value.GetBlue,
+                            pOther.m_Value.GetAlpha);
+                    Exit;
+                end;
+            end;
+
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropMatrixItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropMatrixItem.Create;
+begin
+    inherited Create;
+
+    m_Value.SetIdentity;
+
+    m_Type  := TWSVGPropMatrix.IEType.IE_Unknown;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropMatrixItem.Create(const pValue: PWMatrix3x3;
+        matrixType: TWSVGPropMatrix.IEType; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value.Assign(pValue^);
+    m_Type := matrixType;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropMatrixItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropMatrixItem.Clear;
+begin
+    inherited Clear;
+
+    m_Type := TWSVGPropMatrix.IEType.IE_Unknown;
+    m_Value.SetIdentity;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropMatrixItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropMatrixItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropMatrixItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropMatrixItem;
+    m_Type  := pSource.m_Type;
+    m_Value.Assign(pSource.m_Value);
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.IPropMatrixItem.GetValue: PWMatrix3x3;
+begin
+    Result := @m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropMatrixItem.SetValue(const pValue: PWMatrix3x3);
+begin
+    m_Value.Assign(pValue^);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropMatrixItem.Merge(const pOther: IPropMatrixItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value.Assign(pOther.m_Value);
+            m_Rule := IE_PR_Default;
+            Exit;
+        end;
+
+        IE_PR_Combine:
+        begin
+            m_Value := m_Value.Multiply(pOther.m_Value);
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropFillRuleItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropFillRuleItem.Create;
+begin
+    inherited Create;
+
+    m_Value := TWSVGFill.IERule.IE_FR_Default;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropFillRuleItem.Create(value: TWSVGFill.IERule; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropFillRuleItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropFillRuleItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value := TWSVGFill.IERule.IE_FR_Default;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropFillRuleItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropFillRuleItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropFillRuleItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropFillRuleItem;
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropFillRuleItem.Merge(const pOther: IPropFillRuleItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value := pOther.m_Value;
+            m_Rule  := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropDashPatternItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropDashPatternItem.Create;
+begin
+    inherited Create;
+
+    m_pValue := TWDashPattern.Create;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropDashPatternItem.Create(pValue: TWDashPattern; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_pValue := TWDashPattern.Create;
+
+    // copy the whole items from the source
+    m_pValue.InsertRange(0, pValue);
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropDashPatternItem.Destroy;
+begin
+    m_pValue.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropDashPatternItem.Clear;
+begin
+    inherited Clear;
+
+    m_pValue.Clear;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropDashPatternItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropDashPatternItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropDashPatternItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropDashPatternItem;
+
+    // clear previous content and copy the whole items from the source
+    m_pValue.Clear;
+    m_pValue.InsertRange(0, pSource.m_pValue);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropDashPatternItem.Merge(const pOther: IPropDashPatternItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Rule := IE_PR_Default;
+
+            // clear previous content and copy the whole items from the source
+            m_pValue.Clear;
+            m_pValue.InsertRange(0, pOther.m_pValue);
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropStrokeLineCapItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropStrokeLineCapItem.Create;
+begin
+    inherited Create;
+
+    m_Value := TWSVGStroke.IELineCap.IE_LC_Default;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropStrokeLineCapItem.Create(value: TWSVGStroke.IELineCap; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropStrokeLineCapItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropStrokeLineCapItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value := TWSVGStroke.IELineCap.IE_LC_Default;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropStrokeLineCapItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropStrokeLineCapItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropStrokeLineCapItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropStrokeLineCapItem;
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropStrokeLineCapItem.Merge(const pOther: IPropStrokeLineCapItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value := pOther.m_Value;
+            m_Rule  := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropStrokeLineJoinItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropStrokeLineJoinItem.Create;
+begin
+    inherited Create;
+
+    m_Value := TWSVGStroke.IELineJoin.IE_LJ_Default;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropStrokeLineJoinItem.Create(value: TWSVGStroke.IELineJoin; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropStrokeLineJoinItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropStrokeLineJoinItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value := TWSVGStroke.IELineJoin.IE_LJ_Default;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropStrokeLineJoinItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropStrokeLineJoinItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropStrokeLineJoinItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropStrokeLineJoinItem;
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropStrokeLineJoinItem.Merge(const pOther: IPropStrokeLineJoinItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default:
+            Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value := pOther.m_Value;
+            m_Rule  := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropDisplayItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropDisplayItem.Create;
+begin
+    inherited Create;
+
+    m_Value := C_SVG_Default_Display;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropDisplayItem.Create(value: TWSVGStyle.IEDisplay; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropDisplayItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropDisplayItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value := C_SVG_Default_Display;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropDisplayItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropDisplayItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropDisplayItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropDisplayItem;
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropDisplayItem.Merge(const pOther: IPropDisplayItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default:
+            Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value := pOther.m_Value;
+            m_Rule  := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IGradientStop
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IGradientStop.Create;
+begin
+    inherited Create;
+
+    m_Color  := TWColor.GetDefault;
+    m_Offset := 0.0;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IGradientStop.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.IGradientStop.GetColor: PWColor;
+begin
+    Result := @m_Color;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IGradientStop.SetColor(const pColor: PWColor);
+begin
+    m_Color.Assign(pColor^);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IGradientStop.Clear;
+begin
+    m_Color  := TWColor.GetDefault;
+    m_Offset := 0.0;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IGradientStop.Assign(const pOther: IGradientStop);
+begin
+    if (not Assigned(pOther)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    m_Color.Assign(pOther.m_Color);
+    m_Offset := pOther.m_Offset;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IGradient
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IGradient.Create(rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_pGradientStops := IGradientStops.Create;
+    m_Unit           := TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox;
+    m_SpreadMethod   := TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad;
+    m_Matrix         := TWMatrix3x3.GetDefault;
+    m_MatrixType     := TWSVGPropMatrix.IEType.IE_Unknown;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IGradient.Destroy;
+begin
+    m_pGradientStops.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.IGradient.GetMatrix: PWMatrix3x3;
+begin
+    Result := @m_Matrix;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IGradient.Default;
+begin
+    // clear all gradient stops. NOTE as a TObjectList is used, the list will take care of freeing
+    // all objects it contains, for that an explicit Free() on each item isn't required
+    m_pGradientStops.Clear;
+
+    m_Unit         := TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox;
+    m_SpreadMethod := TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad;
+    m_Matrix       := TWMatrix3x3.GetDefault;
+    m_MatrixType   := TWSVGPropMatrix.IEType.IE_Unknown;
+    m_Rule         := IE_PR_Default;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IGradient.Merge(const pOther: IGradient);
+var
+    pStop, pNewStop: IGradientStop;
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Unit         := pOther.m_Unit;
+            m_SpreadMethod := pOther.m_SpreadMethod;
+            m_MatrixType   := pOther.m_MatrixType;
+
+            m_Matrix.Assign(pOther.m_Matrix);
+
+            // clear all gradient stops. NOTE as a TObjectList is used, the list will take care of
+            // freeing all objects it contains, for that an explicit Free() on each item isn't
+            // required
+            m_pGradientStops.Clear;
+
+            // copy gradient stops from source
+            for pStop in m_pGradientStops do
+            begin
+                pNewStop := nil;
+
+                try
+                    pNewStop := IGradientStop.Create;
+                    pNewStop.Assign(pStop);
+
+                    m_pGradientStops.Add(pNewStop);
+                    pNewStop := nil;
+                finally
+                    pNewStop.Free;
+                end;
+            end;
+
+            m_Rule := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.ILinearGradient
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.ILinearGradient.Create(rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Vector.m_Start.X := 0.0;
+    m_Vector.m_Start.Y := 0.0;
+    m_Vector.m_End.X   := 0.0;
+    m_Vector.m_End.Y   := 0.0;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.ILinearGradient.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.ILinearGradient.GetVector: IPLinearGradientVector;
+begin
+    Result := @m_Vector;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.ILinearGradient.SetVector(const pVector: IPLinearGradientVector);
+begin
+    if (not Assigned(pVector)) then
+        Exit;
+
+    m_Vector.m_Start.X := pVector.m_Start.X;
+    m_Vector.m_Start.Y := pVector.m_Start.Y;
+    m_Vector.m_End.X   := pVector.m_End.X;
+    m_Vector.m_End.Y   := pVector.m_End.Y;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.ILinearGradient.Default;
+begin
+    inherited Default;
+
+    m_Vector.m_Start.X := 0.0;
+    m_Vector.m_Start.Y := 0.0;
+    m_Vector.m_End.X   := 0.0;
+    m_Vector.m_End.Y   := 0.0;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.ILinearGradient.Merge(const pOther: IGradient);
+var
+    pSource: ILinearGradient;
+begin
+    if (not(pOther is ILinearGradient)) then
+    begin
+        Default;
+        Exit;
+    end;
+
+    pSource := pOther as ILinearGradient;
+    Assert(Assigned(pSource));
+
+    inherited Merge(pOther);
+
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Vector.m_Start.X := pSource.m_Vector.m_Start.X;
+            m_Vector.m_Start.Y := pSource.m_Vector.m_Start.Y;
+            m_Vector.m_End.X   := pSource.m_Vector.m_End.X;
+            m_Vector.m_End.Y   := pSource.m_Vector.m_End.Y;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IRadialGradient
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IRadialGradient.Create(rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_CX := 0.0;
+    m_CY := 0.0;
+    m_R  := 0.0;
+    m_FX := 0.0;
+    m_FY := 0.0;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IRadialGradient.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IRadialGradient.Default;
+begin
+    inherited Default;
+
+    m_CX := 0.0;
+    m_CY := 0.0;
+    m_R  := 0.0;
+    m_FX := 0.0;
+    m_FY := 0.0;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IRadialGradient.Merge(const pOther: IGradient);
+var
+    pSource: IRadialGradient;
+begin
+    if (not(pOther is IRadialGradient)) then
+    begin
+        Default;
+        Exit;
+    end;
+
+    pSource := pOther as IRadialGradient;
+    Assert(Assigned(pSource));
+
+    inherited Merge(pOther);
+
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_CX := pSource.m_CX;
+            m_CY := pSource.m_CY;
+            m_R  := pSource.m_R;
+            m_FX := pSource.m_FX;
+            m_FY := pSource.m_FY;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IBrush
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IBrush.Create;
+begin
+    inherited Create;
+
+    m_pColor          := IPropColorItem.Create;
+    m_pLinearGradient := ILinearGradient.Create;
+    m_pRadialGradient := IRadialGradient.Create;
+    m_Type            := E_BT_Solid;
+    m_Rule            := IE_PR_Inherit;
+
+    // by default solid color is empty
+    m_pColor.Value.Clear;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IBrush.Destroy;
+begin
+    m_pColor.Free;
+    m_pLinearGradient.Free;
+    m_pRadialGradient.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IBrush.Default;
+var
+    color: TWColor;
+begin
+    m_pColor.Free;
+
+    m_pLinearGradient.Default;
+    m_pRadialGradient.Default;
+
+    color    := TWColor.Create(clBlack);
+    m_pColor := IPropColorItem.Create(@color, IE_PR_Default);
+    m_Type   := E_BT_Solid;
+    m_Rule   := IE_PR_Default;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IBrush.Merge(const pOther: IBrush);
+begin
+    case (m_Rule) of
+        IE_PR_Inherit:
+        begin
+            m_Type := pOther.m_Type;
+
+            case (m_Type) of
+                E_BT_Solid:  m_pColor.Merge(pOther.Color);
+                E_BT_Linear: m_pLinearGradient.Merge(pOther.LinearGradient);
+                E_BT_Radial: m_pRadialGradient.Merge(pOther.RadialGradient);
+            end;
+
+            m_Rule := IE_PR_Default;
+            Exit;
+        end;
+
+        IE_PR_Default: Exit;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IFill
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IFill.Create;
+begin
+    inherited Create;
+
+    m_pBrush        := IBrush.Create;
+    m_pRule         := IPropFillRuleItem.Create;
+    m_pNoFill       := IPropBoolItem.Create;
+    m_pNoFill.Value := False;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IFill.Destroy;
+begin
+    m_pBrush.Free;
+    m_pRule.Free;
+    m_pNoFill.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IFill.Default;
+begin
+    m_pRule.Free;
+    m_pNoFill.Free;
+
+    m_pRule   := IPropFillRuleItem.Create(TWSVGFill.IERule.IE_FR_NonZero, IE_PR_Default);
+    m_pNoFill := IPropBoolItem.Create    (False,                          IE_PR_Default);
+
+    m_pBrush.Default;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IFill.Merge(const pOther: IFill);
+begin
+    m_pBrush.Merge(pOther.m_pBrush);
+    m_pRule.Merge(pOther.m_pRule);
+    m_pNoFill.Merge(pOther.m_pNoFill);
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IStroke
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IStroke.Create;
+begin
+    inherited Create;
+
+    m_pBrush          := IBrush.Create;
+    m_pDashPattern    := IPropDashPatternItem.Create;
+    m_pDashOffset     := IPropFloatItem.Create;
+    m_pWidth          := IPropFloatItem.Create;
+    m_pMiterLimit     := IPropFloatItem.Create;
+    m_pLineCap        := IPropStrokeLineCapItem.Create;
+    m_pLineJoin       := IPropStrokeLineJoinItem.Create;
+    m_pNoStroke       := IPropBoolItem.Create;
+    m_pNoStroke.Value := True;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IStroke.Destroy;
+begin
+    m_pBrush.Free;
+    m_pDashPattern.Free;
+    m_pDashOffset.Free;
+    m_pWidth.Free;
+    m_pMiterLimit.Free;
+    m_pLineCap.Free;
+    m_pLineJoin.Free;
+    m_pNoStroke.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IStroke.Default;
+begin
+    m_pDashOffset.Free;
+    m_pWidth.Free;
+    m_pMiterLimit.Free;
+    m_pLineCap.Free;
+    m_pLineJoin.Free;
+    m_pNoStroke.Free;
+
+    m_pDashOffset := IPropFloatItem.Create         (0.0,                                IE_PR_Default);
+    m_pWidth      := IPropFloatItem.Create         (1.0,                                IE_PR_Default);
+    m_pMiterLimit := IPropFloatItem.Create         (4.0,                                IE_PR_Default);
+    m_pLineCap    := IPropStrokeLineCapItem.Create (TWSVGStroke.IELineCap.IE_LC_Butt,   IE_PR_Default);
+    m_pLineJoin   := IPropStrokeLineJoinItem.Create(TWSVGStroke.IELineJoin.IE_LJ_Miter, IE_PR_Default);
+    m_pNoStroke   := IPropBoolItem.Create          (True,                               IE_PR_Default);
+
+    m_pDashPattern.m_pValue.Clear;
+    m_pDashPattern.m_Rule := IE_PR_Default;
+
+    m_pBrush.Default;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IStroke.Merge(const pOther: IStroke);
+begin
+    m_pBrush.Merge(pOther.m_pBrush);
+    m_pDashPattern.Merge(pOther.m_pDashPattern);
+    m_pDashOffset.Merge(pOther.m_pDashOffset);
+    m_pWidth.Merge(pOther.m_pWidth);
+    m_pMiterLimit.Merge(pOther.m_pMiterLimit);
+    m_pLineCap.Merge(pOther.m_pLineCap);
+    m_pLineJoin.Merge(pOther.m_pLineJoin);
+    m_pNoStroke.Merge(pOther.m_pNoStroke);
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IStyle
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IStyle.Create;
+begin
+    inherited Create;
+
+    m_pFill        := IFill.Create;
+    m_pStroke      := IStroke.Create;
+    m_pOpacity     := IPropFloatItem.Create;
+    m_pDisplayMode := IPropDisplayItem.Create;
+    m_Width        := 0;
+    m_Height       := 0;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IStyle.Destroy;
+begin
+    m_pFill.Free;
+    m_pStroke.Free;
+    m_pOpacity.Free;
+    m_pDisplayMode.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IStyle.Default;
+begin
+    m_pFill.Default;
+    m_pStroke.Default;
+
+    m_pOpacity.Free;
+    m_pOpacity := IPropFloatItem.Create(1.0, IE_PR_Default);
+
+    m_pDisplayMode.Free;
+    m_pDisplayMode := IPropDisplayItem.Create(C_SVG_Default_Display, IE_PR_Default);
+
+    m_Width  := 0;
+    m_Height := 0;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IStyle.Merge(const pOther: IStyle);
+begin
+    m_pFill.Merge(pOther.m_pFill);
+    m_pStroke.Merge(pOther.m_pStroke);
+    m_pOpacity.Merge(pOther.m_pOpacity);
+
+    // the size should never change between groups, so simply copy it
+    m_Width  := pOther.m_Width;
+    m_Height := pOther.m_Height;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.IStyle.GetFillColor: TWColor;
+var
+    alpha: Single;
+begin
+    if (m_pFill.m_pNoFill.m_Value) then
+        Exit(System.Default(TWColor));
+
+    alpha := m_pFill.m_pBrush.m_pColor.m_Value.GetAlpha();
+
+    Result := TWColor.Create(m_pFill.m_pBrush.m_pColor.m_Value.GetRed,
+            m_pFill.m_pBrush.m_pColor.m_Value.GetGreen,
+            m_pFill.m_pBrush.m_pColor.m_Value.GetBlue,
+            Min(255, Round(m_pOpacity.m_Value * alpha)));
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.IStyle.GetStrokeColor: TWColor;
+var
+    alpha: Single;
+begin
+    if (m_pStroke.m_pNoStroke.m_Value) then
+        Exit(System.Default(TWColor));
+
+    alpha := m_pStroke.m_pBrush.m_pColor.m_Value.GetAlpha();
+
+    Result := TWColor.Create(m_pStroke.m_pBrush.m_pColor.m_Value.GetRed,
+            m_pStroke.m_pBrush.m_pColor.m_Value.GetGreen,
+            m_pStroke.m_pBrush.m_pColor.m_Value.GetBlue,
+            Min(255, Round(m_pOpacity.m_Value * alpha)));
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IProperties
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IProperties.Create;
+begin
+    inherited Create;
+
+    m_pStyle  := IStyle.Create;
+    m_pMatrix := IPropMatrixItem.Create;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IProperties.Destroy;
+begin
+    m_pStyle.Free;
+    m_pMatrix.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IProperties.Default;
+begin
+    m_pStyle.Default;
+
+    m_pMatrix.m_Value.SetIdentity;
+    m_pMatrix.m_Rule := IE_PR_Default;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IProperties.Merge(const pOther: IProperties);
+begin
+    m_pStyle.Merge(pOther.m_pStyle);
+    m_pMatrix.Merge(pOther.m_pMatrix);
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IAnimationData
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IAnimationData.Create;
+begin
+    inherited Create;
+
+    m_pSetAnims     := TList<TWSVGAnimation>.Create;
+    m_pAttribAnims  := TList<TWSVGAnimation>.Create;
+    m_pColorAnims   := TList<TWSVGAnimation>.Create;
+    m_pMatrixAnims  := TList<TWSVGAnimation>.Create;
+    m_pUnknownAnims := TList<TWSVGAnimation>.Create;
+    m_ValueType     := TWSVGCommon.IEValueType.IE_VT_Unknown;
+    m_Position      := 0.0;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IAnimationData.Destroy;
+begin
+    m_pSetAnims.Free;
+    m_pAttribAnims.Free;
+    m_pColorAnims.Free;
+    m_pMatrixAnims.Free;
+    m_pUnknownAnims.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IAnimCacheItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IAnimCacheItem.Create;
+begin
+    inherited Create;
+
+    m_ClearingValue := 0.0;
+    m_LastPos       := 0.0;
+    m_Started       := False;
+    m_Ended         := False;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IAnimCacheItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.ICacheItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.ICacheItem.Create;
+begin
+    inherited Create;
+
+    m_pAnimCache   := IAnimCache.Create([doOwnsValues]);
+    m_AnimDuration := 0;
+    m_LastPos      := 0.0;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.ICacheItem.Destroy;
+begin
+    m_pAnimCache.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.Create;
+begin
+    inherited Create;
+
+    m_pCache     := ICache.Create([doOwnsValues]);
+    m_Animate    := True;
+    m_fOnAnimate := nil;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.Destroy;
+begin
+    m_pCache.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.LocalPosToGlobalPos(animDuration: NativeUInt; pAnimItem: IAnimCacheItem;
+        const animationData: IAnimationData; const pAnimDesc: TWSVGAnimationDescriptor): Double;
+var
+    localDuration:                                               NativeUInt;
+    localPos, lastPos, finalPos, clearingVal, animDur, localDur: Double;
+begin
+    // is local duration indefinite?
+    if (pAnimDesc.Duration.IsEmpty) then
+        Exit(animationData.m_Position);
+
+    // calculate local duration in milliseconds
+    localDuration := pAnimDesc.Duration.ToMilliseconds;
+
+    // is local duration equals to total duration?
+    if (localDuration = animDuration) then
+        Exit(animationData.m_Position);
+
+    // calculate local position (can be higher than 100%)
+    localPos := ((animationData.m_Position * animDuration) / localDuration);
+
+    // is local duration a multiple of total duration?
+    if ((animDuration mod localDuration) = 0) then
+        // can bound local duration between 0.0 and 1.0 without compensation in this case
+        Exit(TWMathHelper.ExtMod(localPos, 1.0));
+
+    // get cached values to use
+    clearingVal := pAnimItem.m_ClearingValue;
+    lastPos     := pAnimItem.m_LastPos;
+
+    // calculate final position
+    finalPos := clearingVal + localPos;
+
+    // animation was looped?
+    if (finalPos < lastPos) then
+    begin
+        animDur  := animDuration;
+        localDur := localDuration;
+
+        // recalculate new clearing value and final position
+        clearingVal := TWMathHelper.ExtMod(clearingVal + (animDur / localDur), 1.0);
+        finalPos    := clearingVal + localPos;
+    end;
+
+    // update values in cache
+    pAnimItem.m_ClearingValue := clearingVal;
+    pAnimItem.m_LastPos       := finalPos;
+
+    Result := TWMathHelper.ExtMod(finalPos, 1.0);
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetLinkedElement(const pLink: TWSVGPropLink): TWSVGElement;
+var
+    pParent:    TWSVGItem;
+    pContainer: TWSVGContainer;
+    pElement:   TWSVGElement;
+begin
+    pParent := pLink;
+
+    // iterate through link parents
+    while (Assigned(pParent)) do
+    begin
+        if (pParent is TWSVGContainer) then
+        begin
+            // get parent as container
+            pContainer := pParent as TWSVGContainer;
+
+            // found it?
+            if (Assigned(pContainer)) then
+            begin
+                // search for element in the parent defs map
+                pElement := pContainer.Defs[pLink.Value];
+
+                // found it?
+                if (Assigned(pElement)) then
+                    Exit(pElement);
+            end;
+        end;
+
+        // go to next parent
+        pParent := pParent.Parent;
+    end;
+
+    // not found
+    Result := nil;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.Initialize(const pSVG: TWSVG);
+var
+    pItem: ICacheItem;
+begin
+    // get current SVG UUID instance
+    m_UUID := pSVG.GetUUID;
+
+    // no instance?
+    if (Length(m_UUID) = 0) then
+        Exit;
+
+    // is SVG already cached?
+    if (m_pCache.ContainsKey(m_UUID)) then
+        Exit;
+
+    pItem := nil;
+
+    try
+        // create and populate new cache item
+        pItem                := ICacheItem.Create;
+        pItem.m_AnimDuration := GetAnimationDuration(pSVG);
+        m_pCache.Add(m_UUID, pItem);
+        pItem                := nil;
+    finally
+        pItem.Free;
+    end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.SetAnimatedOpacityCombineMode(pColorItem: IPropColorItem);
+begin
+    case (pColorItem.m_Rule) of
+        IE_PR_Inherit:
+        begin
+            // if the color is inherited, only the color should be copied from parent but NOT the opacity
+            pColorItem.m_Rule      := IE_PR_Combine;
+            pColorItem.m_MergeMode := TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_ParentColor;
+            Exit;
+        end;
+
+        IE_PR_Combine:
+        begin
+            // if the color is inherited, search for combination mode that may erase the opacity, and
+            // correct them to the appropriate value
+            case (pColorItem.m_MergeMode) of
+                TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_KeepThis,
+                TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_ParentColor:
+                    Exit;
+
+                TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_KeepParent:
+                begin
+                    pColorItem.m_MergeMode := TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_ParentColor;
+                    Exit;
+                end;
+
+                TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_ParentOpacity:
+                begin
+                    pColorItem.m_Rule      := IE_PR_Default;
+                    pColorItem.m_MergeMode := TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_KeepThis;
+                    Exit;
+                end;
+            end;
+        end;
+    end;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetSize(const pHeader: TWSVGParser.IHeader): TSize;
+var
+    width, height:   Single;
+    propCount, i:    NativeInt;
+    pProperty:       TWSVGProperty;
+    pWidth, pHeight: TWSVGMeasure<Single>;
+    pStyle:          TWSVGStyle;
+    pProperties:     IWSmartPointer<IProperties>;
+    pAnimationData:  IWSmartPointer<IAnimationData>;
+begin
+    // initialize values in case header doesn't contain them
+    width  := 0.0;
+    height := 0.0;
+
+    propCount := pHeader.Count;
+
+    // iterate through header properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pHeader.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for header size
+        if ((pProperty.ItemName = C_SVG_Prop_Width) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get SVG width
+            pWidth := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pWidth)) then
+                continue;
+
+            // set SVG width
+            width := pWidth.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Height) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get SVG height
+            pHeight := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pHeight)) then
+                continue;
+
+            // set SVG height
+            height := pHeight.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Style) and (pProperty is TWSVGStyle)) then
+        begin
+            // get style
+            pStyle := pProperty as TWSVGStyle;
+
+            // found it?
+            if (not Assigned(pStyle)) then
+                continue;
+
+            pProperties    := TWSmartPointer<IProperties>.Create();
+            pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+            // read properties from style
+            if (GetStyleProps(pStyle, pProperties, pAnimationData, nil)) then
+            begin
+                if (pProperties.m_pStyle.m_Width <> 0) then
+                    width := pProperties.m_pStyle.m_Width;
+
+                if (pProperties.m_pStyle.m_Height <> 0) then
+                    height := pProperties.m_pStyle.m_Height;
+            end;
+        end;
+    end;
+
+    // get source size
+    Result := TSize.Create(Trunc(width), Trunc(height));
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetViewBox(const pHeader: TWSVGParser.IHeader): TWRectF;
+var
+    propCount, i: NativeInt;
+    pProperty:    TWSVGProperty;
+    pViewBox:     TWSVGPropRect;
+    size:         TSize;
+begin
+    // no header?
+    if (not Assigned(pHeader)) then
+        Exit(Default(TWRectF));
+
+    propCount := pHeader.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pHeader.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // is viewbox element?
+        if ((pProperty.ItemName = C_SVG_Prop_ViewBox) and (pProperty is TWSVGPropRect)) then
+        begin
+            // get viewbox rect
+            pViewBox := pProperty as TWSVGPropRect;
+
+            // found it?
+            if (not Assigned(pViewBox)) then
+                Exit(Default(TWRectF));
+
+            // viewbox exists but is empty?
+            if ((pViewBox.X = 0.0) and (pViewBox.Y = 0.0) and (pViewBox.Width = 0.0)
+                    and (pViewBox.Height = 0.0))
+            then
+            begin
+                // use the SVG size instead
+                size := GetSize(pHeader);
+
+                Exit(TWRectF.Create(0, 0, size.Width, size.Height));
+            end;
+
+            // convert to GDI+ rect and return result
+            Exit(TWRectF.Create(pViewBox.X, pViewBox.Y, pViewBox.X + pViewBox.Width,
+                    pViewBox.Y + pViewBox.Height));
+        end;
+    end;
+
+    // no viewbox defined, use the SVG size instead
+    size := GetSize(pHeader);
+
+    Result := TWRectF.Create(0, 0, size.Width, size.Height);
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetPosAndSizeProps(const pElement: TWSVGElement; out x: Single; out y: Single;
+        out width: Single; out height:Single; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+var
+    pProperty:               TWSVGProperty;
+    pX, pY, pWidth, pHeight: TWSVGMeasure<Single>;
+    pAnimation:              TWSVGAnimation;
+    pValueAnimDesc:          IWSmartPointer<TWSVGValueAnimDesc>;
+    attribName:              UnicodeString;
+    propCount, i:            NativeInt;
+    position, animPos:       Double;
+begin
+    if (not Assigned(pElement)) then
+        Exit(False);
+
+    // set default values (in case no matching value is found in rect)
+    x      := 0.0;
+    y      := 0.0;
+    width  := 0.0;
+    height := 0.0;
+
+    propCount := pElement.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pElement.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for property to get
+        if ((pProperty.ItemName = C_SVG_Prop_X) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get x position
+            pX := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pX)) then
+                continue;
+
+            // set x position
+            x := pX.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Y) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get y position
+            pY := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pY)) then
+                continue;
+
+            // set y position
+            y := pY.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Width) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get width
+            pWidth := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pWidth)) then
+                continue;
+
+            // set width
+            width := pWidth.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Height) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get height
+            pHeight := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pHeight)) then
+                continue;
+
+            // set height
+            height := pHeight.Value.Value;
+        end;
+    end;
+
+    // do animate shape?
+    if (not m_Animate) then
+        Exit(True);
+
+     // iterate through set animations (i.e. set a particular shape attribute at elapsed time)
+    for pAnimation in pAnimationData.m_pSetAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // do apply animation?
+                if (pAnimationData.m_Position <> 1.0) then
+                    continue;
+
+                // is to value defined?
+                if (Length(pValueAnimDesc.ToList) = 0) then
+                    continue;
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X) then
+                    // do modify the rect x position
+                    x := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Y) then
+                    // do modify the rect y position
+                    y := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Width) then
+                    // do modify the rect width
+                    width := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Height) then
+                    // do modify the rect height
+                    height := pValueAnimDesc.ToList[0]
+            end;
+        end;
+    end;
+
+    // iterate through attribute animations (i.e. animations linked to a particular shape attribute)
+    for pAnimation in pAnimationData.m_pAttribAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
+                    continue;
+
+                // calculate animation position
+                animPos := pValueAnimDesc.GetValueAt(position);
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X) then
+                    // do modify the rect x position
+                    x := animPos
+                else
+                if (attribName = C_SVG_Prop_Y) then
+                    // do modify the rect y position
+                    y := animPos
+                else
+                if (attribName = C_SVG_Prop_Width) then
+                    // do modify the rect width
+                    width := animPos
+                else
+                if (attribName = C_SVG_Prop_Height) then
+                    // do modify the rect height
+                    height := animPos
+            end;
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetRectProps(const pRect: TWSVGRect; out x: Single; out y: Single;
+        out width: Single; out height: Single; out rx: Single; out ry: Single;
+        pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+var
+    pProperty:                         TWSVGProperty;
+    pX, pY, pWidth, pHeight, pRX, pRY: TWSVGMeasure<Single>;
+    pAnimation:                        TWSVGAnimation;
+    pValueAnimDesc:                    IWSmartPointer<TWSVGValueAnimDesc>;
+    attribName:                        UnicodeString;
+    propCount, i:                      NativeInt;
+    position, animPos:                 Double;
+begin
+    if (not Assigned(pRect)) then
+        Exit(False);
+
+    // set default values (in case no matching value is found in rect)
+    x      := 0.0;
+    y      := 0.0;
+    width  := 0.0;
+    height := 0.0;
+    rx     := 0.0;
+    ry     := 0.0;
+
+    propCount := pRect.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pRect.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for rect property to get
+        if ((pProperty.ItemName = C_SVG_Prop_X) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get x position
+            pX := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pX)) then
+                continue;
+
+            // set x position
+            x := pX.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Y) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get y position
+            pY := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pY)) then
+                continue;
+
+            // set y position
+            y := pY.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Width) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get width
+            pWidth := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pWidth)) then
+                continue;
+
+            // set width
+            width := pWidth.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Height) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get height
+            pHeight := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pHeight)) then
+                continue;
+
+            // set height
+            height := pHeight.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_RX) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get x radius
+            pRx := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pRx)) then
+                continue;
+
+            // set x radius
+            rx := pRx.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_RY) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get y radius
+            pRy := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pRy)) then
+                continue;
+
+            // set y radius
+            ry := pRy.Value.Value;
+        end;
+    end;
+
+    // both values are equals if rx or ry is not set and other value is set
+    if ((ry <> 0.0) and (rx = 0.0)) then
+        rx := ry
+    else
+    if ((rx <> 0.0) and (ry = 0.0)) then
+        ry := rx;
+
+    // do animate shape?
+    if (not m_Animate) then
+        Exit(True);
+
+    // iterate through set animations (i.e. set a particular shape attribute at elapsed time)
+    for pAnimation in pAnimationData.m_pSetAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // do apply animation?
+                if (pAnimationData.m_Position <> 1.0) then
+                    continue;
+
+                // is to value defined?
+                if (Length(pValueAnimDesc.ToList) = 0) then
+                    continue;
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X) then
+                    // do modify the rect x position
+                    x := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Y) then
+                    // do modify the rect y position
+                    y := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Width) then
+                    // do modify the rect width
+                    width := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Height) then
+                    // do modify the rect height
+                    height := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_RX) then
+                    // do modify the rect corner x radius
+                    rx := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_RY) then
+                    // do modify the rect corner y radius
+                    ry := pValueAnimDesc.ToList[0];
+            end;
+        end;
+    end;
+
+    // iterate through attribute animations (i.e. animations linked to a particular shape attribute)
+    for pAnimation in pAnimationData.m_pAttribAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
+                    continue;
+
+                // calculate animation position
+                animPos := pValueAnimDesc.GetValueAt(position);
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X) then
+                    // do modify the rect x position
+                    x := animPos
+                else
+                if (attribName = C_SVG_Prop_Y) then
+                    // do modify the rect y position
+                    y := animPos
+                else
+                if (attribName = C_SVG_Prop_Width) then
+                    // do modify the rect width
+                    width := animPos
+                else
+                if (attribName = C_SVG_Prop_Height) then
+                    // do modify the rect height
+                    height := animPos
+                else
+                if (attribName = C_SVG_Prop_RX) then
+                    // do modify the rect corner x radius
+                    rx := animPos
+                else
+                if (attribName = C_SVG_Prop_RY) then
+                    // do modify the rect corner y radius
+                    ry := animPos;
+            end;
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetCircleProps(const pCircle: TWSVGCircle; out x: Single; out y: Single;
+        out radius: Single; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+var
+    pProperty:         TWSVGProperty;
+    pCx, pCy, pR:      TWSVGMeasure<Single>;
+    pAnimation:        TWSVGAnimation;
+    pValueAnimDesc:    IWSmartPointer<TWSVGValueAnimDesc>;
+    attribName:        UnicodeString;
+    propCount, i:      NativeInt;
+    position, animPos: Double;
+begin
+    if (not Assigned(pCircle)) then
+        Exit(False);
+
+    // set default values (in case no matching value is found in circle)
+    x      := 0.0;
+    y      := 0.0;
+    radius := 0.0;
+
+    propCount := pCircle.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pCircle.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for circle property to get
+        if ((pProperty.ItemName = C_SVG_Prop_CX) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get x position
+            pCx := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pCx)) then
+                continue;
+
+            // set x position
+            x := pCx.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_CY) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get y position
+            pCy := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pCy)) then
+                continue;
+
+            // set y position
+            y := pCy.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_R) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get radius
+            pR := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pR)) then
+                continue;
+
+            // set radius
+            radius := pR.Value.Value;
+        end;
+    end;
+
+    // do animate shape?
+    if (not m_Animate) then
+        Exit(True);
+
+    // iterate through set animations (i.e. set a particular shape attribute at elapsed time)
+    for pAnimation in pAnimationData.m_pSetAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // do apply animation?
+                if (pAnimationData.m_Position <> 1.0) then
+                    continue;
+
+                // is to value defined?
+                if (Length(pValueAnimDesc.ToList) = 0) then
+                    continue;
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_CX) then
+                    // do modify the circle x position
+                    x := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_CY) then
+                    // do modify the circle y position
+                    y := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_R) then
+                    // do modify the circle radius
+                    radius := pValueAnimDesc.ToList[0];
+            end;
+        end;
+    end;
+
+    // iterate through attribute animations (i.e. animations linked to a particular shape attribute)
+    for pAnimation in pAnimationData.m_pAttribAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
+                    continue;
+
+                // calculate animation position
+                animPos := pValueAnimDesc.GetValueAt(position);
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_CX) then
+                    // do modify the circle x position
+                    x := animPos
+                else
+                if (attribName = C_SVG_Prop_CY) then
+                    // do modify the circle y position
+                    y := animPos
+                else
+                if (attribName = C_SVG_Prop_R) then
+                    // do modify the circle radius
+                    radius := animPos;
+            end;
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetEllipseProps(const pEllipse: TWSVGEllipse; out x: Single; out y: Single;
+        out rx: Single; out ry: Single; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+var
+    pProperty:          TWSVGProperty;
+    pCx, pCy, pRx, pRy: TWSVGMeasure<Single>;
+    pAnimation:         TWSVGAnimation;
+    pValueAnimDesc:     IWSmartPointer<TWSVGValueAnimDesc>;
+    attribName:         UnicodeString;
+    propCount, i:       NativeInt;
+    position, animPos:  Double;
+begin
+    if (not Assigned(pEllipse)) then
+        Exit(False);
+
+    // set default values (in case no matching value is found in ellipse)
+    x  := 0.0;
+    y  := 0.0;
+    rx := 0.0;
+    ry := 0.0;
+
+    propCount := pEllipse.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pEllipse.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for ellipse property to get
+        if ((pProperty.ItemName = C_SVG_Prop_CX) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get x position
+            pCx := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pCx)) then
+                continue;
+
+            // set x position
+            x := pCx.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_CY) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get y position
+            pCy := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pCy)) then
+                continue;
+
+            // set y position
+            y := pCy.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_RX) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get x radius
+            pRx := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pRx)) then
+                continue;
+
+            // set x radius
+            rx := pRx.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_RY) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get y radius
+            pRy := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pRy)) then
+                continue;
+
+            // set y radius
+            ry := pRy.Value.Value;
+        end;
+    end;
+
+    // do animate shape?
+    if (not m_Animate) then
+        Exit(True);
+
+    // iterate through set animations (i.e. set a particular shape attribute at elapsed time)
+    for pAnimation in pAnimationData.m_pSetAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // do apply animation?
+                if (pAnimationData.m_Position <> 1.0) then
+                    continue;
+
+                // is to value defined?
+                if (Length(pValueAnimDesc.ToList) = 0) then
+                    continue;
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_CX) then
+                    // do modify the ellipse x position
+                    x := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_CY) then
+                    // do modify the ellipse y position
+                    y := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_RX) then
+                    // do modify the ellipse x radius
+                    rx := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_RY) then
+                    // do modify the ellipse y radius
+                    ry := pValueAnimDesc.ToList[0];
+            end;
+        end;
+    end;
+
+    // iterate through attribute animations (i.e. animations linked to a particular shape attribute)
+    for pAnimation in pAnimationData.m_pAttribAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
+                    continue;
+
+                // calculate animation position
+                animPos := pValueAnimDesc.GetValueAt(position);
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_CX) then
+                    // do modify the ellipse x position
+                    x := animPos
+                else
+                if (attribName = C_SVG_Prop_CY) then
+                    // do modify the ellipse y position
+                    y := animPos
+                else
+                if (attribName = C_SVG_Prop_RX) then
+                    // do modify the ellipse x radius
+                    rx := animPos
+                else
+                if (attribName = C_SVG_Prop_RY) then
+                    // do modify the ellipse y radius
+                    ry := animPos;
+            end;
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetLineProps(const pLine: TWSVGLine; out x1: Single; out y1: Single;
+        out x2: Single; out y2: Single; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+var
+    pProperty:          TWSVGProperty;
+    pX1, pY1, pX2, pY2: TWSVGMeasure<Single>;
+    pAnimation:         TWSVGAnimation;
+    pValueAnimDesc:     IWSmartPointer<TWSVGValueAnimDesc>;
+    attribName:         UnicodeString;
+    propCount, i:       NativeInt;
+    position, animPos:  Double;
+begin
+    if (not Assigned(pLine)) then
+        Exit(False);
+
+    // set default values (in case no matching value is found in line)
+    x1 := 0.0;
+    y1 := 0.0;
+    x2 := 0.0;
+    y2 := 0.0;
+
+    propCount := pLine.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pLine.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for line property to get
+        if ((pProperty.ItemName = C_SVG_Prop_X1) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get start x position
+            pX1 := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pX1)) then
+                continue;
+
+            // set start x position
+            x1 := pX1.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Y1) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get start y position
+            pY1 := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pY1)) then
+                continue;
+
+            // set start y position
+            y1 := pY1.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_X2) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get end x position
+            pX2 := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pX2)) then
+                continue;
+
+            // set end x position
+            x2 := pX2.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Y2) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get end y position
+            pY2 := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pY2)) then
+                continue;
+
+            // set end y position
+            y2 := pY2.Value.Value;
+        end;
+    end;
+
+    // do animate shape?
+    if (not m_Animate) then
+        Exit(True);
+
+    // iterate through set animations (i.e. set a particular shape attribute at elapsed time)
+    for pAnimation in pAnimationData.m_pSetAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // do apply animation?
+                if (pAnimationData.m_Position <> 1.0) then
+                    continue;
+
+                // is to value defined?
+                if (Length(pValueAnimDesc.ToList) = 0) then
+                    continue;
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X1) then
+                    // do modify the line x1 position
+                    x1 := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Y1) then
+                    // do modify the line y1 position
+                    y1 := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_X2) then
+                    // do modify the line x2 position
+                    x2 := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Y2) then
+                    // do modify the line y2 position
+                    y2 := pValueAnimDesc.ToList[0];
+            end;
+        end;
+    end;
+
+    // iterate through attribute animations (i.e. animations linked to a particular shape attribute)
+    for pAnimation in pAnimationData.m_pAttribAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
+                    continue;
+
+                // calculate animation position
+                animPos := pValueAnimDesc.GetValueAt(position);
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X1) then
+                    // do modify the line x1 position
+                    x1 := animPos
+                else
+                if (attribName = C_SVG_Prop_Y1) then
+                    // do modify the line y1 position
+                    y1 := animPos
+                else
+                if (attribName = C_SVG_Prop_X2) then
+                    // do modify the line x2 position
+                    x2 := animPos
+                else
+                if (attribName = C_SVG_Prop_Y2) then
+                    // do modify the line y2 position
+                    y2 := animPos;
+            end;
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetTextProps(const pText: TWSVGText; out x: Single; out y: Single;
+        out fontFamily: UnicodeString; out fontSize: Single; out anchor: IETextAnchor;
+        pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+var
+    pProperty:         TWSVGProperty;
+    pX, pY, pFontSize: TWSVGMeasure<Single>;
+    pFontFamily:       TWSVGPropText;
+    pAnchor:           TWSVGText.IAnchor;
+    pAnimation:        TWSVGAnimation;
+    pValueAnimDesc:    IWSmartPointer<TWSVGValueAnimDesc>;
+    attribName:        UnicodeString;
+    propCount, i:      NativeInt;
+    position, animPos: Double;
+begin
+    if (not Assigned(pText)) then
+        Exit(False);
+
+    // set default values (in case no matching value is found in text)
+    x          := 0.0;
+    y          := 0.0;
+    fontFamily := 'Arial';
+    fontSize   := 0.0;
+    anchor     := IE_TA_Start;
+
+    propCount := pText.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pText.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for text property to get
+        if ((pProperty.ItemName = C_SVG_Prop_X) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get x position
+            pX := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pX)) then
+                continue;
+
+            // set x position
+            x := pX.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Y) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get y position
+            pY := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pY)) then
+                continue;
+
+            // set y position
+            y := pY.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Font_Family) and (pProperty is TWSVGPropText)) then
+        begin
+            // get font family
+            pFontFamily := pProperty as TWSVGPropText;
+
+            // found it?
+            if (not Assigned(pFontFamily)) then
+                continue;
+
+            // set font family
+            fontFamily := pFontFamily.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Font_Size) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get font size
+            pFontSize := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pFontSize)) then
+                continue;
+
+            // set font size
+            fontSize := pFontSize.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Text_Anchor) and (pProperty is TWSVGText.IAnchor)) then
+        begin
+            // get text anchor
+            pAnchor := pProperty as TWSVGText.IAnchor;
+
+            // found it?
+            if (not Assigned(pAnchor)) then
+                continue;
+
+            // set text anchor
+            case (pAnchor.Anchor) of
+                TWSVGText.IEAnchor.IE_TA_Start:  anchor := IE_TA_Start;
+                TWSVGText.IEAnchor.IE_TA_Middle: anchor := IE_TA_Middle;
+                TWSVGText.IEAnchor.IE_TA_End:    anchor := IE_TA_End;
+            else
+                raise Exception.CreateFmt('Unknown text anchor value - %d', [Integer(pAnchor.Anchor)]);
+            end;
+        end;
+    end;
+
+    // do animate shape?
+    if (not m_Animate) then
+        Exit(True);
+
+    // iterate through set animations (i.e. set a particular shape attribute at elapsed time)
+    for pAnimation in pAnimationData.m_pSetAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // do apply animation?
+                if (pAnimationData.m_Position <> 1.0) then
+                    continue;
+
+                // is to value defined?
+                if (Length(pValueAnimDesc.ToList) = 0) then
+                    continue;
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X) then
+                    // do modify the text x position
+                    x := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Y) then
+                    // do modify the text y position
+                    y := pValueAnimDesc.ToList[0];
+            end;
+        end;
+    end;
+
+    // iterate through attribute animations (i.e. animations linked to a particular shape attribute)
+    for pAnimation in pAnimationData.m_pAttribAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
+                    continue;
+
+                // calculate animation position
+                animPos := pValueAnimDesc.GetValueAt(position);
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X) then
+                    // do modify the text x position
+                    x := animPos
+                else
+                if (attribName = C_SVG_Prop_Y) then
+                    // do modify the text y position
+                    y := animPos;
+            end;
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetElementProps(const pElement: TWSVGElement; pProperties: IProperties;
+        pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+var
+    pProperty:        TWSVGProperty;
+    pStyle:           TWSVGStyle;
+    pTransformMatrix: TWSVGPropMatrix;
+    pPropMatrixItem:  IWSmartPointer<IPropMatrixItem>;
+    propCount, i:     NativeInt;
+begin
+    if (not Assigned(pElement)) then
+        Exit(False);
+
+    propCount := pElement.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pElement.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for element properties
+        if ((pProperty.ItemName = C_SVG_Prop_Style) and (pProperty is TWSVGStyle)) then
+        begin
+            // get style
+            pStyle := pProperty as TWSVGStyle;
+
+            // found it?
+            if (not Assigned(pStyle)) then
+                continue;
+
+            // read properties from style
+            if (not GetStyleProps(pStyle, pProperties, pAnimationData, pCustomData)) then
+                Exit(False);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Transform) and (pProperty is TWSVGPropMatrix)) then
+        begin
+            // get transform matrix
+            pTransformMatrix := pProperty as TWSVGPropMatrix;
+
+            // found it?
+            if (not Assigned(pTransformMatrix)) then
+                continue;
+
+            // set matrix
+            pPropMatrixItem := TWSmartPointer<IPropMatrixItem>.Create
+                    (IPropMatrixItem.Create(pTransformMatrix.Matrix, pTransformMatrix.MatrixType,
+                            IE_PR_Combine));
+            pProperties.Matrix.Assign(pPropMatrixItem);
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetStyleProps(const pStyle: TWSVGStyle; pProperties: IProperties;
+        pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+var
+    pProperty:                   TWSVGProperty;
+    pMeasure:                    TWSVGMeasure<Single>;
+    pValue:                      TWSVGAttribute<Single>;
+    pColor:                      TWSVGPropColor;
+    pLink:                       TWSVGPropLink;
+    pDisplay:                    TWSVGStyle.IPropDisplay;
+    pFillRule:                   TWSVGFill.IPropRule;
+    pLineCap:                    TWSVGStroke.IPropLineCap;
+    pLineJoin:                   TWSVGStroke.IPropLineJoin;
+    pAnimation:                  TWSVGAnimation;
+    pValueAnimDesc:              IWSmartPointer<TWSVGValueAnimDesc>;
+    pColorAnimDesc:              IWSmartPointer<TWSVGColorAnimDesc>;
+    pEnumAnimDesc:               IWSmartPointer<TWSVGEnumAnimDesc>;
+    attribName:                  UnicodeString;
+    pPropFloatItem:              IWSmartPointer<IPropFloatItem>;
+    pPropBoolItem:               IWSmartPointer<IPropBoolItem>;
+    pPropFillRuleItem:           IWSmartPointer<IPropFillRuleItem>;
+    color:                       TWColor;
+    propCount, valueCount, i, j: NativeInt;
+    position, animPos:           Double;
+    foundColor, foundOpacity:    Boolean;
+begin
+    propCount := pStyle.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pStyle.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for style property to get
+        if ((pProperty.ItemName = C_SVG_Prop_Width) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get SVG width
+            pMeasure := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pMeasure)) then
+                continue;
+
+            // set SVG width
+            pProperties.m_pStyle.m_Width := Round(pMeasure.Value.Value);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Height) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get SVG height
+            pMeasure := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pMeasure)) then
+                continue;
+
+            // set SVG height
+            pProperties.m_pStyle.m_Height := Round(pMeasure.Value.Value);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Display) and (pProperty is TWSVGStyle.IPropDisplay)) then
+        begin
+            // get display mode
+            pDisplay := pProperty as TWSVGStyle.IPropDisplay;
+
+            // found it?
+            if (not Assigned(pDisplay)) then
+                continue;
+
+            // set display mode
+            if (pDisplay.Count = 0) then
+            begin
+                pProperties.m_pStyle.m_pDisplayMode.m_Value := C_SVG_Default_Display;
+                pProperties.m_pStyle.m_pDisplayMode.m_Rule  := IE_PR_Default;
+            end
+            else
+            begin
+                // is explicitly tagged as inherited?
+                if (pDisplay.Values[0] = TWSVGStyle.IEDisplay.IE_DI_Inherit) then
+                    // do nothing (will be implicitly inherited in this case)
+                    continue;
+
+                pProperties.m_pStyle.m_pDisplayMode.m_Value := pDisplay.Values[0];
+                pProperties.m_pStyle.m_pDisplayMode.m_Rule  := IE_PR_Default;
+            end
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Opacity) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get global opacity
+            pMeasure := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pMeasure)) then
+                continue;
+
+            // set global opacity
+            pPropFloatItem := TWSmartPointer<IPropFloatItem>.Create
+                    (IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default));
+            pProperties.m_pStyle.m_pOpacity.Assign(pPropFloatItem);
+        end;
+    end;
+
+    // check if fill should be ignored completely
+    if (pStyle.Fill.NoFill) then
+    begin
+        pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create
+                (IPropBoolItem.Create(pStyle.Fill.NoFill, IE_PR_Default));
+        pProperties.m_pStyle.m_pFill.m_pNoFill.Assign(pPropBoolItem);
+        pProperties.m_pStyle.m_pFill.m_pBrush.m_Type := E_BT_Solid;
+    end;
+
+    foundColor   := False;
+    foundOpacity := False;
+
+    propCount := pStyle.Fill.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pStyle.Fill.Properties[i];
+
+        // search for style property to get
+        if (pProperty.ItemName = C_SVG_Prop_Fill) then
+        begin
+            // a fill color was found, reset the "no fill" flag
+            pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create(IPropBoolItem.Create(False, IE_PR_Default));
+            pProperties.m_pStyle.m_pFill.m_pNoFill.Assign(pPropBoolItem);
+
+            // is a solid fill color?
+            if (pProperty is TWSVGPropColor) then
+            begin
+                // get solid fill color
+                pColor := pProperty as TWSVGPropColor;
+
+                // found it?
+                if (Assigned(pColor)) then
+                begin
+                    // color has no values?
+                    if (pColor.Count = 0) then
+                        color.SetColor(C_SVG_Default_Color)
+                    else
+                        // get fill color to apply
+                        color.Assign(pColor.Values[0]^);
+
+                    // copy only RGB values (opacity is defined by another property)
+                    pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetRed(color.GetRed);
+                    pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetGreen(color.GetGreen);
+                    pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetBlue(color.GetBlue);
+                    pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+                    pProperties.m_pStyle.m_pFill.m_pBrush.m_Type          := E_BT_Solid;
+
+                    foundColor := True;
+                    continue;
+                end;
+            end;
+
+            // is a link?
+            if (pProperty is TWSVGPropLink) then
+            begin
+                pLink := pProperty as TWSVGPropLink;
+
+                // fill may use a gradient or a pattern, get it
+                if (GetColorFromLink(pLink, pProperties.m_pStyle.m_pFill.m_pBrush)) then
+                    continue;
+
+                if (Assigned(pLink)) then
+                begin
+                    TWLogHelper.LogToCompiler('Get style props - invalid fill color link - id - '
+                            + pLink.Value);
+                    continue;
+                end;
+            end;
+
+            TWLogHelper.LogToCompiler('Get style props - unknown fill color type - skipped');
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Fill_Opacity) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // change the no fill property in the destination style only if the source isn't
+            // explicitly tagged as "no fill". This is because several SVG contains an opacity value
+            // despite of the fill itself is explicitly tagged as none
+            if (not pStyle.Fill.NoFill) then
+            begin
+                // a fill opacity was found, reset the "no fill" flag
+                pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create(IPropBoolItem.Create(False, IE_PR_Default));
+                pProperties.m_pStyle.m_pFill.m_pNoFill.Assign(pPropBoolItem);
+            end;
+
+            // get fill opacity
+            pMeasure := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pMeasure)) then
+                continue;
+
+            // set fill opacity
+            pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pMeasure.Value.Value * 100.0));
+            pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+
+            foundOpacity := True;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Fill_Rule) and (pProperty is TWSVGFill.IPropRule)) then
+        begin
+            // get fill rule
+            pFillRule := pProperty as TWSVGFill.IPropRule;
+
+            // found it?
+            if (not Assigned(pFillRule)) then
+                continue;
+
+            // set fill rule
+            if (pFillRule.Rule = TWSVGFill.IERule.IE_FR_Default) then
+                pPropFillRuleItem := TWSmartPointer<IPropFillRuleItem>.Create
+                        (IPropFillRuleItem.Create(pFillRule.Rule, IE_PR_Inherit))
+            else
+                pPropFillRuleItem := TWSmartPointer<IPropFillRuleItem>.Create
+                        (IPropFillRuleItem.Create(pFillRule.Rule, IE_PR_Default));
+
+            pProperties.m_pStyle.m_pFill.m_pRule.Assign(pPropFillRuleItem);
+        end;
+    end;
+
+    // found a fill color in the style but no explicit opacity was defined (or vice-versa)?
+    if (foundColor and not foundOpacity) then
+    begin
+        // make color opaque, the inheritance may change that later. NOTE required, because by
+        // default a fill color is fully transparent (i.e. set to none and inheriting from parent)
+        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetAlpha(255);
+
+        // set the opacity to inherit from parent
+        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule      := IE_PR_Combine;
+        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_MergeMode := TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_ParentOpacity;
+    end
+    else
+    if (not foundColor and foundOpacity) then
+    begin
+        // found an opacity but no color. In this case, the color should be inherited from parent,
+        // but NOT the opacity
+        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule      := IE_PR_Combine;
+        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_MergeMode := TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_ParentColor;
+    end;
+
+    // check if stroke should be ignored completely
+    if (pStyle.Stroke.NoStroke) then
+    begin
+        pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create
+                (IPropBoolItem.Create(pStyle.Stroke.NoStroke, IE_PR_Default));
+        pProperties.m_pStyle.m_pStroke.m_pNoStroke.Assign(pPropBoolItem);
+        pProperties.m_pStyle.m_pStroke.m_pBrush.m_Type := E_BT_Solid;
+    end;
+
+    foundColor   := False;
+    foundOpacity := False;
+
+    propCount := pStyle.Stroke.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pStyle.Stroke.Properties[i];
+
+        // search for style stroke property to get
+        if (pProperty.ItemName = C_SVG_Prop_Stroke) then
+        begin
+            // a stroke color was found, reset the "no stroke" flag
+            pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create(IPropBoolItem.Create(False, IE_PR_Default));
+            pProperties.m_pStyle.m_pStroke.m_pNoStroke.Assign(pPropBoolItem);
+
+            // is a solid stroke color?
+            if (pProperty is TWSVGPropColor) then
+            begin
+                // get solid stroke color
+                pColor := pProperty as TWSVGPropColor;
+
+                // found it?
+                if (Assigned(pColor)) then
+                begin
+                    // color has no values?
+                    if (pColor.Count = 0) then
+                        color.SetColor(C_SVG_Default_Color)
+                    else
+                        // get fill color to apply
+                        color.Assign(pColor.Values[0]^);
+
+                    // copy only RGB values (opacity is defined by another property)
+                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetRed(color.GetRed);
+                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetGreen(color.GetGreen);
+                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetBlue(color.GetBlue);
+                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_Type          := E_BT_Solid;
+
+                    foundColor := True;
+                    continue;
+                end;
+            end;
+
+            // is a link?
+            if (pProperty is TWSVGPropLink) then
+            begin
+                pLink := pProperty as TWSVGPropLink;
+
+                // stroke may use a gradient or a pattern, get it
+                if (GetColorFromLink(pLink, pProperties.m_pStyle.m_pStroke.m_pBrush)) then
+                    continue;
+
+                if (Assigned(pLink)) then
+                begin
+                    TWLogHelper.LogToCompiler('Get style props - invalid stroke color link - id - '
+                            + pLink.Value);
+                    continue;
+                end;
+            end;
+
+            TWLogHelper.LogToCompiler('Get style props - unknown stroke color type - skipped');
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Stroke_Opacity) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // change the no stroke property in the destination style only if the source isn't
+            // explicitly tagged as "no stroke". This is because several SVG contains an opacity
+            // value despite of the stroke itself is explicitly tagged as none
+            if (not pStyle.Stroke.NoStroke) then
+            begin
+                // a stroke opacity was found, reset the "no stroke" flag
+                pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create(IPropBoolItem.Create(False, IE_PR_Default));
+                pProperties.m_pStyle.m_pStroke.m_pNoStroke.Assign(pPropBoolItem);
+            end;
+
+            // get stroke opacity
+            pMeasure := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pMeasure)) then
+                continue;
+
+            // set stroke opacity
+            pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pMeasure.Value.Value * 100.0));
+            pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+
+            foundOpacity := True;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Stroke_Width) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get stroke width
+            pMeasure := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pMeasure)) then
+                continue;
+
+            // set stroke width
+            pProperties.m_pStyle.m_pStroke.m_pWidth.m_Value := pMeasure.Value.Value;
+            pProperties.m_pStyle.m_pStroke.m_pWidth.m_Rule  := IE_PR_Default;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Stroke_DashArray) and (pProperty is TWSVGAttribute<Single>)) then
+        begin
+            // get stroke dash array
+            pValue := pProperty as TWSVGAttribute<Single>;
+
+            // found it?
+            if (not Assigned(pValue)) then
+                continue;
+
+            // get dash value count
+            valueCount := pValue.Count;
+
+            // iterate through dash values and copy pattern to apply
+            for j := 0 to valueCount - 1 do
+                pProperties.m_pStyle.m_pStroke.m_pDashPattern.m_pValue.Add(pValue.Values[j]);
+
+            pProperties.m_pStyle.m_pStroke.m_pDashPattern.m_Rule := IE_PR_Default;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Stroke_DashOffset) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get stroke dash offset
+            pMeasure := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pMeasure)) then
+                continue;
+
+            // set stroke dash offset
+            pProperties.m_pStyle.m_pStroke.m_pDashOffset.m_Value := pMeasure.Value.Value;
+            pProperties.m_pStyle.m_pStroke.m_pDashOffset.m_Rule  := IE_PR_Default;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Stroke_LineCap) and (pProperty is TWSVGStroke.IPropLineCap)) then
+        begin
+            // get stroke dash linecap
+            pLineCap := pProperty as TWSVGStroke.IPropLineCap;
+
+            // found it?
+            if (not Assigned(pLineCap)) then
+                continue;
+
+            // set stroke linecap
+            pProperties.m_pStyle.m_pStroke.m_pLineCap.m_Value := pLineCap.LineCap;
+            pProperties.m_pStyle.m_pStroke.m_pLineCap.m_Rule  := IE_PR_Default;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Stroke_LineJoin) and (pProperty is TWSVGStroke.IPropLineJoin)) then
+        begin
+            // get stroke dash line join
+            pLineJoin := pProperty as TWSVGStroke.IPropLineJoin;
+
+            // found it?
+            if (not Assigned(pLineJoin)) then
+                continue;
+
+            // set stroke line join
+            pProperties.m_pStyle.m_pStroke.m_pLineJoin.m_Value := pLineJoin.LineJoin;
+            pProperties.m_pStyle.m_pStroke.m_pLineJoin.m_Rule  := IE_PR_Default;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Stroke_MiterLimit) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get stroke dash offset
+            pMeasure := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pMeasure)) then
+                continue;
+
+            // set stroke miter limit
+            pProperties.m_pStyle.m_pStroke.m_pMiterLimit.m_Value := pMeasure.Value.Value;
+            pProperties.m_pStyle.m_pStroke.m_pMiterLimit.m_Rule  := IE_PR_Default;
+        end;
+    end;
+
+    // found a stroke color in the style but no explicit opacity was defined (or vice-versa)?
+    if (foundColor and not foundOpacity) then
+    begin
+        // make color opaque by default, the inheritance may change that later. NOTE required,
+        // because by default a stroke color is fully transparent (i.e. set to none and inheriting
+        // from parent)
+        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetAlpha(255);
+
+        // set the opacity to inherit from parent
+        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule      := IE_PR_Combine;
+        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_MergeMode := TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_ParentOpacity;
+    end
+    else
+    if (not foundColor and foundOpacity) then
+    begin
+        // found an opacity but no color. In this case, the color should be inherited from parent,
+        // but NOT the opacity
+        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule      := IE_PR_Combine;
+        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_MergeMode := TWSVGRasterizer.IPropColorItem.IEMergeMode.IE_MM_ParentColor;
+    end;
+
+    // do animate style?
+    if (not m_Animate) then
+        Exit(True);
+
+    // iterate through set animations (i.e. set a particular style attribute at elapsed time)
+    for pAnimation in pAnimationData.m_pSetAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // do apply animation?
+                if (pAnimationData.m_Position <> 1.0) then
+                    continue;
+
+                // is to value defined?
+                if (Length(pValueAnimDesc.ToList) > 0) then
+                    // search for attribute to modify
+                    if (attribName = C_SVG_Prop_Stroke_Width) then
+                        // do modify the stroke width
+                        pProperties.m_pStyle.m_pStroke.m_pWidth.m_Value := pValueAnimDesc.ToList[0]
+                    else
+                    if (attribName = C_SVG_Prop_Fill_Opacity) then
+                    begin
+                        // do modify the fill opacity
+                        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pValueAnimDesc.ToList[0] * 100.0));
+                        SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor);
+                    end
+                    else
+                    if (attribName = C_SVG_Prop_Stroke_Opacity) then
+                    begin
+                        // do modify the stroke opacity
+                        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pValueAnimDesc.ToList[0] * 100.0));
+                        SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor);
+                    end
+                    else
+                    if (attribName = C_SVG_Prop_Opacity) then
+                    begin
+                        // do modify the fill and stroke opacity
+                        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pValueAnimDesc.ToList[0] * 100.0));
+                        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pValueAnimDesc.ToList[0] * 100.0));
+
+                        SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor);
+                        SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor);
+                    end
+                    else
+                    if (attribName = C_SVG_Prop_Stroke_DashOffset) then
+                        // do modify the stroke dash offset
+                        pProperties.m_pStyle.m_pStroke.m_pDashOffset.m_Value := pValueAnimDesc.ToList[0];
+            end;
+
+            TWSVGCommon.IEValueType.IE_VT_Color:
+            begin
+                // configure animation description
+                pColorAnimDesc           := TWSmartPointer<TWSVGColorAnimDesc>.Create();
+                pColorAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pColorAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // do apply animation?
+                if (pAnimationData.m_Position <> 1.0) then
+                    continue;
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_Fill) then
+                begin
+                    // do modify the fill color
+                    pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.Assign(pColorAnimDesc.ToList[0]);
+
+                    // if inherited, change the rule to default, because the animated color will be used
+                    if (pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
+                        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+                end
+                else
+                if (attribName = C_SVG_Prop_Stroke) then
+                begin
+                    // do modify the stroke color
+                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.Assign(pColorAnimDesc.ToList[0]);
+
+                    // if inherited, change the rule to default, because the animated color will be used
+                    if (pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
+                        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+                end;
+            end;
+        end;
+    end;
+
+    // iterate through attribute animations (i.e. animations linked to a particular style attribute)
+    for pAnimation in pAnimationData.m_pAttribAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
+                    continue;
+
+                // calculate animation position
+                animPos := pValueAnimDesc.GetValueAt(position);
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_Stroke_Width) then
+                    // do modify the stroke width
+                    pProperties.m_pStyle.m_pStroke.m_pWidth.m_Value := animPos
+                else
+                if (attribName = C_SVG_Prop_Fill_Opacity) then
+                begin
+                    // do modify the fill opacity
+                    pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(animPos * 100.0));
+                    SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor);
+                end
+                else
+                if (attribName = C_SVG_Prop_Stroke_Opacity) then
+                begin
+                    // do modify the stroke opacity
+                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(animPos * 100.0));
+                    SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor);
+                end
+                else
+                if (attribName = C_SVG_Prop_Opacity) then
+                begin
+                    // do modify the fill and stroke opacity
+                    pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(animPos * 100.0));
+                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(animPos * 100.0));
+
+                    SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor);
+                    SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor);
+                end
+                else
+                if (attribName = C_SVG_Prop_Stroke_DashOffset) then
+                    // do modify the stroke dash offset
+                    pProperties.m_pStyle.m_pStroke.m_pDashOffset.m_Value := animPos;
+            end;
+
+            TWSVGCommon.IEValueType.IE_VT_Enum:
+            begin
+                // configure animation description
+                pEnumAnimDesc           := TWSmartPointer<TWSVGEnumAnimDesc>.Create();
+                pEnumAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pEnumAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pEnumAnimDesc, position)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pEnumAnimDesc, position)) then
+                    continue;
+
+                // calculate animation position
+                animPos := pEnumAnimDesc.GetValueAt(position);
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_Display) then
+                begin
+                    // do modify the display attribute
+                    pProperties.m_pStyle.m_pDisplayMode.m_Value := TWSVGStyle.IEDisplay(Trunc(animPos));
+                    pProperties.m_pStyle.m_pDisplayMode.m_Rule  := IE_PR_Default;
+                end;
+
+                break;
+            end;
+        end;
+    end;
+
+    // iterate through color animations
+    for pAnimation in pAnimationData.m_pColorAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimationData.m_ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Color:
+            begin
+                // configure animation description
+                pColorAnimDesc           := TWSmartPointer<TWSVGColorAnimDesc>.Create();
+                pColorAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pColorAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pColorAnimDesc, position)) then
+                    continue;
+
+                // calculate color to apply
+                color.Assign(pColorAnimDesc.GetValueAt(position));
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_Fill) then
+                begin
+                    // do modify the fill color
+                    pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.Assign(color);
+
+                    // if inherited, change the rule to default, because the animated color will be used
+                    if (pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
+                        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+                end
+                else
+                if (attribName = C_SVG_Prop_Stroke) then
+                begin
+                    // do modify the fill color
+                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.Assign(color);
+
+                    // if inherited, change the rule to default, because the animated color will be used
+                    if (pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
+                        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+                end;
+            end;
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetLinkedElementToUse(const pUse: TWSVGUse; out pElement: TWSVGElement): Boolean;
+var
+    pProperty:    TWSVGProperty;
+    pLink:        TWSVGPropLink;
+    propCount, i: NativeInt;
+begin
+    if (not Assigned(pUse)) then
+        Exit(False);
+
+    // set default values (in case no matching value is found in circle)
+    pElement := nil;
+
+    propCount := pUse.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pUse.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for use property to get
+        if ((pProperty.ItemName = C_SVG_Prop_HRef) and (pProperty is TWSVGPropLink)) then
+        begin
+            // get link
+            pLink := pProperty as TWSVGPropLink;
+
+            // found it?
+            if (not Assigned(pLink)) then
+                continue;
+
+            // get the linked element to use
+            pElement := GetLinkedElement(pLink);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_XLink_HRef) and (pProperty is TWSVGPropLink)) then
+        begin
+            // get link
+            pLink := pProperty as TWSVGPropLink;
+
+            // found it?
+            if (not Assigned(pLink)) then
+                continue;
+
+            // get the linked element to use
+            pElement := GetLinkedElement(pLink);
+        end;
+    end;
+
+    Result := Assigned(pElement);
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.MergeUseProperties(const pUse: TWSVGUse; pElement: TWSVGElement): Boolean;
+var
+    pProperty:    TWSVGProperty;
+    propCount, i: NativeInt;
+begin
+    if ((not Assigned(pUse)) or (not Assigned(pElement))) then
+        Exit(False);
+
+    propCount := pUse.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pUse.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for next property to merge
+        if ((pProperty.ItemName = C_SVG_Prop_HRef) or (pProperty.ItemName = C_SVG_Prop_XLink_HRef)) then
+            // skip the reference properties, these were already treated
+            continue
+        else
+            pElement.AddProperty(pProperty);
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetColorFromLink(const pLink: TWSVGPropLink; pBrush: IBrush): Boolean;
+var
+    pProperty:                                    TWSVGProperty;
+    pLinkedElement:                               TWSVGElement;
+    pLinkedBrush:                                 IBrush;
+    pGradient:                                    TWSVGGradient;
+    pGradientUnit:                                TWSVGGradient.IGradientUnit;
+    pGradientSpreadMethod:                        TWSVGGradient.IGradientSpreadMethod;
+    pMatrix:                                      TWSVGPropMatrix;
+    pX1, pX2, pY1, pY2, pCX, pCY, pR, pFX, pFY:   TWSVGMeasure<Single>;
+    pExternalLink:                                TWSVGPropLink;
+    pGradientStops:                               IGradientStops;
+    pNewStop:                                     IGradientStop;
+    linkedBrushCount, propCount, stopCount, i, j: NativeInt;
+    linkedBrushes:                                array of IBrush;
+begin
+    pLinkedElement := GetLinkedElement(pLink);
+
+    if (not Assigned(pLinkedElement)) then
+        Exit(False);
+
+    // search for linked element type
+    if ((pLinkedElement.ItemName = C_SVG_Tag_Linear_Gradient) and (pLinkedElement is TWSVGLinearGradient)) then
+    begin
+        // convert to linear gradient
+        pGradient := pLinkedElement as TWSVGLinearGradient;
+
+        // failed?
+        if (not Assigned(pGradient)) then
+            Exit(False);
+
+        try
+            propCount := pGradient.Count;
+
+            // iterate through element properties
+            for i := 0 to propCount - 1 do
+            begin
+                pProperty := pGradient.Properties[i];
+
+                // get gradient property
+                if (((pProperty.ItemName = C_SVG_Prop_HRef) or (pProperty.ItemName = C_SVG_Prop_XLink_HRef))
+                        and (pProperty is TWSVGPropLink))
+                then
+                begin
+                    // get external link
+                    pExternalLink := pProperty as TWSVGPropLink;
+
+                    // found it?
+                    if (not Assigned(pExternalLink)) then
+                        continue;
+
+                    pLinkedBrush := nil;
+
+                    try
+                        pLinkedBrush := IBrush.Create;
+
+                        // get the linked brush. For a linear gradient, the linked object should
+                        // always be a kind of gradient (linear, radial, ...)
+                        if (not GetColorFromLink(pExternalLink, pLinkedBrush)) then
+                            Exit(False);
+
+                        SetLength(linkedBrushes, Length(linkedBrushes) + 1);
+                        linkedBrushes[Length(linkedBrushes) - 1] := pLinkedBrush;
+                        pLinkedBrush                             := nil;
+                    finally
+                        pLinkedBrush.Free;
+                    end;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Gradient_Units)
+                        and (pProperty is TWSVGGradient.IGradientUnit))
+                then
+                begin
+                    // get gradient unit
+                    pGradientUnit := pProperty as TWSVGGradient.IGradientUnit;
+
+                    // found it?
+                    if (not Assigned(pGradientUnit)) then
+                        continue;
+
+                    pBrush.m_pLinearGradient.m_Unit := pGradientUnit.GradientUnit;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Gradient_Spread_Method)
+                        and (pProperty is TWSVGGradient.IGradientSpreadMethod))
+                then
+                begin
+                    // get gradient spread method
+                    pGradientSpreadMethod := pProperty as TWSVGGradient.IGradientSpreadMethod;
+
+                    // found it?
+                    if (not Assigned(pGradientSpreadMethod)) then
+                        continue;
+
+                    pBrush.m_pLinearGradient.m_SpreadMethod := pGradientSpreadMethod.Method;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Prop_X1) and (pProperty is TWSVGMeasure<Single>)) then
+                begin
+                    // get x1 position
+                    pX1 := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pX1)) then
+                        continue;
+
+                    if (pX1.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pBrush.m_pLinearGradient.m_Vector.m_Start.X := pX1.Value.Value / 100.0
+                    else
+                        pBrush.m_pLinearGradient.m_Vector.m_Start.X := pX1.Value.Value;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Prop_X2) and (pProperty is TWSVGMeasure<Single>)) then
+                begin
+                    // get x2 position
+                    pX2 := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pX2)) then
+                        continue;
+
+                    if (pX2.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pBrush.m_pLinearGradient.m_Vector.m_End.X := pX2.Value.Value / 100.0
+                    else
+                        pBrush.m_pLinearGradient.m_Vector.m_End.X := pX2.Value.Value;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Prop_Y1) and (pProperty is TWSVGMeasure<Single>)) then
+                begin
+                    // get y1 position
+                    pY1 := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pY1)) then
+                        continue;
+
+                    if (pY1.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pBrush.m_pLinearGradient.m_Vector.m_Start.Y := pY1.Value.Value / 100.0
+                    else
+                        pBrush.m_pLinearGradient.m_Vector.m_Start.Y := pY1.Value.Value;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Prop_Y2) and (pProperty is TWSVGMeasure<Single>)) then
+                begin
+                    // get y2 position
+                    pY2 := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pY2)) then
+                        continue;
+
+                    if (pY2.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pBrush.m_pLinearGradient.m_Vector.m_End.Y := pY2.Value.Value / 100.0
+                    else
+                        pBrush.m_pLinearGradient.m_Vector.m_End.Y := pY2.Value.Value;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Gradient_Transform) and (pProperty is TWSVGPropMatrix)) then
+                begin
+                    // get transform matrix
+                    pMatrix := pProperty as TWSVGPropMatrix;
+
+                    // found it?
+                    if (not Assigned(pMatrix)) then
+                        continue;
+
+                    pBrush.m_pLinearGradient.m_Matrix.Assign(pMatrix.Matrix^);
+                    pBrush.m_pLinearGradient.m_MatrixType := pMatrix.MatrixType;
+                end;
+            end;
+
+            // populate the gradient stop list
+            GetGradientStops(pGradient, pBrush.m_pLinearGradient.m_pGradientStops);
+
+            linkedBrushCount := Length(linkedBrushes);
+
+            // iterate through brushes to link. Each brush to link may contain any kind of gradient,
+            // the properties should be copied in the target gradient only if they match, and if the
+            // value is unset in the target gradient. See:
+            // https://www.w3.org/TR/SVG11/pservers.html#LinearGradientElementHrefAttribute
+            for i := 0 to linkedBrushCount - 1 do
+            begin
+                pGradientStops := nil;
+
+                // dispatch gradient type
+                case (linkedBrushes[i].m_Type) of
+                    E_BT_Linear:
+                    begin
+                        // get the gradient stop list to copy (see below)
+                        pGradientStops := linkedBrushes[i].m_pLinearGradient.m_pGradientStops;
+
+                        // copy start x parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_Vector.m_Start.X = 0.0) then
+                            pBrush.m_pLinearGradient.m_Vector.m_Start.X :=
+                                    linkedBrushes[i].m_pLinearGradient.m_Vector.m_Start.X;
+
+                        // copy start y parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_Vector.m_Start.Y = 0.0) then
+                            pBrush.m_pLinearGradient.m_Vector.m_Start.Y :=
+                                    linkedBrushes[i].m_pLinearGradient.m_Vector.m_Start.Y;
+
+                        // copy end x parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_Vector.m_End.X = 0.0) then
+                            pBrush.m_pLinearGradient.m_Vector.m_End.X :=
+                                    linkedBrushes[i].m_pLinearGradient.m_Vector.m_End.X;
+
+                        // copy end y parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_Vector.m_End.Y = 0.0) then
+                            pBrush.m_pLinearGradient.m_Vector.m_End.Y :=
+                                    linkedBrushes[i].m_pLinearGradient.m_Vector.m_End.Y;
+
+                        // copy matrix parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_Matrix.IsIdentity) then
+                        begin
+                            pBrush.m_pLinearGradient.m_Matrix.Assign(linkedBrushes[i].m_pLinearGradient.m_Matrix);
+                            pBrush.m_pLinearGradient.m_MatrixType := linkedBrushes[i].m_pLinearGradient.m_MatrixType;
+                        end;
+
+                        // copy unit parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_Unit = TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox) then
+                            pBrush.m_pLinearGradient.m_Unit := linkedBrushes[i].m_pLinearGradient.m_Unit;
+
+                        // copy spread method parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_SpreadMethod = TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad) then
+                            pBrush.m_pLinearGradient.m_SpreadMethod := linkedBrushes[i].m_pLinearGradient.m_SpreadMethod;
+                    end;
+
+                    E_BT_Radial:
+                    begin
+                        // get the gradient stop list to copy (see below)
+                        pGradientStops := linkedBrushes[i].m_pRadialGradient.m_pGradientStops;
+
+                        // copy matrix parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_Matrix.IsIdentity) then
+                        begin
+                            pBrush.m_pLinearGradient.m_Matrix.Assign(linkedBrushes[i].m_pRadialGradient.m_Matrix);
+                            pBrush.m_pLinearGradient.m_MatrixType := linkedBrushes[i].m_pRadialGradient.m_MatrixType;
+                        end;
+
+                        // copy unit parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_Unit = TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox) then
+                            pBrush.m_pLinearGradient.m_Unit := linkedBrushes[i].m_pRadialGradient.m_Unit;
+
+                        // copy spread method parameter if undefined
+                        if (pBrush.m_pLinearGradient.m_SpreadMethod = TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad) then
+                            pBrush.m_pLinearGradient.m_SpreadMethod := linkedBrushes[i].m_pRadialGradient.m_SpreadMethod;
+                    end;
+                end;
+
+                // the target brush contains no gradient stops?
+                if (Assigned(pGradientStops)) then
+                    if (pBrush.m_pLinearGradient.m_pGradientStops.Count = 0) then
+                    begin
+                        stopCount := pGradientStops.Count;
+
+                        // if the target gradient has no defined gradient stops, and the
+                        // referenced element does, then the gradient stops will be copied from
+                        // the reference
+                        for j := 0 to stopCount - 1 do
+                        begin
+                            pNewStop := nil;
+
+                            try
+                                pNewStop := IGradientStop.Create;
+                                pNewStop.Assign(pGradientStops[j]);
+
+                                pBrush.m_pLinearGradient.m_pGradientStops.Add(pNewStop);
+                                pNewStop := nil;
+                            finally
+                                pNewStop.Free;
+                            end;
+                        end;
+                    end;
+            end;
+        finally
+            linkedBrushCount := Length(linkedBrushes);
+
+            for i := 0 to linkedBrushCount - 1 do
+                linkedBrushes[i].Free;
+
+            SetLength(linkedBrushes, 0);
+        end;
+
+        pBrush.m_Type                   := E_BT_Linear;
+        pBrush.m_Rule                   := IE_PR_Default;
+        pBrush.m_pLinearGradient.m_Rule := IE_PR_Default;
+        Exit(True);
+    end
+    else
+    if ((pLinkedElement.ItemName = C_SVG_Tag_Radial_Gradient) and (pLinkedElement is TWSVGRadialGradient)) then
+    begin
+        // convert to linear gradient
+        pGradient := pLinkedElement as TWSVGRadialGradient;
+
+        // failed?
+        if (not Assigned(pGradient)) then
+            Exit(False);
+
+        try
+            propCount := pGradient.Count;
+
+            // iterate through element properties
+            for i := 0 to propCount - 1 do
+            begin
+                pProperty := pGradient.Properties[i];
+
+                // get gradient property
+                if (((pProperty.ItemName = C_SVG_Prop_HRef) or (pProperty.ItemName = C_SVG_Prop_XLink_HRef))
+                        and (pProperty is TWSVGPropLink))
+                then
+                begin
+                    // get external link
+                    pExternalLink := pProperty as TWSVGPropLink;
+
+                    // found it?
+                    if (not Assigned(pExternalLink)) then
+                        continue;
+
+                    pLinkedBrush := nil;
+
+                    try
+                        pLinkedBrush := IBrush.Create;
+
+                        // get the linked brush. For a radial gradient, the linked object should
+                        // always be a kind of gradient (linear, radial, ...)
+                        if (not GetColorFromLink(pExternalLink, pLinkedBrush)) then
+                            Exit(False);
+
+                        SetLength(linkedBrushes, Length(linkedBrushes) + 1);
+                        linkedBrushes[Length(linkedBrushes) - 1] := pLinkedBrush;
+                        pLinkedBrush                             := nil;
+                    finally
+                        pLinkedBrush.Free;
+                    end;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Gradient_Units)
+                        and (pProperty is TWSVGGradient.IGradientUnit))
+                then
+                begin
+                    // get gradient unit
+                    pGradientUnit := pProperty as TWSVGGradient.IGradientUnit;
+
+                    // found it?
+                    if (not Assigned(pGradientUnit)) then
+                        continue;
+
+                    pBrush.m_pRadialGradient.m_Unit := pGradientUnit.GradientUnit;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Gradient_Spread_Method)
+                        and (pProperty is TWSVGGradient.IGradientSpreadMethod))
+                then
+                begin
+                    // get gradient spread method
+                    pGradientSpreadMethod := pProperty as TWSVGGradient.IGradientSpreadMethod;
+
+                    // found it?
+                    if (not Assigned(pGradientSpreadMethod)) then
+                        continue;
+
+                    pBrush.m_pRadialGradient.m_SpreadMethod := pGradientSpreadMethod.Method;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Prop_CX) and (pProperty is TWSVGMeasure<Single>)) then
+                begin
+                    // get cx position
+                    pCX := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pCX)) then
+                        continue;
+
+                    // read value, convert it between 0.0f and 1.0f if expressed in percent
+                    if (pCX.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pBrush.m_pRadialGradient.m_CX := pCX.Value.Value / 100.0
+                    else
+                        pBrush.m_pRadialGradient.m_CX := pCX.Value.Value;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Prop_CY) and (pProperty is TWSVGMeasure<Single>)) then
+                begin
+                    // get cy position
+                    pCY := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pCY)) then
+                        continue;
+
+                    // read value, convert it between 0.0f and 1.0f if expressed in percent
+                    if (pCY.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pBrush.m_pRadialGradient.m_CY := pCY.Value.Value / 100.0
+                    else
+                        pBrush.m_pRadialGradient.m_CY := pCY.Value.Value;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Prop_R) and (pProperty is TWSVGMeasure<Single>)) then
+                begin
+                    // get radius
+                    pR := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pR)) then
+                        continue;
+
+                    // read value, convert it between 0.0f and 1.0f if expressed in percent
+                    if (pR.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pBrush.m_pRadialGradient.m_R := pR.Value.Value / 100.0
+                    else
+                        pBrush.m_pRadialGradient.m_R := pR.Value.Value;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Prop_FX) and (pProperty is TWSVGMeasure<Single>)) then
+                begin
+                    // get focus x position
+                    pFX := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pFX)) then
+                        continue;
+
+                    // read value, convert it between 0.0f and 1.0f if expressed in percent
+                    if (pFX.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pBrush.m_pRadialGradient.m_FX := pFX.Value.Value / 100.0
+                    else
+                        pBrush.m_pRadialGradient.m_FX := pFX.Value.Value;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Prop_FY) and (pProperty is TWSVGMeasure<Single>)) then
+                begin
+                    // get focus y position
+                    pFY := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pFY)) then
+                        continue;
+
+                    // read value, convert it between 0.0f and 1.0f if expressed in percent
+                    if (pFY.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pBrush.m_pRadialGradient.m_FY := pFY.Value.Value / 100.0
+                    else
+                        pBrush.m_pRadialGradient.m_FY := pFY.Value.Value;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Gradient_Transform) and (pProperty is TWSVGPropMatrix)) then
+                begin
+                    // get transform matrix
+                    pMatrix := pProperty as TWSVGPropMatrix;
+
+                    // found it?
+                    if (not Assigned(pMatrix)) then
+                        continue;
+
+                    pBrush.m_pRadialGradient.m_Matrix.Assign(pMatrix.Matrix^);
+                    pBrush.m_pRadialGradient.m_MatrixType := pMatrix.MatrixType;
+                end;
+            end;
+
+            // populate the gradient stop list
+            GetGradientStops(pGradient, pBrush.m_pRadialGradient.m_pGradientStops);
+
+            linkedBrushCount := Length(linkedBrushes);
+
+            // iterate through brushes to link. Each brush to link may contain any kind of gradient,
+            // the properties should be copied in the target gradient only if they match, and if the
+            // value is unset in the target gradient. See:
+            // https://www.w3.org/TR/SVG11/pservers.html#RadialGradientElementHrefAttribute
+            for i := 0 to linkedBrushCount - 1 do
+            begin
+                pGradientStops := nil;
+
+                // dispatch gradient type
+                case (linkedBrushes[i].m_Type) of
+                    E_BT_Linear:
+                    begin
+                        // get the gradient stop list to copy (see below)
+                        pGradientStops := linkedBrushes[i].m_pLinearGradient.m_pGradientStops;
+
+                        // copy matrix parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_Matrix.IsIdentity) then
+                        begin
+                            pBrush.m_pRadialGradient.m_Matrix.Assign(linkedBrushes[i].m_pLinearGradient.m_Matrix);
+                            pBrush.m_pRadialGradient.m_MatrixType := linkedBrushes[i].m_pLinearGradient.m_MatrixType;
+                        end;
+
+                        // copy unit parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_Unit = TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox) then
+                            pBrush.m_pRadialGradient.m_Unit := linkedBrushes[i].m_pLinearGradient.m_Unit;
+
+                        // copy spread method parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_SpreadMethod = TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad) then
+                            pBrush.m_pRadialGradient.m_SpreadMethod := linkedBrushes[i].m_pLinearGradient.m_SpreadMethod;
+                    end;
+
+                    E_BT_Radial:
+                    begin
+                        // get the gradient stop list to copy (see below)
+                        pGradientStops := linkedBrushes[i].m_pRadialGradient.m_pGradientStops;
+
+                        // copy cx parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_CX = 0.0) then
+                            pBrush.m_pRadialGradient.m_CX := linkedBrushes[i].m_pRadialGradient.m_CX;
+
+                        // copy cy parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_CY = 0.0) then
+                            pBrush.m_pRadialGradient.m_CY := linkedBrushes[i].m_pRadialGradient.m_CY;
+
+                        // copy radius parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_R = 0.0) then
+                            pBrush.m_pRadialGradient.m_R := linkedBrushes[i].m_pRadialGradient.m_R;
+
+                        // copy fx parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_FX = 0.0) then
+                            pBrush.m_pRadialGradient.m_FX := linkedBrushes[i].m_pRadialGradient.m_FX;
+
+                        // copy fy parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_FY = 0.0) then
+                            pBrush.m_pRadialGradient.m_FY := linkedBrushes[i].m_pRadialGradient.m_FY;
+
+                        // copy matrix parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_Matrix.IsIdentity) then
+                        begin
+                            pBrush.m_pRadialGradient.m_Matrix.Assign(linkedBrushes[i].m_pRadialGradient.m_Matrix);
+                            pBrush.m_pRadialGradient.m_MatrixType := linkedBrushes[i].m_pRadialGradient.m_MatrixType;
+                        end;
+
+                        // copy unit parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_Unit = TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox) then
+                            pBrush.m_pRadialGradient.m_Unit := linkedBrushes[i].m_pRadialGradient.m_Unit;
+
+                        // copy spread method parameter if undefined
+                        if (pBrush.m_pRadialGradient.m_SpreadMethod = TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad) then
+                            pBrush.m_pRadialGradient.m_SpreadMethod := linkedBrushes[i].m_pRadialGradient.m_SpreadMethod;
+                    end;
+                end;
+
+                // the target brush contains no gradient stops?
+                if (Assigned(pGradientStops)) then
+                    if (pBrush.m_pRadialGradient.m_pGradientStops.Count = 0) then
+                    begin
+                        stopCount := pGradientStops.Count;
+
+                        // if the target gradient has no defined gradient stops, and the
+                        // referenced element does, then the gradient stops will be copied from
+                        // the reference
+                        for j := 0 to stopCount - 1 do
+                        begin
+                            pNewStop := nil;
+
+                            try
+                                pNewStop := IGradientStop.Create;
+                                pNewStop.Assign(pGradientStops[j]);
+
+                                pBrush.m_pRadialGradient.m_pGradientStops.Add(pNewStop);
+                                pNewStop := nil;
+                            finally
+                                pNewStop.Free;
+                            end;
+                        end;
+                    end;
+            end;
+        finally
+            linkedBrushCount := Length(linkedBrushes);
+
+            for i := 0 to linkedBrushCount - 1 do
+                linkedBrushes[i].Free;
+
+            SetLength(linkedBrushes, 0);
+        end;
+
+        pBrush.m_Type                   := E_BT_Radial;
+        pBrush.m_Rule                   := IE_PR_Default;
+        pBrush.m_pRadialGradient.m_Rule := IE_PR_Default;
+        Exit(True);
+    end;
+
+    Result := False;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.GetGradientStops(const pGradient: TWSVGGradient; pGradientStops: IGradientStops);
+var
+    pStyle:                                        TWSVGStyle;
+    pProperty, pStyleProperty:                     TWSVGProperty;
+    pMeasure, pOffset:                             TWSVGMeasure<Single>;
+    pColor:                                        TWSVGPropColor;
+    pSVGGradientStop:                              TWSVGGradientStop;
+    pGradientStop:                                 IGradientStop;
+    color:                                         TWColor;
+    stopCount, propCount, stylePropCount, i, j, k: NativeInt;
+begin
+    stopCount               := pGradient.GradientStopCount;
+    pGradientStops.Capacity := stopCount;
+
+    // iterate through gradient stops to create
+    for i := 0 to stopCount - 1 do
+    begin
+        pSVGGradientStop := pGradient.GradientStops[i];
+        pGradientStop    := nil;
+
+        try
+            pGradientStop := IGradientStop.Create;
+            propCount     := pSVGGradientStop.Count;
+
+            // iterate through gradient stop properties
+            for j := 0 to propCount - 1 do
+            begin
+                pProperty := pSVGGradientStop.Properties[j];
+
+                if ((pProperty.ItemName = C_SVG_Prop_Style) and (pProperty is TWSVGStyle)) then
+                begin
+                    // get style
+                    pStyle := pProperty as TWSVGStyle;
+
+                    // found it?
+                    if (not Assigned(pStyle)) then
+                        continue;
+
+                    stylePropCount := pStyle.Count;
+
+                    // iterate through gradient stop properties
+                    for k := 0 to stylePropCount - 1 do
+                    begin
+                        pStyleProperty := pStyle.Properties[k];
+
+                        if ((pStyleProperty.ItemName = C_SVG_Gradient_Stop_Color)
+                                and (pStyleProperty is TWSVGPropColor))
+                        then
+                        begin
+                            // get stop color
+                            pColor := pStyleProperty as TWSVGPropColor;
+
+                            // found it?
+                            if (Assigned(pColor)) then
+                            begin
+                                // color has no values?
+                                if (pColor.Count = 0) then
+                                    color.SetColor(C_SVG_Default_Color)
+                                else
+                                    // get fill color to apply
+                                    color.Assign(pColor.Values[0]^);
+
+                                // copy only RGB values (opacity is defined by another property)
+                                pGradientStop.m_Color.SetRed(color.GetRed);
+                                pGradientStop.m_Color.SetGreen(color.GetGreen);
+                                pGradientStop.m_Color.SetBlue(color.GetBlue);
+                            end;
+                        end
+                        else
+                        if ((pStyleProperty.ItemName = C_SVG_Gradient_Stop_Opacity)
+                                and (pStyleProperty is TWSVGMeasure<Single>))
+                        then
+                        begin
+                            // get stop opacity
+                            pMeasure := pStyleProperty as TWSVGMeasure<Single>;
+
+                            // found it?
+                            if (not Assigned(pMeasure)) then
+                                continue;
+
+                            // set stop opacity
+                            pGradientStop.m_Color.SetOpacity(Trunc(pMeasure.Value.Value * 100.0));
+                        end;
+                    end;
+                end
+                else
+                if ((pProperty.ItemName = C_SVG_Gradient_Stop_Offset)
+                        and (pProperty is TWSVGMeasure<Single>))
+                then
+                begin
+                    // get stop offset
+                    pOffset := pProperty as TWSVGMeasure<Single>;
+
+                    // found it?
+                    if (not Assigned(pOffset)) then
+                        continue;
+
+                    if (pOffset.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                        pGradientStop.m_Offset := pOffset.Value.Value / 100.0
+                    else
+                        pGradientStop.m_Offset := pOffset.Value.Value;
+                end;
+            end;
+
+            pGradientStops.Add(pGradientStop);
+            pGradientStop := nil;
+        finally
+            pGradientStop.Free;
+        end;
+    end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.GetAnimations(const pContainer: TWSVGContainer; pAnimationData: IAnimationData);
+var
+    animCount, i: NativeInt;
+    pAnimation:   TWSVGAnimation;
+begin
+    // do animate shape?
+    if (not m_Animate) then
+        Exit;
+
+    animCount := pContainer.AnimationCount;
+
+    // iterate through animations
+    for i := 0 to animCount - 1 do
+    begin
+        pAnimation := pContainer.Animations[i];
+
+        // search for animation type
+        if (pAnimation.ItemName = C_SVG_Tag_Set) then
+        begin
+            // add animation to list
+            pAnimationData.m_ValueType := pAnimation.ValueType;
+            pAnimationData.m_pSetAnims.Add(pAnimation);
+        end
+        else
+        if (pAnimation.ItemName = C_SVG_Tag_Animate) then
+        begin
+            // add animation to list
+            pAnimationData.m_ValueType := pAnimation.ValueType;
+            pAnimationData.m_pAttribAnims.Add(pAnimation)
+        end
+        else
+        if (pAnimation.ItemName = C_SVG_Tag_Animate_Color) then
+        begin
+            // add animation to list
+            pAnimationData.m_ValueType := pAnimation.ValueType;
+            pAnimationData.m_pColorAnims.Add(pAnimation)
+        end
+        else
+        if (pAnimation.ItemName = C_SVG_Tag_Animate_Transform) then
+        begin
+            // add animation to list
+            pAnimationData.m_ValueType := pAnimation.ValueType;
+            pAnimationData.m_pMatrixAnims.Add(pAnimation)
+        end
+        else
+        if ((pAnimation.ItemName = C_SVG_Tag_Set) or (pAnimation.ItemName = C_SVG_Tag_Animate_Motion)) then
+        begin
+            // add animation to list
+            pAnimationData.m_ValueType := pAnimation.ValueType;
+            pAnimationData.m_pUnknownAnims.Add(pAnimation);
+        end;
+    end;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.PopulateAnimation(const pAnimation: TWSVGAnimation; out attribName: UnicodeString;
+        pAnimDesc: TWSVGAnimationDescriptor; callOnAnimate: Boolean;
+        pCustomData: Pointer): Boolean;
+var
+    pProperty:                                                TWSVGProperty;
+    pAttribName:                                              TWSVGAnimation.IPropAttributeName;
+    pRepeatCount:                                             TWSVGAnimation.IPropRepeatCount;
+    pAnimType:                                                TWSVGAnimation.IPropAnimTransformType;
+    pCalcMode:                                                TWSVGAnimation.IPropCalcMode;
+    pValueDesc:                                               TWSVGValueAnimDesc;
+    pMatrixDesc:                                              TWSVGMatrixAnimDesc;
+    pColorDesc:                                               TWSVGColorAnimDesc;
+    pEnumDesc:                                                TWSVGEnumAnimDesc;
+    pFrom, pTo, pBy, pValues:                                 TWSVGAttribute<Single>;
+    pFromColor, pToColor, pByColor, pValuesColor:             TWSVGPropColor;
+    pFromDisplay, pToDisplay, pByDisplay, pValuesDisplay:     TWSVGStyle.IPropDisplay;
+    pBegin, pEnd, pDuration:                                  TWSVGPropTime;
+    propCount, fromCount, toCount, byCount, valueCount, i, j: NativeInt;
+begin
+    attribName := '';
+
+    propCount := pAnimation.Count;
+
+    // iterate through animations attributes (i.e. animations linked to a particular shape attribute)
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pAnimation.Properties[i];
+
+        // search for animation properties
+        if ((pProperty.ItemName = C_SVG_Animation_Attribute_Name)
+                and (pProperty is TWSVGAnimation.IPropAttributeName))
+        then
+        begin
+            // get attribute name
+            pAttribName := pProperty as TWSVGAnimation.IPropAttributeName;
+
+            // found it?
+            if (not Assigned(pAttribName)) then
+                continue;
+
+            // set attribute name
+            attribName := pAttribName.AttributeName;
+        end
+        else
+        if (pProperty.ItemName = C_SVG_Animation_From) then
+        begin
+            // search for animation value type (value, color, matrix, ...)
+            case (pAnimation.ValueType) of
+                TWSVGCommon.IEValueType.IE_VT_Value:
+                begin
+                    if (not (pAnimDesc is TWSVGValueAnimDesc)) then
+                        continue;
+
+                    // get animation set based on values
+                    pValueDesc := pAnimDesc as TWSVGValueAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pValueDesc)) then
+                        continue;
+
+                    // is from property a list of attributes?
+                    if (pProperty is TWSVGAttribute<Single>) then
+                    begin
+                        // get animation from property
+                        pFrom := pProperty as TWSVGAttribute<Single>;
+
+                        // found it?
+                        if (not Assigned(pFrom)) then
+                            continue;
+
+                        // get from value count
+                        fromCount := pFrom.Count;
+
+                        // iterate through all from values
+                        for j := 0 to fromCount - 1 do
+                            // set from value
+                            pValueDesc.AddFrom(pFrom.Values[j]);
+                    end
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Matrix:
+                begin
+                    if (not (pAnimDesc is TWSVGMatrixAnimDesc)) then
+                        continue;
+
+                    // get animation set based on matrices
+                    pMatrixDesc := pAnimDesc as TWSVGMatrixAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pMatrixDesc)) then
+                        continue;
+
+                    // is from property a list of attributes?
+                    if (pProperty is TWSVGAttribute<Single>) then
+                    begin
+                        // get animation from property
+                        pFrom := pProperty as TWSVGAttribute<Single>;
+
+                        // found it?
+                        if (not Assigned(pFrom)) then
+                            continue;
+
+                        // get from value count
+                        fromCount := pFrom.Count;
+
+                        // iterate through all from values
+                        for j := 0 to fromCount - 1 do
+                            // set from value
+                            pMatrixDesc.AddFrom(pFrom.Values[j]);
+                    end
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Color:
+                begin
+                    if (not (pAnimDesc is TWSVGColorAnimDesc)) then
+                        continue;
+
+                    // get animation set based on colors
+                    pColorDesc := pAnimDesc as TWSVGColorAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pColorDesc)) then
+                        continue;
+
+                    // is from property a color?
+                    if (pProperty is TWSVGPropColor) then
+                    begin
+                        // convert from property as color
+                        pFromColor := pProperty as TWSVGPropColor;
+
+                        // found it?
+                        if (not Assigned(pFromColor)) then
+                            continue;
+
+                        // get from value count
+                        fromCount := pFromColor.Count;
+
+                        // iterate through all from values
+                        for j := 0 to fromCount - 1 do
+                            // set from value
+                            pColorDesc.AddFrom(pFromColor.Values[j]);
+                    end;
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Enum:
+                begin
+                    if (not (pAnimDesc is TWSVGEnumAnimDesc)) then
+                        continue;
+
+                    // get animation set based on matrices
+                    pEnumDesc := pAnimDesc as TWSVGEnumAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pEnumDesc)) then
+                        continue;
+
+                    // is from property a list of attributes?
+                    if (pProperty is TWSVGStyle.IPropDisplay) then
+                    begin
+                        // get animation from property
+                        pFromDisplay := pProperty as TWSVGStyle.IPropDisplay;
+
+                        // found it?
+                        if (not Assigned(pFromDisplay)) then
+                            continue;
+
+                        // get from value count
+                        fromCount := pFromDisplay.Count;
+
+                        // iterate through all from values
+                        for j := 0 to fromCount - 1 do
+                            // set from value
+                            pEnumDesc.AddFrom(Integer(pFromDisplay.Values[j]));
+                    end
+                end;
+            else
+                raise Exception.CreateFmt('Read animation - found unknown or unsupported data type - % d - attribute name - %s',
+                        [Integer(pAnimation.ValueType), attribName]);
+            end;
+        end
+        else
+        if (pProperty.ItemName = C_SVG_Animation_To) then
+        begin
+            // search for animation value type (value, color, matrix, ...)
+            case (pAnimation.ValueType) of
+                TWSVGCommon.IEValueType.IE_VT_Value:
+                begin
+                    if (not (pAnimDesc is TWSVGValueAnimDesc)) then
+                        continue;
+
+                    // get animation set based on values
+                    pValueDesc := pAnimDesc as TWSVGValueAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pValueDesc)) then
+                        continue;
+
+                    // is to property a list of attributes?
+                    if (pProperty is TWSVGAttribute<Single>) then
+                    begin
+                        // get animation to property
+                        pTo := pProperty as TWSVGAttribute<Single>;
+
+                        // found it?
+                        if (not Assigned(pTo)) then
+                            continue;
+
+                        // get to value count
+                        toCount := pTo.Count;
+
+                        // iterate through all to values
+                        for j := 0 to toCount - 1 do
+                            // set to value
+                            pValueDesc.AddTo(pTo.Values[j]);
+                    end
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Matrix:
+                begin
+                    if (not (pAnimDesc is TWSVGMatrixAnimDesc)) then
+                        continue;
+
+                    // get animation set based on matrices
+                    pMatrixDesc := pAnimDesc as TWSVGMatrixAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pMatrixDesc)) then
+                        continue;
+
+                    // is to property a list of attributes?
+                    if (pProperty is TWSVGAttribute<Single>) then
+                    begin
+                        // get animation to property
+                        pTo := pProperty as TWSVGAttribute<Single>;
+
+                        // found it?
+                        if (not Assigned(pTo)) then
+                            continue;
+
+                        // get to value count
+                        toCount := pTo.Count;
+
+                        // iterate through all to values
+                        for j := 0 to toCount - 1 do
+                            // set to value
+                            pMatrixDesc.AddTo(pTo.Values[j]);
+                    end
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Color:
+                begin
+                    if (not (pAnimDesc is TWSVGColorAnimDesc)) then
+                        continue;
+
+                    // get animation set based on colors
+                    pColorDesc := pAnimDesc as TWSVGColorAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pColorDesc)) then
+                        continue;
+
+                    // is to property a color?
+                    if (pProperty is TWSVGPropColor) then
+                    begin
+                        // convert to property as color
+                        pToColor := pProperty as TWSVGPropColor;
+
+                        // found it?
+                        if (not Assigned(pToColor)) then
+                            continue;
+
+                        // get to value count
+                        toCount := pToColor.Count;
+
+                        // iterate through all to values
+                        for j := 0 to toCount - 1 do
+                            // set to value
+                            pColorDesc.AddTo(pToColor.Values[j]);
+                    end;
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Enum:
+                begin
+                    if (not (pAnimDesc is TWSVGEnumAnimDesc)) then
+                        continue;
+
+                    // get animation set based on values
+                    pEnumDesc := pAnimDesc as TWSVGEnumAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pEnumDesc)) then
+                        continue;
+
+                    // is to property a list of attributes?
+                    if (pProperty is TWSVGStyle.IPropDisplay) then
+                    begin
+                        // get animation to property
+                        pToDisplay := pProperty as TWSVGStyle.IPropDisplay;
+
+                        // found it?
+                        if (not Assigned(pToDisplay)) then
+                            continue;
+
+                        // get to value count
+                        toCount := pToDisplay.Count;
+
+                        // iterate through all to values
+                        for j := 0 to toCount - 1 do
+                            // set to value
+                            pEnumDesc.AddTo(Integer(pToDisplay.Values[j]));
+                    end
+                end;
+            else
+                raise Exception.CreateFmt('Read animation - found unknown or unsupported data type - % d - attribute name - %s',
+                        [Integer(pAnimation.ValueType), attribName]);
+            end;
+        end
+        else
+        if (pProperty.ItemName = C_SVG_Animation_By) then
+        begin
+            // search for animation value type (value, color, matrix, ...)
+            case (pAnimation.ValueType) of
+                TWSVGCommon.IEValueType.IE_VT_Value:
+                begin
+                    if (not (pAnimDesc is TWSVGValueAnimDesc)) then
+                        continue;
+
+                    // get animation set based on values
+                    pValueDesc := pAnimDesc as TWSVGValueAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pValueDesc)) then
+                        continue;
+
+                    // is by property a list of attributes?
+                    if (pProperty is TWSVGAttribute<Single>) then
+                    begin
+                        // get animation by property
+                        pBy := pProperty as TWSVGAttribute<Single>;
+
+                        // found it?
+                        if (not Assigned(pBy)) then
+                            continue;
+
+                        // get by value count
+                        byCount := pBy.Count;
+
+                        // iterate through all by values
+                        for j := 0 to byCount - 1 do
+                            // set by value
+                            pValueDesc.AddBy(pBy.Values[j]);
+                    end
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Matrix:
+                begin
+                    if (not (pAnimDesc is TWSVGMatrixAnimDesc)) then
+                        continue;
+
+                    // get animation set based on matrices
+                    pMatrixDesc := pAnimDesc as TWSVGMatrixAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pMatrixDesc)) then
+                        continue;
+
+                    // is by property a list of attributes?
+                    if (pProperty is TWSVGAttribute<Single>) then
+                    begin
+                        // get animation by property
+                        pBy := pProperty as TWSVGAttribute<Single>;
+
+                        // found it?
+                        if (not Assigned(pBy)) then
+                            continue;
+
+                        // get by value count
+                        byCount := pBy.Count;
+
+                        // iterate through all by values
+                        for j := 0 to byCount - 1 do
+                            // set by value
+                            pMatrixDesc.AddBy(pBy.Values[j]);
+                    end
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Color:
+                begin
+                    if (not (pAnimDesc is TWSVGColorAnimDesc)) then
+                        continue;
+
+                    // get animation set based on colors
+                    pColorDesc := pAnimDesc as TWSVGColorAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pColorDesc)) then
+                        continue;
+
+                    // is by property a color?
+                    if (pProperty is TWSVGPropColor) then
+                    begin
+                        // convert by property as color
+                        pByColor := pProperty as TWSVGPropColor;
+
+                        // found it?
+                        if (not Assigned(pByColor)) then
+                            continue;
+
+                        // get by value count
+                        byCount := pByColor.Count;
+
+                        // iterate through all by values
+                        for j := 0 to byCount - 1 do
+                            // set by value
+                            pColorDesc.AddBy(pByColor.Values[j]);
+                    end;
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Enum:
+                begin
+                    if (not (pAnimDesc is TWSVGEnumAnimDesc)) then
+                        continue;
+
+                    // get animation set based on matrices
+                    pEnumDesc := pAnimDesc as TWSVGEnumAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pEnumDesc)) then
+                        continue;
+
+                    // is by property a list of attributes?
+                    if (pProperty is TWSVGStyle.IPropDisplay) then
+                    begin
+                        // get animation by property
+                        pByDisplay := pProperty as TWSVGStyle.IPropDisplay;
+
+                        // found it?
+                        if (not Assigned(pByDisplay)) then
+                            continue;
+
+                        // get by value count
+                        byCount := pByDisplay.Count;
+
+                        // iterate through all by values
+                        for j := 0 to byCount - 1 do
+                            // set by value
+                            pEnumDesc.AddBy(Integer(pByDisplay.Values[j]));
+                    end
+                end;
+            else
+                raise Exception.CreateFmt('Read animation - found unknown or unsupported data type - % d - attribute name - %s',
+                        [Integer(pAnimation.ValueType), attribName]);
+            end;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Animation_Begin) and (pProperty is TWSVGPropTime)) then
+        begin
+            // get animation begin property
+            pBegin := pProperty as TWSVGPropTime;
+
+            // found it?
+            if (not Assigned(pBegin)) then
+                continue;
+
+            // set begin property
+            pAnimDesc.BeginTime.Assign(pBegin.Value);
+            pAnimDesc.NegativeBegin := pBegin.Negative;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Animation_End) and (pProperty is TWSVGPropTime)) then
+        begin
+            // get animation end property
+            pEnd := pProperty as TWSVGPropTime;
+
+            // found it?
+            if (not Assigned(pEnd)) then
+                continue;
+
+            // set end property
+            pAnimDesc.EndTime.Assign(pEnd.Value);
+            pAnimDesc.NegativeEnd := pEnd.Negative;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Animation_Duration) and (pProperty is TWSVGPropTime)) then
+        begin
+            // get animation duration property
+            pDuration := pProperty as TWSVGPropTime;
+
+            // found it?
+            if (not Assigned(pDuration)) then
+                continue;
+
+            // set duration property
+            pAnimDesc.Duration.Assign(pDuration.Value);
+            pAnimDesc.NegativeDuration := pDuration.Negative;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Animation_Repeat_Count)
+                and (pProperty is TWSVGAnimation.IPropRepeatCount))
+        then
+        begin
+            // get animation repeat count
+            pRepeatCount := pProperty as TWSVGAnimation.IPropRepeatCount;
+
+            // found it?
+            if (not Assigned(pRepeatCount)) then
+                continue;
+
+            // is animation indefinite?
+            if (pRepeatCount.Indefinite) then
+            begin
+                pAnimDesc.DoLoop := True;
+                continue;
+            end;
+
+            // set from property
+            pAnimDesc.RepeatCount  := pRepeatCount.Count;
+            pAnimDesc.PartialCount := pRepeatCount.PartialCount;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Animation_Transform_Type)
+                and (pProperty is TWSVGAnimation.IPropAnimTransformType))
+        then
+        begin
+            // search for animation value type (value, color, matrix, ...)
+            case (pAnimation.ValueType) of
+                TWSVGCommon.IEValueType.IE_VT_Matrix:
+                begin
+                    if (not (pAnimDesc is TWSVGMatrixAnimDesc)) then
+                        continue;
+
+                    // get animation set based on matrices
+                    pMatrixDesc := pAnimDesc as TWSVGMatrixAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pMatrixDesc)) then
+                        continue;
+
+                    // get animation type
+                    pAnimType := pProperty as TWSVGAnimation.IPropAnimTransformType;
+
+                    // found it?
+                    if (not Assigned(pAnimType)) then
+                        continue;
+
+                    // set animation type
+                    pMatrixDesc.TransformType := pAnimType.TransformType;
+                end;
+            end;
+        end
+        else
+        if (pProperty.ItemName = C_SVG_Animation_Values) then
+        begin
+            // search for animation value type (value, color, matrix, ...)
+            case (pAnimation.ValueType) of
+                TWSVGCommon.IEValueType.IE_VT_Value:
+                begin
+                    if (not (pAnimDesc is TWSVGValueAnimDesc)) then
+                        continue;
+
+                    // get animation set based on values
+                    pValueDesc := pAnimDesc as TWSVGValueAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pValueDesc)) then
+                        continue;
+
+                    // is values property a list of attributes?
+                    if (pProperty is TWSVGAttribute<Single>) then
+                    begin
+                        // get animation values property
+                        pValues := pProperty as TWSVGAttribute<Single>;
+
+                        // found it?
+                        if (not Assigned(pValues)) then
+                            continue;
+
+                        // get values count
+                        valueCount := pValues.Count;
+
+                        // iterate through all values
+                        for j := 0 to valueCount - 1 do
+                            pValueDesc.AddValue(pValues.Values[j]);
+                    end
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Matrix:
+                begin
+                    if (not (pAnimDesc is TWSVGMatrixAnimDesc)) then
+                        continue;
+
+                    // get animation set based on matrices
+                    pMatrixDesc := pAnimDesc as TWSVGMatrixAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pMatrixDesc)) then
+                        continue;
+
+                    // is values property a list of attributes?
+                    if (pProperty is TWSVGAttribute<Single>) then
+                    begin
+                        // get animation values property
+                        pValues := pProperty as TWSVGAttribute<Single>;
+
+                        // found it?
+                        if (not Assigned(pValues)) then
+                            continue;
+
+                        // get values count
+                        valueCount := pValues.Count;
+
+                        // iterate through all values
+                        for j := 0 to valueCount - 1 do
+                            pMatrixDesc.AddValue(pValues.Values[j]);
+                    end
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Color:
+                begin
+                    if (not (pAnimDesc is TWSVGColorAnimDesc)) then
+                        continue;
+
+                    // get animation set based on colors
+                    pColorDesc := pAnimDesc as TWSVGColorAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pColorDesc)) then
+                        continue;
+
+                    // is values property a color?
+                    if (pProperty is TWSVGPropColor) then
+                    begin
+                        // convert values property as color
+                        pValuesColor := pProperty as TWSVGPropColor;
+
+                        // found it?
+                        if (not Assigned(pValuesColor)) then
+                            continue;
+
+                        // get values count
+                        valueCount := pValuesColor.Count;
+
+                        // iterate through all values
+                        for j := 0 to valueCount - 1 do
+                            pColorDesc.AddValue(pValuesColor.Values[j]);
+                    end;
+                end;
+
+                TWSVGCommon.IEValueType.IE_VT_Enum:
+                begin
+                    if (not (pAnimDesc is TWSVGEnumAnimDesc)) then
+                        continue;
+
+                    // get animation set based on matrices
+                    pEnumDesc := pAnimDesc as TWSVGEnumAnimDesc;
+
+                    // found it?
+                    if (not Assigned(pEnumDesc)) then
+                        continue;
+
+                    // is values property a list of attributes?
+                    if (pProperty is TWSVGStyle.IPropDisplay) then
+                    begin
+                        // get animation values property
+                        pValuesDisplay := pProperty as TWSVGStyle.IPropDisplay;
+
+                        // found it?
+                        if (not Assigned(pValuesDisplay)) then
+                            continue;
+
+                        // get values count
+                        valueCount := pValuesDisplay.Count;
+
+                        // iterate through all values
+                        for j := 0 to valueCount - 1 do
+                            pEnumDesc.AddValue(Integer(pValuesDisplay.Values[j]));
+                    end
+                end;
+            else
+                raise Exception.CreateFmt('Read animation - found unknown or unsupported data type - % d - attribute name - %s',
+                        [Integer(pAnimation.ValueType), attribName]);
+            end;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Animation_Calc_Mode) and (pProperty is TWSVGAnimation.IPropCalcMode)) then
+        begin
+            // get animation calculation mode property
+            pCalcMode := pProperty as TWSVGAnimation.IPropCalcMode;
+
+            // found it?
+            if (not Assigned(pCalcMode)) then
+                continue;
+
+            pAnimDesc.CalcMode := pCalcMode.CalcModeType;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Animation_Key_Splines) and (pProperty is TWSVGAttribute<Single>)) then
+        begin
+            // get animation key splines property
+            pValues := pProperty as TWSVGAttribute<Single>;
+
+            // found it?
+            if (not Assigned(pValues)) then
+                continue;
+
+            // get key splines count
+            valueCount := pValues.Count;
+
+            // iterate through all key splines
+            for j := 0 to valueCount - 1 do
+                // set key spline
+                pAnimDesc.AddKeySpline(pValues.Values[j]);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Animation_Key_Times) and (pProperty is TWSVGAttribute<Single>)) then
+        begin
+            // get animation key times property
+            pValues := pProperty as TWSVGAttribute<Single>;
+
+            // found it?
+            if (not Assigned(pValues)) then
+                continue;
+
+            // get key times count
+            valueCount := pValues.Count;
+
+            // iterate through all key times
+            for j := 0 to valueCount - 1 do
+                // set key time
+                pAnimDesc.AddKeyTime(pValues.Values[j]);
+        end;
+    end;
+
+    // notify that animation is running
+    if (callOnAnimate and Assigned(m_fOnAnimate)) then
+        Exit(m_fOnAnimate(pAnimDesc, pCustomData));
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.GetAnimationDuration(pHeader: TWSVGParser.IHeader;
+        const pElements: TWSVGContainer.IElements; switchMode: Boolean;
+        out durationMax: NativeUInt);
+var
+    pElement:       TWSVGElement;
+    pSwitch:        TWSVGSwitch;
+    pGroup:         TWSVGGroup;
+    pAction:        TWSVGAction;
+    pPath:          TWSVGPath;
+    pRect:          TWSVGRect;
+    pCircle:        TWSVGCircle;
+    pEllipse:       TWSVGEllipse;
+    pLine:          TWSVGLine;
+    pPolygon:       TWSVGPolygon;
+    pPolyline:      TWSVGPolyline;
+    pText:          TWSVGText;
+    pAnimationData: IWSmartPointer<IAnimationData>;
+begin
+    // iterate through SVG elements
+    for pElement in pElements do
+    begin
+        // get svg header (should always be the first element, because header is contained inside
+        // svg tag itself, that is the root tag)
+        if (pElement.ItemName = C_SVG_Tag_Name) then
+        begin
+            if (pElement is TWSVGParser.IHeader) then
+                pHeader := pElement as TWSVGParser.IHeader
+            else
+                pHeader := nil;
+
+            continue;
+        end;
+
+        // from now, svg header should be declared, otherwise svg data is malformed (NOTE svg header
+        // element should exist even if svg tag contains nothing else than declaration)
+        if (not Assigned(pHeader)) then
+            raise Exception.Create('SVG is malformed');
+
+        // is a switch?
+        if (pElement is TWSVGSwitch) then
+        begin
+            // get switch
+            pSwitch := pElement as TWSVGSwitch;
+
+            // found it?
+            if (Assigned(pSwitch)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this container
+                GetAnimations(pSwitch, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // get animation duration in switch subelements
+                GetAnimationDuration(pHeader, pSwitch.ElementList, True, durationMax);
+                continue;
+            end;
+        end;
+
+        // is a group?
+        if (pElement is TWSVGGroup) then
+        begin
+            // get group
+            pGroup := pElement as TWSVGGroup;
+
+            // found it?
+            if (Assigned(pGroup)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this container
+                GetAnimations(pGroup, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // get animation duration in group subelements
+                GetAnimationDuration(pHeader, pGroup.ElementList, False, durationMax);
+                continue;
+            end;
+        end;
+
+        // is an action?
+        if (pElement is TWSVGAction) then
+        begin
+            // get action
+            pAction := pElement as TWSVGAction;
+
+            // found it?
+            if (Assigned(pAction)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this container
+                GetAnimations(pAction, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // get animation duration in action subelements
+                GetAnimationDuration(pHeader, pAction.ElementList, False, durationMax);
+                continue;
+            end;
+        end;
+
+        // is a path?
+        if (pElement is TWSVGPath) then
+        begin
+            // get path
+            pPath := pElement as TWSVGPath;
+
+            // found it?
+            if (Assigned(pPath)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this shape
+                GetAnimations(pPath, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // is switch mode enabled?
+                if (switchMode) then
+                    Exit;
+
+                continue;
+            end;
+        end;
+
+        // is a rectangle?
+        if (pElement is TWSVGRect) then
+        begin
+            // get rectangle
+            pRect := pElement as TWSVGRect;
+
+            // found it?
+            if (Assigned(pRect)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this shape
+                GetAnimations(pRect, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // is switch mode enabled?
+                if (switchMode) then
+                    Exit;
+
+                continue;
+            end;
+        end;
+
+        // is a circle?
+        if (pElement is TWSVGCircle) then
+        begin
+            // get circle
+            pCircle := pElement as TWSVGCircle;
+
+            // found it?
+            if (Assigned(pCircle)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this shape
+                GetAnimations(pCircle, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // is switch mode enabled?
+                if (switchMode) then
+                    Exit;
+
+                continue;
+            end;
+        end;
+
+        // is an ellipse?
+        if (pElement is TWSVGEllipse) then
+        begin
+            // get ellipse
+            pEllipse := pElement as TWSVGEllipse;
+
+            // found it?
+            if (Assigned(pEllipse)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this shape
+                GetAnimations(pEllipse, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // is switch mode enabled?
+                if (switchMode) then
+                    Exit;
+
+                continue;
+            end;
+        end;
+
+        // is a line
+        if (pElement is TWSVGLine) then
+        begin
+            // get line
+            pLine := pElement as TWSVGLine;
+
+            // found it?
+            if (Assigned(pLine)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this shape
+                GetAnimations(pLine, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // is switch mode enabled?
+                if (switchMode) then
+                    Exit;
+
+                continue;
+            end;
+        end;
+
+        // is a polygon?
+        if (pElement is TWSVGPolygon) then
+        begin
+            // get polygon
+            pPolygon := pElement as TWSVGPolygon;
+
+            // found it?
+            if (Assigned(pPolygon)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this shape
+                GetAnimations(pPolygon, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // is switch mode enabled?
+                if (switchMode) then
+                    Exit;
+
+                continue;
+            end;
+        end;
+
+        // is a polyline?
+        if (pElement is TWSVGPolyline) then
+        begin
+            // get polyline
+            pPolyline := pElement as TWSVGPolyline;
+
+            // found it?
+            if (Assigned(pPolyline)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this shape
+                GetAnimations(pPolyline, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // is switch mode enabled?
+                if (switchMode) then
+                    Exit;
+
+                continue;
+            end;
+        end;
+
+        // is a text?
+        if (pElement is TWSVGText) then
+        begin
+            // get text
+            pText := pElement as TWSVGText;
+
+            // found it?
+            if (Assigned(pText)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this shape
+                GetAnimations(pText, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // is switch mode enabled?
+                if (switchMode) then
+                    Exit;
+
+                continue;
+            end;
+        end;
+    end;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetAnimationDuration(const pAnimationData: IAnimationData): NativeUInt;
+var
+    pAnimation: TWSVGAnimation;
+begin
+    Result := 0;
+
+    // iterate through set animations (i.e. set a particular shape attribute at elapsed time)
+    for pAnimation in pAnimationData.m_pSetAnims do
+        MeasureDuration(pAnimation, Result);
+
+    // iterate through attribute animations
+    for pAnimation in pAnimationData.m_pAttribAnims do
+        MeasureDuration(pAnimation, Result);
+
+    // iterate through color animations
+    for pAnimation in pAnimationData.m_pColorAnims do
+        MeasureDuration(pAnimation, Result);
+
+    // iterate through matrix animations
+    for pAnimation in pAnimationData.m_pMatrixAnims do
+        MeasureDuration(pAnimation, Result);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.MeasureDuration(pAnimation: TWSVGAnimation; var duration: NativeUInt);
+var
+    pValueAnimDesc:  IWSmartPointer<TWSVGValueAnimDesc>;
+    pMatrixAnimDesc: IWSmartPointer<TWSVGMatrixAnimDesc>;
+    pColorAnimDesc:  IWSmartPointer<TWSVGColorAnimDesc>;
+    pEnumAnimDesc:   IWSmartPointer<TWSVGEnumAnimDesc>;
+begin
+    pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+    pValueAnimDesc.Animation := pAnimation;
+    MeasureDuration(pAnimation, pValueAnimDesc, duration);
+
+    pMatrixAnimDesc           := TWSmartPointer<TWSVGMatrixAnimDesc>.Create();
+    pMatrixAnimDesc.Animation := pAnimation;
+    MeasureDuration(pAnimation, pMatrixAnimDesc, duration);
+
+    pColorAnimDesc           := TWSmartPointer<TWSVGColorAnimDesc>.Create();
+    pColorAnimDesc.Animation := pAnimation;
+    MeasureDuration(pAnimation, pColorAnimDesc, duration);
+
+    pEnumAnimDesc           := TWSmartPointer<TWSVGEnumAnimDesc>.Create();
+    pEnumAnimDesc.Animation := pAnimation;
+    MeasureDuration(pAnimation, pEnumAnimDesc, duration);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.MeasureDuration(const pAnimation: TWSVGAnimation; pAnimDesc: TWSVGAnimationDescriptor;
+        var duration: NativeUInt);
+var
+    attribName: UnicodeString;
+begin
+    // populate animation description, and check if animation is allowed to continue
+    if (not PopulateAnimation(pAnimation, attribName, pAnimDesc, false, nil)) then
+        Exit;
+
+    // keep highest animation duration
+    duration := Max(pAnimDesc.Duration.ToMilliseconds, duration);
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.Transform(const pMatrix: TWSVGPropMatrix; var point: TWVector2): Boolean;
+begin
+    // no matrix?
+    if (not Assigned(pMatrix)) then
+        Exit(False);
+
+    // transform point using matrix
+    point := pMatrix.Matrix.Transform(point);
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.BeginAt(const pAnimDesc: TWSVGAnimationDescriptor): Double;
+var
+    offset, beginTime, durTime: Double;
+begin
+    // no begin time or duration?
+    if (pAnimDesc.BeginTime.IsEmpty or pAnimDesc.Duration.IsEmpty) then
+        Exit(0.0);
+
+    // is begin value negative?
+    if (pAnimDesc.NegativeBegin) then
+        offset := -1.0
+    else
+        offset :=  1.0;
+
+    beginTime := pAnimDesc.BeginTime.ToMilliseconds;
+    durTime   := pAnimDesc.Duration.ToMilliseconds;
+
+    // calculate absolute animation percent where animation begins
+    Result := offset * (beginTime / durTime);
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.EndAt(const pAnimDesc: TWSVGAnimationDescriptor): Double;
+var
+    endTime, durTime: Double;
+begin
+    // no end time or duration?
+    if (pAnimDesc.EndTime.IsEmpty or pAnimDesc.Duration.IsEmpty) then
+        Exit(1.0);
+
+    endTime := pAnimDesc.BeginTime.ToMilliseconds;
+    durTime := pAnimDesc.Duration.ToMilliseconds;
+
+    // calculate animation percent where animation ends
+    Result := endTime / durTime;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetAnimPos(const pAnimationData: IAnimationData;
+        const pAnimDesc: TWSVGAnimationDescriptor; var position: Double): Boolean;
+var
+    pCacheItem:           ICacheItem;
+    pItem, pNewItem:      IAnimCacheItem;
+    beginAtPos, endAtPos: Double;
+    //cycleRestarted:  Boolean;
+begin
+    // is animation end or animation duration negative?
+    if (pAnimDesc.NegativeEnd or pAnimDesc.NegativeDuration) then
+    begin
+        // animation cannot run because it was already stopped before starting
+        position := 0.0;
+        Exit(False);
+    end;
+
+    // get current cache to use. Cache item should always be created for the current running
+    // animation, if it's not the case it's an error
+    if (not m_pCache.TryGetValue(m_UUID, pCacheItem)) then
+    begin
+        position := 0.0;
+        Exit(False);
+    end;
+
+    // check if cycle restarted
+    //cycleRestarted := (position < pCacheItem.m_LastPos);
+
+    // update last known position
+    pCacheItem.m_LastPos := position;
+
+    // get current animation item, create one if not found
+    if (not pCacheItem.m_pAnimCache.TryGetValue(pAnimDesc.Animation, pItem)) then
+    begin
+        pNewItem := nil;
+
+        try
+            // create, populate and add new animation item
+            pNewItem := IAnimCacheItem.Create;
+            pCacheItem.m_pAnimCache.Add(pAnimDesc.Animation, pNewItem);
+            pItem    := pNewItem;
+            pNewItem := nil;
+        finally
+            pNewItem.Free;
+        end;
+    end;
+
+    Assert(Assigned(pItem));
+
+    // current position should be scaled to total position. By principle, the longest animation time
+    // represents a global position of 100%. Because the total duration of each sub-animation may be
+    // different than total time, sub-animation position should be scaled in relation to the total
+    // position, e.g. a sub-animation of 2s will be repeated 3 times during a total animation of 6s
+    position := LocalPosToGlobalPos(pCacheItem.m_AnimDuration, pItem, pAnimationData, pAnimDesc);
+
+    // do loop animation?
+    if (pAnimDesc.DoLoop) then
+    begin
+        // get begin at animation position
+        beginAtPos := BeginAt(pAnimDesc);
+
+        // theorically animations should begin only when position reaches the beginAt value. But in
+        // case of looping animation, the result is really strange. It's why code below was disabled
+        {
+        // animation already started?
+        if (not pItem.m_Started and (beginAtPos >= 0.0)) then
+            // check if starting point was reached
+            if ((beginAtPos <> 1.0) and (position < beginAtPos)) then
+            begin
+                position := 0.0;
+                Exit(False);
+            end
+            else
+            if ((beginAtPos = 1.0) and not cycleRestarted) then
+            begin
+                position := 0.0;
+                Exit(False);
+            end;
+        }
+
+        // calculate real position animation (begin at can shift the animation start) NOTE resulting
+        // position value is limited between 0.0 and 1.0, thus it can never be out of bounds
+        position        := TWMathHelper.ExtMod(position + (1.0 - beginAtPos), 1.0);
+        pItem.m_Started := True;
+        Exit(True);
+    end;
+
+    // get animation begin and end position
+    beginAtPos := BeginAt(pAnimDesc);
+    endAtPos   := EndAt(pAnimDesc);
+
+    // nothing to check?
+    if ((beginAtPos = 0.0) and (endAtPos = 1.0)) then
+    begin
+        pItem.m_Started := True;
+        Exit(True);
+    end;
+
+    // animation started?
+    if (position < beginAtPos) then
+    begin
+        position := 0.0;
+        Exit(False);
+    end;
+
+    pItem.m_Started := True;
+
+    // animation stopped?
+    if (position > endAtPos) then
+    begin
+        position := beginAtPos + (position * (endAtPos - beginAtPos));
+        Exit(False);
+    end;
+
+    // calculate real position
+    position := beginAtPos + (position * (endAtPos - beginAtPos));
+    Result   := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetSize(const pSVG: TWSVG): TSize;
+var
+    pHeader:         TWSVGParser.IHeader;
+    pElement:        TWSVGElement;
+    elementCount, i: NativeInt;
+    viewBox:         TWRectF;
+begin
+    pHeader      := nil;
+    elementCount := pSVG.Parser.ElementCount;
+
+    // iterate through SVG elements
+    for i := 0 to elementCount - 1 do
+    begin
+        pElement := pSVG.Parser.Elements[i];
+
+        // get svg header
+        if ((pElement.ItemName = C_SVG_Tag_Name) and (pElement is TWSVGParser.IHeader)) then
+        begin
+            pHeader := pElement as TWSVGParser.IHeader;
+            break;
+        end;
+    end;
+
+    // found header?
+    if (not Assigned(pHeader)) then
+        Exit(Default(TSize));
+
+    // get the size from viewbox. Anyway, if no viewbox is defined in the SVG, the width and height
+    // properties will be used instead. NOTE although generally the width and height values are
+    // identical as the viewbox values, they may differ in several SVG. In this case the viewport
+    // represents the real size, because it will contain the whole SVG drawing, while the width and
+    // height properties represent the size of the SVG drawing inside the viewport
+    viewBox := GetViewBox(pHeader);
+    Result  := TSize.Create(Round(viewBox.Width), Round(viewBox.Height));
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetPageStyle(const pSVG: TWSVG; out pageColor: TWColor; out borderColor: TWColor;
+        out borderOpacity: Single): Boolean;
+var
+    pHeader:                    TWSVGParser.IHeader;
+    pElement:                   TWSVGElement;
+    pProperty:                  TWSVGProperty;
+    pColor:                     TWSVGPropColor;
+    pOpacity:                   TWSVGMeasure<Single>;
+    elementCount, propCount, i: NativeInt;
+begin
+    pHeader      := nil;
+    elementCount := pSVG.Parser.ElementCount;
+
+    // iterate through SVG elements
+    for i := 0 to elementCount - 1 do
+    begin
+        pElement := pSVG.Parser.Elements[i];
+
+        // get svg header
+        if ((pElement.ItemName = C_SVG_Tag_Name) and (pElement is TWSVGParser.IHeader)) then
+        begin
+            pHeader := pElement as TWSVGParser.IHeader;
+            break;
+        end;
+    end;
+
+    // found header?
+    if (not Assigned(pHeader)) then
+        Exit(False);
+
+    // initialize values in case header doesn't contain them
+    pageColor.Clear;
+    borderColor.Clear;
+    borderOpacity := 0.0;
+
+    propCount := pHeader.Count;
+
+    // iterate through header properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pHeader.Properties[i];
+
+        // search for header style
+        if ((pProperty.ItemName = C_SVG_Prop_Page_Color) and (pProperty is TWSVGPropColor)) then
+        begin
+            // get SVG page color
+            pColor := pProperty as TWSVGPropColor;
+
+            // found it?
+            if (not Assigned(pColor)) then
+                continue;
+
+            // color has no values?
+            if (pColor.Count = 0) then
+                pageColor.SetColor(C_SVG_Default_Color)
+            else
+                // set SVG page color
+                pageColor.Assign(pColor.Values[0]^);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Border_Color) and (pProperty is TWSVGPropColor)) then
+        begin
+            // get SVG border color
+            pColor := pProperty as TWSVGPropColor;
+
+            // found it?
+            if (not Assigned(pColor)) then
+                continue;
+
+            // color has no values?
+            if (pColor.Count = 0) then
+                borderColor.SetColor(C_SVG_Default_Color)
+            else
+                // set SVG border color
+                borderColor.Assign(pColor.Values[0]^);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Border_Opacity) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get SVG border opacity
+            pOpacity := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pOpacity)) then
+                continue;
+
+            // set SVG border opacity
+            borderOpacity := pOpacity.Value.Value;
+        end;
+    end;
+
+    // get source size
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetAnimationDuration(const pSVG: TWSVG): NativeUInt;
+var
+    pHeader:    TWSVGParser.IHeader;
+    switchMode: Boolean;
+begin
+    pHeader    := nil;
+    switchMode := False;
+    Result     := 0;
+
+    GetAnimationDuration(pHeader, pSVG.Parser.ElementList, switchMode, Result);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.EnableAnimation(value: Boolean);
+begin
+    // nothing to do?
+    if (m_Animate = value) then
+        Exit;
+
+    m_Animate := value;
+
+    // reset cache if animation is enabled
+    if (m_Animate) then
+        m_pCache.Clear;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.IsAnimationEnabled: Boolean;
+begin
+    Result := m_Animate;
+end;
+//---------------------------------------------------------------------------
+
+end.
