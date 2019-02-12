@@ -13,6 +13,7 @@ uses System.SysUtils,
      Vcl.Graphics,
      Vcl.ImgList,
      Winapi.Windows,
+     UTWMajorSettings,
      UTWColor,
      UTWHelpers,
      UTWSmartPointer,
@@ -57,6 +58,23 @@ type
 
         private
             m_pPictures: IWPictureList;
+            m_Graphics:  array of TWSVGGraphic;
+
+            {**
+             Get the library version
+             @returns(Library version, #ERROR on error)
+            }
+            function GetVersion: UnicodeString;
+
+            {**
+             Backup the SVG list content in a temporary array
+            }
+            procedure Backup;
+
+            {**
+             Restore the SVG list content from a temporary array
+            }
+            procedure Restore;
 
         protected
             {**
@@ -224,6 +242,11 @@ type
 
         published
             {**
+             Get the library version number
+            }
+            property Version: UnicodeString read GetVersion;
+
+            {**
              Get or set the blend color
             }
             property BlendColor;
@@ -312,10 +335,58 @@ begin
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGImageList.Destroy;
+var
+    localCount, i: Integer;
 begin
+    localCount := Length(m_Graphics);
+
+    // free the local array items
+    for i := 0 to localCount - 1 do
+        m_Graphics[i].Free;
+
     FreeAndNil(m_pPictures);
 
     inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGImageList.GetVersion: UnicodeString;
+begin
+    if (not Assigned(TWLibraryVersion)) then
+        Exit('#ERROR');
+
+    Result := TWLibraryVersion.ToStr;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGImageList.Backup;
+var
+    i: Integer;
+begin
+    // initialize the local array in which the list content will be saved
+    SetLength(m_Graphics, Count);
+
+    // save the list content
+    for i := 0 to Count - 1 do
+    begin
+        m_Graphics[i] := TWSVGGraphic.Create;
+        m_Graphics[i].Assign(GetSVG(i));
+    end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGImageList.Restore;
+var
+    localCount, i: Integer;
+begin
+    localCount := Length(m_Graphics);
+
+    // restore the list content from the local array and free the local array items
+    for i := 0 to localCount - 1 do
+    begin
+        AddSVG(m_Graphics[i]);
+        m_Graphics[i].Free;
+    end;
+
+    // clear the local list
+    SetLength(m_Graphics, 0);
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageList.SetWidth(value: Integer);
@@ -323,9 +394,13 @@ begin
     if (Width = value) then
         Exit;
 
-    Clear;
-
-    inherited Width := value;
+    try
+        Backup;
+        Clear;
+        inherited Width := value;
+    finally
+        Restore;
+    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageList.SetHeight(value: Integer);
@@ -333,9 +408,13 @@ begin
     if (Height = value) then
         Exit;
 
-    Clear;
-
-    inherited Height := value;
+    try
+        Backup;
+        Clear;
+        inherited Height := value;
+    finally
+        Restore;
+    end;
 end;
 //---------------------------------------------------------------------------
 function TWSVGImageList.RasterizeAndAssign(index: Integer; pSVG: TWSVGGraphic; colorKey: TColor;
@@ -706,9 +785,14 @@ begin
     if ((Width = newWidth) and (Height = newHeight)) then
         Exit;
 
-    Clear;
+    try
+        Backup;
+        Clear;
+        inherited SetSize(newWidth, newHeight);
 
-    inherited SetSize(newWidth, newHeight);
+    finally
+        Restore;
+    end;
 end;
 //---------------------------------------------------------------------------
 function TWSVGImageList.AddSVG(pSVG: TWSVGGraphic; colorKey: TColor): Integer;

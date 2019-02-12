@@ -10,6 +10,9 @@ interface
 uses System.Rtti,
      System.Types,
      System.Generics.Defaults,
+     {$if CompilerVersion >= 32}
+         System.Hash,
+     {$endif}
      {$ifdef USE_VCL}
         Winapi.Windows,
         Winapi.GDIPAPI,
@@ -561,8 +564,13 @@ end;
 //---------------------------------------------------------------------------
 function TWSize<T>.GetHashCode(initValue: Integer): Integer;
 begin
-    Result := BobJenkinsHash(m_Width,  SizeOf(T), initValue);
-    Result := BobJenkinsHash(m_Height, SizeOf(T), Result);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_Width,  SizeOf(T), initValue);
+        Result := THashBobJenkins.GetHashValue(m_Height, SizeOf(T), Result);
+    {$else}
+        Result := BobJenkinsHash(m_Width,  SizeOf(T), initValue);
+        Result := BobJenkinsHash(m_Height, SizeOf(T), Result);
+    {$endif}
 end;
 //---------------------------------------------------------------------------
 

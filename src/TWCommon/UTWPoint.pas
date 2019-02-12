@@ -10,6 +10,9 @@ interface
 uses System.Rtti,
      System.Types,
      System.Generics.Defaults,
+     {$if CompilerVersion >= 32}
+         System.Hash,
+     {$endif}
      {$ifdef USE_VCL}
         Winapi.Windows,
         Winapi.GDIPAPI,
@@ -563,8 +566,13 @@ end;
 //---------------------------------------------------------------------------
 function TWPoint<T>.GetHashCode(initValue: Integer): Integer;
 begin
-    Result := BobJenkinsHash(m_X, SizeOf(T), initValue);
-    Result := BobJenkinsHash(m_Y, SizeOf(T), Result);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_X, SizeOf(T), initValue);
+        Result := THashBobJenkins.GetHashValue(m_Y, SizeOf(T), Result);
+    {$else}
+        Result := BobJenkinsHash(m_X, SizeOf(T), initValue);
+        Result := BobJenkinsHash(m_Y, SizeOf(T), Result);
+    {$endif}
 end;
 //---------------------------------------------------------------------------
 

@@ -56,6 +56,7 @@ contains
   UTWDesignPatterns in 'UTWDesignPatterns.pas',
   usp10 in 'Uniscribe\usp10.pas',
   UTWLine in 'UTWLine.pas',
-  UTWFillAndStroke in 'UTWFillAndStroke.pas';
+  UTWFillAndStroke in 'UTWFillAndStroke.pas',
+  UTWMajorSettings in 'UTWMajorSettings.pas';
 
 end.

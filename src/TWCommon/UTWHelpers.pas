@@ -286,6 +286,23 @@ type
     PWStringHelper = ^TWStringHelper;
 
     {**
+     Helper for files
+    }
+    TWFileHelper = record
+        public
+            {**
+             Get the version of a file
+             @returns(File version)
+            }
+            class function GetFileVersion(const fileName: string): string; static;
+    end;
+
+    {**
+     Pointer to system helper
+    }
+    PWFileHelper = ^TWFileHelper;
+
+    {**
      Helper for memory
     }
     TWMemoryHelper = record
@@ -366,6 +383,25 @@ type
      Pointer to math helper
     }
     PWMathHelper = ^TWMathHelper;
+
+    {**
+     Helper for system
+    }
+    TWSystemHelper = record
+        public
+            {**
+             Get the version of a DLL
+             @param(hMod DLL module instance for which the version should be get)
+             @returns(DLL version)
+            }
+            class function GetDllVersion(hMod: HMODULE): string; overload; static;
+            class function GetDllVersion: string; overload; static;
+    end;
+
+    {**
+     Pointer to system helper
+    }
+    PWSystemHelper = ^TWSystemHelper;
 
     {**
      Controller that can enable or disable some specific GDI cache
@@ -1787,40 +1823,75 @@ begin
     Result := ReadFloat<Double, NativeInt>(str, pos, resVal);
 end;
 //---------------------------------------------------------------------------
-// TWMemoryHelper
+// TWFileHelper
 //---------------------------------------------------------------------------
-class function TWMemoryHelper.IsSystemBE: Boolean;
-type
-    // this record is more or less a transcription of an union type in c++
-    IEndianness = record
-        case Boolean of
-            True:  (i: TWUInt32);
-            False: (p: array[1..4] of TWUInt8);
-    end;
+class function TWFileHelper.GetFileVersion(const fileName: string): string;
 var
-    bInt: ^IEndianness;
+    infoSize:      DWORD;
+    verBuf:        pointer;
+    verSize, wnd:  UINT;
+    FixedFileInfo: PVSFixedFileInfo;
 begin
-    Result := False;
-    bInt   := nil;
+    infoSize := GetFileVersioninfoSize(PChar(fileName), wnd);
 
-    try
-        // set a value of 5 inside the endianness structure
-        New(bInt);
-        bInt^.i := 5;
+    Result := '';
 
-        // check whether value is on the first or last byte, and thus determine system endianness
-        if (bInt^.p[1] = 5) then
-            Result := False
-        else
-        if (bInt^.p[4] = 5) then
-            Result := True
-        else
-            raise Exception.Create('Cannot determine system endianness');
-    finally
-        if (Assigned(bInt)) then
-            Dispose(bInt);
+    if (infoSize <> 0) then
+    begin
+        GetMem(verBuf, infoSize);
+
+        try
+            if (GetFileVersionInfo(PChar(fileName), wnd, infoSize, verBuf)) then
+            begin
+                VerQueryValue(verBuf, '\', Pointer(FixedFileInfo), verSize);
+
+                Result := IntToStr(FixedFileInfo.dwFileVersionMS div $10000) + '.' +
+                          IntToStr(FixedFileInfo.dwFileVersionMS and $0FFFF) + '.' +
+                          IntToStr(FixedFileInfo.dwFileVersionLS div $10000) + '.' +
+                          IntToStr(FixedFileInfo.dwFileVersionLS and $0FFFF);
+            end;
+        finally
+            FreeMem(verBuf);
+        end;
     end;
 end;
+//---------------------------------------------------------------------------
+// TWMemoryHelper
+//---------------------------------------------------------------------------
+{$HINTS OFF}
+  class function TWMemoryHelper.IsSystemBE: Boolean;
+  type
+      // this record is more or less a transcription of an union type in c++
+      IEndianness = record
+          case Boolean of
+              True:  (i: TWUInt32);
+              False: (p: array[1..4] of TWUInt8);
+      end;
+  var
+      bInt: ^IEndianness;
+  begin
+      Result := False;
+      bInt   := nil;
+
+      try
+          // set a value of 5 inside the endianness structure
+          New(bInt);
+          bInt^.i := 5;
+
+          // check whether value is on the first or last byte, and thus determine system endianness
+          if (bInt^.p[1] = 5) then
+              Result := False
+          else
+          if (bInt^.p[4] = 5) then
+              Result := True
+          else
+              raise Exception.Create('Cannot determine system endianness');
+      finally
+          if (Assigned(bInt)) then
+              Dispose(bInt);
+      end;
+  end;
+{$HINTS ON}
 //---------------------------------------------------------------------------
 class procedure TWMemoryHelper.Swap<T>(var left, right: T);
 var
@@ -2123,6 +2194,31 @@ begin
         loops  := Result div limit;
         Result := Result mod limit;
     end;
+end;
+//---------------------------------------------------------------------------
+// TWSystemHelper
+//---------------------------------------------------------------------------
+class function TWSystemHelper.GetDllVersion(hMod: HMODULE): string;
+var
+    fileName: string;
+begin
+    SetLength(fileName, MAX_PATH);
+
+    // get the module file name
+    if (GetModuleFileName(hMod, PCHar(fileName), MAX_PATH) = 0) then
+        Exit('');
+
+    // succeeded?
+    if (Length(fileName) = 0) then
+        Exit('');
+
+    // extract the version number from the module file name
+    Result := TWFileHelper.GetFileVersion(fileName);
+end;
+//---------------------------------------------------------------------------
+class function TWSystemHelper.GetDllVersion: string;
+begin
+    Result := GetDllVersion(HInstance);
 end;
 //---------------------------------------------------------------------------
 // TWGDIHelper
@@ -4921,7 +5017,7 @@ begin
     offset := pStream.Position;
 
     // check if length is out of bounds
-    if (pStream.Position + len > pStream.Size) then
+    if (NativeUInt(pStream.Position) + len > pStream.Size) then
         len := pStream.Size - pStream.Position;
 
     if (not OpenClipboard(0)) then

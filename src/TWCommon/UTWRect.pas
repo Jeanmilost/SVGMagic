@@ -12,6 +12,9 @@ uses System.Rtti,
      System.SysUtils,
      System.Math,
      System.Generics.Defaults,
+     {$if CompilerVersion >= 32}
+         System.Hash,
+     {$endif}
      {$ifdef USE_VCL}
         Vcl.Graphics,
         Winapi.Windows,
@@ -995,10 +998,17 @@ end;
 //---------------------------------------------------------------------------
 function TWRect<T>.GetHashCode(initValue: Integer): Integer;
 begin
-    Result := BobJenkinsHash(m_Left,   SizeOf(T), initValue);
-    Result := BobJenkinsHash(m_Top,    SizeOf(T), Result);
-    Result := BobJenkinsHash(m_Right,  SizeOf(T), Result);
-    Result := BobJenkinsHash(m_Bottom, SizeOf(T), Result);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_Left,   SizeOf(T), initValue);
+        Result := THashBobJenkins.GetHashValue(m_Top,    SizeOf(T), Result);
+        Result := THashBobJenkins.GetHashValue(m_Right,  SizeOf(T), Result);
+        Result := THashBobJenkins.GetHashValue(m_Bottom, SizeOf(T), Result);
+    {$else}
+        Result := BobJenkinsHash(m_Left,   SizeOf(T), initValue);
+        Result := BobJenkinsHash(m_Top,    SizeOf(T), Result);
+        Result := BobJenkinsHash(m_Right,  SizeOf(T), Result);
+        Result := BobJenkinsHash(m_Bottom, SizeOf(T), Result);
+    {$endif}
 end;
 //---------------------------------------------------------------------------
 

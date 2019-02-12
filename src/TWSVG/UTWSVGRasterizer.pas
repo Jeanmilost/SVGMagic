@@ -5156,6 +5156,14 @@ var
     linkedBrushCount, propCount, stopCount, i, j: NativeInt;
     linkedBrushes:                                array of IBrush;
 begin
+    {$if CompilerVersion >= 32}
+        // completely stupid, because all the paths below return a value, however
+        // Tokyo and higher raise this warning every time a continue instruction is
+        // found in the function code. Also see this post:
+        // http://www.delphigroups.info/2/c9/526281.html
+        Result := False;
+    {$endif}
+
     pLinkedElement := GetLinkedElement(pLink);
 
     if (not Assigned(pLinkedElement)) then
@@ -5710,7 +5718,7 @@ begin
             SetLength(linkedBrushes, 0);
         end;
 
-        pBrush.m_Type                   := E_BT_Radial;
+        pBrush.m_Type                   :=  E_BT_Radial;
         pBrush.m_Rule                   := IE_PR_Default;
         pBrush.m_pRadialGradient.m_Rule := IE_PR_Default;
         Exit(True);

@@ -11,6 +11,9 @@ interface
 uses System.SysUtils,
      System.Generics.Defaults,
      System.Generics.Collections,
+     {$if CompilerVersion >= 32}
+         System.Hash,
+     {$endif}
      UTWColor,
      UTWPoint,
      UTWSize,
@@ -992,7 +995,11 @@ end;
 function TWGradientStop.GetHashCode(initValue: Integer): Integer;
 begin
     Result := m_Color.GetHashCode(initValue);
-    Result := BobJenkinsHash(m_Percent, SizeOf(Single), Result);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_Percent, SizeOf(Single), Result);
+    {$else}
+        Result := BobJenkinsHash(m_Percent, SizeOf(Single), Result);
+    {$endif}
     Result := m_Position.GetHashCode(Result);
 end;
 //---------------------------------------------------------------------------
@@ -1287,8 +1294,13 @@ var
     pStop: TWGradientStop;
 begin
     // hash values
-    Result := BobJenkinsHash(m_Unit,     SizeOf(EGradientUnit), initValue);
-    Result := BobJenkinsHash(m_WrapMode, SizeOf(EWrapMode),     Result);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_Unit,     SizeOf(EGradientUnit), initValue);
+        Result := THashBobJenkins.GetHashValue(m_WrapMode, SizeOf(EWrapMode),     Result);
+    {$else}
+        Result := BobJenkinsHash(m_Unit,     SizeOf(EGradientUnit), initValue);
+        Result := BobJenkinsHash(m_WrapMode, SizeOf(EWrapMode),     Result);
+    {$endif}
     Result := m_Matrix.GetHashCode(Result);
 
     // hash gradient stops
@@ -1554,7 +1566,11 @@ end;
 //---------------------------------------------------------------------------
 function TWFill.GetHashCode(initValue: Integer): Integer;
 begin
-    Result := BobJenkinsHash(m_Type, SizeOf(EBrushType), initValue);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_Type, SizeOf(EBrushType), initValue);
+    {$else}
+        Result := BobJenkinsHash(m_Type, SizeOf(EBrushType), initValue);
+    {$endif}
     Result := m_pBrush.GetHashCode(Result);
 end;
 //---------------------------------------------------------------------------
@@ -1761,12 +1777,21 @@ var
     i, count: NativeUInt;
     value:    Double;
 begin
-    Result := BobJenkinsHash(m_LineCap,    SizeOf(ELineCap),   initValue);
-    Result := BobJenkinsHash(m_DashCap,    SizeOf(EDashCap),   Result);
-    Result := BobJenkinsHash(m_LineJoin,   SizeOf(ELineJoin),  Result);
-    Result := BobJenkinsHash(m_DashOffset, SizeOf(Double),     Result);
-    Result := BobJenkinsHash(m_Width,      SizeOf(Double),     Result);
-    Result := BobJenkinsHash(m_Type,       SizeOf(EBrushType), Result);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_LineCap,    SizeOf(ELineCap),   initValue);
+        Result := THashBobJenkins.GetHashValue(m_DashCap,    SizeOf(EDashCap),   Result);
+        Result := THashBobJenkins.GetHashValue(m_LineJoin,   SizeOf(ELineJoin),  Result);
+        Result := THashBobJenkins.GetHashValue(m_DashOffset, SizeOf(Double),     Result);
+        Result := THashBobJenkins.GetHashValue(m_Width,      SizeOf(Double),     Result);
+        Result := THashBobJenkins.GetHashValue(m_Type,       SizeOf(EBrushType), Result);
+    {$else}
+        Result := BobJenkinsHash(m_LineCap,    SizeOf(ELineCap),   initValue);
+        Result := BobJenkinsHash(m_DashCap,    SizeOf(EDashCap),   Result);
+        Result := BobJenkinsHash(m_LineJoin,   SizeOf(ELineJoin),  Result);
+        Result := BobJenkinsHash(m_DashOffset, SizeOf(Double),     Result);
+        Result := BobJenkinsHash(m_Width,      SizeOf(Double),     Result);
+        Result := BobJenkinsHash(m_Type,       SizeOf(EBrushType), Result);
+    {$endif}
     Result := m_Matrix.GetHashCode(Result);
     Result := m_pBrush.GetHashCode(Result);
 
@@ -1775,8 +1800,12 @@ begin
     if (count > 0) then
         for i := 0 to count - 1 do
         begin
-            value  := m_pDashPattern[i];
-            Result := BobJenkinsHash(value, SizeOf(Double), Result);
+            value := m_pDashPattern[i];
+            {$if CompilerVersion >= 32}
+                Result := THashBobJenkins.GetHashValue(value, SizeOf(Double), Result);
+            {$else}
+                Result := BobJenkinsHash(value, SizeOf(Double), Result);
+            {$endif}
         end;
 end;
 //---------------------------------------------------------------------------

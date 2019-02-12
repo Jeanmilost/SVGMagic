@@ -15,6 +15,7 @@ uses System.Classes,
      Vcl.ComCtrls,
      Winapi.Messages,
      Winapi.Windows,
+     UTWMajorSettings,
      {$IFDEF DEBUG}
         UTWHelpers,
      {$ENDIF}
@@ -161,6 +162,12 @@ type
             m_fOldParentWndProc: TWndMethod;
             m_fOnAnimate:        ITfSVGAnimateEvent;
 
+            {**
+             Get the library version
+             @returns(Library version, #ERROR on error)
+            }
+            function GetVersion: UnicodeString;
+
         protected
             m_pHooks:       IWSVGComponentStyleHooks;
             m_pOverlay:     Vcl.Graphics.TBitmap;
@@ -306,6 +313,11 @@ type
             procedure BeforeDestruction; override;
 
         published
+            {**
+             Get the library version number
+            }
+            property Version: UnicodeString read GetVersion;
+
             {**
              Enable or disable the animation
             }
@@ -629,6 +641,14 @@ begin
     end;
 
     inherited BeforeDestruction;
+end;
+//---------------------------------------------------------------------------
+function TWSVGComponentStyle.GetVersion: UnicodeString;
+begin
+    if (not Assigned(TWLibraryVersion)) then
+        Exit('#ERROR');
+
+    Result := TWLibraryVersion.ToStr;
 end;
 //---------------------------------------------------------------------------
 function TWSVGComponentStyle.DoAnimate(pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;

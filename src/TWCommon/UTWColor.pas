@@ -15,6 +15,9 @@ uses System.SysUtils,
      System.Math,
      System.Generics.Defaults,
      System.UITypes,
+     {$if CompilerVersion >= 32}
+         System.Hash,
+     {$endif}
      {$ifdef USE_VCL}
          Vcl.Graphics,
          Vcl.GraphUtil,
@@ -818,10 +821,17 @@ end;
 //---------------------------------------------------------------------------
 function TWColor.GetHashCode(initValue: Integer): Integer;
 begin
-    Result := BobJenkinsHash(m_Red,   SizeOf(Byte), initValue);
-    Result := BobJenkinsHash(m_Green, SizeOf(Byte), Result);
-    Result := BobJenkinsHash(m_Blue,  SizeOf(Byte), Result);
-    Result := BobJenkinsHash(m_Alpha, SizeOf(Byte), Result);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_Red,   SizeOf(Byte), initValue);
+        Result := THashBobJenkins.GetHashValue(m_Green, SizeOf(Byte), Result);
+        Result := THashBobJenkins.GetHashValue(m_Blue,  SizeOf(Byte), Result);
+        Result := THashBobJenkins.GetHashValue(m_Alpha, SizeOf(Byte), Result);
+    {$else}
+        Result := BobJenkinsHash(m_Red,   SizeOf(Byte), initValue);
+        Result := BobJenkinsHash(m_Green, SizeOf(Byte), Result);
+        Result := BobJenkinsHash(m_Blue,  SizeOf(Byte), Result);
+        Result := BobJenkinsHash(m_Alpha, SizeOf(Byte), Result);
+    {$endif}
 end;
 //---------------------------------------------------------------------------
 procedure TWColor.Assign(const other: TWColor);

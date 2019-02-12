@@ -11,8 +11,11 @@ interface
 
 uses System.SysUtils,
      System.Generics.Defaults,
+     {$if CompilerVersion >= 32}
+         System.Hash,
+     {$endif}
      {$ifdef USE_VCL}
-        Winapi.GDIPObj,
+         Winapi.GDIPObj,
      {$endif}
      UTWVector;
 
@@ -300,7 +303,11 @@ end;
 //---------------------------------------------------------------------------
 function TWMatrix3x3.GetHashCode(initValue: Integer): Integer;
 begin
-    Result := BobJenkinsHash(m_Table, SizeOf(m_Table), initValue);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_Table, SizeOf(m_Table), initValue);
+    {$else}
+        Result := BobJenkinsHash(m_Table, SizeOf(m_Table), initValue);
+    {$endif}
 end;
 //---------------------------------------------------------------------------
 procedure TWMatrix3x3.SetIdentity;

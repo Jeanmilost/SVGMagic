@@ -13,6 +13,7 @@ uses System.Classes,
      System.Math,
      Vcl.Graphics,
      Vcl.ExtCtrls,
+     UTWMajorSettings,
      UTWDesignPatterns,
      UTWAnimationTimer,
      UTWSVGAnimationDescriptor,
@@ -122,6 +123,12 @@ type
             m_fOnAnimate:           ITfSVGAnimateEvent;
             m_fPrevOnPictureChange: TNotifyEvent;
 
+            {**
+             Get the library version
+             @returns(Library version, #ERROR on error)
+            }
+            function GetVersion: UnicodeString;
+
         protected
             {**
              Check if animation can be run, run it if yes
@@ -223,6 +230,11 @@ type
 
         published
             {**
+             Get the library version number
+            }
+            property Version: UnicodeString read GetVersion;
+
+            {**
              Get or set the animation properties
             }
             property Animation: IAnimationProps read m_pAnimationProps write m_pAnimationProps;
@@ -321,6 +333,14 @@ begin
     FreeAndNil(m_pAnimationProps);
 
     inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGImage.GetVersion: UnicodeString;
+begin
+    if (not Assigned(TWLibraryVersion)) then
+        Exit('#ERROR');
+
+    Result := TWLibraryVersion.ToStr;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImage.RunAnimation(pPicture: TPicture; pFrameCalculator: TWSVGFrameCalculator);

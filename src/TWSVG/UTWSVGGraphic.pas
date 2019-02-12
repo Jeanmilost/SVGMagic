@@ -17,6 +17,7 @@ uses System.Classes,
      Vcl.Imaging.PngImage,
      Vcl.Clipbrd,
      Winapi.Windows,
+     UTWMajorSettings,
      UTWColor,
      UTWHelpers,
      UTWSmartPointer,
@@ -112,6 +113,12 @@ type
             m_fOnAnimationBegin:        TNotifyEvent;
             m_fOnAnimationEnd:          TNotifyEvent;
             m_fOnAnimationLoop:         TNotifyEvent;
+
+            {**
+             Get the library version
+             @returns(Library version, #ERROR on error)
+            }
+            function GetVersion: UnicodeString;
 
         protected
             {**
@@ -332,6 +339,11 @@ type
 
         public
             {**
+             Get the library version number
+            }
+            property Version: UnicodeString read GetVersion;
+
+            {**
             * Get the native SVG object
             }
             property Native: TWSVG read m_pSVG;
@@ -545,6 +557,14 @@ begin
     FreeAndNil(m_pSVG);
 
     inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGGraphic.GetVersion: UnicodeString;
+begin
+    if (not Assigned(TWLibraryVersion)) then
+        Exit('#ERROR');
+
+    Result := TWLibraryVersion.ToStr;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGGraphic.Draw(pCanvas: TCanvas; const rect: TRect);

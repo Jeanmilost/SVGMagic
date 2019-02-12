@@ -10,10 +10,14 @@ interface
 uses System.Types,
      System.SysUtils,
      System.Generics.Defaults
+     {$if CompilerVersion >= 32}
+         ,
+         System.Hash
+     {$endif}
      {$ifdef USE_VCL}
-        ,
-        Winapi.GDIPAPI,
-        Winapi.Windows
+         ,
+         Winapi.GDIPAPI,
+         Winapi.Windows
      {$endif}
      ;
 
@@ -591,8 +595,13 @@ end;
 //---------------------------------------------------------------------------
 function TWVector2.GetHashCode(initValue: Integer): Integer;
 begin
-    Result := BobJenkinsHash(m_X, SizeOf(Single), initValue);
-    Result := BobJenkinsHash(m_Y, SizeOf(Single), Result);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(m_X, SizeOf(Single), initValue);
+        Result := THashBobJenkins.GetHashValue(m_Y, SizeOf(Single), Result);
+    {$else}
+        Result := BobJenkinsHash(m_X, SizeOf(Single), initValue);
+        Result := BobJenkinsHash(m_Y, SizeOf(Single), Result);
+    {$endif}
 end;
 //---------------------------------------------------------------------------
 

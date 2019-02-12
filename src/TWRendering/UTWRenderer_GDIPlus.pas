@@ -25,6 +25,9 @@ uses System.Classes,
      System.UITypes,
      System.Generics.Defaults,
      System.Generics.Collections,
+     {$if CompilerVersion >= 32}
+         System.Hash,
+     {$endif}
      Vcl.Graphics,
      Winapi.GDIPAPI,
      Winapi.GDIPOBJ,
@@ -1347,7 +1350,11 @@ end;
 //---------------------------------------------------------------------------
 function TWRenderer_GDIPlus.ICachedPenKeyComparer.GetHashCode(const pValue: ICachedPen): Integer;
 begin
-    Result := BobJenkinsHash(pValue.m_BaseBrushKey, SizeOf(NativeUInt), $ABCD);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(pValue.m_BaseBrushKey, SizeOf(NativeUInt), $ABCD);
+    {$else}
+        Result := BobJenkinsHash(pValue.m_BaseBrushKey, SizeOf(NativeUInt), $ABCD);
+    {$endif}
     Result := pValue.m_pStroke.GetHashCode(Result);
 end;
 //---------------------------------------------------------------------------
@@ -1423,15 +1430,27 @@ end;
 //---------------------------------------------------------------------------
 function TWRenderer_GDIPlus.ICachedFontKeyComparer.GetHashCode(const pValue: ICachedFont): Integer;
 begin
-    Result := BobJenkinsHash(pValue.m_Height,        SizeOf(Integer),                      $BA51);
-    Result := BobJenkinsHash(PChar(pValue.m_Name)^,  Length(pValue.m_Name) * SizeOf(Char), Result);
-    Result := BobJenkinsHash(pValue.m_Charset,       SizeOf(TFontCharset),                 Result);
-    Result := BobJenkinsHash(pValue.m_Style,         SizeOf(Integer),                      Result);
-    Result := BobJenkinsHash(pValue.m_Quality,       SizeOf(TFontQuality),                 Result);
-    Result := BobJenkinsHash(pValue.m_Orientation,   SizeOf(Integer),                      Result);
-    Result := BobJenkinsHash(pValue.m_Pitch,         SizeOf(TFontPitch),                   Result);
-    Result := BobJenkinsHash(pValue.m_PixelsPerInch, SizeOf(Integer),                      Result);
-    Result := BobJenkinsHash(pValue.m_hDC,           SizeOf(THandle),                      Result);
+    {$if CompilerVersion >= 32}
+        Result := THashBobJenkins.GetHashValue(pValue.m_Height,        SizeOf(Integer),                      $BA51);
+        Result := THashBobJenkins.GetHashValue(PChar(pValue.m_Name)^,  Length(pValue.m_Name) * SizeOf(Char), Result);
+        Result := THashBobJenkins.GetHashValue(pValue.m_Charset,       SizeOf(TFontCharset),                 Result);
+        Result := THashBobJenkins.GetHashValue(pValue.m_Style,         SizeOf(Integer),                      Result);
+        Result := THashBobJenkins.GetHashValue(pValue.m_Quality,       SizeOf(TFontQuality),                 Result);
+        Result := THashBobJenkins.GetHashValue(pValue.m_Orientation,   SizeOf(Integer),                      Result);
+        Result := THashBobJenkins.GetHashValue(pValue.m_Pitch,         SizeOf(TFontPitch),                   Result);
+        Result := THashBobJenkins.GetHashValue(pValue.m_PixelsPerInch, SizeOf(Integer),                      Result);
+        Result := THashBobJenkins.GetHashValue(pValue.m_hDC,           SizeOf(THandle),                      Result);
+    {$else}
+        Result := BobJenkinsHash(pValue.m_Height,        SizeOf(Integer),                      $BA51);
+        Result := BobJenkinsHash(PChar(pValue.m_Name)^,  Length(pValue.m_Name) * SizeOf(Char), Result);
+        Result := BobJenkinsHash(pValue.m_Charset,       SizeOf(TFontCharset),                 Result);
+        Result := BobJenkinsHash(pValue.m_Style,         SizeOf(Integer),                      Result);
+        Result := BobJenkinsHash(pValue.m_Quality,       SizeOf(TFontQuality),                 Result);
+        Result := BobJenkinsHash(pValue.m_Orientation,   SizeOf(Integer),                      Result);
+        Result := BobJenkinsHash(pValue.m_Pitch,         SizeOf(TFontPitch),                   Result);
+        Result := BobJenkinsHash(pValue.m_PixelsPerInch, SizeOf(Integer),                      Result);
+        Result := BobJenkinsHash(pValue.m_hDC,           SizeOf(THandle),                      Result);
+    {$endif}
 end;
 //---------------------------------------------------------------------------
 // TWRenderer_GDIPlus.ICachedGraphics
