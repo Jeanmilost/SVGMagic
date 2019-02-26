@@ -16,7 +16,7 @@ implementation
 //---------------------------------------------------------------------------
 initialization
 begin
-    TWLibraryVersion := TWVersion.Create(1, 0, 0, 1);
+    TWLibraryVersion := TWVersion.Create(1, 0, 0, 2);
 end;
 //---------------------------------------------------------------------------
 finalization

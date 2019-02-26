@@ -5,12 +5,14 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
   ClientHeight = 346
   ClientWidth = 293
   Color = clBtnFace
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object paButtons: TPanel
@@ -45,11 +47,12 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
       OnClick = btOkClick
     end
     object cbColorDlg: TColorBox
-      Left = 208
-      Top = -248
-      Width = 145
+      Left = 5
+      Top = 4
+      Width = 125
       Height = 22
       TabOrder = 2
+      Visible = False
     end
   end
   object paEditor: TPanel
@@ -60,19 +63,6 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    object lbImageList: TListBox
-      AlignWithMargins = True
-      Left = 116
-      Top = 3
-      Width = 174
-      Height = 309
-      Style = lbOwnerDrawFixed
-      Align = alClient
-      ItemHeight = 50
-      TabOrder = 0
-      OnClick = lbImageListClick
-      OnDrawItem = lbImageListDrawItem
-    end
     object paEditorButtons: TPanel
       Left = 0
       Top = 0
@@ -80,7 +70,7 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
       Height = 315
       Align = alLeft
       BevelOuter = bvNone
-      TabOrder = 1
+      TabOrder = 0
       object laOpacityTitle: TLabel
         AlignWithMargins = True
         Left = 3
@@ -91,9 +81,7 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
         Margins.Bottom = 0
         Align = alTop
         Caption = 'Opacity'
-        ExplicitLeft = -3
-        ExplicitTop = 285
-        ExplicitWidth = 113
+        Visible = False
       end
       object btAdd: TButton
         AlignWithMargins = True
@@ -127,7 +115,7 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
         Align = alTop
         Caption = 'Delete'
         Enabled = False
-        TabOrder = 2
+        TabOrder = 4
         OnClick = btDeleteClick
       end
       object btDeleteAll: TButton
@@ -138,32 +126,32 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
         Height = 25
         Align = alTop
         Caption = 'Delete all'
-        TabOrder = 3
+        TabOrder = 6
         OnClick = btDeleteAllClick
       end
-      object btMoveUp: TButton
+      object btMoveBefore: TButton
         AlignWithMargins = True
         Left = 3
         Top = 65
         Width = 107
         Height = 25
         Align = alTop
-        Caption = 'Move up'
+        Caption = 'Move before'
         Enabled = False
-        TabOrder = 4
-        OnClick = btMoveUpClick
+        TabOrder = 2
+        OnClick = btMoveBeforeClick
       end
-      object btMoveDown: TButton
+      object btMoveAfter: TButton
         AlignWithMargins = True
         Left = 3
         Top = 96
         Width = 107
         Height = 25
         Align = alTop
-        Caption = 'Move down'
+        Caption = 'Move after'
         Enabled = False
-        TabOrder = 5
-        OnClick = btMoveDownClick
+        TabOrder = 3
+        OnClick = btMoveAfterClick
       end
       object paColorKey: TPanel
         AlignWithMargins = True
@@ -174,7 +162,7 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
         Margins.Top = 15
         Align = alTop
         BevelOuter = bvNone
-        TabOrder = 6
+        TabOrder = 7
         object btColorKey: TButton
           Left = 0
           Top = 0
@@ -210,7 +198,7 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
         Align = alTop
         Caption = 'Save to file...'
         Enabled = False
-        TabOrder = 7
+        TabOrder = 5
         OnClick = btSaveToFileClick
       end
       object tbOpacity: TTrackBar
@@ -228,11 +216,33 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
         ShowSelRange = False
         TabOrder = 8
         TickStyle = tsNone
+        Visible = False
         OnChange = tbOpacityChange
-        ExplicitLeft = 0
-        ExplicitTop = 272
-        ExplicitWidth = 113
       end
+    end
+    object dgImageGrid: TDrawGrid
+      Left = 113
+      Top = 0
+      Width = 180
+      Height = 315
+      Align = alClient
+      BevelInner = bvNone
+      BevelOuter = bvNone
+      Color = clWhite
+      DefaultColWidth = 60
+      DefaultRowHeight = 50
+      DefaultDrawing = False
+      FixedColor = clWhite
+      FixedCols = 0
+      FixedRows = 0
+      Options = [goFixedVertLine, goFixedHorzLine, goThumbTracking]
+      ScrollBars = ssVertical
+      TabOrder = 1
+      OnClick = dgImageGridClick
+      OnDragDrop = dgImageGridDragDrop
+      OnDragOver = dgImageGridDragOver
+      OnDrawCell = dgImageGridDrawCell
+      OnMouseDown = dgImageGridMouseDown
     end
   end
   object odOpenDlg: TOpenDialog

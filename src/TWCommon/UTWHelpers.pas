@@ -28,6 +28,7 @@ uses System.TypInfo,
      Vcl.Imaging.GifImg,
      Vcl.Clipbrd,
      Vcl.Controls,
+     Vcl.Forms,
      Winapi.GDIPAPI,
      Winapi.GDIPObj,
      Winapi.Messages,
@@ -37,6 +38,9 @@ uses System.TypInfo,
      UTWCacheHit,
      UTWColor,
      UTWSmartPointer;
+
+     // to avoid users to explicitly have to link usp10 in their projects
+     {$hppemit '#pragma comment(lib, "usp10")'}
 
 type
     {**
@@ -1269,6 +1273,25 @@ type
          @returns(@true on success, otherwise @false)
         }
         class function TextTo(const text: UnicodeString): Boolean; static;
+    end;
+
+    {**
+     Helper class for VCL
+    }
+    TWVCLHelper = record
+        {**
+         Get form owning a control
+         @param(pControl Control for which owning form should be get)
+         @returns(Form owning control, nil if not found or on error)
+        }
+        class function GetParentForm(pControl: TControl): TCustomForm; static;
+
+        {**
+         Get closest parent owning a control
+         @param(pControl Control for which owning parent should be get)
+         @returns(classID Parent class identifier to find)
+        }
+        class function GetNextParent(pControl: TControl; classID: TClass): TObject; static;
     end;
 
     {**
@@ -5112,6 +5135,32 @@ end;
 class function TWClipboardHelper.TextTo(const text: UnicodeString): Boolean;
 begin
     Result := StringTo(CF_TEXT, text);
+end;
+//---------------------------------------------------------------------------
+// TWVCLHelper
+//---------------------------------------------------------------------------
+class function TWVCLHelper.GetParentForm(pControl: TControl): TCustomForm;
+begin
+    Result := GetNextParent(pControl, TCustomForm) as TCustomForm;
+end;
+//---------------------------------------------------------------------------
+class function TWVCLHelper.GetNextParent(pControl: TControl; classID: TClass): TObject;
+var
+    pParent: TControl;
+begin
+    pParent := pControl;
+
+    // navigate trough parents
+    while (Assigned(pParent)) do
+        // check if a form
+        if (pParent.InheritsFrom(classID)) then
+            // cast and return it
+            Exit(pParent)
+        else
+            pParent := pParent.Parent;
+
+    // none
+    Result := nil;
 end;
 //---------------------------------------------------------------------------
 // TWLogHelper
