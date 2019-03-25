@@ -2,7 +2,7 @@
  @abstract(@name provides a rasterizer that uses GDI+ to perform the painting of a Scalable Vector
            Graphics (SVG) image.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGGDIPlusRasterizer;
 
@@ -2165,22 +2165,24 @@ end;
         drawRect := rect.ToGpRectF;
 
         // check if security code is tampered
-        if ((Length(C_WMTM_Stamp) <> 56) or (Length(stamp) < 42) or ((codeCheck <> $6d712bd)
-                and (codeCheck <> $6566259)))
-        then
-        begin
-            // if tampered, paint a full white rect to kill the SVG painting
-            animation      := Default(TWSVGRasterizer.IAnimation);
-            pAnimationData := TWSmartPointer<IAnimationData>.Create();
-            svgPos         := CalculateFinalPos(pos, drawRect, scaleW, scaleH);
-            pMatrix        := TWSmartPointer<TGpMatrix>.Create();
-            ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+        {$ifdef CPUX64}
+            if ((Length(C_WMTM_Stamp) <> 56) or (Length(stamp) < 42) or (codeCheck <> $defc93e87eee0cd9)) then
+        {$else}
+            if ((Length(C_WMTM_Stamp) <> 56) or (Length(stamp) < 42) or (codeCheck <> $6d712bd)) then
+        {$endif}
+            begin
+                // if tampered, paint a full white rect to kill the SVG painting
+                animation      := Default(TWSVGRasterizer.IAnimation);
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+                svgPos         := CalculateFinalPos(pos, drawRect, scaleW, scaleH);
+                pMatrix        := TWSmartPointer<TGpMatrix>.Create();
+                ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
 
-            bgColor  := TWColor.Create(255, 0, 0, 255);
-            pBgBrush := TWSmartPointer<TGpBrush>.Create(bgColor.GetGDIPlusSolidBrush);
-            pGraphics.FillRectangle(pBgBrush, drawRect);
-            Exit;
-        end;
+                bgColor  := TWColor.Create(255, 255, 255, 255);
+                pBgBrush := TWSmartPointer<TGpBrush>.Create(bgColor.GetGDIPlusSolidBrush);
+                pGraphics.FillRectangle(pBgBrush, drawRect);
+                Exit;
+            end;
 
         // check if watermark should be drawn (this happen only if the trial code is used)
         if ((stamp[1] <> $6d) and (stamp[Length(stamp)] <> $6e)) then

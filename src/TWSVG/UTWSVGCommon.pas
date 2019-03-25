@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides the common classes and functions to work with the SVG data.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGCommon;
 
@@ -16,6 +16,7 @@ uses System.Rtti,
      {$else}
          Xml.XMLIntf,
      {$endif}
+     UTWMajorSettings,
      UTWHelpers,
      UTWSVGTags;
 
@@ -942,7 +943,7 @@ begin
         Exit(0.0);
 
     try
-        Result := StrToFloat(str);
+        Result := StrToFloat(str, g_InternationalFormatSettings);
     except
         on e: EConvertError do Exit(0.0);
     else

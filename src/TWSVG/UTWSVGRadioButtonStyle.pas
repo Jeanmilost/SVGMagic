@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides a class that allows the radiobutton glyphs to be overriden by SVG.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGRadioButtonStyle;
 
@@ -17,6 +17,7 @@ uses System.Classes,
      Winapi.Messages,
      Winapi.Windows,
      UTWColor,
+     UTWHelpers,
      UTWSVGGraphic,
      UTWSVGComponentStyle;
 
@@ -209,6 +210,18 @@ type
             }
             procedure HookControlsFromCollection(allowCleanup: Boolean = True;
                     pItemToIgnore: TCollectionItem = nil); virtual;
+
+            {**
+             Called when original component size should be saved (before any DPI change was applied)
+            }
+            procedure DoSaveOriginalSize; override;
+
+            {**
+             Called when size should be recalculated due to a DPI change
+             @param(oldDPI Previous pixels per inch value)
+             @param(newDPI New pixels per inch value)
+            }
+            procedure DoApplyDPIChange(oldDPI, newDPI: Integer); override;
 
             {**
              Check if advanced paint should be processed
@@ -490,13 +503,24 @@ begin
         Exit;
 
     // get several radiobutton measurements
-    menuCheckWidth  := GetSystemMetrics(SM_CXMENUCHECK);
-    menuCheckHeight := GetSystemMetrics(SM_CYMENUCHECK);
-    xInner          := GetSystemMetrics(SM_CXEDGE);
-    yInner          := GetSystemMetrics(SM_CYEDGE);
-    checkWidth      := menuCheckWidth  - xInner;
-    checkHeight     := menuCheckHeight - yInner;
-    yPos            := (pTarget.ClientHeight div 2) - (checkHeight div 2);
+    if (m_DPIScale) then
+    begin
+        menuCheckWidth  := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CXMENUCHECK), m_PixelsPerInch, m_RefPixelsPerInch);
+        menuCheckHeight := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CYMENUCHECK), m_PixelsPerInch, m_RefPixelsPerInch);
+        xInner          := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CXEDGE),      m_PixelsPerInch, m_RefPixelsPerInch);
+        yInner          := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CYEDGE),      m_PixelsPerInch, m_RefPixelsPerInch);
+    end
+    else
+    begin
+        menuCheckWidth  := GetSystemMetrics(SM_CXMENUCHECK);
+        menuCheckHeight := GetSystemMetrics(SM_CYMENUCHECK);
+        xInner          := GetSystemMetrics(SM_CXEDGE);
+        yInner          := GetSystemMetrics(SM_CYEDGE);
+    end;
+
+    checkWidth  := menuCheckWidth  - xInner;
+    checkHeight := menuCheckHeight - yInner;
+    yPos        := (pTarget.ClientHeight div 2) - (checkHeight div 2);
 
     // calculate the radiobutton rect
     if (((pTarget.Alignment = taLeftJustify) or (pTarget.BiDiMode = bdRightToLeft))
@@ -565,6 +589,14 @@ begin
     end;
 
     InvalidateAllTargets;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRadioButtonStyle.DoSaveOriginalSize;
+begin
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRadioButtonStyle.DoApplyDPIChange(oldDPI, newDPI: Integer);
+begin
 end;
 //---------------------------------------------------------------------------
 function TWSVGRadioButtonStyle.DoProcessAdvancedPaint(pTarget: TWinControl): Boolean;

@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides a class that allows component glyphs to be overriden by SVG.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGComponentStyle;
 
@@ -16,9 +16,7 @@ uses System.Classes,
      Winapi.Messages,
      Winapi.Windows,
      UTWMajorSettings,
-     {$IFDEF DEBUG}
-        UTWHelpers,
-     {$ENDIF}
+     UTWHelpers,
      UTWDesignPatterns,
      UTWAnimationTimer,
      UTWSmartPointer,
@@ -27,7 +25,22 @@ uses System.Classes,
      UTWSVGGraphic,
      UTWSVGFrameCalculator;
 
+const
+    //---------------------------------------------------------------------------
+    // Global constants
+    //---------------------------------------------------------------------------
+    C_TWSVGComponentStyle_Default_DPIScale = True;
+    //---------------------------------------------------------------------------
+
 type
+    {**
+     Called when component style detects a DPI change and should update his content
+     @param(oldDPI Old DPI value)
+     @param(newDPI New DPI value)
+     @returns(@true if event was handled and should no longer be considered, otherwise @false)
+    }
+    TWOnSVGComponentStyleDPIChanged = function(oldDPI, newDPI: Integer): Boolean of object;
+
     {**
      Component style
     }
@@ -154,13 +167,18 @@ type
                     pCustomData: Pointer): Boolean of object;
 
         private
-            m_pOwnerCtrl:        TControl;
-            m_Position:          NativeUInt;
-            m_Animate:           Boolean;
-            m_Enabled:           Boolean;
-            m_All:               Boolean;
-            m_fOldParentWndProc: TWndMethod;
-            m_fOnAnimate:        ITfSVGAnimateEvent;
+            m_pOwnerCtrl:                     TControl;
+            m_Position:                       NativeUInt;
+            m_Animate:                        Boolean;
+            m_Enabled:                        Boolean;
+            m_All:                            Boolean;
+            m_fOldParentWndProc:              TWndMethod;
+            m_fOnAnimate:                     ITfSVGAnimateEvent;
+            m_fOnSVGComponentStyleDPIChanged: TWOnSVGComponentStyleDPIChanged;
+
+            {$if CompilerVersion < 30}
+                m_fGetDpiForMonitor: TWGetDpiForMonitor;
+            {$endif}
 
             {**
              Get the library version
@@ -169,10 +187,49 @@ type
             function GetVersion: UnicodeString;
 
         protected
-            m_pHooks:       IWSVGComponentStyleHooks;
-            m_pOverlay:     Vcl.Graphics.TBitmap;
-            m_pCanvas:      TCanvas;
-            m_RestorePaint: Boolean;
+            m_pHooks:              IWSVGComponentStyleHooks;
+            m_pOverlay:            Vcl.Graphics.TBitmap;
+            m_pCanvas:             TCanvas;
+            m_ParentPixelsPerInch: Integer;
+            m_RefPixelsPerInch:    Integer;
+            m_PixelsPerInch:       Integer;
+            m_DPIScale:            Boolean;
+            m_RestorePaint:        Boolean;
+
+            {**
+             Called on application starts, after DFM files were read and applied
+            }
+            procedure Loaded; override;
+
+            {**
+             Set image list DPI scale
+             @param(value If @true, DPI scale is enabled, disabled otherwise)
+            }
+            procedure SetDPIScale(value: Boolean); virtual;
+
+            {**
+             Set image list pixels per inch
+             @param(value Pixels per inch value)
+            }
+            procedure SetPixelsPerInch(value: Integer); virtual;
+
+            {**
+             Check if pixels per inch value should be stored in DFM file
+             @returns(@true if value should be stored, otherwise @false)
+            }
+            function IsPixelsPerInchStored: Boolean; virtual;
+
+            {**
+             Called when original component size should be saved (before any DPI change was applied)
+            }
+            procedure DoSaveOriginalSize; virtual; abstract;
+
+            {**
+             Called when size should be recalculated due to a DPI change
+             @param(oldDPI Previous pixels per inch value)
+             @param(newDPI New pixels per inch value)
+            }
+            procedure DoApplyDPIChange(oldDPI, newDPI: Integer); virtual; abstract;
 
             {**
              Called while SVG animation is running
@@ -334,9 +391,24 @@ type
             property All: Boolean read m_All write SetAll default False;
 
             {**
+             Get or set if the image is scaled by the DPI value
+            }
+            property DPIScale: Boolean read m_DPIScale write SetDPIScale default C_TWSVGComponentStyle_Default_DPIScale;
+
+            {**
+             Get or set the pixels per inch value used to scale the image list content
+            }
+            property PixelsPerInch: Integer read m_PixelsPerInch write SetPixelsPerInch stored IsPixelsPerInchStored nodefault;
+
+            {**
              Get or set the OnAnimate event
             }
             property OnAnimate: ITfSVGAnimateEvent read m_fOnAnimate write m_fOnAnimate;
+
+            {**
+             Get or set OnSVGImageListDPIChanged event
+            }
+            property OnSVGComponentStyleDPIChanged: TWOnSVGComponentStyleDPIChanged read m_fOnSVGComponentStyleDPIChanged write m_fOnSVGComponentStyleDPIChanged;
     end;
 
     {**
@@ -585,20 +657,29 @@ end;
 // TWSVGComponentStyle
 //---------------------------------------------------------------------------
 constructor TWSVGComponentStyle.Create(pOwner: TComponent);
+{$if CompilerVersion < 30}
+    var
+        hSHCore: HMODULE;
+{$endif}
 begin
     inherited Create(pOwner);
 
-    m_pOwnerCtrl        := nil;
-    m_pHooks            := IWSVGComponentStyleHooks.Create;
-    m_pOverlay          := Vcl.Graphics.TBitmap.Create;
-    m_pCanvas           := TCanvas.Create;
-    m_Position          := 0;
-    m_Animate           := True;
-    m_Enabled           := True;
-    m_All               := False;
-    m_RestorePaint      := False;
-    m_fOldParentWndProc := nil;
-    m_fOnAnimate        := nil;
+    m_pOwnerCtrl                     := nil;
+    m_pHooks                         := IWSVGComponentStyleHooks.Create;
+    m_pOverlay                       := Vcl.Graphics.TBitmap.Create;
+    m_pCanvas                        := TCanvas.Create;
+    m_Position                       := 0;
+    m_Animate                        := True;
+    m_Enabled                        := True;
+    m_All                            := False;
+    m_RestorePaint                   := False;
+    m_RefPixelsPerInch               := TWVCLHelper.GetPixelsPerInchRef(pOwner);
+    m_ParentPixelsPerInch            := m_RefPixelsPerInch;
+    m_PixelsPerInch                  := m_RefPixelsPerInch;
+    m_DPIScale                       := C_TWSVGComponentStyle_Default_DPIScale;
+    m_fOnSVGComponentStyleDPIChanged := nil;
+    m_fOldParentWndProc              := nil;
+    m_fOnAnimate                     := nil;
 
     // attach to animation timer to receive time notifications (runtime only)
     if (not(csDesigning in ComponentState)) then
@@ -611,6 +692,16 @@ begin
         m_fOldParentWndProc     := m_pOwnerCtrl.WindowProc;
         m_pOwnerCtrl.WindowProc := ParentWndProc;
     end;
+
+    {$if CompilerVersion < 30}
+        hSHCore := GetModuleHandleA('shcore.dll');
+
+        // hook GetDpiForMonitor() function from shcore.dll
+        if (hSHCore <> 0) then
+            m_fGetDpiForMonitor := GetProcAddress(hSHCore, 'GetDpiForMonitor')
+        else
+            m_fGetDpiForMonitor := nil;
+    {$endif}
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGComponentStyle.Destroy;
@@ -628,6 +719,55 @@ begin
     FreeAndNil(m_pCanvas);
 
     inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.Loaded;
+begin
+    // update reference with the one defined by user
+    m_RefPixelsPerInch := m_PixelsPerInch;
+
+    // update pixels per inch to match with the current context
+    {$if CompilerVersion < 30}
+        m_PixelsPerInch := TWVCLHelper.GetCurrentPixelsPerInch(Owner, m_RefPixelsPerInch,
+                m_fGetDPIForMonitor);
+    {$else}
+        m_PixelsPerInch := TWVCLHelper.GetCurrentPixelsPerInch(Owner, m_RefPixelsPerInch);
+    {$endif}
+
+    // notify the children that the glyph reference size should be kept
+    DoSaveOriginalSize;
+
+    // request a change in the glyphs size
+    DoApplyDPIChange(m_RefPixelsPerInch, m_PixelsPerInch);
+
+    inherited Loaded;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.SetDPIScale(value: Boolean);
+begin
+    if (m_DPIScale = value) then
+        Exit;
+
+    m_DPIScale := value;
+
+    // request a change in the glyphs size
+    DoApplyDPIChange(m_RefPixelsPerInch, m_PixelsPerInch);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.SetPixelsPerInch(value: Integer);
+begin
+    if (m_PixelsPerInch = value) then
+        Exit;
+
+    m_PixelsPerInch := value;
+
+    // request a change in the glyphs size
+    DoApplyDPIChange(m_RefPixelsPerInch, m_PixelsPerInch);
+end;
+//---------------------------------------------------------------------------
+function TWSVGComponentStyle.IsPixelsPerInchStored: Boolean;
+begin
+    Result := (m_PixelsPerInch <> m_ParentPixelsPerInch);
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGComponentStyle.BeforeDestruction;
@@ -692,7 +832,6 @@ procedure TWSVGComponentStyle.FillBg(const rect: TRect; pTarget: TWinControl; pC
     begin
         Result := TWSVGStyleWinControlAccess(pControl).ParentBackground;
     end;
-
 var
     pParent:   TWinControl;
     pPageCtrl: TPageControl;
@@ -969,6 +1108,7 @@ end;
 procedure TWSVGComponentStyle.ParentWndProc(var message: TMessage);
 var
     pControl: TControl;
+    handled:  Boolean;
 begin
     {$IFDEF DEBUG}
         //TWLogHelper.LogToCompiler('ParentWndProc - ' + TWLogHelper.WinMsgToStr(Self, message));
@@ -991,6 +1131,22 @@ begin
                         DoAddTarget(pControl);
                 end;
             end;
+        end;
+
+        WM_DPICHANGED:
+        begin
+            handled := False;
+
+            // notify that DPI is changing
+            if (Assigned(m_fOnSVGComponentStyleDPIChanged)) then
+                handled := m_fOnSVGComponentStyleDPIChanged(m_PixelsPerInch, message.WParamLo);
+
+            // update pixels per inch to match with the current context
+            m_PixelsPerInch := message.WParamLo;
+
+            // request a change in the component size
+            if (not handled) then
+                DoApplyDPIChange(m_RefPixelsPerInch, m_PixelsPerInch);
         end;
     end;
 

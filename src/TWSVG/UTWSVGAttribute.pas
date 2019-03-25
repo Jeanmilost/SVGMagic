@@ -2,7 +2,7 @@
  @abstract(@name provides a generic class to parse the Scalable Vector Graphics (SVG) attributes. A
            SVG attribute may ontain one value (e.g. to='30') or a value list (e.g. to='360 20 20'))
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGAttribute;
 
@@ -11,6 +11,7 @@ interface
 uses System.TypInfo,
      System.RTTI,
      System.SysUtils,
+     UTWMajorSettings,
      UTWHelpers,
      UTWSVGCommon,
      UTWSVGTags,
@@ -268,7 +269,7 @@ begin
 
         case (kind) of
             tkInteger, tkInt64: valToConvert := StrToInt(value);
-            tkFloat:            valToConvert := StrToFloat(value);
+            tkFloat:            valToConvert := StrToFloat(value, g_InternationalFormatSettings);
         else
             raise Exception.CreateFmt('Unsupported type - %d', [Integer(kind)]);
         end;
@@ -288,7 +289,7 @@ begin
 
         case (kind) of
             tkInteger, tkInt64: valToConvert := StrToInt(value);
-            tkFloat:            valToConvert := StrToFloat(value);
+            tkFloat:            valToConvert := StrToFloat(value, g_InternationalFormatSettings);
         else
             raise Exception.CreateFmt('Unsupported type - %d', [Integer(kind)]);
         end;

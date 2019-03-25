@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides the classes to manipulate date and time.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWDateTime;
 
@@ -9,6 +9,7 @@ interface
 
 uses System.SysUtils,
      System.Math,
+     UTWMajorSettings,
      UTWSmartPointer,
      UTWHelpers;
 
@@ -617,7 +618,7 @@ begin
             end;
 
             // convert fractional value to float
-            fraction := StrToFloat(value);
+            fraction := StrToFloat(value, g_InternationalFormatSettings);
 
             // search for unit
             case (UnitToSMIL(smilUnit)) of

@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides an overridden image list that supports the SVG graphics.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGImageList;
 
@@ -16,9 +16,7 @@ uses System.SysUtils,
      Vcl.Forms,
      Winapi.Windows,
      Winapi.Messages,
-     {$if CompilerVersion < 33}
-        Winapi.MultiMon,
-     {$else}
+     {$if CompilerVersion >= 33}
         System.Messaging,
      {$endif}
      UTWMajorSettings,
@@ -26,28 +24,6 @@ uses System.SysUtils,
      UTWHelpers,
      UTWSmartPointer,
      UTWSVGGraphic;
-
-// multiple monitors API doesn't exists for RAD Studio versions before 10.0 Seattle, so add it if needed
-{$if CompilerVersion < 30}
-    const
-        // redeclare the WM_DPICHANGED to keep compatibility with XE8 and earlier
-        {$EXTERNALSYM WM_DPICHANGED}
-        WM_DPICHANGED = $02E0;
-
-    type
-        MONITOR_DPI_TYPE =
-        (
-            MDT_EFFECTIVE_DPI = 0,
-            MDT_ANGULAR_DPI   = 1,
-            MDT_RAW_DPI       = 2,
-            MDT_DEFAULT       = MDT_EFFECTIVE_DPI
-        );
-
-        TMonitorDpiType = MONITOR_DPI_TYPE;
-
-        TWGetDpiForMonitor = function(hMonitor: HMONITOR; dpiType: TMonitorDpiType; out dpiX: UINT;
-                out dpiY: UINT): HRESULT; stdcall;
-{$endif}
 
 type
     {**
@@ -123,19 +99,6 @@ type
             function GetVersion: UnicodeString;
 
             {**
-             Get pixels per inch reference (i.e declared in design time)
-             @param(pOwner Component owning this image list)
-             @returns(Pixels per inch)
-            }
-            function GetPixelsPerInchRef(pOwner: TComponent): Integer;
-
-            {**
-             Get pixels per inch on current running app monitor
-             @returns(Pixels per inch)
-            }
-            function GetCurrentPixelsPerInch: Integer;
-
-            {**
              Backup the SVG list content in a temporary array
             }
             procedure Backup;
@@ -180,13 +143,6 @@ type
              @returns(@true if value should be stored, otherwise @false)
             }
             function IsPixelsPerInchStored: Boolean; virtual;
-
-            {**
-             Scale value based on DPI
-             @param(value Value to scale)
-             @returns(Scaled value)
-            }
-            function ScaleByDPI(value: Integer): Integer; virtual;
 
             {**
              Rasterize the SVG onto a bitmap image and add or insert it inside the base image list
@@ -455,7 +411,7 @@ begin
     m_pPictures                 := TObjectList<IWPictureItem>.Create;
     m_RefWidth                  := Width;
     m_RefHeight                 := Height;
-    m_RefPixelsPerInch          := GetPixelsPerInchRef(pOwner);
+    m_RefPixelsPerInch          := TWVCLHelper.GetPixelsPerInchRef(pOwner);
     m_ParentPixelsPerInch       := m_RefPixelsPerInch;
     m_PixelsPerInch             := m_RefPixelsPerInch;
     m_DPIScale                  := False;
@@ -514,7 +470,7 @@ begin
     m_pPictures                 := TObjectList<IWPictureItem>.Create;
     m_RefWidth                  := Width;
     m_RefHeight                 := Height;
-    m_RefPixelsPerInch          := GetPixelsPerInchRef(nil);
+    m_RefPixelsPerInch          := TWVCLHelper.GetPixelsPerInchRef(nil);
     m_ParentPixelsPerInch       := m_RefPixelsPerInch;
     m_PixelsPerInch             := m_RefPixelsPerInch;
     m_DPIScale                  := False;
@@ -573,89 +529,6 @@ begin
     Result := TWLibraryVersion.ToStr;
 end;
 //---------------------------------------------------------------------------
-function TWSVGImageList.GetPixelsPerInchRef(pOwner: TComponent): Integer;
-var
-    pParentForm: TCustomForm;
-begin
-    if (Assigned(pOwner) and (pOwner is TControl)) then
-    begin
-        // get the closest parent form
-        pParentForm := TWVCLHelper.GetParentForm(pOwner as TControl);
-
-        // if parent form was found, get his pixels per inch value
-        if (Assigned(pParentForm) and (pParentForm is TForm)) then
-            Exit((pParentForm as TForm).PixelsPerInch);
-    end;
-
-    // hardcoded PPI if no other available
-    Result := 96;
-end;
-//---------------------------------------------------------------------------
-function TWSVGImageList.GetCurrentPixelsPerInch: Integer;
-var
-    {$if CompilerVersion < 30}
-        hDCt:       HDC;
-        dpi:        Integer;
-        xDpi, yDpi: UINT;
-    {$endif}
-
-    pParentForm: TCustomForm;
-    pMonitor:    TMonitor;
-begin
-    pMonitor := nil;
-
-    // get monitor on which application is
-    if (Assigned(Owner) and (Owner is TControl)) then
-    begin
-        pParentForm := TWVCLHelper.GetParentForm(Owner as TControl);
-
-        if (Assigned(pParentForm)) then
-            pMonitor := Screen.MonitorFromWindow(pParentForm.Handle);
-    end
-    else
-    if (Assigned(Application) and (Application.ActiveFormHandle <> 0)) then
-        pMonitor := Screen.MonitorFromWindow(Application.ActiveFormHandle);
-
-    // get monitor pixels per inch
-    if (Assigned(pMonitor)) then
-        {$if CompilerVersion < 30}
-        begin
-            dpi := m_RefPixelsPerInch;
-
-            if (CheckWin32Version(6, 3)) then
-            begin
-                if (Assigned(m_fGetDpiForMonitor) and (m_fGetDpiForMonitor(pMonitor.Handle,
-                        TMonitorDpiType.MDT_EFFECTIVE_DPI, yDpi, xDpi) = S_OK))
-                then
-                    dpi := yDpi
-            end
-            else
-            begin
-                hDCt := 0;
-
-                try
-                    hDCt := GetDC(0);
-                    dpi  := GetDeviceCaps(hDCt, LOGPIXELSY);
-                finally
-                    if (hDCt <> 0) then
-                        ReleaseDC(0, hDCt);
-                end;
-            end;
-
-            Exit(dpi);
-        end;
-        {$else}
-            Exit(pMonitor.PixelsPerInch);
-        {$endif}
-
-    // get screen pixels per inch
-    if (Assigned(Screen)) then
-        Exit(Screen.PixelsPerInch);
-
-    // could get nothing, return default value
-    Result := m_RefPixelsPerInch;
-end;
-//---------------------------------------------------------------------------
 procedure TWSVGImageList.Backup;
 var
     i: Integer;
@@ -694,7 +567,12 @@ begin
     m_RefPixelsPerInch := m_PixelsPerInch;
 
     // update pixels per inch to match with the current context
-    m_PixelsPerInch := GetCurrentPixelsPerInch;
+    {$if CompilerVersion < 30}
+        m_PixelsPerInch := TWVCLHelper.GetCurrentPixelsPerInch(Owner, m_RefPixelsPerInch,
+                m_fGetDPIForMonitor);
+    {$else}
+        m_PixelsPerInch := TWVCLHelper.GetCurrentPixelsPerInch(Owner, m_RefPixelsPerInch);
+    {$endif}
 
     // set user defined size. NOTE calling SetSize() will keep the reference width and height, and
     // will also scale these values in relation to current DPI
@@ -709,7 +587,7 @@ var
 begin
     // scale height in relation to currently selected DPI value
     if (m_DPIScale) then
-        w := ScaleByDPI(value)
+        w := TWVCLHelper.ScaleByDPI(value, m_PixelsPerInch, m_RefPixelsPerInch)
     else
         w := value;
 
@@ -733,7 +611,7 @@ var
 begin
     // scale height in relation to currently selected DPI value
     if (m_DPIScale) then
-        h := ScaleByDPI(value)
+        h := TWVCLHelper.ScaleByDPI(value, m_PixelsPerInch, m_RefPixelsPerInch)
     else
         h := value;
 
@@ -777,14 +655,6 @@ end;
 function TWSVGImageList.IsPixelsPerInchStored: Boolean;
 begin
     Result := (m_PixelsPerInch <> m_ParentPixelsPerInch);
-end;
-//---------------------------------------------------------------------------
-function TWSVGImageList.ScaleByDPI(value: Integer): Integer;
-var
-    scaleFactor: Integer;
-begin
-    scaleFactor := MulDiv(m_PixelsPerInch, 100, m_RefPixelsPerInch);
-    Result      := MulDiv(value, scaleFactor, 100);
 end;
 //---------------------------------------------------------------------------
 function TWSVGImageList.RasterizeAndAssign(index: Integer; pSVG: TWSVGGraphic; colorKey: TColor;
@@ -1209,8 +1079,8 @@ begin
     // scale size in relation to currently selected DPI value
     if (m_DPIScale) then
     begin
-        w := ScaleByDPI(newWidth);
-        h := ScaleByDPI(newHeight);
+        w := TWVCLHelper.ScaleByDPI(newWidth,  m_PixelsPerInch, m_RefPixelsPerInch);
+        h := TWVCLHelper.ScaleByDPI(newHeight, m_PixelsPerInch, m_RefPixelsPerInch);
     end
     else
     begin

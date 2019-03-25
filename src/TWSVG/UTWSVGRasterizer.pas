@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides a rasterizer to perform the painting of a Scalable Vector Graphics (SVG) image.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGRasterizer;
 

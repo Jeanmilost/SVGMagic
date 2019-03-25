@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides several tools to manage gradient and generate GDI+ brushes.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWGDIPlusGradient;
 

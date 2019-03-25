@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides a global animation timer based on the VCL TTimer control.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWAnimationTimer;
 

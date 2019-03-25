@@ -2,7 +2,7 @@
  @abstract(@name contains the Scalable Vector Graphics (SVG) animations. An animation describes how
            the SVG content should evolve in the time.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGAnimation;
 
@@ -15,6 +15,7 @@ uses System.SysUtils,
      {$else}
          Xml.XMLIntf,
      {$endif}
+     UTWMajorSettings,
      UTWHelpers,
      UTWSVGTags,
      UTWSVGCommon,
@@ -1247,7 +1248,7 @@ begin
     end;
 
     // calculate complete and partial animation cycle
-    fraction       := StrToFloat(data);
+    fraction       := StrToFloat(data, g_InternationalFormatSettings);
     m_Count        := Floor(fraction);
     m_PartialCount := Trunc((fraction - m_Count) * 100.0);
     m_Indefinite   := False;

@@ -2,7 +2,7 @@
  @abstract(@name provides an editor dialog box to deal with the SVG images contained inside a SVG
            image list.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGImageListEditorDlg;
 

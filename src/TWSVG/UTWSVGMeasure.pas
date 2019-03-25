@@ -2,7 +2,7 @@
  @abstract(@name provides a generic class to read the Scalable Vector Graphics (SVG) value with unit,
                  as e.g. x="0px")
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGMeasure;
 
@@ -11,6 +11,7 @@ interface
 uses System.TypInfo,
      System.RTTI,
      System.SysUtils,
+     UTWMajorSettings,
      UTWGenericNumber,
      UTWHelpers,
      UTWSVGTags,
@@ -273,7 +274,7 @@ begin
     // get value
     case (kind) of
         tkInteger, tkInt64: m_Value := StrToInt(value);
-        tkFloat:            m_Value := StrToFloat(value);
+        tkFloat:            m_Value := StrToFloat(value, g_InternationalFormatSettings);
     else
         raise Exception.CreateFmt('Unsupported type - %d', [Integer(kind)]);
     end;

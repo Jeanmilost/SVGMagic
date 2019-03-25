@@ -3,7 +3,7 @@
            platforms and librairies, like e.g. Windows, VCL, GDI, GDI+, ... @name provides also
            several useful functions to work with the color, like blender or grayscale functions)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWColor;
 
@@ -27,7 +27,8 @@ uses System.SysUtils,
      {$ifdef MSWINDOWS}
          Winapi.Windows,
      {$endif}
-     UTWTypes;
+     UTWTypes,
+     UTWMajorSettings;
 
 const
     // stupidly no doc explain which are the range of the returned hsl values, that are between
@@ -1731,7 +1732,7 @@ var
         if (percent) then
         begin
             maxValF := maxVal;
-            Result  := Max(Round((StrToFloat(value) * maxValF) / 100.0), maxVal)
+            Result  := Max(Round((StrToFloat(value, g_InternationalFormatSettings) * maxValF) / 100.0), maxVal)
         end
         else
             Result := StrToInt(value);
@@ -1809,7 +1810,7 @@ begin
                         else
                             m_Blue := ToValue(value, percent, C_TWColor_Max_RGBA_Value);
 
-                    3: SetOpacity(Round(StrToFloat(value) * 100.0));
+                    3: SetOpacity(Round(StrToFloat(value, g_InternationalFormatSettings) * 100.0));
                 end;
 
                 // found one value, increment value count and reset the variables to read the next
@@ -1843,7 +1844,7 @@ begin
                 else
                     m_Blue := ToValue(value, percent, C_TWColor_Max_RGBA_Value);
 
-            3: SetOpacity(Round(StrToFloat(value) * 100.0));
+            3: SetOpacity(Round(StrToFloat(value, g_InternationalFormatSettings) * 100.0));
         end;
 
     // is a hsl function?

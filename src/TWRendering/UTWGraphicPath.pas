@@ -2,7 +2,7 @@
  @abstract(@name provides the classes to convert a generic graphic path to a graphic path belonging
            to a graphic library, like e.g. GDI, GDI+, ...)
  @author(JMR)
- @created(2016-2018, by Ursa Minor)
+ @created(2016-2019, by Ursa Minor)
 }
 unit UTWGraphicPath;
 

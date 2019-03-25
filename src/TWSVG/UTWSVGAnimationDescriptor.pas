@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides classes to describe the animations.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGAnimationDescriptor;
 

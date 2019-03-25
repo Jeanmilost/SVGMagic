@@ -2,7 +2,7 @@
  @abstract(@name provides an overridden image that supports the SVG graphics in a such manner that
            the animations are taken into account internally.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGImage;
 

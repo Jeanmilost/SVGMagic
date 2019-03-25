@@ -2,7 +2,7 @@
  @abstract(@name provides a smart pointer. A smart pointer is a class that auto-deletes an object
            instance when it becomes out of scope (similar to std::auto_ptr).)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSmartPointer;
 

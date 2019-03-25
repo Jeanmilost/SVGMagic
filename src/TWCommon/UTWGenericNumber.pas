@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides a class to work with numbers (real, integer, ...) in a generic way.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWGenericNumber;
 

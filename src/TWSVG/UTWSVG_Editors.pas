@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides the editors required to edit the advanced TWSVG properties.)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVG_Editors;
 

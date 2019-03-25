@@ -2,7 +2,7 @@
  @abstract(@name provides several helper classes to set up generic tasks for mathematics, file
            management, ..., that the VCL/RTL does not support.)
  @author(JMR)
- @created(2016-2018, by Ursa Minor
+ @created(2016-2019, by Ursa Minor)
 }
 unit UTWHelpers;
 
@@ -29,6 +29,9 @@ uses System.TypInfo,
      Vcl.Clipbrd,
      Vcl.Controls,
      Vcl.Forms,
+     {$if CompilerVersion < 33}
+        Winapi.MultiMon,
+     {$endif}
      Winapi.GDIPAPI,
      Winapi.GDIPObj,
      Winapi.Messages,
@@ -41,6 +44,28 @@ uses System.TypInfo,
 
      // to avoid users to explicitly have to link usp10 in their projects
      {$hppemit '#pragma comment(lib, "usp10")'}
+
+// multiple monitors API doesn't exists for RAD Studio versions before 10.0 Seattle, so add it if needed
+{$if CompilerVersion < 30}
+    const
+        // redeclare the WM_DPICHANGED to keep compatibility with XE8 and earlier
+        {$EXTERNALSYM WM_DPICHANGED}
+        WM_DPICHANGED = $02E0;
+
+    type
+        MONITOR_DPI_TYPE =
+        (
+            MDT_EFFECTIVE_DPI = 0,
+            MDT_ANGULAR_DPI   = 1,
+            MDT_RAW_DPI       = 2,
+            MDT_DEFAULT       = MDT_EFFECTIVE_DPI
+        );
+
+        TMonitorDpiType = MONITOR_DPI_TYPE;
+
+        TWGetDpiForMonitor = function(hMonitor: HMONITOR; dpiType: TMonitorDpiType; out dpiX: UINT;
+                out dpiY: UINT): HRESULT; stdcall;
+{$endif}
 
 type
     {**
@@ -278,6 +303,9 @@ type
          @returns(@true if float/double was read from string, @false if contained none)
          @br @bold(NOTE) Function was implemented as performance alternative to string stream and
                          it 2x - 3x faster
+         @br @bold(NOTE) This function should be only used with non localized strings (i.e for which
+                         separators are compatible with EN language) because the separators defined
+                         in the computer locale will be ignored, and only the EN version will be used
         }
         class function ReadFloat<TFlt, TInt>(const str: UnicodeString; var pos: NativeInt; var resVal: TFlt): Boolean; overload; static;
         class function ReadFloat(const str: UnicodeString; var pos: NativeInt; var resVal: Single): Boolean; overload; static;
@@ -1292,6 +1320,37 @@ type
          @returns(classID Parent class identifier to find)
         }
         class function GetNextParent(pControl: TControl; classID: TClass): TObject; static;
+
+        {**
+         Get pixels per inch reference (i.e declared in design time)
+         @param(pOwner Component owning this image list)
+         @returns(Pixels per inch)
+        }
+        class function GetPixelsPerInchRef(pOwner: TComponent): Integer; static;
+
+        {**
+         Get pixels per inch on current running app monitor
+         @param(pOwner Component owner for which the current DPI should be get)
+         @param(refDPI Pixels per inch reference, i.e DPI at which interface was designed)
+         @param(fGetDpiForMonitor Get DPI for monitor callback to call)
+         @returns(Pixels per inch)
+        }
+        {$if CompilerVersion < 30}
+            class function GetCurrentPixelsPerInch(pOwner: TComponent;
+                    refDPI: Integer; fGetDpiForMonitor: TWGetDpiForMonitor): Integer; static;
+        {$else}
+            class function GetCurrentPixelsPerInch(pOwner: TComponent;
+                    refDPI: Integer): Integer; static;
+        {$endif}
+
+        {**
+         Scale value based on DPI
+         @param(value Value to scale)
+         @param(dpi Current pixels per inch value)
+         @param(refDPI Pixels per inch reference, i.e DPI at which interface was designed)
+         @returns(Scaled value)
+        }
+        class function ScaleByDPI(value, dpi, refDPI: Integer): Integer; static;
     end;
 
     {**
@@ -5161,6 +5220,103 @@ begin
 
     // none
     Result := nil;
+end;
+//---------------------------------------------------------------------------
+class function TWVCLHelper.GetPixelsPerInchRef(pOwner: TComponent): Integer;
+var
+    pParentForm: TCustomForm;
+begin
+    if (Assigned(pOwner) and (pOwner is TControl)) then
+    begin
+        // get the closest parent form
+        pParentForm := TWVCLHelper.GetParentForm(pOwner as TControl);
+
+        // if parent form was found, get his pixels per inch value
+        if (Assigned(pParentForm) and (pParentForm is TForm)) then
+            Exit((pParentForm as TForm).PixelsPerInch);
+    end;
+
+    // hardcoded PPI if no other available
+    Result := 96;
+end;
+//---------------------------------------------------------------------------
+{$if CompilerVersion < 30}
+    class function TWVCLHelper.GetCurrentPixelsPerInch(pOwner: TComponent;
+            refDPI: Integer; fGetDpiForMonitor: TWGetDpiForMonitor): Integer;
+{$else}
+    class function TWVCLHelper.GetCurrentPixelsPerInch(pOwner: TComponent;
+            refDPI: Integer): Integer;
+{$endif}
+var
+    {$if CompilerVersion < 30}
+        hDCt:       HDC;
+        dpi:        Integer;
+        xDpi, yDpi: UINT;
+    {$endif}
+
+    pParentForm: TCustomForm;
+    pMonitor:    TMonitor;
+begin
+    pMonitor := nil;
+
+    // get monitor on which application is
+    if (Assigned(pOwner) and (pOwner is TControl)) then
+    begin
+        pParentForm := TWVCLHelper.GetParentForm(pOwner as TControl);
+
+        if (Assigned(pParentForm)) then
+            pMonitor := Screen.MonitorFromWindow(pParentForm.Handle);
+    end
+    else
+    if (Assigned(Application) and (Application.ActiveFormHandle <> 0)) then
+        pMonitor := Screen.MonitorFromWindow(Application.ActiveFormHandle);
+
+    // get monitor pixels per inch
+    if (Assigned(pMonitor)) then
+        {$if CompilerVersion < 30}
+            begin
+                dpi := refDPI;
+
+                if (CheckWin32Version(6, 3)) then
+                begin
+                    if (Assigned(fGetDpiForMonitor) and (fGetDpiForMonitor(pMonitor.Handle,
+                            TMonitorDpiType.MDT_EFFECTIVE_DPI, yDpi, xDpi) = S_OK))
+                    then
+                        dpi := yDpi
+                end
+                else
+                begin
+                    hDCt := 0;
+
+                    try
+                        hDCt := GetDC(0);
+                        dpi  := GetDeviceCaps(hDCt, LOGPIXELSY);
+                    finally
+                        if (hDCt <> 0) then
+                            ReleaseDC(0, hDCt);
+                    end;
+                end;
+
+                Exit(dpi);
+            end;
+        {$else}
+            Exit(pMonitor.PixelsPerInch);
+        {$endif}
+
+    // get screen pixels per inch
+    if (Assigned(Screen)) then
+        Exit(Screen.PixelsPerInch);
+
+    // could get nothing, return default value
+    Result := refDPI;
+end;
+//---------------------------------------------------------------------------
+class function TWVCLHelper.ScaleByDPI(value, dpi, refDPI: Integer): Integer;
+var
+    scaleFactor: Integer;
+begin
+    scaleFactor := MulDiv(dpi, 100, refDPI);
+    Result      := MulDiv(value, scaleFactor, 100);
 end;
 //---------------------------------------------------------------------------
 // TWLogHelper

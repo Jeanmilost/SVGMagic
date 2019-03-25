@@ -2,7 +2,7 @@
  @abstract(@name contains the Scalable Vector Graphics (SVG) shapes. A SVG shape may be a path, a
            circle, a polygon, ...)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGElements;
 

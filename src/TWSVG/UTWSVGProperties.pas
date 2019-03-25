@@ -2,7 +2,7 @@
  @abstract(@name provides the common properties that can be found in a SVG, like e.g. fill and
            strokes, matrices, ...)
  @author(JMR)
- @created(2016-2018 by Ursa Minor)
+ @created(2016-2019 by Ursa Minor)
 }
 unit UTWSVGProperties;
 
@@ -12,6 +12,7 @@ uses System.Classes,
      System.SysUtils,
      System.Math,
      Vcl.Graphics,
+     UTWMajorSettings,
      UTWColor,
      UTWStandardColor,
      UTWMatrix,
@@ -938,10 +939,10 @@ begin
     if (pStrings.Count <> 4) then
         Exit(False);
 
-    m_X      := StrToFloat(pStrings[0]);
-    m_Y      := StrToFloat(pStrings[1]);
-    m_Width  := StrToFloat(pStrings[2]);
-    m_Height := StrToFloat(pStrings[3]);
+    m_X      := StrToFloat(pStrings[0], g_InternationalFormatSettings);
+    m_Y      := StrToFloat(pStrings[1], g_InternationalFormatSettings);
+    m_Width  := StrToFloat(pStrings[2], g_InternationalFormatSettings);
+    m_Height := StrToFloat(pStrings[3], g_InternationalFormatSettings);
 
     Result := True;
 end;
@@ -1904,10 +1905,10 @@ begin
     if (pStrings.Count <> 4) then
         Exit(False);
 
-    m_X      := StrToFloat(pStrings[0]);
-    m_Y      := StrToFloat(pStrings[1]);
-    m_Width  := StrToFloat(pStrings[2]);
-    m_Height := StrToFloat(pStrings[3]);
+    m_X      := StrToFloat(pStrings[0], g_InternationalFormatSettings);
+    m_Y      := StrToFloat(pStrings[1], g_InternationalFormatSettings);
+    m_Width  := StrToFloat(pStrings[2], g_InternationalFormatSettings);
+    m_Height := StrToFloat(pStrings[3], g_InternationalFormatSettings);
 
     Result := True;
 end;
