@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGImage: Class TWSVGImage</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGImage"></span><h1 class="cio">Class TWSVGImage</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalCRs">Internal Classes and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGImage.html">UTWSVGImage</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGImage = class(TImage, <a class="normal" href="UTWDesignPatterns.IWObserver.html">IWObserver</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Image that supports animated SVG graphics</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TImage</li>
+<li class="thisitem">TWSVGImage</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalCRs"></span><h3 class="summary">Internal Classes and Records</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a></b> = class(TPersistent)</code></td>
+</tr>
+</table>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGImage.TWSVGImage.html#ITfSVGAnimateEvent">ITfSVGAnimateEvent</a></b> = function (pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGImage.TWSVGImage.html#Create">Create</a></b>(pOwner: TComponent); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGImage.TWSVGImage.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImage.TWSVGImage.html#GetFrameCount">GetFrameCount</a></b>: Double; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImage.TWSVGImage.html#DoAnimate">DoAnimate</a></b>(pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImage.TWSVGImage.html#DoGetFrameCount">DoGetFrameCount</a></b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a>): Cardinal; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.html#SetFrameCount">SetFrameCount</a></b>(frameCount: Double); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.html#CalculateNextFrame">CalculateNextFrame</a></b>(pPicture: TPicture; pFrameCalculator: <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html">TWSVGFrameCalculator</a>; pAnimProps: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a>); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.html#DoSetFrameCount">DoSetFrameCount</a></b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a>; frameCount: Cardinal); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.html#OnNotified">OnNotified</a></b>(message: <a  href="UTWDesignPatterns.TWMessage.html">TWMessage</a>); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.html#OnPictureChange">OnPictureChange</a></b>(pSender: TObject); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.html#OnProcessAnimation">OnProcessAnimation</a></b>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.html#RunAnimation">RunAnimation</a></b>(pPicture: TPicture; pFrameCalculator: <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html">TWSVGFrameCalculator</a>); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.html#SetAnimate">SetAnimate</a></b>(pProps: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a>; value: Boolean); virtual;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImage.TWSVGImage.html#Animation">Animation</a></b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a> read m_pAnimationProps write m_pAnimationProps;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImage.TWSVGImage.html#OnAnimate">OnAnimate</a></b>: <a  href="UTWSVGImage.TWSVGImage.html#ITfSVGAnimateEvent">ITfSVGAnimateEvent</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImage.TWSVGImage.html#Version">Version</a></b>: UnicodeString read GetVersion;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="ITfSVGAnimateEvent"></span><code><b>ITfSVGAnimateEvent</b> = function (pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called when a SVG is about to be animated    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Event sender</dd>
+<dt>pAnimDesc</dt>
+<dd>Animation description</dd>
+<dt>pCustomData</dt>
+<dd>Custom data</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if animation can continue, otherwise <code>False</code></p></td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pOwner: TComponent); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOwner</dt>
+<dd>Component owner</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetFrameCount"></span><code>function <b>GetFrameCount</b>: Double; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
+<h6 class="description_section">Returns</h6>
+<p class="return">The frame count</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoAnimate"></span><code>function <b>DoAnimate</b>(pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called while SVG animation is running    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Event sender</dd>
+<dt>pAnimDesc</dt>
+<dd>Animation description</dd>
+<dt>pCustomData</dt>
+<dd>Custom data</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if animation can continue, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoGetFrameCount"></span><code>function <b>DoGetFrameCount</b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a>): Cardinal; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called when the frame count should be get from properties  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Sender for which the frame count should be get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">The frame count</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetFrameCount"></span><code>procedure <b>SetFrameCount</b>(frameCount: Double); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set the frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>frameCount</dt>
+<dd>Frame count</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="CalculateNextFrame"></span><code>procedure <b>CalculateNextFrame</b>(pPicture: TPicture; pFrameCalculator: <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html">TWSVGFrameCalculator</a>; pAnimProps: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Calculate the next animation frame   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pPicture</dt>
+<dd>Picture for which next animation should be calculated</dd>
+<dt>pFrameCalculator</dt>
+<dd>Frame calculator linked with the picture</dd>
+<dt>pAnimProps</dt>
+<dd>Animation properties</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoSetFrameCount"></span><code>procedure <b>DoSetFrameCount</b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a>; frameCount: Cardinal); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called when the frame count should be set to properties  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Sender for which the frame count should be set</dd>
+<dt>frameCount</dt>
+<dd>Frame count</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="OnNotified"></span><code>procedure <b>OnNotified</b>(message: <a  href="UTWDesignPatterns.TWMessage.html">TWMessage</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called when subject send a notification to the observer </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>message</dt>
+<dd>Notification message</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="OnPictureChange"></span><code>procedure <b>OnPictureChange</b>(pSender: TObject); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called when the internal picture changed </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Event sender</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="OnProcessAnimation"></span><code>procedure <b>OnProcessAnimation</b>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called when next animation frame should be processed</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="RunAnimation"></span><code>procedure <b>RunAnimation</b>(pPicture: TPicture; pFrameCalculator: <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html">TWSVGFrameCalculator</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if animation can be run, run it if yes  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pPicture</dt>
+<dd>Picture for which next animation should be calculated</dd>
+<dt>pFrameCalculator</dt>
+<dd>Frame calculator linked with the picture</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetAnimate"></span><code>procedure <b>SetAnimate</b>(pProps: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a>; value: Boolean); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Enable or disable the animation  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pProps</dt>
+<dd>Animation properties in which animate value changed</dd>
+<dt>value</dt>
+<dd>If <code>True</code> the animation will be enabled, disabled otherwise</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="Animation"></span><code>property <b>Animation</b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">IAnimationProps</a> read m_pAnimationProps write m_pAnimationProps;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the animation properties</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="OnAnimate"></span><code>property <b>OnAnimate</b>: <a  href="UTWSVGImage.TWSVGImage.html#ITfSVGAnimateEvent">ITfSVGAnimateEvent</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the OnAnimate event</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="Version"></span><code>property <b>Version</b>: UnicodeString read GetVersion;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the library version number</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

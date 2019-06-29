@@ -75,7 +75,7 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
         AlignWithMargins = True
         Left = 3
         Top = 272
-        Width = 107
+        Width = 37
         Height = 13
         Margins.Top = 0
         Margins.Bottom = 0

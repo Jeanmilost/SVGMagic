@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGItems: Class TWSVGItem</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGItem"></span><h1 class="cio">Class TWSVGItem</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGItems.html">UTWSVGItems</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGItem = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Scalable Vector Graphics (SVG) item</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TWSVGItem</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-Fields"></span><h3 class="summary">Fields</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGItems.TWSVGItem.html#m_pOptions">m_pOptions</a></b>: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGItems.TWSVGItem.html#Create">Create</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGItems.TWSVGItem.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGItems.TWSVGItem.html#Print">Print</a></b>(margin: Cardinal): UnicodeString; virtual; abstract;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGItems.TWSVGItem.html#ToXml">ToXml</a></b>: UnicodeString; virtual; abstract;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGItems.TWSVGItem.html#Assign">Assign</a></b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGItems.TWSVGItem.html#Clear">Clear</a></b>; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGItems.TWSVGItem.html#Log">Log</a></b>(margin: Cardinal); virtual; abstract;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGItems.TWSVGItem.html#ItemID">ItemID</a></b>: UnicodeString read m_ID write m_ID;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGItems.TWSVGItem.html#ItemName">ItemName</a></b>: UnicodeString read m_Name write m_Name;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGItems.TWSVGItem.html#Options">Options</a></b>: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a> read <a  href="UTWSVGItems.TWSVGItem.html#m_pOptions">m_pOptions</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGItems.TWSVGItem.html#Parent">Parent</a></b>: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a> read m_pParent;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Fields</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_pOptions"></span><code><b>m_pOptions</b>: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pParent</dt>
+<dd>Parent item, orphan or root if <code>Nil</code></dd>
+<dt>pOptions</dt>
+<dd>SVG options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Print"></span><code>function <b>Print</b>(margin: Cardinal): UnicodeString; virtual; abstract;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Print content to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Content</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToXml"></span><code>function <b>ToXml</b>: UnicodeString; virtual; abstract;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get xml formatted string </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">String</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) content from another item </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other item to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Log"></span><code>procedure <b>Log</b>(margin: Cardinal); virtual; abstract;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Log content </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ItemID"></span><code>property <b>ItemID</b>: UnicodeString read m_ID write m_ID;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the item identifier</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ItemName"></span><code>property <b>ItemName</b>: UnicodeString read m_Name write m_Name;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the item name</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Options"></span><code>property <b>Options</b>: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a> read <a  href="UTWSVGItems.TWSVGItem.html#m_pOptions">m_pOptions</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the options <br> <b>NOTE</b> BE CAREFUL, the options should never be changed from outside</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Parent"></span><code>property <b>Parent</b>: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a> read m_pParent;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the parent item</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

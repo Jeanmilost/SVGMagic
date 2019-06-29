@@ -32,15 +32,15 @@ type
         public type
             {**
              Animation type enumeration
-             @value(IE_AN_Unknown Unknown animation target)
-             @value(IE_AN_Set Specifies a set of values that modify a target attribute over time)
-             @value(IE_AN_Animate Specifies an animation for a single target attribute or property
+             @value(IE_AT_Unknown Unknown animation target)
+             @value(IE_AT_Set Specifies a set of values that modify a target attribute over time)
+             @value(IE_AT_Animate Specifies an animation for a single target attribute or property
                                   over time)
-             @value(IE_AN_Animate_Color Specifies a color transformation over time)
-             @value(IE_AN_Animate_Transform Specifies an animation for a transformation attribute on
+             @value(IE_AT_Animate_Color Specifies a color transformation over time)
+             @value(IE_AT_Animate_Transform Specifies an animation for a transformation attribute on
                                             a target element, thereby allowing animations to control
                                             translation, scaling, rotation and/or skewing)
-             @value(IE_AN_Animate_Motion Specifies a target element to move along a motion path)
+             @value(IE_AT_Animate_Motion Specifies a target element to move along a motion path)
             }
             IEAnimType =
             (
@@ -536,14 +536,14 @@ type
                 public type
                     {**
                      Restart type enumeration
-                     @value(IE_AR_Unknown The animation restart behavior is unknown)
-                     @value(IE_AR_Always The animation can be restarted at any time. This is the
+                     @value(IE_RT_Unknown The animation restart behavior is unknown)
+                     @value(IE_RT_Always The animation can be restarted at any time. This is the
                                          default value)
-                     @value(IE_AR_WhenNotActive The animation can only be restarted when it is not
+                     @value(IE_RT_WhenNotActive The animation can only be restarted when it is not
                                                 active (i.e. after the active end). Attempts to
                                                 restart the animation during its active duration are
                                                 ignored)
-                     @value(IE_AR_Never The element cannot be restarted for the remainder of the
+                     @value(IE_RT_Never The element cannot be restarted for the remainder of the
                                         current simple duration of the parent time container. (In
                                         the case of SVG, since the parent time container is the SVG
                                         document fragment, then the animation cannot be restarted
@@ -645,12 +645,12 @@ type
                 public type
                     {**
                      Attribute type enumeration
-                     @value(IE_AT_Unknown Unknown transformation)
-                     @value(IE_AT_Translate Do apply a translation on the target)
-                     @value(IE_AT_Scale Do apply a scaling on the target)
-                     @value(IE_AT_Rotate Do apply a rotation on the target)
-                     @value(IE_AT_SkewX Do apply a skew on the target x axis)
-                     @value(IE_AT_SkewY Do apply a skew on the target y axis)
+                     @value(IE_TT_Unknown Unknown transformation)
+                     @value(IE_TT_Translate Do apply a translation on the target)
+                     @value(IE_TT_Scale Do apply a scaling on the target)
+                     @value(IE_TT_Rotate Do apply a rotation on the target)
+                     @value(IE_TT_SkewX Do apply a skew on the target x axis)
+                     @value(IE_TT_SkewY Do apply a skew on the target y axis)
                     }
                     IETransformType =
                     (
@@ -780,7 +780,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}

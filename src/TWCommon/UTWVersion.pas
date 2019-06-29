@@ -15,13 +15,6 @@ uses System.Classes,
 type
     {**
      Class to manage versions numbers
-     @note Beta versions of iTunes can contain a special number in ITL database. The m_Beta variable is
-           used exclusively for this reason, and have no effect in normal situations. Be careful, this
-           number must be equal to UINT_MAX by default, otherwise a wrong result will be returned when
-           comparing a beta against a non-beta version. The reason is that beta signatures are written
-           e.g. 10.5b113 while signature in official iTunes contains only 10.5, and beta versions are
-           released before official version. So, keep in mind that, contrary to what logic would suggest,
-           WVersion(10, 5, 0, 0) is higher than WVersion(10, 5, 0, 0, 113)
     }
     TWVersion = class
         private
@@ -223,7 +216,7 @@ type
             {**
              Version as string
              @param(precision Precision (e.g '2.1' with precision = 2, '2.10' with precision = 3, ...))
-             @returns(Version number as string (e.g. if version is 1.6.1.5, returns "1.615")
+             @returns(Version number as string (e.g. if version is 1.6.1.5, returns "1.615"))
              @br @bold(NOTE) If precision is bigger than max possible value, precision is reduced to
                              max (e.g. 1.2.3.4.56 with precision = 10 will return "1.23456"). If
                              precision = 0, empty string will be returned

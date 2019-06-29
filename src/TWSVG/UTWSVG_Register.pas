@@ -33,6 +33,10 @@ begin
 
     // hide properties that should be omitted in TWSVGImageList
     UnlistPublishedProperty(TWSVGImageList, 'ColorDepth');
+
+    // force IDE to register SVG graphic immediately, before opening project in designer for the first
+    // time, otherwise TImage may loose their content while opened in XE8 and newer
+    ForceDemandLoadState(dlDisable);
 end;
 //---------------------------------------------------------------------------
 

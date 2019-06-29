@@ -93,7 +93,7 @@ type
              Parse data
              @param(data Data to parse)
              @returns(@true on success, otherwise @false)
-             @bold @br(NOTE) In this overload, the code clarity is favored on the execution speed.
+             @br @bold(NOTE) In this overload, the code clarity is favored on the execution speed.
                              The reason why this function was kept is that it can be used as strongly
                              tested alternative in case an unknown bug happen in the function used in
                              production
@@ -121,9 +121,8 @@ type
 
         public
             {**
-             Get the value at index
-             @param index - value index
-             @raises(Exception if index is out of bounds)
+             Get the value at index. Example: aValue := Values[0];
+             @br @bold(NOTE) An exception will be raised if index is out of bounds
             }
             property Values[index: Integer]: T read GetValue;
 
@@ -221,7 +220,11 @@ begin
     // get the used separator in case the attribute represents a matrix
     m_MatrixSeparator := TWSVGCommon.DetectSeparator(data, 1, Length(data));
 
-    Result := TWSVGCommon.ExtractValues<T>(data, m_Values);
+    {$if CompilerVersion <= 23}
+        Result := TWSVGCommon.ExtractValues<T>(data, TWSVGArray<T>(m_Values));
+    {$else}
+        Result := TWSVGCommon.ExtractValues<T>(data, m_Values);
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 function TWSVGAttribute<T>.Parse_Unoptimized(const data: UnicodeString): Boolean;
@@ -339,9 +342,11 @@ begin
             tkInteger,
             tkInt64:
                 // search for signed or unsigned type
-                if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
-                    str := str + IntToStr(value.AsUInt64)
-                else
+                {$if CompilerVersion > 23}
+                    if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
+                        str := str + IntToStr(value.AsUInt64)
+                    else
+                {$ifend}
                     str := str + IntToStr(value.AsInt64);
 
             tkFloat:
@@ -395,9 +400,11 @@ begin
             tkInteger,
             tkInt64:
                 // search for signed or unsigned type
-                if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
-                    Result := Result + IntToStr(value.AsUInt64)
-                else
+                {$if CompilerVersion > 23}
+                    if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
+                        Result := Result + IntToStr(value.AsUInt64)
+                    else
+                {$ifend}
                     Result := Result + IntToStr(value.AsInt64);
 
             tkFloat:
@@ -448,9 +455,11 @@ begin
             tkInteger,
             tkInt64:
                 // search for signed or unsigned type
-                if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
-                    Result := Result + IntToStr(value.AsUInt64)
-                else
+                {$if CompilerVersion > 23}
+                    if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
+                        Result := Result + IntToStr(value.AsUInt64)
+                    else
+                {$ifend}
                     Result := Result + IntToStr(value.AsInt64);
 
             tkFloat:

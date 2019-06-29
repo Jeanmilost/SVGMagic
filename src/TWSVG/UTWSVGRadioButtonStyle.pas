@@ -9,7 +9,11 @@ interface
 
 uses System.Classes,
      System.SysUtils,
-     System.Actions,
+     {$if CompilerVersion <= 23}
+        Vcl.ActnList,
+     {$else}
+        System.Actions,
+     {$ifend}
      System.Generics.Collections,
      Vcl.Graphics,
      Vcl.Controls,
@@ -189,14 +193,6 @@ type
              @param(value If @true, all components matching with style will be skinned)
             }
             procedure SetAll(value: Boolean); override;
-
-            {**
-             Calculate radiobutton rects
-             @param pTarget Target radiobutton for which the rects should be calculated)
-             @param(bgRect @bold([out]) Radiobutton glyph background rect)
-             @param(cbRect @bold([out]) Radiobutton glyph rect)
-            }
-            procedure CalculateRects(pTarget: TRadioButton; var bgRect: TRect; var cbRect: TRect); virtual;
 
             {**
              Called after component was completely loaded from DFM
@@ -386,8 +382,8 @@ begin
     inherited Notify(pItem, action);
 
     case (action) of
-        // for an unknown (and stupid) reason RAD Studio Rio changed the cnXXX location,
-        // breaking thus the compatibility with prev compilers
+        // for an unknown reason RAD Studio Rio changed the cnXXX location, breaking thus the
+        // compatibility with prev compilers
         {$if CompilerVersion < 33}
             System.Classes.cnAdded:      CollectionChanged(pItem, IE_CC_ItemAdded);
             System.Classes.cnExtracting: CollectionChanged(pItem, IE_CC_ItemExtracting);
@@ -396,7 +392,7 @@ begin
             System.Generics.Collections.cnAdded:      CollectionChanged(pItem, IE_CC_ItemAdded);
             System.Generics.Collections.cnExtracting: CollectionChanged(pItem, IE_CC_ItemExtracting);
             System.Generics.Collections.cnDeleting:   CollectionChanged(pItem, IE_CC_ItemDeleting);
-        {$endif}
+        {$ifend}
     end;
 end;
 //---------------------------------------------------------------------------
@@ -495,48 +491,6 @@ begin
         HookControlsFromCollection;
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGRadioButtonStyle.CalculateRects(pTarget: TRadioButton; var bgRect: TRect; var cbRect: TRect);
-var
-    menuCheckWidth, menuCheckHeight, xInner, yInner, checkWidth, checkHeight, xPos, yPos: Integer;
-begin
-    if (not Assigned(pTarget)) then
-        Exit;
-
-    // get several radiobutton measurements
-    if (m_DPIScale) then
-    begin
-        menuCheckWidth  := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CXMENUCHECK), m_PixelsPerInch, m_RefPixelsPerInch);
-        menuCheckHeight := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CYMENUCHECK), m_PixelsPerInch, m_RefPixelsPerInch);
-        xInner          := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CXEDGE),      m_PixelsPerInch, m_RefPixelsPerInch);
-        yInner          := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CYEDGE),      m_PixelsPerInch, m_RefPixelsPerInch);
-    end
-    else
-    begin
-        menuCheckWidth  := GetSystemMetrics(SM_CXMENUCHECK);
-        menuCheckHeight := GetSystemMetrics(SM_CYMENUCHECK);
-        xInner          := GetSystemMetrics(SM_CXEDGE);
-        yInner          := GetSystemMetrics(SM_CYEDGE);
-    end;
-
-    checkWidth  := menuCheckWidth  - xInner;
-    checkHeight := menuCheckHeight - yInner;
-    yPos        := (pTarget.ClientHeight div 2) - (checkHeight div 2);
-
-    // calculate the radiobutton rect
-    if (((pTarget.Alignment = taLeftJustify) or (pTarget.BiDiMode = bdRightToLeft))
-            and not ((pTarget.Alignment = taLeftJustify) and (pTarget.BiDiMode = bdRightToLeft)))
-    then
-        // rect is shown on the right
-        xPos := pTarget.ClientWidth - menuCheckWidth
-    else
-        // rect is shown on the left
-        xPos := 0;
-
-    // calculate the rects
-    bgRect := TRect.Create(xPos - 1, yPos - 1, xPos + checkWidth + 2, yPos + checkHeight + 2);
-    cbRect := TRect.Create(xPos, yPos, xPos + checkWidth, yPos + checkHeight);
-end;
-//---------------------------------------------------------------------------
 procedure TWSVGRadioButtonStyle.Loaded;
 begin
     inherited Loaded;
@@ -611,8 +565,14 @@ begin
     pRadioButton := pTarget as TRadioButton;
 
     // is target radiobutton disabled?
-    if (not pRadioButton.Enabled or (Assigned(pRadioButton.Action) and (pRadioButton.Action is TContainedAction)
-            and not (pRadioButton.Action as TContainedAction).Enabled))
+    {$if CompilerVersion <= 23}
+        // not really correct, but Enabled property doesn't exist in base classes for this compiler version
+        if (not pRadioButton.Enabled or (Assigned(pRadioButton.Action) and (pRadioButton.Action is TAction)
+                and not (pRadioButton.Action as TAction).Enabled))
+    {$else}
+        if (not pRadioButton.Enabled or (Assigned(pRadioButton.Action) and (pRadioButton.Action is TContainedAction)
+                and not (pRadioButton.Action as TContainedAction).Enabled))
+    {$ifend}
     then
     begin
         // search for radiobutton state
@@ -663,15 +623,21 @@ begin
         Exit;
 
     // get target radiobutton and prepare the target canvas
-    pRadioButton        := pTarget as TRadioButton;
+    pRadioButton     := pTarget as TRadioButton;
     m_pCanvas.Handle := hDC;
 
     // calculate the radiobutton rects
-    CalculateRects(pRadioButton, bgRect, cbRect);
+    CalculateCheckGlyphRects(pRadioButton, pRadioButton.Alignment, bgRect, cbRect);
 
     // is target radiobutton disabled?
-    if (not pRadioButton.Enabled or (Assigned(pRadioButton.Action) and (pRadioButton.Action is TContainedAction)
-            and not (pRadioButton.Action as TContainedAction).Enabled))
+    {$if CompilerVersion <= 23}
+        // not really correct, but Enabled property doesn't exist in base classes for this compiler version
+        if (not pRadioButton.Enabled or (Assigned(pRadioButton.Action) and (pRadioButton.Action is TAction)
+                and not (pRadioButton.Action as TAction).Enabled))
+    {$else}
+        if (not pRadioButton.Enabled or (Assigned(pRadioButton.Action) and (pRadioButton.Action is TContainedAction)
+                and not (pRadioButton.Action as TContainedAction).Enabled))
+    {$ifend}
     then
     begin
         // search for radiobutton state

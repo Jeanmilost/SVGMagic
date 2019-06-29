@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWHelpers: Record TWLogHelper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWLogHelper"></span><h1 class="cio">Record TWLogHelper</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWHelpers.html">UTWHelpers</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWLogHelper = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+Helper class for message logging</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWLogHelper.html#GdiPlusStatusToStr">GdiPlusStatusToStr</a></b>(status: TStatus): UnicodeString; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWLogHelper.html#WinMsgToStr">WinMsgToStr</a></b>(pOwner: TComponent; const message: TMessage): UnicodeString; static;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWLogHelper.html#Dump">Dump</a></b>(const pStream: TStream; maxLimit: NativeUInt); static;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWLogHelper.html#LogBlockToCompiler">LogBlockToCompiler</a></b>(const title: UnicodeString); static;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWLogHelper.html#LogToCompiler">LogToCompiler</a></b>(const msg: UnicodeString); static;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GdiPlusStatusToStr"></span><code>class function <b>GdiPlusStatusToStr</b>(status: TStatus): UnicodeString; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Convert GDI+ status error to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>status</dt>
+<dd>Status to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Status as string</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="WinMsgToStr"></span><code>class function <b>WinMsgToStr</b>(pOwner: TComponent; const message: TMessage): UnicodeString; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Convert Windows message to string   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOwner</dt>
+<dd>Component that owns the message</dd>
+<dt>message</dt>
+<dd>Windows message to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Windows message as string</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Dump"></span><code>class procedure <b>Dump</b>(const pStream: TStream; maxLimit: NativeUInt); static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Dump the content of a stream to the compiler console  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pStream</dt>
+<dd>Stream containing the data to dump</dd>
+<dt>maxLimit</dt>
+<dd>Maximum size limit in bytes before which the log will be truncated, ignored if 0</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="LogBlockToCompiler"></span><code>class procedure <b>LogBlockToCompiler</b>(const title: UnicodeString); static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Log a block title to the compiler console </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>title</dt>
+<dd>Title to log</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="LogToCompiler"></span><code>class procedure <b>LogToCompiler</b>(const msg: UnicodeString); static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Log a message to the compiler console </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>msg</dt>
+<dd>Message to log</dd>
+</dl>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

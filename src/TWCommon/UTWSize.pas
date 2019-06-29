@@ -10,9 +10,9 @@ interface
 uses System.Rtti,
      System.Types,
      System.Generics.Defaults,
-     {$if CompilerVersion >= 32}
+     {$if CompilerVersion >= 29}
          System.Hash,
-     {$endif}
+     {$ifend}
      {$ifdef USE_VCL}
         Winapi.Windows,
         Winapi.GDIPAPI,
@@ -487,13 +487,22 @@ end;
 //---------------------------------------------------------------------------
 function TWSize<T>.Invert: TWSize<T>;
 begin
-    Result.m_Width  := -m_Width;
-    Result.m_Height := -m_Height;
+    {$if CompilerVersion <= 23}
+        Result.m_Width  := TWGenericNumber<T>(0.0) - m_Width;
+        Result.m_Height := TWGenericNumber<T>(0.0) - m_Height;
+    {$else}
+        Result.m_Width  := -m_Width;
+        Result.m_Height := -m_Height;
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 function TWSize<T>.IsZero: Boolean;
 begin
-    Result := ((m_Width = 0.0) and (m_Height = 0.0));
+    {$if CompilerVersion <= 23}
+        Result := ((m_Width = TWGenericNumber<T>(0.0)) and (m_Height = TWGenericNumber<T>(0.0)));
+    {$else}
+        Result := ((m_Width = 0.0) and (m_Height = 0.0));
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 {$ifdef USE_VCL}
@@ -564,13 +573,13 @@ end;
 //---------------------------------------------------------------------------
 function TWSize<T>.GetHashCode(initValue: Integer): Integer;
 begin
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(m_Width,  SizeOf(T), initValue);
         Result := THashBobJenkins.GetHashValue(m_Height, SizeOf(T), Result);
     {$else}
         Result := BobJenkinsHash(m_Width,  SizeOf(T), initValue);
         Result := BobJenkinsHash(m_Height, SizeOf(T), Result);
-    {$endif}
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 

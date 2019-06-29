@@ -31,7 +31,10 @@ uses System.TypInfo,
      Vcl.Forms,
      {$if CompilerVersion < 33}
         Winapi.MultiMon,
-     {$endif}
+     {$ifend}
+     {$if CompilerVersion >= 30}
+         Winapi.ShellScaling,
+     {$ifend}
      Winapi.GDIPAPI,
      Winapi.GDIPObj,
      Winapi.Messages,
@@ -40,6 +43,7 @@ uses System.TypInfo,
      UTWTypes,
      UTWCacheHit,
      UTWColor,
+     UTWVersion,
      UTWSmartPointer;
 
      // to avoid users to explicitly have to link usp10 in their projects
@@ -53,6 +57,15 @@ uses System.TypInfo,
         WM_DPICHANGED = $02E0;
 
     type
+        PROCESS_DPI_AWARENESS =
+        (
+            PROCESS_DPI_UNAWARE           = 0,
+            PROCESS_SYSTEM_DPI_AWARE      = 1,
+            PROCESS_PER_MONITOR_DPI_AWARE = 2
+        );
+
+        TWfGetProcessDpiAwareness = function (hProcess: THandle; out value: PROCESS_DPI_AWARENESS): HRESULT; stdcall;
+
         MONITOR_DPI_TYPE =
         (
             MDT_EFFECTIVE_DPI = 0,
@@ -63,9 +76,13 @@ uses System.TypInfo,
 
         TMonitorDpiType = MONITOR_DPI_TYPE;
 
-        TWGetDpiForMonitor = function(hMonitor: HMONITOR; dpiType: TMonitorDpiType; out dpiX: UINT;
+        TWfGetDpiForMonitor = function(hMonitor: HMONITOR; dpiType: TMonitorDpiType; out dpiX: UINT;
                 out dpiY: UINT): HRESULT; stdcall;
-{$endif}
+{$ifend}
+
+const
+    C_TWFileHelper_FSDrivePrefix: UnicodeString = '\\?\';
+    C_TWFileHelper_FSUNCPrefix:   UnicodeString = '\\?\UNC';
 
 type
     {**
@@ -147,11 +164,62 @@ type
         );
 
         {**
+         Empty string instance
+        }
+        const Empty = '';
+
+        {**
+         Gets a substring of a string
+         @param(str String from which the substring should be extracted)
+         @param(index Start index in the source string from which the substring should be copied)
+         @param(length Substring length to copy in the source string)
+         @returns(Substring)
+        }
+        class function Substr(const str: UnicodeString; index: Integer): UnicodeString; overload; inline; static;
+        class function Substr(const str: UnicodeString; index, length: Integer): UnicodeString; overload; inline; static;
+
+        {**
+         Converts a string to upper case
+         @param(str Source string to convert)
+         @returns(Converted string to uppercase)
+        }
+        class function ToUpper(const str: UnicodeString): UnicodeString; inline; static;
+
+        {**
+         Converts a string to lower case
+         @param(str Source string to convert)
+         @returns(Converted string to lowercase)
+        }
+        class function ToLower(const str: UnicodeString): UnicodeString; inline; static;
+
+        {**
          Convert string to bool
          @param(str String to convert)
          @returns(@true if string is "-1", "1", "true" or "TRUE", otherwise @false)
         }
         class function StrToBool(const str: UnicodeString): Boolean; inline; static;
+
+        {**
+         Get first char index found in a string
+         @param(str String to search in)
+         @param(ch Char to find)
+         @returns(Index of first char occurrence found in source string, -1 if not found)
+        }
+        class function IndexOf(const str: UnicodeString; ch: Char): Integer; inline; static;
+
+        {**
+         Check if a string is empty
+         @param(str String to check)
+         @returns(@true if string is empty, otherwise @false)
+        }
+        class function IsEmpty(const str: UnicodeString): Boolean; inline; static;
+
+        {**
+         Trim a string
+         @param(str String to trim)
+         @returns(Trimmed string)
+        }
+        class function Trim(const str: UnicodeString): UnicodeString; inline; static;
 
         {**
          Convert bool to string
@@ -214,7 +282,7 @@ type
          @param(sideLen Number of characters on each side)
          @param(delimiter Delimiter char)
          @returns(A delimited string)
-         @note the length doesn't count the two spaces before and after the string
+         @br @bold(NOTE) The length doesn't count the two spaces before and after the string
         }
         class function DelimitStr(const str: UnicodeString; sideLen: NativeInt;
                 delimiter: WideChar): UnicodeString; static;
@@ -323,10 +391,33 @@ type
     TWFileHelper = record
         public
             {**
+             Return the properly prefixed unicode file name
+             @param(path The path, plus eventual file name which to append the prefix)
+             @returns(If the path is relative or has already a prefix, the path itself will be returned,
+                      if it's an absolute path with drive letter, \\\\?\\ will be appended,
+                      if it's a network path, \\\\?\\UNC will be added e.g. \\\\server\\drive = \\\\?\\UNC\\server\\drive)
+             @br @bold(NOTE) Needed for Win32 very long file paths
+            }
+            class function GetFSPrefixedName(const path: UnicodeString): UnicodeString; static;
+
+            {**
              Get the version of a file
+             @param(fileName File name for which version should be get)
              @returns(File version)
             }
-            class function GetFileVersion(const fileName: string): string; static;
+            class function GetFileVersion(const fileName: string): string; overload; static;
+
+            {**
+             Get the version of a file
+             @param(fileName File name for which version should be get)
+             @param(pFileVersion @bold([out]) File version)
+             @param(pProductVersion @bold([out]) File product version)
+             @returns(@true on success, otherwise @false)
+            }
+            class function GetFileVersion(const fileName: AnsiString;
+                    pFileVersion, pProductVersion: TWVersion): Boolean; overload; static;
+            class function GetFileVersion(const fileName: UnicodeString;
+                    pFileVersion, pProductVersion: TWVersion): Boolean; overload; static;
     end;
 
     {**
@@ -346,8 +437,8 @@ type
 
         {**
          Swap content of 2 variables with the same size
-         @param(left @bold([in, out] First variable to swap)
-         @param(right @bold([in, out] Second variable to swap)
+         @param(left @bold([in, out]) First variable to swap)
+         @param(right @bold([in, out]) Second variable to swap)
         }
         class procedure Swap<T>(var left, right: T); static;
     end;
@@ -381,10 +472,11 @@ type
              @param(num Number on which modulo should be performed)
              @param(by Number against which modulo should be performed)
              @returns(Modulo)
-             @br @bold This function should be used instead of the Delphi mod operand whenever the
-                       expected result should be equals to the mathematical modulo result. For
-                       example, processing -6 mod 5 is expected to return 4, conformly to a
-                       mathematical modulo result, however the Delphi modulo will return -1 instead
+             @br @bold(NOTE) This function should be used instead of the Delphi mod operand whenever
+                             the expected result should be equals to the mathematical modulo result.
+                             For example, processing -6 mod 5 is expected to return 4, conformly to
+                             a mathematical modulo result, however the Delphi modulo will return -1
+                             instead
             }
             class function IntMod(const num, by: Integer): Integer; static;
 
@@ -434,6 +526,77 @@ type
      Pointer to system helper
     }
     PWSystemHelper = ^TWSystemHelper;
+
+    NTSTATUS            =  Integer;
+    PRTL_OSVERSIONINFOW = ^TOSVersionInfoW;
+
+    {**
+     RtlGetVersion function prototype
+     @param pOsvi - windows version info structure to populate, populated structure on function ends
+     @returns STATUS_SUCCESS (i.e 0x0) on success, otherwise error code
+    }
+    TWfRtlGetVersion = function(pOsvi: PRTL_OSVERSIONINFOW): NTSTATUS; stdcall;
+
+    {**
+     Result type
+    }
+    TWEResult =
+    (
+        TW_E_Error = -1,
+        TW_E_False =  0,
+        TW_E_True  =  1
+    );
+
+    {**
+     Helper for Windows operating system
+    }
+    TWOSWinHelper = record
+        private
+            class var m_WinVersion: TOSVersionInfoExW;
+
+            {**
+             Check using RtlGetVersion() if version passed in parameter is not newer and updates it
+             if so updated it
+             @param(osvi @bold([in, out]) Windows version to check against and update)
+             @returns(E_True if version is newer, E_False otherwise, E_Error if could not retrieve
+                      version from kernel32.dll)
+            }
+            class function GetVersionFromNtDll(var osvi: TOSVersionInfoExW): TWEResult; static;
+
+            {**
+             Check from kernel32.dll if version passed in parameter is not newer and updates it if so
+             @param(osvi @bold([in, out]) Windows version to check against and update)
+             @returns(E_True if version is newer, E_False otherwise, E_Error if could not retrieve
+                      version from kernel32.dll)
+            }
+            class function GetVersionFromKernel32(var osvi: TOSVersionInfoExW): TWEResult; static;
+
+        public
+            {**
+             Get Windows version
+             @param(useCache If @true the cached version will be used, otherwise it will be recomputed)
+             @returns(Windows version)
+            }
+            class function GetWinVersion(useCache: Boolean = False): TOSVersionInfoExW; static;
+
+            {**
+             Check if the Windows version is equals or higher than a specified level
+             @param(major Windows major version)
+             @param(minor Windows minor version)
+             @param(build Windows build version)
+             @param(useCache If @true the cached version will be used, otherwise it will be recomputed)
+             @returns(Windows version)
+             @br @bold(NOTE) This function is guarantee to work correctly in all situations and should
+                             be used instead of the broken VCL CheckWin32Version() function
+            }
+            class function CheckWinVersion(major: Integer; minor: Integer = 0; build: Integer = 0;
+                    useCache: Boolean = True): Boolean; static;
+    end;
+
+    {**
+     Pointer to Windows operating system helper
+    }
+    PWOSWinHelper = ^TWOSWinHelper;
 
     {**
      Controller that can enable or disable some specific GDI cache
@@ -1170,9 +1333,9 @@ type
              @value(IE_EC_JPG Use the JPEG encoder)
              @value(IE_EC_PNG Use the PNG encoder)
              @value(IE_EC_TIFF Use the TIFF encoder)
-             @value(IE_EC_GIG Use the GIF encoder)
+             @value(IE_EC_GIF Use the GIF encoder)
             }
-            IEncoderType =
+            IEEncoderType =
             (
                 IE_EC_BMP,
                 IE_EC_JPG,
@@ -1217,7 +1380,7 @@ type
                                      between 0 and 100 for JPEG)
              @returns(Converted graphic, @nil if failed or on error)
             }
-            class function ToGraphic(pSrc: Vcl.Graphics.TBitmap; encoderType: IEncoderType;
+            class function ToGraphic(pSrc: Vcl.Graphics.TBitmap; encoderType: IEEncoderType;
                     compressionLevel: Cardinal): TGraphic; static;
 
             {**
@@ -1304,6 +1467,18 @@ type
     end;
 
     {**
+     Available DPI awareness contexts
+    }
+    EDPIAwarenessContext =
+    (
+        E_AC_None,
+        E_AC_Unaware,
+        E_AC_System,
+        E_AC_Per_Monitor,
+        E_AC_Per_Monitor_V2
+    );
+
+    {**
      Helper class for VCL
     }
     TWVCLHelper = record
@@ -1329,19 +1504,25 @@ type
         class function GetPixelsPerInchRef(pOwner: TComponent): Integer; static;
 
         {**
+         Get the system pixels per inch
+         @returns(The system pixels per inch)
+        }
+        class function GetSystemPixelsPerInch: Integer; static;
+
+        {**
          Get pixels per inch on current running app monitor
-         @param(pOwner Component owner for which the current DPI should be get)
+         @param(pComponent Component located on monitor for which the current DPI should be get)
          @param(refDPI Pixels per inch reference, i.e DPI at which interface was designed)
          @param(fGetDpiForMonitor Get DPI for monitor callback to call)
          @returns(Pixels per inch)
         }
         {$if CompilerVersion < 30}
-            class function GetCurrentPixelsPerInch(pOwner: TComponent;
-                    refDPI: Integer; fGetDpiForMonitor: TWGetDpiForMonitor): Integer; static;
+            class function GetMonitorPixelsPerInch(pComponent: TComponent;
+                    refDPI: Integer; fGetDpiForMonitor: TWfGetDpiForMonitor): Integer; static;
         {$else}
-            class function GetCurrentPixelsPerInch(pOwner: TComponent;
+            class function GetMonitorPixelsPerInch(pComponent: TComponent;
                     refDPI: Integer): Integer; static;
-        {$endif}
+        {$ifend}
 
         {**
          Scale value based on DPI
@@ -1351,6 +1532,31 @@ type
          @returns(Scaled value)
         }
         class function ScaleByDPI(value, dpi, refDPI: Integer): Integer; static;
+
+        {**
+         Get if application is DPI aware
+         @param(hProcess Process for which DPI awareness should be tested)
+         @param(fGetProcessDpiAwareness Get process DPI awareness callback to call)
+         @returns(@true if system is DPI aware, otherwise @false)
+        }
+        {$if CompilerVersion < 30}
+            class function IsDPIAware(hProcess: THandle; fGetProcessDpiAwareness: TWfGetProcessDpiAwareness): Boolean; static;
+        {$else}
+            class function IsDPIAware(hProcess: THandle): Boolean; static;
+        {$ifend}
+
+        {**
+         Get DPI awareness context
+         @param(fGetProcessDpiAwareness Get process DPI awareness callback to call)
+         @param(pControl Control or form for which DPI awareness should be tested, can be NULL)
+         @returns(DPI awareness context)
+        }
+        {$if CompilerVersion < 30}
+            class function GetDPIAwarenessContext(fGetProcessDpiAwareness: TWfGetProcessDpiAwareness):
+                    EDPIAwarenessContext; static;
+        {$else}
+            class function GetDPIAwarenessContext(pControl: TWinControl): EDPIAwarenessContext; static;
+        {$ifend}
     end;
 
     {**
@@ -1398,6 +1604,73 @@ var
 implementation
 //---------------------------------------------------------------------------
 // TWStringHelper
+//---------------------------------------------------------------------------
+class function TWStringHelper.Substr(const str: UnicodeString; index: Integer): UnicodeString;
+begin
+    {$if CompilerVersion <= 23}
+        // NOTE + 1 to compensate 1 based UnicodeString indexes
+        Result := Copy(str, index + 1, Length(str));
+    {$else}
+        Result := str.Substring(index);
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
+class function TWStringHelper.Substr(const str: UnicodeString; index, length: Integer): UnicodeString;
+begin
+    {$if CompilerVersion <= 23}
+        // NOTE + 1 to compensate 1 based UnicodeString indexes
+        Result := Copy(str, index + 1, length);
+    {$else}
+        Result := str.Substring(index, length);
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
+class function TWStringHelper.ToUpper(const str: UnicodeString): UnicodeString;
+begin
+    {$if CompilerVersion <= 23}
+        Result := WideUpperCase(str);
+    {$else}
+        Result := str.ToUpper;
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
+class function TWStringHelper.ToLower(const str: UnicodeString): UnicodeString;
+begin
+    {$if CompilerVersion <= 23}
+        Result := WideLowerCase(str);
+    {$else}
+        Result := str.ToLower;
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
+class function TWStringHelper.IndexOf(const str: UnicodeString; ch: Char): Integer;
+begin
+    {$if CompilerVersion <= 23}
+        // NOTE -1 to compensate 1 based UnicodeString indexes
+        Result := System.Pos(ch, str) - 1;
+    {$else}
+        Result := str.IndexOf(ch);
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
+class function TWStringHelper.IsEmpty(const str: UnicodeString): Boolean;
+begin
+    {$if CompilerVersion <= 23}
+        Result := (str = Empty);
+    {$else}
+        Result := str.IsEmpty;
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
+class function TWStringHelper.Trim(const str: UnicodeString): UnicodeString;
+begin
+    {$if CompilerVersion <= 23}
+        // NOTE full qualified name is required here to avoid to call TWStringHelper.Trim() infinitely
+        Result := System.SysUtils.Trim(str);
+    {$else}
+        Result := str.Trim;
+    {$ifend}
+end;
 //---------------------------------------------------------------------------
 class function TWStringHelper.StrToBool(const str: UnicodeString): Boolean;
 begin
@@ -1624,7 +1897,7 @@ end;
 //---------------------------------------------------------------------------
 class function TWStringHelper.SkipChars(const str, chars: UnicodeString; var pos: NativeInt): Boolean;
 begin
-    while ((pos <= Length(str)) and (chars.IndexOf(str[pos]) <> -1)) do
+    while ((pos <= Length(str)) and (IndexOf(chars, str[pos]) <> -1)) do
         Inc(pos);
 
     Result := pos <= Length(str);
@@ -1907,6 +2180,52 @@ end;
 //---------------------------------------------------------------------------
 // TWFileHelper
 //---------------------------------------------------------------------------
+class function TWFileHelper.GetFSPrefixedName(const path: UnicodeString): UnicodeString;
+{$ifdef Win32}
+    var
+        len: NativeUInt;
+{$endif}
+begin
+    // todo -cspeed -oNiki: check the performance of this function, maybe return reference
+    {$ifdef Win32}
+        len := Length(path);
+
+        // check if the file is relative
+        if (len < 2) then
+            Exit(path);
+
+        if (path[1] = '\\') then
+        begin
+            if (path[2] = '\\') then
+            begin
+                if ((len > 2) and (path[3] = '?')) then
+                    // there is already a prefix, do not modify
+                    Exit(path);
+
+                // a network path, append UNC prefix
+                {$if CompilerVersion <= 23}
+                    // NOTE + 1 to compensate 1 based UnicodeString indexes
+                    Exit(C_TWFileHelper_FSUNCPrefix + Copy(path, 2, len));
+                {$else}
+                    Exit(C_TWFileHelper_FSUNCPrefix + path.Substring(1));
+                {$ifend}
+            end;
+
+            // the path must be relative
+            Exit(path);
+        end
+        else
+        if ((path[2] = ':') and (len > 2)) then
+            // assume it has a drive letter, append prefix
+            Exit(C_TWFileHelper_FSDrivePrefix + path);
+
+        // path must be relative ('mydir/file.ext') or just a drive letter ('c:')
+        Result := path;
+    {$else}
+        Result := path;
+    {$endif}
+end;
+//---------------------------------------------------------------------------
 class function TWFileHelper.GetFileVersion(const fileName: string): string;
 var
     infoSize:      DWORD;
@@ -1936,6 +2255,129 @@ begin
             FreeMem(verBuf);
         end;
     end;
+end;
+//---------------------------------------------------------------------------
+class function TWFileHelper.GetFileVersion(const fileName: AnsiString; pFileVersion, pProductVersion: TWVersion): Boolean;
+var
+    dwHandle, infoStructSize: DWORD;
+    lpData:                   LPTSTR;
+    pFileInfo:                PVSFixedFileInfo;
+    buffSize:                 UINT;
+begin
+    if ((not Assigned(pFileVersion)) or (not Assigned(pProductVersion))) then
+        Exit(False);
+
+    pFileVersion.Clear;
+    pProductVersion.Clear;
+
+    // get file info structure size
+    infoStructSize := GetFileVersionInfoSizeA(PAnsiChar(fileName), dwHandle);
+
+    if (infoStructSize = 0) then
+        Exit(False);
+
+    // allocate memory for structure
+    GetMem(lpData, infoStructSize);
+
+    if (not Assigned(lpData)) then
+        Exit(False);
+
+    // get file version structure
+    Result := GetFileVersionInfoA(PAnsiChar(fileName), 0, infoStructSize, lpData);
+
+    if (not Result) then
+    begin
+        // free memory
+        FreeMem(lpData);
+        Exit(False);
+    end;
+
+    // get version values
+    if (VerQueryValueA(lpData, '\\', Pointer(pFileInfo), buffSize) = FALSE) then
+    begin
+        // free memory
+        FreeMem(lpData);
+        Exit(False);
+    end;
+
+    // copy values
+    pFileVersion.Major      := HIWORD(pFileInfo.dwFileVersionMS);
+    pFileVersion.Minor      := LOWORD(pFileInfo.dwFileVersionMS);
+    pFileVersion.Release    := HIWORD(pFileInfo.dwFileVersionLS);
+    pFileVersion.Build      := LOWORD(pFileInfo.dwFileVersionLS);
+
+    pProductVersion.Major   := HIWORD(pFileInfo.dwProductVersionMS);
+    pProductVersion.Minor   := LOWORD(pFileInfo.dwProductVersionMS);
+    pProductVersion.Release := HIWORD(pFileInfo.dwProductVersionLS);
+    pProductVersion.Build   := LOWORD(pFileInfo.dwProductVersionLS);
+
+    // free memory
+    FreeMem(lpData);
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+class function TWFileHelper.GetFileVersion(const fileName: UnicodeString; pFileVersion, pProductVersion: TWVersion): Boolean;
+var
+    dwHandle, infoStructSize: DWORD;
+    lpData:                   LPTSTR;
+    pFileInfo:                PVSFixedFileInfo;
+    buffSize:                 UINT;
+    prefixedFileName:         UnicodeString;
+begin
+    if ((not Assigned(pFileVersion)) or (not Assigned(pProductVersion))) then
+        Exit(False);
+
+    pFileVersion.Clear;
+    pProductVersion.Clear;
+
+    prefixedFileName := GetFSPrefixedName(fileName);
+
+    // get file info structure size
+    infoStructSize := GetFileVersionInfoSizeW(PWChar(prefixedFileName), dwHandle);
+
+    if (infoStructSize = 0) then
+        Exit(False);
+
+    // allocate memory for structure
+    GetMem(lpData, infoStructSize);
+
+    if (not Assigned(lpData)) then
+        Exit(False);
+
+    // get file version structure
+    Result := GetFileVersionInfoW(PWChar(prefixedFileName), 0, infoStructSize, lpData);
+
+    if (not Result) then
+    begin
+        // free memory
+        FreeMem(lpData);
+        Exit(False);
+    end;
+
+    // get version values
+    if (VerQueryValueW(lpData, '\\', Pointer(pFileInfo), buffSize) = FALSE) then
+    begin
+        // free memory
+        FreeMem(lpData);
+        Exit(False);
+    end;
+
+    // copy values
+    pFileVersion.Major      := HIWORD(pFileInfo.dwFileVersionMS);
+    pFileVersion.Minor      := LOWORD(pFileInfo.dwFileVersionMS);
+    pFileVersion.Release    := HIWORD(pFileInfo.dwFileVersionLS);
+    pFileVersion.Build      := LOWORD(pFileInfo.dwFileVersionLS);
+
+    pProductVersion.Major   := HIWORD(pFileInfo.dwProductVersionMS);
+    pProductVersion.Minor   := LOWORD(pFileInfo.dwProductVersionMS);
+    pProductVersion.Release := HIWORD(pFileInfo.dwProductVersionLS);
+    pProductVersion.Build   := LOWORD(pFileInfo.dwProductVersionLS);
+
+    // free memory
+    FreeMem(lpData);
+
+    Result := True;
 end;
 //---------------------------------------------------------------------------
 // TWMemoryHelper
@@ -2303,6 +2745,145 @@ begin
     Result := GetDllVersion(HInstance);
 end;
 //---------------------------------------------------------------------------
+// TWOSWinHelper
+//---------------------------------------------------------------------------
+class function TWOSWinHelper.GetVersionFromNtDll(var osvi: TOSVersionInfoExW): TWEResult;
+var
+    hMod:           HMODULE;
+    tmp:            TOSVersionInfoExW;
+    fRtlGetVersion: TWfRtlGetVersion;
+begin
+    // load the ntdll.dll module
+    hMod := GetModuleHandleW('ntdll.dll');
+
+    if (hMod = 0) then
+    begin
+        FillChar(osvi, SizeOf(osvi), $0);
+        Exit(TW_E_Error);
+    end;
+
+    // get RtlGetVersion() function. This is the new function to use instead of deprecated GetVersionEx()
+    fRtlGetVersion := GetProcAddress(hMod, 'RtlGetVersion');
+
+    if (not(Assigned(fRtlGetVersion))) then
+    begin
+        FillChar(osvi, SizeOf(osvi), $0);
+        Exit(TW_E_Error);
+    end;
+
+    FillChar(tmp, SizeOf(tmp), $0);
+    tmp.dwOSVersionInfoSize := SizeOf(tmp);
+
+    // execute the RtlGetVersion() function. NOTE the return value is 0 on success. Any other value
+    // means that the function failed
+    if (fRtlGetVersion(@tmp) <> 0) then
+        Exit(TW_E_Error);
+
+    // update versions if different
+    if (tmp.dwMajorVersion > osvi.dwMajorVersion) then
+    begin
+        // update version info
+        osvi := tmp;
+        Exit(TW_E_True);
+    end
+    else
+    if ((tmp.dwMajorVersion = osvi.dwMajorVersion) and (tmp.dwMinorVersion > osvi.dwMinorVersion)) then
+    begin
+        // update version
+        osvi := tmp;
+        Exit(TW_E_True);
+    end;
+
+    Result := TW_E_False;
+end;
+//---------------------------------------------------------------------------
+class function TWOSWinHelper.GetVersionFromKernel32(var osvi: TOSVersionInfoExW): TWEResult;
+var
+    kernel32DLLPath:             array [0 .. MAX_PATH] of WCHAR;
+    systemPath:                  UnicodeString;
+    fileVersion, productVersion: TWVersion;
+begin
+    // get system32 path and append kernel32.dll to it
+    if (GetSystemDirectoryW(@kernel32DLLPath, SizeOf(kernel32DLLPath)) = 0) then
+        Exit(TW_E_Error);
+
+    // append kernel32.dll to system32 path
+    systemPath := IncludeTrailingPathDelimiter(kernel32DLLPath) + 'kernel32.dll';
+
+    fileVersion    := nil;
+    productVersion := nil;
+
+    try
+        fileVersion    := TWVersion.Create;
+        productVersion := TWVersion.Create;
+
+        // get file version
+        if (not TWFileHelper.GetFileVersion(systemPath, fileVersion, productVersion)) then
+            Exit(TW_E_Error);
+
+        // update versions if different
+        if (productVersion.Major > osvi.dwMajorVersion) then
+        begin
+            // update version
+            osvi.dwMajorVersion := productVersion.Major;
+            osvi.dwMinorVersion := productVersion.Minor;
+
+            Exit(TW_E_True);
+        end
+        else
+        if ((productVersion.Major = osvi.dwMajorVersion) and (productVersion.Minor > osvi.dwMinorVersion)) then
+        begin
+            // update version
+            osvi.dwMinorVersion := productVersion.Minor;
+            Exit(TW_E_True);
+        end;
+    finally
+        if (Assigned(fileVersion)) then
+            fileVersion.Free;
+
+        if (Assigned(productVersion)) then
+            productVersion.Free;
+    end;
+
+    Result := TW_E_False;
+end;
+//---------------------------------------------------------------------------
+class function TWOSWinHelper.GetWinVersion(useCache: Boolean): TOSVersionInfoExW;
+begin
+    if (useCache) then
+        Exit(m_WinVersion);
+
+    FillChar(Result, SizeOf(Result), $0);
+    Result.dwOSVersionInfoSize := SizeOf(TOSVersionInfoExW);
+
+    // first get version info from GetVersionExW(). NOTE be careful, this function is obsolete and
+    // may not work well since Windows 8.1
+    if (not(GetVersionExW(Result))) then
+    begin
+        Result.dwOSVersionInfoSize := SizeOf(TOSVersionInfoExW);
+
+        if (not GetVersionExW(Result)) then
+            Exit;
+    end;
+
+    // update from RtlGetVersion() and eventually kernel32.dll file because since Windows 8.1,
+    // GetVersionEx() will always return 6.3 (i.e Win8.1) as version number if app doesn't contain a
+    // manifest
+    if (GetVersionFromNtDll(Result) <> TW_E_True) then
+        GetVersionFromKernel32(Result);
+end;
+//---------------------------------------------------------------------------
+class function TWOSWinHelper.CheckWinVersion(major, minor, build: Integer; useCache: Boolean): Boolean;
+var
+    winVersion: TOSVersionInfoExW;
+begin
+    winVersion := GetWinVersion(useCache);
+
+    Result := ((Integer(winVersion.dwMajorVersion) > major) or ((Integer(winVersion.dwMajorVersion) = major)
+            and (Integer(winVersion.dwMinorVersion) > minor)) or ((Integer(winVersion.dwMajorVersion) = major)
+            and (Integer(winVersion.dwMinorVersion) = minor) and (Integer(winVersion.dwBuildNumber) >= build)));
+end;
+//---------------------------------------------------------------------------
 // TWGDIHelper
 //---------------------------------------------------------------------------
 {**
@@ -2473,7 +3054,7 @@ begin
         drawRect.Offset(-drawRect.Left, -drawRect.Top);
 
         // draw mask text
-        DrawText(drawTextFunc, Result.Canvas.Handle, PWideChar(text), text.Length, drawRect, config,
+        DrawText(drawTextFunc, Result.Canvas.Handle, PWideChar(text), Length(text), drawRect, config,
                 @params);
 
         success := True;
@@ -4445,10 +5026,10 @@ begin
         Exit(True);
     end;
 
-    // unfortunately this "magic" solution cannot be used, because stupidly the VCL not implements
+    // unfortunately this "magic" solution cannot be used, because unfortunately the VCL not implements
     // the DrawTransparent() function override in the graphic classes that should support it. The
     // Opacity value in this Draw() override do absolutely nothing, and is systematically ignored!!!
-    // (I'm the only one that respect the convention in my WTSVGGraphic class)
+    // (Am I the only one which respects the convention in my WTSVGGraphic class?)
     {
     // source graphic supports the alpha transparency natively?
     if (pGraphic.SupportsPartialTransparency) then
@@ -4577,7 +5158,7 @@ begin
     Result := False;
 end;
 //---------------------------------------------------------------------------
-class function TWGDIPlusHelper.ToGraphic(pSrc: Vcl.Graphics.TBitmap; encoderType: IEncoderType;
+class function TWGDIPlusHelper.ToGraphic(pSrc: Vcl.Graphics.TBitmap; encoderType: IEEncoderType;
         compressionLevel: Cardinal): TGraphic;
 var
     pixelFormat:       TPixelFormat;
@@ -5240,19 +5821,52 @@ begin
     Result := 96;
 end;
 //---------------------------------------------------------------------------
+class function TWVCLHelper.GetSystemPixelsPerInch: Integer;
+var
+    logicalHeight, physicalHeight, scalingFactor: Single;
+    hDCt:                                         HDC;
+begin
+    hDCt := 0;
+
+    try
+        // get screen device context
+        hDCt := GetDC(0);
+
+        if (hDCt = 0) then
+            Exit(0);
+
+        // get logical and physical resolution
+        logicalHeight  := GetDeviceCaps(hDCt, VERTRES);
+        physicalHeight := GetDeviceCaps(hDCt, DESKTOPVERTRES);
+
+        // logical height should never be equals to 0
+        if (logicalHeight = 0.0) then
+            Exit(0);
+
+        // calculate the scaling factor
+        scalingFactor := physicalHeight / logicalHeight;
+    finally
+        if (hDCt <> 0) then
+            ReleaseDC(0, hDCt);
+    end;
+
+    // calculate the system DPI
+    Result := Round(96.0 * scalingFactor);
+end;
+//---------------------------------------------------------------------------
 {$if CompilerVersion < 30}
-    class function TWVCLHelper.GetCurrentPixelsPerInch(pOwner: TComponent;
-            refDPI: Integer; fGetDpiForMonitor: TWGetDpiForMonitor): Integer;
+    class function TWVCLHelper.GetMonitorPixelsPerInch(pComponent: TComponent;
+            refDPI: Integer; fGetDpiForMonitor: TWfGetDpiForMonitor): Integer;
 {$else}
-    class function TWVCLHelper.GetCurrentPixelsPerInch(pOwner: TComponent;
+    class function TWVCLHelper.GetMonitorPixelsPerInch(pComponent: TComponent;
             refDPI: Integer): Integer;
-{$endif}
+{$ifend}
 var
     {$if CompilerVersion < 30}
         hDCt:       HDC;
         dpi:        Integer;
         xDpi, yDpi: UINT;
-    {$endif}
+    {$ifend}
 
     pParentForm: TCustomForm;
     pMonitor:    TMonitor;
@@ -5260,9 +5874,9 @@ begin
     pMonitor := nil;
 
     // get monitor on which application is
-    if (Assigned(pOwner) and (pOwner is TControl)) then
+    if (Assigned(pComponent) and (pComponent is TControl)) then
     begin
-        pParentForm := TWVCLHelper.GetParentForm(pOwner as TControl);
+        pParentForm := TWVCLHelper.GetParentForm(pComponent as TControl);
 
         if (Assigned(pParentForm)) then
             pMonitor := Screen.MonitorFromWindow(pParentForm.Handle);
@@ -5277,8 +5891,10 @@ begin
             begin
                 dpi := refDPI;
 
-                if (CheckWin32Version(6, 3)) then
+                // is Windows 8.1 or higher?
+                if (TWOSWinHelper.CheckWinVersion(6, 3)) then
                 begin
+                    // GetDpiForMonitor() function should exist for this Windows version, so use it
                     if (Assigned(fGetDpiForMonitor) and (fGetDpiForMonitor(pMonitor.Handle,
                             TMonitorDpiType.MDT_EFFECTIVE_DPI, yDpi, xDpi) = S_OK))
                     then
@@ -5301,7 +5917,7 @@ begin
             end;
         {$else}
             Exit(pMonitor.PixelsPerInch);
-        {$endif}
+        {$ifend}
 
     // get screen pixels per inch
     if (Assigned(Screen)) then
@@ -5315,8 +5931,125 @@ class function TWVCLHelper.ScaleByDPI(value, dpi, refDPI: Integer): Integer;
 var
     scaleFactor: Integer;
 begin
+    // same DPI, nothing to do
+    if (dpi = refDPI) then
+        Exit(value);
+
+    // calculate scaled value
     scaleFactor := MulDiv(dpi, 100, refDPI);
     Result      := MulDiv(value, scaleFactor, 100);
+end;
+//---------------------------------------------------------------------------
+{$if CompilerVersion < 30}
+    class function TWVCLHelper.IsDPIAware(hProcess: THandle; fGetProcessDpiAwareness: TWfGetProcessDpiAwareness): Boolean;
+{$else}
+    class function TWVCLHelper.IsDPIAware(hProcess: THandle): Boolean;
+{$ifend}
+var
+    dpiAwareness: PROCESS_DPI_AWARENESS;
+    res:          HRESULT;
+begin
+    // is Windows 8.1 or higher?
+    if (TWOSWinHelper.CheckWinVersion(6, 3)) then
+    begin
+        {$if CompilerVersion >= 30}
+            // get process awareness
+            res := GetProcessDpiAwareness(hProcess, dpiAwareness);
+
+            {$warn SYMBOL_DEPRECATED OFF}
+                // succeeded?
+                if (res <> S_OK) then
+                    // try with older version
+                    Exit(IsProcessDPIAware);
+            {$warn SYMBOL_DEPRECATED ON}
+
+            // process is DPI aware if any value than PROCESS_DPI_UNAWARE is returned
+            Exit (dpiAwareness <> PROCESS_DPI_UNAWARE);
+        {$else}
+            // if possible, use the GetProcessDPIAwareness() function from the Windows API
+            if (Assigned(fGetProcessDpiAwareness)) then
+            begin
+                res := fGetProcessDpiAwareness(hProcess, dpiAwareness);
+
+                // succeeded?
+                if (res <> S_OK) then
+                    // try with older version
+                    Exit(IsProcessDPIAware);
+
+                // process is DPI aware if any value than PROCESS_DPI_UNAWARE is returned
+                Exit (dpiAwareness <> PROCESS_DPI_UNAWARE);
+            end;
+
+            Exit(IsProcessDPIAware);
+        {$ifend}
+    end;
+
+    {$warn SYMBOL_DEPRECATED OFF}
+        Result := IsProcessDPIAware;
+    {$warn SYMBOL_DEPRECATED ON}
+end;
+//---------------------------------------------------------------------------
+{$if CompilerVersion < 30}
+    class function TWVCLHelper.GetDPIAwarenessContext(fGetProcessDpiAwareness: TWfGetProcessDpiAwareness): EDPIAwarenessContext;
+{$else}
+    class function TWVCLHelper.GetDPIAwarenessContext(pControl: TWinControl): EDPIAwarenessContext;
+{$ifend}
+var
+    {$if CompilerVersion >= 33}
+        dpiAwarenessContext: DPI_AWARENESS_CONTEXT;
+    {$ifend}
+    dpiAwareness: PROCESS_DPI_AWARENESS;
+    id:           DWORD;
+    hProcess:     THandle;
+begin
+    // get the application process
+    id       := WinApi.Windows.GetCurrentProcessId;
+    hProcess := OpenProcess(PROCESS_ALL_ACCESS, False, id);
+
+    if (hProcess = 0) then
+        Exit(E_AC_None);
+
+    {$if CompilerVersion >= 30}
+        // get process awareness
+        if (GetProcessDpiAwareness(hProcess, dpiAwareness) <> S_OK) then
+            Exit(E_AC_None);
+    {$else}
+        // if possible, use the GetProcessDPIAwareness() function from the Windows API
+        if (not Assigned(fGetProcessDpiAwareness) or (fGetProcessDpiAwareness(hProcess, dpiAwareness) <> S_OK)) then
+            Exit(E_AC_None);
+    {$ifend}
+
+    {$if CompilerVersion >= 33}
+        // is Windows 10 build 1607 (Anniversary update) or higher?
+        if (TWOSWinHelper.CheckWinVersion(10, 0, 14393)) then
+            // can get awareness context from parent control?
+            if (Assigned(pControl)) then
+            begin
+                dpiAwarenessContext := GetWindowDpiAwarenessContext(pControl.Handle);
+
+                // search for matching DPI awareness context
+                if (AreDpiAwarenessContextsEqual(dpiAwarenessContext, DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)) then
+                    Exit(E_AC_Per_Monitor_V2)
+                else
+                if (AreDpiAwarenessContextsEqual(dpiAwarenessContext, DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)) then
+                    Exit(E_AC_Per_Monitor)
+                else
+                if (AreDpiAwarenessContextsEqual(dpiAwarenessContext, DPI_AWARENESS_CONTEXT_SYSTEM_AWARE)) then
+                    Exit(E_AC_System)
+                else
+                if (AreDpiAwarenessContextsEqual(dpiAwarenessContext, DPI_AWARENESS_CONTEXT_UNAWARE)) then
+                    Exit(E_AC_Unaware)
+            end;
+    {$ifend}
+
+    // convert awareness context from previously found dpi awareness
+    case (dpiAwareness) of
+        PROCESS_DPI_UNAWARE:           Exit(E_AC_Unaware);
+        PROCESS_SYSTEM_DPI_AWARE:      Exit(E_AC_System);
+        PROCESS_PER_MONITOR_DPI_AWARE: Exit(E_AC_Per_Monitor);
+    else
+        Exit(E_AC_None);
+    end;
 end;
 //---------------------------------------------------------------------------
 // TWLogHelper
@@ -6171,43 +6904,43 @@ begin
         WM_LBUTTONDOWN:
         begin
             if ((message.WParam and MK_CONTROL) = 0) then
-                if (wParamName.IsEmpty) then
+                if (TWStringHelper.IsEmpty(wParamName)) then
                     wParamName := 'MK_CONTROL'
                 else
                     wParamName := wParamName + ' or MK_CONTROL';
 
             if ((message.WParam and MK_LBUTTON) = 0) then
-                if (wParamName.IsEmpty) then
+                if (TWStringHelper.IsEmpty(wParamName)) then
                     wParamName := 'MK_LBUTTON'
                 else
                     wParamName := wParamName + ' or MK_LBUTTON';
 
             if ((message.WParam and MK_MBUTTON) = 0) then
-                if (wParamName.IsEmpty) then
+                if (TWStringHelper.IsEmpty(wParamName)) then
                     wParamName := 'MK_MBUTTON'
                 else
                     wParamName := wParamName + ' or MK_MBUTTON';
 
             if ((message.WParam and MK_MBUTTON) = 0) then
-                if (wParamName.IsEmpty) then
+                if (TWStringHelper.IsEmpty(wParamName)) then
                     wParamName := 'MK_RBUTTON'
                 else
                     wParamName := wParamName + ' or MK_RBUTTON';
 
             if ((message.WParam and MK_SHIFT) = 0) then
-                if (wParamName.IsEmpty) then
+                if (TWStringHelper.IsEmpty(wParamName)) then
                     wParamName := 'MK_SHIFT'
                 else
                     wParamName := wParamName + ' or MK_SHIFT';
 
             if ((message.WParam and $20) = 0) then
-                if (wParamName.IsEmpty) then
+                if (TWStringHelper.IsEmpty(wParamName)) then
                     wParamName := 'MK_XBUTTON1'
                 else
                     wParamName := wParamName + ' or MK_XBUTTON1';
 
             if ((message.WParam and $40) = 0) then
-                if (wParamName.IsEmpty) then
+                if (TWStringHelper.IsEmpty(wParamName)) then
                     wParamName := 'MK_XBUTTON2'
                 else
                     wParamName := wParamName + ' or MK_XBUTTON2';
@@ -6320,6 +7053,9 @@ begin
     g_GDICacheController.m_UseAlphaBlendToDrawText := False;
     g_GDICacheController.m_UseDIBBitmapsToDrawRect := True;
     g_GDICacheController.m_UseAlphaBlendToDrawRect := False;
+
+    // get and cache the current Windows version
+    TWOSWinHelper.m_WinVersion := TWOSWinHelper.GetWinVersion;
 end;
 //---------------------------------------------------------------------------
 

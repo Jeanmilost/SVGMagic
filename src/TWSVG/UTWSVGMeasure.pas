@@ -25,7 +25,7 @@ type
         public type
             {**
              Unit enumeration
-             @value(IE_Unknown Value for which unit is unknown)
+             @value(IE_UN_Unknown Value for which unit is unknown)
              @value(IE_UN_None Value without unit)
              @value(IE_UN_CM Value expressed in centimeters)
              @value(IE_UN_FT Value expressed in feet)
@@ -101,7 +101,7 @@ type
              Parse data
              @param(data Data to parse)
              @returns(@true on success, otherwise @false)
-             @bold @br(NOTE) In this overload, the code clarity is favored on the execution speed.
+             @br @bold(NOTE) In this overload, the code clarity is favored on the execution speed.
                              The reason why this function was kept is that it can be used as strongly
                              tested alternative in case an unknown bug happen in the function used in
                              production
@@ -229,7 +229,7 @@ begin
 
     // get the unit
     if (offset < len) then
-        m_Unit := StrToUnit(data.Substring(offset, len - offset));
+        m_Unit := StrToUnit(TWStringHelper.Substr(data, offset, len - offset));
 
     Result := True;
 end;
@@ -287,8 +287,11 @@ end;
 //---------------------------------------------------------------------------
 procedure TWSVGMeasure<T>.Log(margin: Cardinal);
 var
-    value:  TValue;
-    valStr: UnicodeString;
+    {$if CompilerVersion <= 23}
+        unitType: Integer;
+    {$ifend}
+    value:        TValue;
+    valStr:       UnicodeString;
 begin
     value := TValue.From<T>(m_Value.Value);
 
@@ -297,9 +300,11 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
-                valStr := IntToStr(value.AsUInt64)
-            else
+            {$if CompilerVersion > 23}
+                if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
+                    valStr := IntToStr(value.AsUInt64)
+                else
+            {$ifend}
                 valStr := IntToStr(value.AsInt64);
 
         tkFloat:
@@ -308,7 +313,17 @@ begin
         raise Exception.CreateFmt('Unsupported type - %d', [Integer(value.Kind)]);
     end;
 
-    if (m_Unit = IE_UN_None) then
+    {$if CompilerVersion <= 23}
+        // this code is stupid and useless, but required, because otherwise the hyper bugged RAD
+        // Studio compiler will raise the very stupid, useless and unexpressive error:
+        // [DCC Fatal Error] F2084 Internal Error: AV08B844DF-R0000000C-0
+        // while UTWSVGStyle unit is compiled
+        unitType := Integer(IE_UN_None);
+
+        if (m_Unit = IEUnit(unitType)) then
+    {$else}
+        if (m_Unit = IE_UN_None) then
+    {$ifend}
         TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + valStr)
     else
         TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + valStr
@@ -317,8 +332,11 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGMeasure<T>.Print(margin: Cardinal): UnicodeString;
 var
-    value:  TValue;
-    valStr: UnicodeString;
+    {$if CompilerVersion <= 23}
+        unitType: Integer;
+    {$ifend}
+    value:        TValue;
+    valStr:       UnicodeString;
 begin
     value := TValue.From<T>(m_Value.Value);
 
@@ -327,9 +345,11 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
-                valStr := IntToStr(value.AsUInt64)
-            else
+            {$if CompilerVersion > 23}
+                if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
+                    valStr := IntToStr(value.AsUInt64)
+                else
+            {$ifend}
                 valStr := IntToStr(value.AsInt64);
 
         tkFloat:
@@ -340,7 +360,17 @@ begin
 
     Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + valStr;
 
-    if (m_Unit <> IE_UN_None) then
+    {$if CompilerVersion <= 23}
+        // this code is stupid and useless, but required, because otherwise the hyper bugged RAD
+        // Studio compiler will raise the very stupid, useless and unexpressive error:
+        // [DCC Fatal Error] F2084 Internal Error: AV08B844DF-R0000000C-0
+        // while UTWSVGStyle unit is compiled
+        unitType := Integer(IE_UN_None);
+
+        if (m_Unit <> IEUnit(unitType)) then
+    {$else}
+        if (m_Unit <> IE_UN_None) then
+    {$ifend}
         Result := Result + UnitToStr(m_Unit, '<Unknown>');
 
     Result := Result + #13 + #10;
@@ -348,8 +378,11 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGMeasure<T>.ToXml: UnicodeString;
 var
-    value:  TValue;
-    valStr: UnicodeString;
+    {$if CompilerVersion <= 23}
+        unitType: Integer;
+    {$ifend}
+    value:        TValue;
+    valStr:       UnicodeString;
 begin
     // convert value to generic value
     value := TValue.From<T>(m_Value.Value);
@@ -359,9 +392,11 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
-                valStr := IntToStr(value.AsUInt64)
-            else
+            {$if CompilerVersion > 23}
+                if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
+                    valStr := IntToStr(value.AsUInt64)
+                else
+            {$ifend}
                 valStr := IntToStr(value.AsInt64);
 
         tkFloat:
@@ -372,11 +407,23 @@ begin
 
     Result := ItemName;
 
+    {$if CompilerVersion <= 23}
+        // this code is stupid and useless, but required, because otherwise the hyper bugged RAD
+        // Studio compiler will raise the very stupid, useless and unexpressive error:
+        // [DCC Fatal Error] F2084 Internal Error: AV08B844DF-R0000000C-0
+        // while UTWSVGStyle unit is compiled
+        unitType := Integer(IE_UN_None);
+    {$ifend}
+
     // format string
     if (m_InkscapeStyle) then
         Result := Result + ':' + valStr
     else
-    if (m_Unit = IE_UN_None) then
+    {$if CompilerVersion <= 23}
+        if (m_Unit = IEUnit(unitType)) then
+    {$else}
+        if (m_Unit = IE_UN_None) then
+    {$ifend}
         Result := Result + '=\"' + valStr + '\"'
     else
         Result := Result + '=\"' + valStr + UnitToStr(m_Unit, '') + '\"';

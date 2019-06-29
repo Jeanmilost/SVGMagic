@@ -165,66 +165,66 @@ type
             {**
              Get the hovered state frame count
              @returns(The frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used to
-                       determine how many frames, in an ideal situation, should be rendered by
-                       seconds, and thus allows to calculate the time interval between each frames.
-                       Instead, the FPS represents the number of frames per seconds a system can
-                       effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
+                             determine how many frames, in an ideal situation, should be rendered by
+                             seconds, and thus allows to calculate the time interval between each frames.
+                             Instead, the FPS represents the number of frames per seconds a system can
+                             effectively process
             }
             function GetHoveredFrameCount: Double; virtual;
 
             {**
              Set the hovered state frame count
              @param(frameCount Frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used to
-                       determine how many frames, in an ideal situation, should be rendered by
-                       seconds, and thus allows to calculate the time interval between each frames.
-                       Instead, the FPS represents the number of frames per seconds a system can
-                       effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
+                             determine how many frames, in an ideal situation, should be rendered by
+                             seconds, and thus allows to calculate the time interval between each frames.
+                             Instead, the FPS represents the number of frames per seconds a system can
+                             effectively process
             }
             procedure SetHoveredFrameCount(frameCount: Double); virtual;
 
             {**
              Get the clicked state frame count
              @returns(The frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used to
-                       determine how many frames, in an ideal situation, should be rendered by
-                       seconds, and thus allows to calculate the time interval between each frames.
-                       Instead, the FPS represents the number of frames per seconds a system can
-                       effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
+                             determine how many frames, in an ideal situation, should be rendered by
+                             seconds, and thus allows to calculate the time interval between each frames.
+                             Instead, the FPS represents the number of frames per seconds a system can
+                             effectively process
             }
             function GetClickedFrameCount: Double; virtual;
 
             {**
              Set the clicked state frame count
              @param(frameCount Frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used to
-                       determine how many frames, in an ideal situation, should be rendered by
-                       seconds, and thus allows to calculate the time interval between each frames.
-                       Instead, the FPS represents the number of frames per seconds a system can
-                       effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
+                             determine how many frames, in an ideal situation, should be rendered by
+                             seconds, and thus allows to calculate the time interval between each frames.
+                             Instead, the FPS represents the number of frames per seconds a system can
+                             effectively process
             }
             procedure SetClickedFrameCount(frameCount: Double); virtual;
 
             {**
              Get the disabled state frame count
              @returns(The frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used to
-                       determine how many frames, in an ideal situation, should be rendered by
-                       seconds, and thus allows to calculate the time interval between each frames.
-                       Instead, the FPS represents the number of frames per seconds a system can
-                       effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
+                             determine how many frames, in an ideal situation, should be rendered by
+                             seconds, and thus allows to calculate the time interval between each frames.
+                             Instead, the FPS represents the number of frames per seconds a system can
+                             effectively process
             }
             function GetDisabledFrameCount: Double; virtual;
 
             {**
              Set the disabled state frame count
              @param(frameCount Frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used to
-                       determine how many frames, in an ideal situation, should be rendered by
-                       seconds, and thus allows to calculate the time interval between each frames.
-                       Instead, the FPS represents the number of frames per seconds a system can
-                       effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
+                             determine how many frames, in an ideal situation, should be rendered by
+                             seconds, and thus allows to calculate the time interval between each frames.
+                             Instead, the FPS represents the number of frames per seconds a system can
+                             effectively process
             }
             procedure SetDisabledFrameCount(frameCount: Double); virtual;
 

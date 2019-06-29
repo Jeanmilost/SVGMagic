@@ -573,7 +573,11 @@ begin
 
                 // convert and store value, and clear previously read value
                 SetLength(values, Length(values) + 1);
-                values[Length(values) - 1] := StrToUInt64(value);
+                {$if CompilerVersion <= 23}
+                    values[Length(values) - 1] := StrToInt64(value);
+                {$else}
+                    values[Length(values) - 1] := StrToUInt64(value);
+                {$ifend}
                 value                      := '';
             end
             else
@@ -669,7 +673,11 @@ begin
 
         // convert and store last value
         SetLength(values, Length(values) + 1);
-        values[Length(values) - 1] := StrToUInt64(value);
+        {$if CompilerVersion <= 23}
+            values[Length(values) - 1] := StrToInt64(value);
+        {$else}
+            values[Length(values) - 1] := StrToUInt64(value);
+        {$ifend}
 
         // found unit?
         if (Length(smilUnit) > 0) then

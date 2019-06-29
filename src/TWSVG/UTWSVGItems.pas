@@ -102,7 +102,7 @@ type
 
             {**
              Get the options
-             @note BE CAREFUL, the options should never be changed from outside
+             @br @bold(NOTE) BE CAREFUL, the options should never be changed from outside
             }
             property Options: PWSVGOptions read m_pOptions;
     end;
@@ -110,8 +110,9 @@ type
     {**
      A Scalable Vector Graphics (SVG) property is a data contained in an element, indicating the value
      of a particular variable. For example, a fill color, a stroke width, ...
-     @note In Inkscape files, properties containing the namespace sodipodi can be ignored, they are
-           reminiscent of the first Inkscape application version, when it was still called SodiPodi
+     @br @bold(NOTE) In Inkscape files, properties containing the namespace sodipodi can be ignored,
+                     they are reminiscent of the first Inkscape application version, when it was still
+                     called SodiPodi
     }
     TWSVGProperty = class(TWSVGItem)
         public
@@ -219,7 +220,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -255,8 +256,8 @@ type
 
         public
             {**
-             Get the property at index
-             @param index - property index
+             Get the property at index. Example: property := Properties[0];
+             @br @bold(NOTE) @nil will be returned if index is out of bounds
             }
             property Properties[index: Integer]: TWSVGProperty read GetProperty;
 
@@ -268,12 +269,12 @@ type
 
     {**
      A Scalable Vector Graphics (SVG) reference is a special element referring to another element
-     @note Although this class mentionates that it contains a reference, it is not really the case,
-           as this class contains a clone instead. The reference naming for this class comes from
-           the c++ mirror project, where it was possible to keep a reference to an outside pointer.
-           Here a such relationship isn't possible, because the pointers change everytime an Assign()
-           function is called, for that reason a clone of the referenced object is kept, and
-           (unfortunately) not a pointer
+     @br @bold(NOTE) Although this class mentionates that it contains a reference, it is not really
+                     the case, as this class contains a clone instead. The reference naming for this
+                     class comes from the c++ mirror project, where it was possible to keep a reference
+                     to an outside pointer. Here a such relationship isn't possible, because the
+                     pointers change everytime an Assign() function is called, for that reason a
+                     clone of the referenced object is kept, and (unfortunately) not a pointer
     }
     TWSVGReference = class(TWSVGElement)
         private
@@ -315,7 +316,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}

@@ -123,7 +123,7 @@ type
             {**
              Register a link to an element in the defines table
              @param(pElement Element to register)
-             @param(defs @bold([in, out]) Definition list in which element will be added
+             @param(defs @bold([in, out]) Definition list in which element will be added)
              @param(asRef If @true, the element will be registered indirectly, by using a reference)
              @returns(@true if element was successfully registered, otherwise @false)
             }
@@ -155,7 +155,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -185,14 +185,14 @@ type
 
         public
             {**
-             Get element contained in the defs dictionary at the key
-             @param(key Key of element to get)
+             Get element contained in the defs dictionary at the key. Example: element := Defs['key'];
+             @br @bold(NOTE) @nil will be returned if the key doesn't exist
             }
             property Defs[key: UnicodeString]: TWSVGElement read GetElementAtKey;
 
             {**
-             Get element at index
-             @param(index Element index to get)
+             Get element at index. Example: element := Elements[0];
+             @br @bold(NOTE) @nil will be returned if index is out of bounds
             }
             property Elements[index: Integer]: TWSVGElement read GetElement;
 
@@ -207,8 +207,8 @@ type
             property ElementList: TWSVGElement.IElements read m_pElements;
 
             {**
-             Get animation at index
-             @param(index Animation index to get)
+             Get animation at index. Example: animation := Animations[0];
+             @br @bold(NOTE) @nil will be returned if index is out of bounds
             }
             property Animations[index: Integer]: TWSVGAnimation read GetAnimation;
 
@@ -343,7 +343,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -392,7 +392,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -441,7 +441,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -490,7 +490,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -539,7 +539,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -602,7 +602,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -671,7 +671,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -832,7 +832,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -866,9 +866,10 @@ type
      an action to be undertaken while the path is drawn, followed by the coordinates necessary to
      accomplish this command. E.g. an absolute "move to" path command will be written M18.285,1.5 in
      the SVG file
-     @note Several separators may be used to separate the coordinate values. Separators may be a blank
-          space, a negative '-' char or a native separator, as e.g. ',' And many separators may be used
-          in the same instruction to separate the values, e.g. c0,1.76-1.572,3.39-3.615,3.39
+     @br @bold(NOTE) Several separators may be used to separate the coordinate values. Separators may
+                     be a blank space, a negative '-' char or a native separator, as e.g. ',' And many
+                     separators may be used in the same instruction to separate the values, e.g.
+                     c0,1.76-1.572,3.39-3.615,3.39
     }
     TWSVGPathCmd = class(TWPathCmd)
         private
@@ -1005,7 +1006,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -1065,7 +1066,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -1433,7 +1434,7 @@ begin
         Result          := pLinearGradient.Read(pNode) and Result;
 
         // is gradient identifier empty?
-        if (not pLinearGradient.ItemID.IsEmpty) then
+        if (not TWStringHelper.IsEmpty(pLinearGradient.ItemID)) then
         begin
             // register the gradient link
             if (not RegisterLink(pLinearGradient, defs, False)) then
@@ -1468,7 +1469,7 @@ begin
         Result          := pRadialGradient.Read(pNode) and Result;
 
         // is gradient identifier empty?
-        if (not pRadialGradient.ItemID.IsEmpty) then
+        if (not TWStringHelper.IsEmpty(pRadialGradient.ItemID)) then
         begin
             // register the gradient link
             if (not RegisterLink(pRadialGradient, defs, False)) then
@@ -1493,7 +1494,7 @@ begin
     if (not Assigned(pElement)) then
         Exit(False);
 
-    if (pElement.ItemID.IsEmpty) then
+    if (TWStringHelper.IsEmpty(pElement.ItemID)) then
         Exit(False);
 
     // each define should be unique in the map
@@ -2834,7 +2835,7 @@ begin
     end;
 
     // get text
-    m_Text := TWSVGCommon.GetValue(pNode).Trim;
+    m_Text := TWStringHelper.Trim(TWSVGCommon.GetValue(pNode));
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGText.Log(margin: Cardinal);

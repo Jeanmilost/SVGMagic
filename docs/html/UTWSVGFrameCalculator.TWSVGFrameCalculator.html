@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGFrameCalculator: Class TWSVGFrameCalculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGFrameCalculator"></span><h1 class="cio">Class TWSVGFrameCalculator</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalCRs">Internal Classes and Records</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGFrameCalculator.html">UTWSVGFrameCalculator</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGFrameCalculator = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Calculate the frame count and time interval required to process an animation</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TWSVGFrameCalculator</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalCRs"></span><h3 class="summary">Internal Classes and Records</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.IInfo.html">IInfo</a></b> = record</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#Create">Create</a></b>(frameCount: Double); overload; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#Create">Create</a></b>; overload; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#GetFrameCount">GetFrameCount</a></b>: Double; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#ValidateIndex">ValidateIndex</a></b>(index, startIndex, endIndex: NativeUInt): NativeUInt; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#GetInfo">GetInfo</a></b>(out info: <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.IInfo.html">IInfo</a>); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#SetDuration">SetDuration</a></b>(duration: Double; frameCount: NativeUInt); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#SetFrameCount">SetFrameCount</a></b>(frameCount: Double); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#SetInterval">SetInterval</a></b>(interval: Double); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#StartTimer">StartTimer</a></b>; virtual;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#FrameCount">FrameCount</a></b>: Double read m_FrameCount write m_FrameCount;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#Interval">Interval</a></b>: Double read m_Interval write <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#SetInterval">SetInterval</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(frameCount: Double); overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor *</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>frameCount</dt>
+<dd>Frame count</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>; overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetFrameCount"></span><code>function <b>GetFrameCount</b>: Double; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
+<h6 class="description_section">Returns</h6>
+<p class="return">The frame count</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ValidateIndex"></span><code>class function <b>ValidateIndex</b>(index, startIndex, endIndex: NativeUInt): NativeUInt; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check and return an index that is always within the range delimited by start and end    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index to check</dd>
+<dt>startIndex</dt>
+<dd>Range start</dd>
+<dt>endIndex</dt>
+<dd>Range end</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">An index that is always within the range delimited by start and end</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetInfo"></span><code>procedure <b>GetInfo</b>(out info: <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.IInfo.html">IInfo</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get frame info  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>info</dt>
+<dd><b>[out]</b> Frame info to populate</dd>
+</dl>
+<h6 class="description_section">Exceptions raised</h6>
+<dl class="exceptions_raised">
+<dt><code>Exception</code></dt>
+<dd>if frame count is equal to 0</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetDuration"></span><code>procedure <b>SetDuration</b>(duration: Double; frameCount: NativeUInt); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Calculate frame count and time interval to respect a total animation duration    <br> <b>NOTE</b> The duration is based on the fact that 100% of an animation cycle must be performed during this time. E.g. for an animation that should execute 100 frames during 6 seconds, the frame count will be equal to 17</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>duration</dt>
+<dd>Duration to set in milliseconds</dd>
+<dt>frameCount</dt>
+<dd>Number of frames the animation contains</dd>
+</dl>
+<h6 class="description_section">Exceptions raised</h6>
+<dl class="exceptions_raised">
+<dt><code>Exception</code></dt>
+<dd>if duration is equal to 0</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetFrameCount"></span><code>procedure <b>SetFrameCount</b>(frameCount: Double); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>frameCount</dt>
+<dd>Frame count</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetInterval"></span><code>procedure <b>SetInterval</b>(interval: Double); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set time interval after which frame count should be incremented </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>interval</dt>
+<dd>Time interval</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="StartTimer"></span><code>procedure <b>StartTimer</b>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Start time measurement</p>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="FrameCount"></span><code>property <b>FrameCount</b>: Double read m_FrameCount write m_FrameCount;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the number of frame to render per seconds <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Interval"></span><code>property <b>Interval</b>: Double read m_Interval write <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html#SetInterval">SetInterval</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the interval</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

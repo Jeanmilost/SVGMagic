@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWHelpers: Record TWGDIPlusHelper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWGDIPlusHelper"></span><h1 class="cio">Record TWGDIPlusHelper</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWHelpers.html">UTWHelpers</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWGDIPlusHelper = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+Helper functions for GDI+</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIPlusHelper.html#IEEncoderType">IEEncoderType</a></b> = (...);</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIPlusHelper.html#Clear">Clear</a></b>(pCanvas: TCanvas; pGraphics: TGpGraphics): Boolean; overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIPlusHelper.html#Clear">Clear</a></b>(pBitmap: Vcl.Graphics.TBitmap; pGraphics: TGpGraphics): Boolean; overload; static;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIPlusHelper.html#GetGdiplusEncoderClsid">GetGdiplusEncoderClsid</a></b>(const format: UnicodeString; out pClsid: TGuid): Boolean; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIPlusHelper.html#ToGDIPlusBitmap">ToGDIPlusBitmap</a></b>(const pBitmap: Vcl.Graphics.TBitmap): TGpBitmap; static;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIPlusHelper.html#ToGraphic">ToGraphic</a></b>(pSrc: Vcl.Graphics.TBitmap; encoderType: <a  href="UTWHelpers.TWGDIPlusHelper.html#IEEncoderType">IEEncoderType</a>; compressionLevel: Cardinal): TGraphic; static;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IEEncoderType"></span><code><b>IEEncoderType</b> = (...);</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+GDI+ encoder types     </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_EC_BMP">IE_EC_BMP</span>: Use the bitmap encoder</li>
+<li>
+<span id="IE_EC_JPG">IE_EC_JPG</span>: Use the JPEG encoder</li>
+<li>
+<span id="IE_EC_PNG">IE_EC_PNG</span>: Use the PNG encoder</li>
+<li>
+<span id="IE_EC_TIFF">IE_EC_TIFF</span>: Use the TIFF encoder</li>
+<li>
+<span id="IE_EC_GIF">IE_EC_GIF</span>: Use the GIF encoder</li>
+</ul>
+</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Clear"></span><code>class function <b>Clear</b>(pCanvas: TCanvas; pGraphics: TGpGraphics): Boolean; overload; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Clear canvas completely   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pCanvas</dt>
+<dd>Canvas to clear</dd>
+<dt>pGraphics</dt>
+<dd>GDI+ graphics to use (should be built using canvas device context)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Clear"></span><code>class function <b>Clear</b>(pBitmap: Vcl.Graphics.TBitmap; pGraphics: TGpGraphics): Boolean; overload; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Clear bitmap completely    <br> <b>NOTE</b> 32 bit bitmap alpha channel will also be cleared</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pBitmap</dt>
+<dd>Bitmap to clear</dd>
+<dt>pGraphics</dt>
+<dd>GDI+ graphics to use (should be built using canvas device context)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetGdiplusEncoderClsid"></span><code>class function <b>GetGdiplusEncoderClsid</b>(const format: UnicodeString; out pClsid: TGuid): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get encoder to use to convert GDI+ bitmap to another format   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>format</dt>
+<dd>Target format for which encoder should be get</dd>
+<dt>pClsid</dt>
+<dd><b>[out]</b> Encoder GUID, empty GUID if not found or on error</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ToGDIPlusBitmap"></span><code>class function <b>ToGDIPlusBitmap</b>(const pBitmap: Vcl.Graphics.TBitmap): TGpBitmap; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Create GDI+ bitmap from TBitmap  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pBitmap</dt>
+<dd>- bitmap object to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>Nil</code> if pBitmap is <code>Nil</code>, otherwise newly created bitmap, caller is responsible to free it</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ToGraphic"></span><code>class function <b>ToGraphic</b>(pSrc: Vcl.Graphics.TBitmap; encoderType: <a  href="UTWHelpers.TWGDIPlusHelper.html#IEEncoderType">IEEncoderType</a>; compressionLevel: Cardinal): TGraphic; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Convert a bitmap to a graphic (e.g. JPG, PNG, ...) using GDI+. In case the destination format contains an alpha channel, it will be preserved during the conversion    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSrc</dt>
+<dd>Source bitmap</dd>
+<dt>encoderType</dt>
+<dd>Encoder type to use to generate the destination</dd>
+<dt>compressionLevel</dt>
+<dd>Compression level to use in case the destination graphic can be compressed. This value may be between 0 and 9 for PNG and between 0 and 100 for JPEG</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Converted graphic, <code>Nil</code> if failed or on error</p></td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

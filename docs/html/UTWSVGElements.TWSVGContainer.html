@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGElements: Class TWSVGContainer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGContainer"></span><h1 class="cio">Class TWSVGContainer</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGElements.html">UTWSVGElements</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGContainer = class(<a class="normal" href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Scalable Vector Graphics (SVG) container, it's a SVG element that can contain other SVG elements</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a></li>
+<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a></li>
+<li class="thisitem">TWSVGContainer</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGElements.TWSVGContainer.html#IAnimations">IAnimations</a></b> = TObjectList&lt;<a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>&gt;;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a></b>       = TObjectDictionary&lt;UnicodeString, <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>&gt;;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Fields"></span><h3 class="summary">Fields</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGElements.TWSVGContainer.html#m_pAnimations">m_pAnimations</a></b>: <a  href="UTWSVGElements.TWSVGContainer.html#IAnimations">IAnimations</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGElements.TWSVGContainer.html#m_pDefs">m_pDefs</a></b>:       <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGElements.TWSVGContainer.html#m_pElements">m_pElements</a></b>:   <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a>;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGElements.TWSVGContainer.html#Create">Create</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGElements.TWSVGContainer.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#Print">Print</a></b>(margin: Cardinal): UnicodeString; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#Read">Read</a></b>(const pNode: IXMLNode): Boolean; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#ToXml">ToXml</a></b>: UnicodeString; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#GetAnimation">GetAnimation</a></b>(index: Integer): <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#GetAnimationCount">GetAnimationCount</a></b>: NativeUInt; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#GetElement">GetElement</a></b>(index: Integer): <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#GetElementAtKey">GetElementAtKey</a></b>(key: UnicodeString): <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#GetElementCount">GetElementCount</a></b>: NativeUInt; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#ReadItem">ReadItem</a></b>(const name: UnicodeString; const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>; var pElements: <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a>): Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#ReadLinearGradient">ReadLinearGradient</a></b>(const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>): Boolean; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#ReadRadialGradient">ReadRadialGradient</a></b>(const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>): Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#RegisterLink">RegisterLink</a></b>(pElement: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>; asRef: Boolean): Boolean; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGElements.TWSVGContainer.html#Assign">Assign</a></b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGElements.TWSVGContainer.html#Clear">Clear</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGElements.TWSVGContainer.html#Log">Log</a></b>(margin: Cardinal); override;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#AnimationCount">AnimationCount</a></b>: NativeUInt <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetAnimationCount">GetAnimationCount</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#Animations">Animations</a></b>[index:Integer]: <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetAnimation">GetAnimation</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#Defs">Defs</a></b>[key:UnicodeString]: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetElementAtKey">GetElementAtKey</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#ElementCount">ElementCount</a></b>: NativeUInt <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetElementCount">GetElementCount</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#ElementList">ElementList</a></b>: <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#m_pElements">m_pElements</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#Elements">Elements</a></b>[index:Integer]: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetElement">GetElement</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IAnimations"></span><code><b>IAnimations</b> = TObjectList&lt;<a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>&gt;;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IDefs"></span><code><b>IDefs</b>       = TObjectDictionary&lt;UnicodeString, <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>&gt;;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Fields</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_pAnimations"></span><code><b>m_pAnimations</b>: <a  href="UTWSVGElements.TWSVGContainer.html#IAnimations">IAnimations</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_pDefs"></span><code><b>m_pDefs</b>:       <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_pElements"></span><code><b>m_pElements</b>:   <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pParent</dt>
+<dd>Parent item, orphan or root if <code>Nil</code></dd>
+<dt>pOptions</dt>
+<dd>SVG options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Print"></span><code>function <b>Print</b>(margin: Cardinal): UnicodeString; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Print content to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Content</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Read"></span><code>function <b>Read</b>(const pNode: IXMLNode): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Read SVG element from xml  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pNode</dt>
+<dd>Xml node containing SVG element to read</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToXml"></span><code>function <b>ToXml</b>: UnicodeString; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get xml formatted string </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">String</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetAnimation"></span><code>function <b>GetAnimation</b>(index: Integer): <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get animation at index  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index at which animation should be get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Animation</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetAnimationCount"></span><code>function <b>GetAnimationCount</b>: NativeUInt; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get animation count </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Animation count</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetElement"></span><code>function <b>GetElement</b>(index: Integer): <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get element at index  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index at which element should be get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Element</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetElementAtKey"></span><code>function <b>GetElementAtKey</b>(key: UnicodeString): <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get element at key  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>key</dt>
+<dd>Key of element to get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Element, <code>Nil</code> if not found or on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetElementCount"></span><code>function <b>GetElementCount</b>: NativeUInt; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get element count </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Element count</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ReadItem"></span><code>function <b>ReadItem</b>(const name: UnicodeString; const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>; var pElements: <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a>): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Read item     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Item name</dd>
+<dt>pNode</dt>
+<dd>Xml node containing item to read</dd>
+<dt>defs</dt>
+<dd><b>[out]</b> Definition list in which item will be added (if item is a definition)</dd>
+<dt>pElements</dt>
+<dd><b>[out]</b> Elements list in which item will be added (if item is an element)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if item was successfully read, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ReadLinearGradient"></span><code>function <b>ReadLinearGradient</b>(const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Read linear gradient item and link it with defines table   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pNode</dt>
+<dd>Xml node containing the linear gradient to read</dd>
+<dt>defs</dt>
+<dd><b>[out]</b> Definition list in which linear gradient will be added</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if linear gradient item was successfully read, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ReadRadialGradient"></span><code>function <b>ReadRadialGradient</b>(const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Read radial gradient item and link it with defines table   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pNode</dt>
+<dd>Xml node containing the radial gradient to read</dd>
+<dt>defs</dt>
+<dd><b>[out]</b> Definition list in which radial gradient will be added</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if radial gradient item was successfully read, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="RegisterLink"></span><code>function <b>RegisterLink</b>(pElement: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>; asRef: Boolean): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Register a link to an element in the defines table    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pElement</dt>
+<dd>Element to register</dd>
+<dt>defs</dt>
+<dd><b>[in, out]</b> Definition list in which element will be added</dd>
+<dt>asRef</dt>
+<dd>If <code>True</code>, the element will be registered indirectly, by using a reference</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if element was successfully registered, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) content from another item </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other item to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Log"></span><code>procedure <b>Log</b>(margin: Cardinal); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Log content </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="AnimationCount"></span><code>property <b>AnimationCount</b>: NativeUInt <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetAnimationCount">GetAnimationCount</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get animation count</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Animations"></span><code>property <b>Animations</b>[index:Integer]: <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetAnimation">GetAnimation</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get animation at index. Example: animation := Animations[0]; <br> <b>NOTE</b> <code>Nil</code> will be returned if index is out of bounds</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Defs"></span><code>property <b>Defs</b>[key:UnicodeString]: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetElementAtKey">GetElementAtKey</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get element contained in the defs dictionary at the key. Example: element := Defs['key']; <br> <b>NOTE</b> <code>Nil</code> will be returned if the key doesn't exist</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ElementCount"></span><code>property <b>ElementCount</b>: NativeUInt <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetElementCount">GetElementCount</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get element count</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ElementList"></span><code>property <b>ElementList</b>: <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#m_pElements">m_pElements</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the element list</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Elements"></span><code>property <b>Elements</b>[index:Integer]: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetElement">GetElement</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get element at index. Example: element := Elements[0]; <br> <b>NOTE</b> <code>Nil</code> will be returned if index is out of bounds</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

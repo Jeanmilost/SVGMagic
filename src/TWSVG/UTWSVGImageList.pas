@@ -18,7 +18,7 @@ uses System.SysUtils,
      Winapi.Messages,
      {$if CompilerVersion >= 33}
         System.Messaging,
-     {$endif}
+     {$ifend}
      UTWMajorSettings,
      UTWColor,
      UTWHelpers,
@@ -32,7 +32,7 @@ type
      @param(newDPI New DPI value)
      @returns(@true if event was handled and should no longer be considered, otherwise @false)
     }
-    TWOnSVGImageListDPIChanged = function(oldDPI, newDPI: Integer): Boolean of object;
+    TWfOnSVGImageListDPIChanged = function(oldDPI, newDPI: Integer): Boolean of object;
 
     {**
      Image list override that supports SVG graphics
@@ -60,7 +60,7 @@ type
 
                     {**
                      Assign (i.e. copy) the content from another component
-                     @param(pSource Source component to copy from
+                     @param(pSource Source component to copy from)
                     }
                     procedure Assign(pSource: IWPictureItem); virtual;
             end;
@@ -71,26 +71,27 @@ type
             IWPictureList = TObjectList<IWPictureItem>;
 
         private
-            m_pPictures:                 IWPictureList;
-            m_Graphics:                  array of TWSVGGraphic;
-            m_RefWidth:                  Integer;
-            m_RefHeight:                 Integer;
-            m_ParentPixelsPerInch:       Integer;
-            m_RefPixelsPerInch:          Integer;
-            m_PixelsPerInch:             Integer;
-            m_DPIScale:                  Boolean;
-            m_fOnSVGImageListDPIChanged: TWOnSVGImageListDPIChanged;
+            m_pPictures:                       IWPictureList;
+            m_Graphics:                        array of TWSVGGraphic;
+            m_RefWidth:                        Integer;
+            m_RefHeight:                       Integer;
+            m_ParentPixelsPerInch:             Integer;
+            m_RefPixelsPerInch:                Integer;
+            m_PixelsPerInch:                   Integer;
+            m_DPIScale:                        Boolean;
+            m_fOnSVGImageListDPIChanged:       TWfOnSVGImageListDPIChanged;
 
             {$if CompilerVersion < 33}
-                m_hParent:               HWND;
-                m_fPrevWndProc:          TFarProc;
-                m_fWndProc:              TFarProc;
+                m_hParent:                     HWND;
+                m_fPrevWndProc:                TFarProc;
+                m_fWndProc:                    TFarProc;
                 {$if CompilerVersion < 30}
-                    m_fGetDpiForMonitor: TWGetDpiForMonitor;
-                {$endif}
+                    m_fGetDpiForMonitor:       TWfGetDpiForMonitor;
+                    m_fGetProcessDpiAwareness: TWfGetProcessDpiAwareness;
+                {$ifend}
             {$else}
                 m_DPIChangedMessageID:   Integer;
-            {$endif}
+            {$ifend}
 
             {**
              Get the library version
@@ -188,6 +189,12 @@ type
             procedure LoadPictureListFromStream(pList: IWPictureList; pStream: TStream); virtual;
 
             {**
+             Get if glyphs should be scaled with DPI
+             @returns(@true if glyphs should be scaled with DPI, otherwise @false)
+            }
+            function DoScaleWithDPI: Boolean; virtual;
+
+            {**
              Process the draw on the canvas
              @param(index Image index to draw on canvas)
              @param pCanvas Canvas to draw on)
@@ -212,12 +219,14 @@ type
                  @param(msg Windows message to process)
                 }
                 procedure OnDPIChanged(const pSender: TObject; const msg: System.Messaging.TMessage);
-            {$endif}
+            {$ifend}
 
         protected
             property ColorDepth;
             property DrawingStyle;
-            property GrayscaleFactor;
+            {$if CompilerVersion > 23}
+                property GrayscaleFactor;
+            {$ifend}
             property ImageType;
             property Masked;
             property ShareImages;
@@ -248,7 +257,7 @@ type
 
             {**
              Assign (i.e. copy) the content from another component
-             @param(pSource Source component to copy from
+             @param(pSource Source component to copy from)
             }
             procedure Assign(pSource: TPersistent); override;
 
@@ -359,7 +368,7 @@ type
             {**
              Get or set OnSVGImageListDPIChanged event
             }
-            property OnSVGImageListDPIChanged: TWOnSVGImageListDPIChanged read m_fOnSVGImageListDPIChanged write m_fOnSVGImageListDPIChanged;
+            property OnSVGImageListDPIChanged: TWfOnSVGImageListDPIChanged read m_fOnSVGImageListDPIChanged write m_fOnSVGImageListDPIChanged;
     end;
 
 implementation
@@ -397,7 +406,7 @@ constructor TWSVGImageList.Create(pOwner: TComponent);
 {$if CompilerVersion < 30}
     var
         hSHCore: HMODULE;
-{$endif}
+{$ifend}
 begin
     inherited Create(pOwner);
 
@@ -423,10 +432,16 @@ begin
 
             // hook GetDpiForMonitor() function from shcore.dll
             if (hSHCore <> 0) then
-                m_fGetDpiForMonitor := GetProcAddress(hSHCore, 'GetDpiForMonitor')
+            begin
+                m_fGetDpiForMonitor       := GetProcAddress(hSHCore, 'GetDpiForMonitor');
+                m_fGetProcessDpiAwareness := GetProcAddress(hSHCore, 'GetProcessDpiAwareness');
+            end
             else
-                m_fGetDpiForMonitor := nil;
-        {$endif}
+            begin
+                m_fGetDpiForMonitor       := nil;
+                m_fGetProcessDpiAwareness := nil;
+            end;
+        {$ifend}
 
         if (Assigned(pOwner) and (pOwner is TForm)) then
         begin
@@ -449,14 +464,14 @@ begin
         // subscribe to change DPI message
         m_DPIChangedMessageID := TMessageManager.DefaultManager.SubscribeToMessage(TChangeScaleMessage,
                 OnDPIChanged);
-    {$endif}
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 constructor TWSVGImageList.CreateSize(width, height: Integer);
 {$if CompilerVersion < 30}
     var
         hSHCore: HMODULE;
-{$endif}
+{$ifend}
 begin
     inherited CreateSize(width, height);
 
@@ -482,10 +497,16 @@ begin
 
             // hook GetDpiForMonitor() function from shcore.dll
             if (hSHCore <> 0) then
-                m_fGetDpiForMonitor := GetProcAddress(hSHCore, 'GetDpiForMonitor')
+            begin
+                m_fGetDpiForMonitor       := GetProcAddress(hSHCore, 'GetDpiForMonitor');
+                m_fGetProcessDpiAwareness := GetProcAddress(hSHCore, 'GetProcessDpiAwareness');
+            end
             else
-                m_fGetDpiForMonitor := nil;
-        {$endif}
+            begin
+                m_fGetDpiForMonitor       := nil;
+                m_fGetProcessDpiAwareness := nil;
+            end;
+        {$ifend}
 
         m_hParent      := 0;
         m_fWndProc     := nil;
@@ -494,7 +515,7 @@ begin
         // subscribe to change DPI message
         m_DPIChangedMessageID := TMessageManager.DefaultManager.SubscribeToMessage(TChangeScaleMessage,
                 OnDPIChanged);
-    {$endif}
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGImageList.Destroy;
@@ -514,7 +535,7 @@ begin
     {$else}
         // unsubscribe to change DPI message
         TMessageManager.DefaultManager.Unsubscribe(TChangeScaleMessage, m_DPIChangedMessageID);
-    {$endif}
+    {$ifend}
 
     FreeAndNil(m_pPictures);
 
@@ -568,11 +589,11 @@ begin
 
     // update pixels per inch to match with the current context
     {$if CompilerVersion < 30}
-        m_PixelsPerInch := TWVCLHelper.GetCurrentPixelsPerInch(Owner, m_RefPixelsPerInch,
+        m_PixelsPerInch := TWVCLHelper.GetMonitorPixelsPerInch(Owner, m_RefPixelsPerInch,
                 m_fGetDPIForMonitor);
     {$else}
-        m_PixelsPerInch := TWVCLHelper.GetCurrentPixelsPerInch(Owner, m_RefPixelsPerInch);
-    {$endif}
+        m_PixelsPerInch := TWVCLHelper.GetMonitorPixelsPerInch(Owner, m_RefPixelsPerInch);
+    {$ifend}
 
     // set user defined size. NOTE calling SetSize() will keep the reference width and height, and
     // will also scale these values in relation to current DPI
@@ -586,7 +607,7 @@ var
     w: Integer;
 begin
     // scale height in relation to currently selected DPI value
-    if (m_DPIScale) then
+    if (DoScaleWithDPI) then
         w := TWVCLHelper.ScaleByDPI(value, m_PixelsPerInch, m_RefPixelsPerInch)
     else
         w := value;
@@ -610,7 +631,7 @@ var
     h: Integer;
 begin
     // scale height in relation to currently selected DPI value
-    if (m_DPIScale) then
+    if (DoScaleWithDPI) then
         h := TWVCLHelper.ScaleByDPI(value, m_PixelsPerInch, m_RefPixelsPerInch)
     else
         h := value;
@@ -648,7 +669,7 @@ begin
     m_PixelsPerInch := value;
 
     // scale width and height to new DPI
-    if (m_DPIScale) then
+    if (DoScaleWithDPI) then
         SetSize(m_RefWidth, m_RefHeight);
 end;
 //---------------------------------------------------------------------------
@@ -827,10 +848,16 @@ end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageList.LoadPictureListFromStream(pList: IWPictureList; pStream: TStream);
 var
+    {$if CompilerVersion <= 23}
+        pImgNameBytes: Pointer;
+        pData:         Pointer;
+    {$else}
+        imgNameBytes:  TBytes;
+    {$ifend}
+
     count, i:      Integer;
     color:         Cardinal;
     imgClassName:  string;
-    imgNameBytes:  TBytes;
     pMemStr:       TMemoryStream;
     size:          Int64;
     pItem:         IWPictureItem;
@@ -858,9 +885,24 @@ begin
                 // read the image type from stream
                 if (size > 0) then
                 begin
-                    SetLength(imgNameBytes, size);
-                    pStream.Read(imgNameBytes, size);
-                    imgClassName := TEncoding.UTF8.GetString(imgNameBytes);
+                    {$if CompilerVersion <= 23}
+                        pImgNameBytes := nil;
+
+                        try
+                            GetMem(pImgNameBytes, size + 1);
+                            pStream.ReadBuffer(pImgNameBytes^, size);
+                            pData           := Pointer(NativeUInt(pImgNameBytes) + NativeUInt(size));
+                            (PByte(pData))^ := 0;
+                            imgClassName    := UTF8ToString(pImgNameBytes);
+                        finally
+                            if (Assigned(pImgNameBytes)) then
+                                FreeMem(pImgNameBytes);
+                        end;
+                    {$else}
+                        SetLength(imgNameBytes, size);
+                        pStream.Read(imgNameBytes, size);
+                        imgClassName := TEncoding.UTF8.GetString(imgNameBytes);
+                    {$ifend}
                 end;
 
                 // read the next size
@@ -929,6 +971,25 @@ begin
     end;
 end;
 //---------------------------------------------------------------------------
+function TWSVGImageList.DoScaleWithDPI: Boolean;
+var
+    id:       DWORD;
+    hProcess: THandle;
+begin
+    // get the application process
+    id       := WinApi.Windows.GetCurrentProcessId;
+    hProcess := OpenProcess(PROCESS_ALL_ACCESS, False, id);
+
+    if (hProcess = 0) then
+        Exit(False);
+
+    {$if CompilerVersion < 30}
+        Result := m_DPIScale and TWVCLHelper.IsDPIAware(hProcess, m_fGetProcessDpiAwareness);
+    {$else}
+        Result := m_DPIScale and TWVCLHelper.IsDPIAware(hProcess);
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
 procedure TWSVGImageList.DoDraw(index: Integer; pCanvas: TCanvas; x, y: Integer; style: Cardinal;
         enabled: Boolean = True);
 var
@@ -993,7 +1054,7 @@ end;
                 m_PixelsPerInch := message.WParamLo;
 
                 // scale width and height to new DPI
-                if (m_DPIScale and not handled) then
+                if (DoScaleWithDPI and not handled) then
                     SetSize(m_RefWidth, m_RefHeight);
             end;
         end;
@@ -1002,7 +1063,7 @@ end;
             message.Result := CallWindowProc(m_fPrevWndProc, m_hParent, message.Msg, message.WParam,
                     message.LParam);
     end;
-{$endif}
+{$ifend}
 //---------------------------------------------------------------------------
 {$if CompilerVersion >= 33}
     procedure TWSVGImageList.OnDPIChanged(const pSender: TObject; const msg: System.Messaging.TMessage);
@@ -1018,14 +1079,14 @@ end;
         // update pixels per inch to match with the current context
         m_PixelsPerInch := TChangeScaleMessage(Msg).M;
 
-        if ((not m_DPIScale) or (TChangeScaleMessage(msg).Sender <> Owner)) then
+        if ((not DoScaleWithDPI) or (TChangeScaleMessage(msg).Sender <> Owner)) then
             Exit;
 
         // scale width and height to new DPI
         if (not handled) then
             SetSize(m_RefWidth, m_RefHeight);
     end;
-{$endif}
+{$ifend}
 //---------------------------------------------------------------------------
 procedure TWSVGImageList.Clear;
 begin
@@ -1077,7 +1138,7 @@ var
     w, h: Integer;
 begin
     // scale size in relation to currently selected DPI value
-    if (m_DPIScale) then
+    if (DoScaleWithDPI) then
     begin
         w := TWVCLHelper.ScaleByDPI(newWidth,  m_PixelsPerInch, m_RefPixelsPerInch);
         h := TWVCLHelper.ScaleByDPI(newHeight, m_PixelsPerInch, m_RefPixelsPerInch);
@@ -1147,7 +1208,7 @@ begin
         Exit(nil);
 
     // is picture something else than a SVG?
-    if (not (pPictureItem.m_pPicture.Graphic is TWSVGGraphic)) then
+    if (not(pPictureItem.m_pPicture.Graphic is TWSVGGraphic)) then
         Exit(nil);
 
     Result := pPictureItem.m_pPicture.Graphic as TWSVGGraphic;

@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGTags</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<h1 class="unit">Unit UTWSVGTags</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Uses</div><div class="one_section">Classes, Interfaces, Objects and Records</div><div class="one_section">Functions and Procedures</div><div class="one_section">Types</div><div class="one_section"><a class="section" href="#PasDoc-Constants">Constants</a></div><div class="one_section">Variables</div></div>
+<span id="PasDoc-Description"></span><h2 class="description">Description</h2>
+<p>
+<code>UTWSVGTags</code> provides the list of all known tags that can be parsed from a SVG data.</p>
+<p>
+  </p>
+<span id="PasDoc-Uses"></span><h2 class="overview">Overview</h2>
+<span id="PasDoc-Constants"></span><h3 class="summary">Constants</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Attribute_Name">C_SVG_Animation_Attribute_Name</a></b>:                    UnicodeString = 'attributeName';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Attribute_Type">C_SVG_Animation_Attribute_Type</a></b>:                    UnicodeString = 'attributeType';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Attribute_Type_Auto">C_SVG_Animation_Attribute_Type_Auto</a></b>:               UnicodeString = 'auto';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Attribute_Type_CSS">C_SVG_Animation_Attribute_Type_CSS</a></b>:                UnicodeString = 'CSS';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Attribute_Type_XML">C_SVG_Animation_Attribute_Type_XML</a></b>:                UnicodeString = 'XML';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Begin">C_SVG_Animation_Begin</a></b>:                             UnicodeString = 'begin';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_By">C_SVG_Animation_By</a></b>:                                UnicodeString = 'by';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Calc_Mode">C_SVG_Animation_Calc_Mode</a></b>:                         UnicodeString = 'calcMode';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Calc_Mode_Discrete">C_SVG_Animation_Calc_Mode_Discrete</a></b>:                UnicodeString = 'discrete';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Calc_Mode_Linear">C_SVG_Animation_Calc_Mode_Linear</a></b>:                  UnicodeString = 'linear';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Calc_Mode_Paced">C_SVG_Animation_Calc_Mode_Paced</a></b>:                   UnicodeString = 'paced';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Calc_Mode_Spline">C_SVG_Animation_Calc_Mode_Spline</a></b>:                  UnicodeString = 'spline';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Duration">C_SVG_Animation_Duration</a></b>:                          UnicodeString = 'dur';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_End">C_SVG_Animation_End</a></b>:                               UnicodeString = 'end';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Fill_Mode">C_SVG_Animation_Fill_Mode</a></b>:                         UnicodeString = 'fill';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Fill_Mode_Freeze">C_SVG_Animation_Fill_Mode_Freeze</a></b>:                  UnicodeString = 'freeze';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Fill_Mode_Remove">C_SVG_Animation_Fill_Mode_Remove</a></b>:                  UnicodeString = 'remove';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_From">C_SVG_Animation_From</a></b>:                              UnicodeString = 'from';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Indefinite">C_SVG_Animation_Indefinite</a></b>:                        UnicodeString = 'indefinite';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Key_Splines">C_SVG_Animation_Key_Splines</a></b>:                       UnicodeString = 'keySplines';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Key_Times">C_SVG_Animation_Key_Times</a></b>:                         UnicodeString = 'keyTimes';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Max">C_SVG_Animation_Max</a></b>:                               UnicodeString = 'max';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Min">C_SVG_Animation_Min</a></b>:                               UnicodeString = 'min';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Repeat_Count">C_SVG_Animation_Repeat_Count</a></b>:                      UnicodeString = 'repeatCount';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Repeat_Duration">C_SVG_Animation_Repeat_Duration</a></b>:                   UnicodeString = 'repeatDur';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Restart">C_SVG_Animation_Restart</a></b>:                           UnicodeString = 'restart';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Restart_Always">C_SVG_Animation_Restart_Always</a></b>:                    UnicodeString = 'always';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Restart_Never">C_SVG_Animation_Restart_Never</a></b>:                     UnicodeString = 'never';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Restart_When_Not_Active">C_SVG_Animation_Restart_When_Not_Active</a></b>:           UnicodeString = 'whenNotActive';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_To">C_SVG_Animation_To</a></b>:                                UnicodeString = 'to';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Transform">C_SVG_Animation_Transform</a></b>:                         UnicodeString = 'transform';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Transform_Type">C_SVG_Animation_Transform_Type</a></b>:                    UnicodeString = 'type';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Transform_Type_Rotate">C_SVG_Animation_Transform_Type_Rotate</a></b>:             UnicodeString = 'rotate';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Transform_Type_Scale">C_SVG_Animation_Transform_Type_Scale</a></b>:              UnicodeString = 'scale';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Transform_Type_SkewX">C_SVG_Animation_Transform_Type_SkewX</a></b>:              UnicodeString = 'skewX';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Transform_Type_SkewY">C_SVG_Animation_Transform_Type_SkewY</a></b>:              UnicodeString = 'skewY';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Transform_Type_Translate">C_SVG_Animation_Transform_Type_Translate</a></b>:          UnicodeString = 'translate';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Animation_Values">C_SVG_Animation_Values</a></b>:                            UnicodeString = 'values';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Blank_Text_Attribute">C_SVG_Blank_Text_Attribute</a></b>:                        UnicodeString = '#text';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Global_Error">C_SVG_Global_Error</a></b>:                                UnicodeString = '#ERROR';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Spread_Method">C_SVG_Gradient_Spread_Method</a></b>:                      UnicodeString = 'spreadMethod';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Spread_Method_Pad">C_SVG_Gradient_Spread_Method_Pad</a></b>:                  UnicodeString = 'pad';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Spread_Method_Reflect">C_SVG_Gradient_Spread_Method_Reflect</a></b>:              UnicodeString = 'reflect';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Spread_Method_Repeat">C_SVG_Gradient_Spread_Method_Repeat</a></b>:               UnicodeString = 'repeat';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Stop_Color">C_SVG_Gradient_Stop_Color</a></b>:                         UnicodeString = 'stop-color';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Stop_Offset">C_SVG_Gradient_Stop_Offset</a></b>:                        UnicodeString = 'offset';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Stop_Opacity">C_SVG_Gradient_Stop_Opacity</a></b>:                       UnicodeString = 'stop-opacity';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Transform">C_SVG_Gradient_Transform</a></b>:                          UnicodeString = 'gradientTransform';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Units">C_SVG_Gradient_Units</a></b>:                              UnicodeString = 'gradientUnits';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Unit_Object_Bounding_Box">C_SVG_Gradient_Unit_Object_Bounding_Box</a></b>:           UnicodeString = 'objectBoundingBox';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Gradient_Unit_User_Space_On_Use">C_SVG_Gradient_Unit_User_Space_On_Use</a></b>:             UnicodeString = 'userSpaceOnUse';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Link_URL">C_SVG_Link_URL</a></b>:                                    UnicodeString = 'url';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Matrix_Matrix">C_SVG_Matrix_Matrix</a></b>:                               UnicodeString = 'matrix';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Matrix_Rotate">C_SVG_Matrix_Rotate</a></b>:                               UnicodeString = 'rotate';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Matrix_Scale">C_SVG_Matrix_Scale</a></b>:                                UnicodeString = 'scale';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Matrix_SkewX">C_SVG_Matrix_SkewX</a></b>:                                UnicodeString = 'skewX';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Matrix_SkewY">C_SVG_Matrix_SkewY</a></b>:                                UnicodeString = 'skewY';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Matrix_Translate">C_SVG_Matrix_Translate</a></b>:                            UnicodeString = 'translate';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_Close">C_SVG_Path_Close</a></b>                                                 = 'z';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_Close_Upper">C_SVG_Path_Close_Upper</a></b>                                           = 'Z';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_CurveTo_Absolute">C_SVG_Path_CurveTo_Absolute</a></b>                                      = 'C';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_CurveTo_Relative">C_SVG_Path_CurveTo_Relative</a></b>                                      = 'c';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_Elliptical_Arc_Absolute">C_SVG_Path_Elliptical_Arc_Absolute</a></b>                               = 'A';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_Elliptical_Arc_Relative">C_SVG_Path_Elliptical_Arc_Relative</a></b>                               = 'a';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_HLineTo_Absolute">C_SVG_Path_HLineTo_Absolute</a></b>                                      = 'H';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_HLineTo_Relative">C_SVG_Path_HLineTo_Relative</a></b>                                      = 'h';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_LineTo_Absolute">C_SVG_Path_LineTo_Absolute</a></b>                                       = 'L';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_LineTo_Relative">C_SVG_Path_LineTo_Relative</a></b>                                       = 'l';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_MoveTo_Absolute">C_SVG_Path_MoveTo_Absolute</a></b>                                       = 'M';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_MoveTo_Relative">C_SVG_Path_MoveTo_Relative</a></b>                                       = 'm';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_QuadraticBezier_CurveTo_Absolute">C_SVG_Path_QuadraticBezier_CurveTo_Absolute</a></b>                      = 'Q';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_QuadraticBezier_CurveTo_Relative">C_SVG_Path_QuadraticBezier_CurveTo_Relative</a></b>                      = 'q';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_SmoothCurveTo_Absolute">C_SVG_Path_SmoothCurveTo_Absolute</a></b>                                = 'S';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_SmoothCurveTo_Relative">C_SVG_Path_SmoothCurveTo_Relative</a></b>                                = 's';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_SmoothQuadraticBezier_CurveTo_Absolute">C_SVG_Path_SmoothQuadraticBezier_CurveTo_Absolute</a></b>                = 'T';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_SmoothQuadraticBezier_CurveTo_Relative">C_SVG_Path_SmoothQuadraticBezier_CurveTo_Relative</a></b>                = 't';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_VLineTo_Absolute">C_SVG_Path_VLineTo_Absolute</a></b>                                      = 'V';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Path_VLineTo_Relative">C_SVG_Path_VLineTo_Relative</a></b>                                      = 'v';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Border_Color">C_SVG_Prop_Border_Color</a></b>:                           UnicodeString = 'bordercolor';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Border_Opacity">C_SVG_Prop_Border_Opacity</a></b>:                         UnicodeString = 'borderopacity';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_CX">C_SVG_Prop_CX</a></b>:                                     UnicodeString = 'cx';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_CY">C_SVG_Prop_CY</a></b>:                                     UnicodeString = 'cy';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Display">C_SVG_Prop_Display</a></b>:                                UnicodeString = 'display';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Enable_Background">C_SVG_Prop_Enable_Background</a></b>:                      UnicodeString = 'enable-background';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Fill">C_SVG_Prop_Fill</a></b>:                                   UnicodeString = 'fill';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Fill_Opacity">C_SVG_Prop_Fill_Opacity</a></b>:                           UnicodeString = 'fill-opacity';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Fill_Rule">C_SVG_Prop_Fill_Rule</a></b>:                              UnicodeString = 'fill-rule';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Font_Family">C_SVG_Prop_Font_Family</a></b>:                            UnicodeString = 'font-family';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Font_Size">C_SVG_Prop_Font_Size</a></b>:                              UnicodeString = 'font-size';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_FX">C_SVG_Prop_FX</a></b>:                                     UnicodeString = 'fx';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_FY">C_SVG_Prop_FY</a></b>:                                     UnicodeString = 'fy';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Height">C_SVG_Prop_Height</a></b>:                                 UnicodeString = 'height';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_HRef">C_SVG_Prop_HRef</a></b>:                                   UnicodeString = 'href';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_ID">C_SVG_Prop_ID</a></b>:                                     UnicodeString = 'id';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Opacity">C_SVG_Prop_Opacity</a></b>:                                UnicodeString = 'opacity';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Page_Color">C_SVG_Prop_Page_Color</a></b>:                             UnicodeString = 'pagecolor';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Path">C_SVG_Prop_Path</a></b>:                                   UnicodeString = 'd';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Points">C_SVG_Prop_Points</a></b>:                                 UnicodeString = 'points';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_R">C_SVG_Prop_R</a></b>:                                      UnicodeString = 'r';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_RX">C_SVG_Prop_RX</a></b>:                                     UnicodeString = 'rx';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_RY">C_SVG_Prop_RY</a></b>:                                     UnicodeString = 'ry';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Stroke">C_SVG_Prop_Stroke</a></b>:                                 UnicodeString = 'stroke';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Stroke_DashArray">C_SVG_Prop_Stroke_DashArray</a></b>:                       UnicodeString = 'stroke-dasharray';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Stroke_DashOffset">C_SVG_Prop_Stroke_DashOffset</a></b>:                      UnicodeString = 'stroke-dashoffset';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Stroke_LineCap">C_SVG_Prop_Stroke_LineCap</a></b>:                         UnicodeString = 'stroke-linecap';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Stroke_LineJoin">C_SVG_Prop_Stroke_LineJoin</a></b>:                        UnicodeString = 'stroke-linejoin';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Stroke_MiterLimit">C_SVG_Prop_Stroke_MiterLimit</a></b>:                      UnicodeString = 'stroke-miterlimit';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Stroke_Opacity">C_SVG_Prop_Stroke_Opacity</a></b>:                         UnicodeString = 'stroke-opacity';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Stroke_Width">C_SVG_Prop_Stroke_Width</a></b>:                           UnicodeString = 'stroke-width';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Style">C_SVG_Prop_Style</a></b>:                                  UnicodeString = 'style';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Text_Anchor">C_SVG_Prop_Text_Anchor</a></b>:                            UnicodeString = 'text-anchor';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Transform">C_SVG_Prop_Transform</a></b>:                              UnicodeString = 'transform';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Version">C_SVG_Prop_Version</a></b>:                                UnicodeString = 'version';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_ViewBox">C_SVG_Prop_ViewBox</a></b>:                                UnicodeString = 'viewBox';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Width">C_SVG_Prop_Width</a></b>:                                  UnicodeString = 'width';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_X">C_SVG_Prop_X</a></b>:                                      UnicodeString = 'x';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_X1">C_SVG_Prop_X1</a></b>:                                     UnicodeString = 'x1';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_X2">C_SVG_Prop_X2</a></b>:                                     UnicodeString = 'x2';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_XLink_HRef">C_SVG_Prop_XLink_HRef</a></b>:                             UnicodeString = 'xlink:href';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Y">C_SVG_Prop_Y</a></b>:                                      UnicodeString = 'y';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Y1">C_SVG_Prop_Y1</a></b>:                                     UnicodeString = 'y1';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Prop_Y2">C_SVG_Prop_Y2</a></b>:                                     UnicodeString = 'y2';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Action">C_SVG_Tag_Action</a></b>:                                  UnicodeString = 'a';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Animate">C_SVG_Tag_Animate</a></b>:                                 UnicodeString = 'animate';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Animate_Color">C_SVG_Tag_Animate_Color</a></b>:                           UnicodeString = 'animateColor';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Animate_Motion">C_SVG_Tag_Animate_Motion</a></b>:                          UnicodeString = 'animateMotion';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Animate_Transform">C_SVG_Tag_Animate_Transform</a></b>:                       UnicodeString = 'animateTransform';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Circle">C_SVG_Tag_Circle</a></b>:                                  UnicodeString = 'circle';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Defs">C_SVG_Tag_Defs</a></b>:                                    UnicodeString = 'defs';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Ellipse">C_SVG_Tag_Ellipse</a></b>:                                 UnicodeString = 'ellipse';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Group">C_SVG_Tag_Group</a></b>:                                   UnicodeString = 'g';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Line">C_SVG_Tag_Line</a></b>:                                    UnicodeString = 'line';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Linear_Gradient">C_SVG_Tag_Linear_Gradient</a></b>:                         UnicodeString = 'linearGradient';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Name">C_SVG_Tag_Name</a></b>:                                    UnicodeString = 'svg';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Path">C_SVG_Tag_Path</a></b>:                                    UnicodeString = 'path';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Polygon">C_SVG_Tag_Polygon</a></b>:                                 UnicodeString = 'polygon';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Polyline">C_SVG_Tag_Polyline</a></b>:                                UnicodeString = 'polyline';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Radial_Gradient">C_SVG_Tag_Radial_Gradient</a></b>:                         UnicodeString = 'radialGradient';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Rect">C_SVG_Tag_Rect</a></b>:                                    UnicodeString = 'rect';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Set">C_SVG_Tag_Set</a></b>:                                     UnicodeString = 'set';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Switch">C_SVG_Tag_Switch</a></b>:                                  UnicodeString = 'switch';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Text">C_SVG_Tag_Text</a></b>:                                    UnicodeString = 'text';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Tag_Use">C_SVG_Tag_Use</a></b>:                                     UnicodeString = 'use';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Accumulate">C_SVG_Value_Accumulate</a></b>:                            UnicodeString = 'accumulate';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Bevel">C_SVG_Value_Bevel</a></b>:                                 UnicodeString = 'bevel';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Block">C_SVG_Value_Block</a></b>:                                 UnicodeString = 'block';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Butt">C_SVG_Value_Butt</a></b>:                                  UnicodeString = 'butt';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_CM">C_SVG_Value_CM</a></b>:                                    UnicodeString = 'cm';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Compact">C_SVG_Value_Compact</a></b>:                               UnicodeString = 'compact';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_End">C_SVG_Value_End</a></b>:                                   UnicodeString = 'end';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_EvenOdd">C_SVG_Value_EvenOdd</a></b>:                               UnicodeString = 'evenodd';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_FT">C_SVG_Value_FT</a></b>:                                    UnicodeString = 'ft';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_IN">C_SVG_Value_IN</a></b>:                                    UnicodeString = 'in';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Inherit">C_SVG_Value_Inherit</a></b>:                               UnicodeString = 'inherit';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Inline">C_SVG_Value_Inline</a></b>:                                UnicodeString = 'inline';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Inline_Table">C_SVG_Value_Inline_Table</a></b>:                          UnicodeString = 'inline-table';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_List_Item">C_SVG_Value_List_Item</a></b>:                             UnicodeString = 'list-item';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_M">C_SVG_Value_M</a></b>:                                     UnicodeString = 'm';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Marker">C_SVG_Value_Marker</a></b>:                                UnicodeString = 'marker';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Middle">C_SVG_Value_Middle</a></b>:                                UnicodeString = 'middle';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Miter">C_SVG_Value_Miter</a></b>:                                 UnicodeString = 'miter';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_MM">C_SVG_Value_MM</a></b>:                                    UnicodeString = 'mm';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_New">C_SVG_Value_New</a></b>:                                   UnicodeString = 'new';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_None">C_SVG_Value_None</a></b>:                                  UnicodeString = 'none';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_NonZero">C_SVG_Value_NonZero</a></b>:                               UnicodeString = 'nonzero';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_PC">C_SVG_Value_PC</a></b>:                                    UnicodeString = 'pc';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Percent">C_SVG_Value_Percent</a></b>:                               UnicodeString = '%';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_PT">C_SVG_Value_PT</a></b>:                                    UnicodeString = 'pt';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_PX">C_SVG_Value_PX</a></b>:                                    UnicodeString = 'px';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Round">C_SVG_Value_Round</a></b>:                                 UnicodeString = 'round';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Run_In">C_SVG_Value_Run_In</a></b>:                                UnicodeString = 'run-in';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Square">C_SVG_Value_Square</a></b>:                                UnicodeString = 'square';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Start">C_SVG_Value_Start</a></b>:                                 UnicodeString = 'start';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Table">C_SVG_Value_Table</a></b>:                                 UnicodeString = 'table';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Table_Caption">C_SVG_Value_Table_Caption</a></b>:                         UnicodeString = 'table-caption';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Table_Cell">C_SVG_Value_Table_Cell</a></b>:                            UnicodeString = 'table-cell';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Table_Column">C_SVG_Value_Table_Column</a></b>:                          UnicodeString = 'table-column';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Table_Column_Group">C_SVG_Value_Table_Column_Group</a></b>:                    UnicodeString = 'table-column-group';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Table_Footer_Group">C_SVG_Value_Table_Footer_Group</a></b>:                    UnicodeString = 'table-footer-group';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Table_Header_Group">C_SVG_Value_Table_Header_Group</a></b>:                    UnicodeString = 'table-header-group';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Table_Row">C_SVG_Value_Table_Row</a></b>:                             UnicodeString = 'table-row';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWSVGTags.html#C_SVG_Value_Table_Row_Group">C_SVG_Value_Table_Row_Group</a></b>:                       UnicodeString = 'table-row-group';</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Constants</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Attribute_Name"></span><code><b>C_SVG_Animation_Attribute_Name</b>:                    UnicodeString = 'attributeName';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Attribute_Type"></span><code><b>C_SVG_Animation_Attribute_Type</b>:                    UnicodeString = 'attributeType';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Attribute_Type_Auto"></span><code><b>C_SVG_Animation_Attribute_Type_Auto</b>:               UnicodeString = 'auto';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Attribute_Type_CSS"></span><code><b>C_SVG_Animation_Attribute_Type_CSS</b>:                UnicodeString = 'CSS';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Attribute_Type_XML"></span><code><b>C_SVG_Animation_Attribute_Type_XML</b>:                UnicodeString = 'XML';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Begin"></span><code><b>C_SVG_Animation_Begin</b>:                             UnicodeString = 'begin';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_By"></span><code><b>C_SVG_Animation_By</b>:                                UnicodeString = 'by';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Calc_Mode"></span><code><b>C_SVG_Animation_Calc_Mode</b>:                         UnicodeString = 'calcMode';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Calc_Mode_Discrete"></span><code><b>C_SVG_Animation_Calc_Mode_Discrete</b>:                UnicodeString = 'discrete';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Calc_Mode_Linear"></span><code><b>C_SVG_Animation_Calc_Mode_Linear</b>:                  UnicodeString = 'linear';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Calc_Mode_Paced"></span><code><b>C_SVG_Animation_Calc_Mode_Paced</b>:                   UnicodeString = 'paced';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Calc_Mode_Spline"></span><code><b>C_SVG_Animation_Calc_Mode_Spline</b>:                  UnicodeString = 'spline';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Duration"></span><code><b>C_SVG_Animation_Duration</b>:                          UnicodeString = 'dur';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_End"></span><code><b>C_SVG_Animation_End</b>:                               UnicodeString = 'end';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Fill_Mode"></span><code><b>C_SVG_Animation_Fill_Mode</b>:                         UnicodeString = 'fill';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Fill_Mode_Freeze"></span><code><b>C_SVG_Animation_Fill_Mode_Freeze</b>:                  UnicodeString = 'freeze';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Fill_Mode_Remove"></span><code><b>C_SVG_Animation_Fill_Mode_Remove</b>:                  UnicodeString = 'remove';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_From"></span><code><b>C_SVG_Animation_From</b>:                              UnicodeString = 'from';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Indefinite"></span><code><b>C_SVG_Animation_Indefinite</b>:                        UnicodeString = 'indefinite';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Key_Splines"></span><code><b>C_SVG_Animation_Key_Splines</b>:                       UnicodeString = 'keySplines';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Key_Times"></span><code><b>C_SVG_Animation_Key_Times</b>:                         UnicodeString = 'keyTimes';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Max"></span><code><b>C_SVG_Animation_Max</b>:                               UnicodeString = 'max';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Min"></span><code><b>C_SVG_Animation_Min</b>:                               UnicodeString = 'min';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Repeat_Count"></span><code><b>C_SVG_Animation_Repeat_Count</b>:                      UnicodeString = 'repeatCount';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Repeat_Duration"></span><code><b>C_SVG_Animation_Repeat_Duration</b>:                   UnicodeString = 'repeatDur';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Restart"></span><code><b>C_SVG_Animation_Restart</b>:                           UnicodeString = 'restart';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Restart_Always"></span><code><b>C_SVG_Animation_Restart_Always</b>:                    UnicodeString = 'always';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Restart_Never"></span><code><b>C_SVG_Animation_Restart_Never</b>:                     UnicodeString = 'never';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Restart_When_Not_Active"></span><code><b>C_SVG_Animation_Restart_When_Not_Active</b>:           UnicodeString = 'whenNotActive';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_To"></span><code><b>C_SVG_Animation_To</b>:                                UnicodeString = 'to';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Transform"></span><code><b>C_SVG_Animation_Transform</b>:                         UnicodeString = 'transform';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Transform_Type"></span><code><b>C_SVG_Animation_Transform_Type</b>:                    UnicodeString = 'type';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Transform_Type_Rotate"></span><code><b>C_SVG_Animation_Transform_Type_Rotate</b>:             UnicodeString = 'rotate';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Transform_Type_Scale"></span><code><b>C_SVG_Animation_Transform_Type_Scale</b>:              UnicodeString = 'scale';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Transform_Type_SkewX"></span><code><b>C_SVG_Animation_Transform_Type_SkewX</b>:              UnicodeString = 'skewX';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Transform_Type_SkewY"></span><code><b>C_SVG_Animation_Transform_Type_SkewY</b>:              UnicodeString = 'skewY';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Transform_Type_Translate"></span><code><b>C_SVG_Animation_Transform_Type_Translate</b>:          UnicodeString = 'translate';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Animation_Values"></span><code><b>C_SVG_Animation_Values</b>:                            UnicodeString = 'values';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Blank_Text_Attribute"></span><code><b>C_SVG_Blank_Text_Attribute</b>:                        UnicodeString = '#text';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Global_Error"></span><code><b>C_SVG_Global_Error</b>:                                UnicodeString = '#ERROR';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Spread_Method"></span><code><b>C_SVG_Gradient_Spread_Method</b>:                      UnicodeString = 'spreadMethod';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Spread_Method_Pad"></span><code><b>C_SVG_Gradient_Spread_Method_Pad</b>:                  UnicodeString = 'pad';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Spread_Method_Reflect"></span><code><b>C_SVG_Gradient_Spread_Method_Reflect</b>:              UnicodeString = 'reflect';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Spread_Method_Repeat"></span><code><b>C_SVG_Gradient_Spread_Method_Repeat</b>:               UnicodeString = 'repeat';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Stop_Color"></span><code><b>C_SVG_Gradient_Stop_Color</b>:                         UnicodeString = 'stop-color';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Stop_Offset"></span><code><b>C_SVG_Gradient_Stop_Offset</b>:                        UnicodeString = 'offset';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Stop_Opacity"></span><code><b>C_SVG_Gradient_Stop_Opacity</b>:                       UnicodeString = 'stop-opacity';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Transform"></span><code><b>C_SVG_Gradient_Transform</b>:                          UnicodeString = 'gradientTransform';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Units"></span><code><b>C_SVG_Gradient_Units</b>:                              UnicodeString = 'gradientUnits';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Unit_Object_Bounding_Box"></span><code><b>C_SVG_Gradient_Unit_Object_Bounding_Box</b>:           UnicodeString = 'objectBoundingBox';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Gradient_Unit_User_Space_On_Use"></span><code><b>C_SVG_Gradient_Unit_User_Space_On_Use</b>:             UnicodeString = 'userSpaceOnUse';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Link_URL"></span><code><b>C_SVG_Link_URL</b>:                                    UnicodeString = 'url';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Matrix_Matrix"></span><code><b>C_SVG_Matrix_Matrix</b>:                               UnicodeString = 'matrix';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Matrix_Rotate"></span><code><b>C_SVG_Matrix_Rotate</b>:                               UnicodeString = 'rotate';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Matrix_Scale"></span><code><b>C_SVG_Matrix_Scale</b>:                                UnicodeString = 'scale';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Matrix_SkewX"></span><code><b>C_SVG_Matrix_SkewX</b>:                                UnicodeString = 'skewX';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Matrix_SkewY"></span><code><b>C_SVG_Matrix_SkewY</b>:                                UnicodeString = 'skewY';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Matrix_Translate"></span><code><b>C_SVG_Matrix_Translate</b>:                            UnicodeString = 'translate';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_Close"></span><code><b>C_SVG_Path_Close</b>                                                 = 'z';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_Close_Upper"></span><code><b>C_SVG_Path_Close_Upper</b>                                           = 'Z';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_CurveTo_Absolute"></span><code><b>C_SVG_Path_CurveTo_Absolute</b>                                      = 'C';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_CurveTo_Relative"></span><code><b>C_SVG_Path_CurveTo_Relative</b>                                      = 'c';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_Elliptical_Arc_Absolute"></span><code><b>C_SVG_Path_Elliptical_Arc_Absolute</b>                               = 'A';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_Elliptical_Arc_Relative"></span><code><b>C_SVG_Path_Elliptical_Arc_Relative</b>                               = 'a';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_HLineTo_Absolute"></span><code><b>C_SVG_Path_HLineTo_Absolute</b>                                      = 'H';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_HLineTo_Relative"></span><code><b>C_SVG_Path_HLineTo_Relative</b>                                      = 'h';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_LineTo_Absolute"></span><code><b>C_SVG_Path_LineTo_Absolute</b>                                       = 'L';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_LineTo_Relative"></span><code><b>C_SVG_Path_LineTo_Relative</b>                                       = 'l';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_MoveTo_Absolute"></span><code><b>C_SVG_Path_MoveTo_Absolute</b>                                       = 'M';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_MoveTo_Relative"></span><code><b>C_SVG_Path_MoveTo_Relative</b>                                       = 'm';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_QuadraticBezier_CurveTo_Absolute"></span><code><b>C_SVG_Path_QuadraticBezier_CurveTo_Absolute</b>                      = 'Q';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_QuadraticBezier_CurveTo_Relative"></span><code><b>C_SVG_Path_QuadraticBezier_CurveTo_Relative</b>                      = 'q';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_SmoothCurveTo_Absolute"></span><code><b>C_SVG_Path_SmoothCurveTo_Absolute</b>                                = 'S';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_SmoothCurveTo_Relative"></span><code><b>C_SVG_Path_SmoothCurveTo_Relative</b>                                = 's';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_SmoothQuadraticBezier_CurveTo_Absolute"></span><code><b>C_SVG_Path_SmoothQuadraticBezier_CurveTo_Absolute</b>                = 'T';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_SmoothQuadraticBezier_CurveTo_Relative"></span><code><b>C_SVG_Path_SmoothQuadraticBezier_CurveTo_Relative</b>                = 't';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_VLineTo_Absolute"></span><code><b>C_SVG_Path_VLineTo_Absolute</b>                                      = 'V';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Path_VLineTo_Relative"></span><code><b>C_SVG_Path_VLineTo_Relative</b>                                      = 'v';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Border_Color"></span><code><b>C_SVG_Prop_Border_Color</b>:                           UnicodeString = 'bordercolor';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Border_Opacity"></span><code><b>C_SVG_Prop_Border_Opacity</b>:                         UnicodeString = 'borderopacity';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_CX"></span><code><b>C_SVG_Prop_CX</b>:                                     UnicodeString = 'cx';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_CY"></span><code><b>C_SVG_Prop_CY</b>:                                     UnicodeString = 'cy';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Display"></span><code><b>C_SVG_Prop_Display</b>:                                UnicodeString = 'display';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Enable_Background"></span><code><b>C_SVG_Prop_Enable_Background</b>:                      UnicodeString = 'enable-background';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Fill"></span><code><b>C_SVG_Prop_Fill</b>:                                   UnicodeString = 'fill';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Fill_Opacity"></span><code><b>C_SVG_Prop_Fill_Opacity</b>:                           UnicodeString = 'fill-opacity';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Fill_Rule"></span><code><b>C_SVG_Prop_Fill_Rule</b>:                              UnicodeString = 'fill-rule';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Font_Family"></span><code><b>C_SVG_Prop_Font_Family</b>:                            UnicodeString = 'font-family';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Font_Size"></span><code><b>C_SVG_Prop_Font_Size</b>:                              UnicodeString = 'font-size';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_FX"></span><code><b>C_SVG_Prop_FX</b>:                                     UnicodeString = 'fx';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_FY"></span><code><b>C_SVG_Prop_FY</b>:                                     UnicodeString = 'fy';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Height"></span><code><b>C_SVG_Prop_Height</b>:                                 UnicodeString = 'height';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_HRef"></span><code><b>C_SVG_Prop_HRef</b>:                                   UnicodeString = 'href';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_ID"></span><code><b>C_SVG_Prop_ID</b>:                                     UnicodeString = 'id';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Opacity"></span><code><b>C_SVG_Prop_Opacity</b>:                                UnicodeString = 'opacity';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Page_Color"></span><code><b>C_SVG_Prop_Page_Color</b>:                             UnicodeString = 'pagecolor';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Path"></span><code><b>C_SVG_Prop_Path</b>:                                   UnicodeString = 'd';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Points"></span><code><b>C_SVG_Prop_Points</b>:                                 UnicodeString = 'points';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_R"></span><code><b>C_SVG_Prop_R</b>:                                      UnicodeString = 'r';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_RX"></span><code><b>C_SVG_Prop_RX</b>:                                     UnicodeString = 'rx';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_RY"></span><code><b>C_SVG_Prop_RY</b>:                                     UnicodeString = 'ry';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Stroke"></span><code><b>C_SVG_Prop_Stroke</b>:                                 UnicodeString = 'stroke';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Stroke_DashArray"></span><code><b>C_SVG_Prop_Stroke_DashArray</b>:                       UnicodeString = 'stroke-dasharray';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Stroke_DashOffset"></span><code><b>C_SVG_Prop_Stroke_DashOffset</b>:                      UnicodeString = 'stroke-dashoffset';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Stroke_LineCap"></span><code><b>C_SVG_Prop_Stroke_LineCap</b>:                         UnicodeString = 'stroke-linecap';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Stroke_LineJoin"></span><code><b>C_SVG_Prop_Stroke_LineJoin</b>:                        UnicodeString = 'stroke-linejoin';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Stroke_MiterLimit"></span><code><b>C_SVG_Prop_Stroke_MiterLimit</b>:                      UnicodeString = 'stroke-miterlimit';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Stroke_Opacity"></span><code><b>C_SVG_Prop_Stroke_Opacity</b>:                         UnicodeString = 'stroke-opacity';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Stroke_Width"></span><code><b>C_SVG_Prop_Stroke_Width</b>:                           UnicodeString = 'stroke-width';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Style"></span><code><b>C_SVG_Prop_Style</b>:                                  UnicodeString = 'style';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Text_Anchor"></span><code><b>C_SVG_Prop_Text_Anchor</b>:                            UnicodeString = 'text-anchor';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Transform"></span><code><b>C_SVG_Prop_Transform</b>:                              UnicodeString = 'transform';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Version"></span><code><b>C_SVG_Prop_Version</b>:                                UnicodeString = 'version';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_ViewBox"></span><code><b>C_SVG_Prop_ViewBox</b>:                                UnicodeString = 'viewBox';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Width"></span><code><b>C_SVG_Prop_Width</b>:                                  UnicodeString = 'width';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_X"></span><code><b>C_SVG_Prop_X</b>:                                      UnicodeString = 'x';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_X1"></span><code><b>C_SVG_Prop_X1</b>:                                     UnicodeString = 'x1';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_X2"></span><code><b>C_SVG_Prop_X2</b>:                                     UnicodeString = 'x2';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_XLink_HRef"></span><code><b>C_SVG_Prop_XLink_HRef</b>:                             UnicodeString = 'xlink:href';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Y"></span><code><b>C_SVG_Prop_Y</b>:                                      UnicodeString = 'y';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Y1"></span><code><b>C_SVG_Prop_Y1</b>:                                     UnicodeString = 'y1';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Prop_Y2"></span><code><b>C_SVG_Prop_Y2</b>:                                     UnicodeString = 'y2';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Action"></span><code><b>C_SVG_Tag_Action</b>:                                  UnicodeString = 'a';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Animate"></span><code><b>C_SVG_Tag_Animate</b>:                                 UnicodeString = 'animate';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Animate_Color"></span><code><b>C_SVG_Tag_Animate_Color</b>:                           UnicodeString = 'animateColor';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Animate_Motion"></span><code><b>C_SVG_Tag_Animate_Motion</b>:                          UnicodeString = 'animateMotion';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Animate_Transform"></span><code><b>C_SVG_Tag_Animate_Transform</b>:                       UnicodeString = 'animateTransform';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Circle"></span><code><b>C_SVG_Tag_Circle</b>:                                  UnicodeString = 'circle';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Defs"></span><code><b>C_SVG_Tag_Defs</b>:                                    UnicodeString = 'defs';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Ellipse"></span><code><b>C_SVG_Tag_Ellipse</b>:                                 UnicodeString = 'ellipse';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Group"></span><code><b>C_SVG_Tag_Group</b>:                                   UnicodeString = 'g';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Line"></span><code><b>C_SVG_Tag_Line</b>:                                    UnicodeString = 'line';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Linear_Gradient"></span><code><b>C_SVG_Tag_Linear_Gradient</b>:                         UnicodeString = 'linearGradient';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Name"></span><code><b>C_SVG_Tag_Name</b>:                                    UnicodeString = 'svg';</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Global defines &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Path"></span><code><b>C_SVG_Tag_Path</b>:                                    UnicodeString = 'path';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Polygon"></span><code><b>C_SVG_Tag_Polygon</b>:                                 UnicodeString = 'polygon';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Polyline"></span><code><b>C_SVG_Tag_Polyline</b>:                                UnicodeString = 'polyline';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Radial_Gradient"></span><code><b>C_SVG_Tag_Radial_Gradient</b>:                         UnicodeString = 'radialGradient';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Rect"></span><code><b>C_SVG_Tag_Rect</b>:                                    UnicodeString = 'rect';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Set"></span><code><b>C_SVG_Tag_Set</b>:                                     UnicodeString = 'set';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Switch"></span><code><b>C_SVG_Tag_Switch</b>:                                  UnicodeString = 'switch';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Text"></span><code><b>C_SVG_Tag_Text</b>:                                    UnicodeString = 'text';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Tag_Use"></span><code><b>C_SVG_Tag_Use</b>:                                     UnicodeString = 'use';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Accumulate"></span><code><b>C_SVG_Value_Accumulate</b>:                            UnicodeString = 'accumulate';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Bevel"></span><code><b>C_SVG_Value_Bevel</b>:                                 UnicodeString = 'bevel';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Block"></span><code><b>C_SVG_Value_Block</b>:                                 UnicodeString = 'block';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Butt"></span><code><b>C_SVG_Value_Butt</b>:                                  UnicodeString = 'butt';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_CM"></span><code><b>C_SVG_Value_CM</b>:                                    UnicodeString = 'cm';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Compact"></span><code><b>C_SVG_Value_Compact</b>:                               UnicodeString = 'compact';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_End"></span><code><b>C_SVG_Value_End</b>:                                   UnicodeString = 'end';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_EvenOdd"></span><code><b>C_SVG_Value_EvenOdd</b>:                               UnicodeString = 'evenodd';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_FT"></span><code><b>C_SVG_Value_FT</b>:                                    UnicodeString = 'ft';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_IN"></span><code><b>C_SVG_Value_IN</b>:                                    UnicodeString = 'in';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Inherit"></span><code><b>C_SVG_Value_Inherit</b>:                               UnicodeString = 'inherit';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Inline"></span><code><b>C_SVG_Value_Inline</b>:                                UnicodeString = 'inline';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Inline_Table"></span><code><b>C_SVG_Value_Inline_Table</b>:                          UnicodeString = 'inline-table';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_List_Item"></span><code><b>C_SVG_Value_List_Item</b>:                             UnicodeString = 'list-item';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_M"></span><code><b>C_SVG_Value_M</b>:                                     UnicodeString = 'm';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Marker"></span><code><b>C_SVG_Value_Marker</b>:                                UnicodeString = 'marker';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Middle"></span><code><b>C_SVG_Value_Middle</b>:                                UnicodeString = 'middle';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Miter"></span><code><b>C_SVG_Value_Miter</b>:                                 UnicodeString = 'miter';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_MM"></span><code><b>C_SVG_Value_MM</b>:                                    UnicodeString = 'mm';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_New"></span><code><b>C_SVG_Value_New</b>:                                   UnicodeString = 'new';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_None"></span><code><b>C_SVG_Value_None</b>:                                  UnicodeString = 'none';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_NonZero"></span><code><b>C_SVG_Value_NonZero</b>:                               UnicodeString = 'nonzero';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_PC"></span><code><b>C_SVG_Value_PC</b>:                                    UnicodeString = 'pc';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Percent"></span><code><b>C_SVG_Value_Percent</b>:                               UnicodeString = '%';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_PT"></span><code><b>C_SVG_Value_PT</b>:                                    UnicodeString = 'pt';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_PX"></span><code><b>C_SVG_Value_PX</b>:                                    UnicodeString = 'px';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Round"></span><code><b>C_SVG_Value_Round</b>:                                 UnicodeString = 'round';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Run_In"></span><code><b>C_SVG_Value_Run_In</b>:                                UnicodeString = 'run-in';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Square"></span><code><b>C_SVG_Value_Square</b>:                                UnicodeString = 'square';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Start"></span><code><b>C_SVG_Value_Start</b>:                                 UnicodeString = 'start';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Table"></span><code><b>C_SVG_Value_Table</b>:                                 UnicodeString = 'table';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Table_Caption"></span><code><b>C_SVG_Value_Table_Caption</b>:                         UnicodeString = 'table-caption';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Table_Cell"></span><code><b>C_SVG_Value_Table_Cell</b>:                            UnicodeString = 'table-cell';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Table_Column"></span><code><b>C_SVG_Value_Table_Column</b>:                          UnicodeString = 'table-column';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Table_Column_Group"></span><code><b>C_SVG_Value_Table_Column_Group</b>:                    UnicodeString = 'table-column-group';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Table_Footer_Group"></span><code><b>C_SVG_Value_Table_Footer_Group</b>:                    UnicodeString = 'table-footer-group';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Table_Header_Group"></span><code><b>C_SVG_Value_Table_Header_Group</b>:                    UnicodeString = 'table-header-group';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Table_Row"></span><code><b>C_SVG_Value_Table_Row</b>:                             UnicodeString = 'table-row';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="C_SVG_Value_Table_Row_Group"></span><code><b>C_SVG_Value_Table_Row_Group</b>:                       UnicodeString = 'table-row-group';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<h2 class="authors">Author</h2>
+<ul class="authors">
+<li>JMR</li>
+</ul>
+<h2 class="created">Created</h2>
+<p>
+2016-2019, by Ursa Minor
+</p>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

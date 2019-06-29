@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWHelpers: Class TWGDIHelper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWGDIHelper"></span><h1 class="cio">Class TWGDIHelper</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalCRs">Internal Classes and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWHelpers.html">UTWHelpers</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWGDIHelper = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Optimized functions to draw with Windows GDI. These functions support alpha transparency <br> <b>NOTE</b> The code has been optimized to gain maximum possible speed, therefore, do not clean it unless you are really aware of what you are doing</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TWGDIHelper</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalCRs"></span><h3 class="summary">Internal Classes and Records</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIHelper.IRectOptions.html">IRectOptions</a></b> = record</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a></b> = record</code></td>
+</tr>
+</table>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIHelper.html#IEBitmapKey">IEBitmapKey</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIHelper.html#IEDrawTextFunc">IEDrawTextFunc</a></b> = (...);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIHelper.html#IEHAlign">IEHAlign</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIHelper.html#IETextTrimming">IETextTrimming</a></b> = (...);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIHelper.html#IEVAlign">IEVAlign</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIHelper.html#PRectOptions">PRectOptions</a></b> = &circ;<a  href="UTWHelpers.TWGDIHelper.IRectOptions.html">IRectOptions</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWHelpers.TWGDIHelper.html#PTextOptions">PTextOptions</a></b> = &circ;<a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWHelpers.TWGDIHelper.html#Create">Create</a></b>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWHelpers.TWGDIHelper.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#BitmapEquals">BitmapEquals</a></b>(const rect: TRect; const pBm1, pBm2: Pointer; width, height: LONG; pixelFormat: WORD): Boolean; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#CalculateStride">CalculateStride</a></b>(width, pixelFormat: NativeUInt): NativeUInt; inline; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#CompareFontInstances">CompareFontInstances</a></b>(pFont1, pFont2: TFont): Boolean; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#CompareFonts">CompareFonts</a></b>(pFont1, pFont2: TFont): Boolean; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWHelpers.TWGDIHelper.html#ConvertToDFB">ConvertToDFB</a></b>(var hBitmap: THandle): Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWHelpers.TWGDIHelper.html#ConvertToDIB">ConvertToDIB</a></b>(var hBitmap: THandle): Boolean; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#DrawText">DrawText</a></b>(drawTextFunc: <a  href="UTWHelpers.TWGDIHelper.html#IEDrawTextFunc">IEDrawTextFunc</a>; hDC: THandle; pStr: LPWSTR; iCount: Integer; var textRect: TRect; flags: UINT; pDtp: PDrawTextParams): Integer; overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#DrawTransparentImage">DrawTransparentImage</a></b>(pGraphic: TGraphic; const pos: TPoint; opacity: Double; pCanvas: TCanvas; pOverlay: Vcl.Graphics.TBitmap): Boolean; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#GetBitmap">GetBitmap</a></b>(width, height: Integer; bmpType: TBitmapHandleType; pixelFormat: Vcl.Graphics.TPixelFormat; alphaFormat: TAlphaFormat = afIgnored): Vcl.Graphics.TBitmap; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#GetDIBBitmap">GetDIBBitmap</a></b>(hDC: THandle; width, height: LONG; pixelFormat: WORD; out pBits: Pointer): THandle; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWHelpers.TWGDIHelper.html#GetFontFallback">GetFontFallback</a></b>(hDC, hFont: THandle; const text: UnicodeString; pFontFallback: PLogFont): Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#GetPixel">GetPixel</a></b>(pBitmap: Vcl.Graphics.TBitmap; x, y: Integer; const defaultColor: <a  href="UTWColor.TWColor.html">TWColor</a>): <a  href="UTWColor.TWColor.html">TWColor</a>; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWHelpers.TWGDIHelper.html#GetTextSize">GetTextSize</a></b>(const text: UnicodeString; const rect: TRect; pFont: TFont; const options: <a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>; hDC: THandle; pCharacters: PInteger = nil; pLines: PInteger = nil): TSize; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#IsDFB">IsDFB</a></b>(hBitmap: THandle; out info: BITMAP): Boolean; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#IsDIB">IsDIB</a></b>(hBitmap: THandle; out info: BITMAP): Boolean; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#OpacityToAlpha">OpacityToAlpha</a></b>(opacity: Double): Byte; inline; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWGDIHelper.html#PixelFormatToColorDepth">PixelFormatToColorDepth</a></b>(pixelFormat: Vcl.Graphics.TPixelFormat): Cardinal; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWHelpers.TWGDIHelper.html#GetCachedBitmap">GetCachedBitmap</a></b>(key: <a  href="UTWHelpers.TWGDIHelper.html#IEBitmapKey">IEBitmapKey</a>): Vcl.Graphics.TBitmap; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWHelpers.TWGDIHelper.html#GetCachedDIBBitmap">GetCachedDIBBitmap</a></b>(key: <a  href="UTWHelpers.TWGDIHelper.html#IEBitmapKey">IEBitmapKey</a>; hDC: THandle; var width, height: LONG; pixelFormat: WORD; out pBits: Pointer): HBitmap; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Blend24">Blend24</a></b>(const rect: TRect; pBm1: Pointer; const pBm2: Pointer; width, height: NativeUInt; opacity: Single); overload; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Blend24">Blend24</a></b>(const rect: TRect; pBm1, pBm2: Vcl.Graphics.TBitmap; opacity: Single); overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Blend32">Blend32</a></b>(const rect: TRect; pBm1: Pointer; const pBm2: Pointer; width, height: NativeUInt; position: Single); overload; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Blend32">Blend32</a></b>(const rect: TRect; pBm1, pBm2: Vcl.Graphics.TBitmap; position: Single); overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Clear">Clear</a></b>(pBitmap: Vcl.Graphics.TBitmap; const rect: TRect); overload; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Clear">Clear</a></b>(pBitmap: Vcl.Graphics.TBitmap); overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#ConfigBitmap">ConfigBitmap</a></b>(pBitmap: Vcl.Graphics.TBitmap; width, height: Integer; higherOnly: Boolean; bmpType: TBitmapHandleType; pixelFormat: Vcl.Graphics.TPixelFormat; alphaFormat: TAlphaFormat = afIgnored); static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Copy32">Copy32</a></b>(const rect: TRect; pSrc: Vcl.Graphics.TBitmap; pDst: Pointer); static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#DrawLine">DrawLine</a></b>(hDC: THandle; const startPos, endPos: TPoint; color: TColor; width: NativeUInt); static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWHelpers.TWGDIHelper.html#DrawRect">DrawRect</a></b>(const rect: TRect; radiusX, radiusY: Cardinal; const options: <a  href="UTWHelpers.TWGDIHelper.IRectOptions.html">IRectOptions</a>; hDC: THandle); overload; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWHelpers.TWGDIHelper.html#DrawRect">DrawRect</a></b>(const rect: TRect; radiusX, radiusY: Cardinal; opacity: Single; const options: <a  href="UTWHelpers.TWGDIHelper.IRectOptions.html">IRectOptions</a>; hDC: THandle); overload; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWHelpers.TWGDIHelper.html#DrawText">DrawText</a></b>(const text: UnicodeString; const rect: TRect; pFont: TFont; opacity: Single; const options: <a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>; hDC: THandle); overload; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWHelpers.TWGDIHelper.html#DrawText">DrawText</a></b>(const text: UnicodeString; const rect: TRect; pFont: TFont; const options: <a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>; hDC: THandle); overload; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Fill">Fill</a></b>(pBitmap: Vcl.Graphics.TBitmap; const rect: TRect; const color: <a  href="UTWColor.TWColor.html">TWColor</a>); overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Fill">Fill</a></b>(pCanvas: TCanvas; const rect: TRect; const color: <a  href="UTWColor.TWColor.html">TWColor</a>); overload; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWGDIHelper.html#Fill">Fill</a></b>(pBitmap: Vcl.Graphics.TBitmap; const color: <a  href="UTWColor.TWColor.html">TWColor</a>); overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWHelpers.TWGDIHelper.html#UpdateTextRectPos">UpdateTextRectPos</a></b>(const refRect: TRect; var rect: TRect; const options: <a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>); virtual;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEBitmapKey"></span><code><b>IEBitmapKey</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Cached bitmap keys enumeration    </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_BK_DrawRectMaskDIB">IE_BK_DrawRectMaskDIB</span>: Cached device independent bitmap used to draw rectangle mask</li>
+<li>
+<span id="IE_BK_DrawRectOverlayDIB">IE_BK_DrawRectOverlayDIB</span>: Cached device independent bitmap used as overlay to draw rectangle</li>
+<li>
+<span id="IE_BK_DrawTextMaskDIB">IE_BK_DrawTextMaskDIB</span>: Cached device independent bitmap used to draw text mask</li>
+<li>
+<span id="IE_BK_DrawTextOverlayDIB">IE_BK_DrawTextOverlayDIB</span>: Cached device independent bitmap used as overlay to draw text</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEDrawTextFunc"></span><code><b>IEDrawTextFunc</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw text function to use  </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_DF_GDI">IE_DF_GDI</span>: Native GDI draw text function is used</li>
+<li>
+<span id="IE_DF_WS_Optimized">IE_DF_WS_Optimized</span>: Advanced draw text function is used</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEHAlign"></span><code><b>IEHAlign</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Horizontal alignment    </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_HA_None">IE_HA_None</span>: Not aligned</li>
+<li>
+<span id="IE_HA_Left">IE_HA_Left</span>: Left aligned</li>
+<li>
+<span id="IE_HA_Center">IE_HA_Center</span>: Centered</li>
+<li>
+<span id="IE_HA_Right">IE_HA_Right</span>: Right aligned</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IETextTrimming"></span><code><b>IETextTrimming</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Text trimming      </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_TT_None">IE_TT_None</span>: Text is not trimmed</li>
+<li>
+<span id="IE_TT_Character">IE_TT_Character</span>: For compatibility with GDI+, should not be used here (same result as IE_TT_None)</li>
+<li>
+<span id="IE_TT_Word">IE_TT_Word</span>: For compatibility with GDI+, should not be used here (same result as IE_TT_None)</li>
+<li>
+<span id="IE_TT_EllipsisCharacter">IE_TT_EllipsisCharacter</span>: Text is ellipsified on the closest char</li>
+<li>
+<span id="IE_TT_EllipsisWord">IE_TT_EllipsisWord</span>: Text is ellipsified on the closest word</li>
+<li>
+<span id="IE_TT_EllipsisPath">IE_TT_EllipsisPath</span>: Text is ellipsified on the middle, string begin and end are visible</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEVAlign"></span><code><b>IEVAlign</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Vertical alignment    </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_VA_None">IE_VA_None</span>: Not aligned</li>
+<li>
+<span id="IE_VA_Top">IE_VA_Top</span>: Top aligned</li>
+<li>
+<span id="IE_VA_Center">IE_VA_Center</span>: Centered</li>
+<li>
+<span id="IE_VA_Bottom">IE_VA_Bottom</span>: Bottom aligned</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="PRectOptions"></span><code><b>PRectOptions</b> = &circ;<a  href="UTWHelpers.TWGDIHelper.IRectOptions.html">IRectOptions</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Pointer to rectangle options</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="PTextOptions"></span><code><b>PTextOptions</b> = &circ;<a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Pointer to text options</p>
+</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="BitmapEquals"></span><code>class function <b>BitmapEquals</b>(const rect: TRect; const pBm1, pBm2: Pointer; width, height: LONG; pixelFormat: WORD): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if bitmap content are equals       <br> <b>NOTE</b> It is assumed that bitmaps pixel formats and sizes are equals. An access violation may occur if it's not the case</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle representing surface to compare, entire bitmaps will be compared if empty</dd>
+<dt>pBm1</dt>
+<dd>First bitmap to compare</dd>
+<dt>pBm2</dt>
+<dd>Second bitmap to compare with</dd>
+<dt>width</dt>
+<dd>Bitmap width</dd>
+<dt>height</dt>
+<dd>Bitmap height</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if bitmap content are equals, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CalculateStride"></span><code>class function <b>CalculateStride</b>(width, pixelFormat: NativeUInt): NativeUInt; inline; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Calculate bitmap stride   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>width</dt>
+<dd>Bitmap width</dd>
+<dt>pixelFormat</dt>
+<dd>Bitmap pixel format</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Bitmap stride</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CompareFontInstances"></span><code>class function <b>CompareFontInstances</b>(pFont1, pFont2: TFont): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Compare font instances   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pFont1</dt>
+<dd>First font to compare to</dd>
+<dt>pFont2</dt>
+<dd>Second font to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if font instances are equals, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CompareFonts"></span><code>class function <b>CompareFonts</b>(pFont1, pFont2: TFont): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Compare fonts   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pFont1</dt>
+<dd>First font to compare to</dd>
+<dt>pFont2</dt>
+<dd>Second font to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if font are identical, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ConvertToDFB"></span><code>function <b>ConvertToDFB</b>(var hBitmap: THandle): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert a device independent bitmap to a device format bitmap  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>hBitmap</dt>
+<dd><b>[in, out]</b> Bitmap to convert, converted bitmap if function succeeded</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if conversion succeeded, <code>False</code> if conversion was unneeded or failed</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ConvertToDIB"></span><code>function <b>ConvertToDIB</b>(var hBitmap: THandle): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert a device format bitmap to a device independent bitmap  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>hBitmap</dt>
+<dd><b>[in, out]</b> Bitmap to convert, converted bitmap if function succeeded</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if conversion succeeded, <code>False</code> if conversion was unneeded or failed</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawText"></span><code>class function <b>DrawText</b>(drawTextFunc: <a  href="UTWHelpers.TWGDIHelper.html#IEDrawTextFunc">IEDrawTextFunc</a>; hDC: THandle; pStr: LPWSTR; iCount: Integer; var textRect: TRect; flags: UINT; pDtp: PDrawTextParams): Integer; overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw or measure a text and select the correct function to use        </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>drawTextFunc</dt>
+<dd>Draw text function to use</dd>
+<dt>hDC</dt>
+<dd>Device context used to draw or measure text</dd>
+<dt>pStr</dt>
+<dd><b>[in, out]</b> String to draw, can be modified depending on flags</dd>
+<dt>iCount</dt>
+<dd>String to draw char count (WARNING not modified if input string was modified)</dd>
+<dt>textRect</dt>
+<dd><b>[in, out]</b> Bounding rectangle, can be modified depending on flags</dd>
+<dt>flags</dt>
+<dd>Draw flags</dd>
+<dt>pDtp</dt>
+<dd>Draw extra parameters to use</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Text height in logical units, 0 on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawTransparentImage"></span><code>class function <b>DrawTransparentImage</b>(pGraphic: TGraphic; const pos: TPoint; opacity: Double; pCanvas: TCanvas; pOverlay: Vcl.Graphics.TBitmap): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw an image on a canvas applying a global opacity value      </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pGraphic</dt>
+<dd>Graphic containing the source image to draw</dd>
+<dt>pos</dt>
+<dd>Position where the image will be painted on the destination canvas</dd>
+<dt>opacity</dt>
+<dd>Opacity in percent (between 0.0 and 1.0)</dd>
+<dt>pCanvas</dt>
+<dd>Destination canvas on which the image will be painted</dd>
+<dt>pOverlay</dt>
+<dd>Optional overlay to use for painting (may optimize the process speed)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetBitmap"></span><code>class function <b>GetBitmap</b>(width, height: Integer; bmpType: TBitmapHandleType; pixelFormat: Vcl.Graphics.TPixelFormat; alphaFormat: TAlphaFormat = afIgnored): Vcl.Graphics.TBitmap; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get bitmap       <br> <b>NOTE</b> Bitmap should be deleted when useless</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>width</dt>
+<dd>Bitmap width, ignored if 0</dd>
+<dt>height</dt>
+<dd>Bitmap height, ignored if 0</dd>
+<dt>bmpType</dt>
+<dd>Bitmap type, can be device dependent bitmap or device independent bitmap</dd>
+<dt>pixelFormat</dt>
+<dd>Pixel format</dd>
+<dt>alphaFormat</dt>
+<dd>Alpha format, ignored if pixel format is not set to pf32bit</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Bitmap</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetDIBBitmap"></span><code>class function <b>GetDIBBitmap</b>(hDC: THandle; width, height: LONG; pixelFormat: WORD; out pBits: Pointer): THandle; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get device independent bitmap using GDI       <br> <b>NOTE</b> Bitmap should be deleted by calling ::DeleteObject() when useless</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>hDC</dt>
+<dd>Device context to make bitmap compatible with, if 0 the screen dc will be used</dd>
+<dt>width</dt>
+<dd>Bitmap width, in pixels</dd>
+<dt>height</dt>
+<dd>Bitmap height, in pixels</dd>
+<dt>pixelFormat</dt>
+<dd>Pixel format</dd>
+<dt>pBits</dt>
+<dd><b>[out]</b> Array of bits that contains the bitmap pixels if function succeeded</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">bitmap handle, <code>Nil</code> on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetFontFallback"></span><code>function <b>GetFontFallback</b>(hDC, hFont: THandle; const text: UnicodeString; pFontFallback: PLogFont): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the font fallback     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>hDC</dt>
+<dd>Device context</dd>
+<dt>hFont</dt>
+<dd>Proposed font</dd>
+<dt>text</dt>
+<dd>Text for which the font fallback should be found</dd>
+<dt>pFontFallback</dt>
+<dd><b>[out]</b> If the function returns true, the found font fallback</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetPixel"></span><code>class function <b>GetPixel</b>(pBitmap: Vcl.Graphics.TBitmap; x, y: Integer; const defaultColor: <a  href="UTWColor.TWColor.html">TWColor</a>): <a  href="UTWColor.TWColor.html">TWColor</a>; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get a pixel on the bitmap at the specified location     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pBitmap</dt>
+<dd>Bitmap on which pixel should be get</dd>
+<dt>x</dt>
+<dd>Pixel x coordinate</dd>
+<dt>y</dt>
+<dd>Pixel y coordinate</dd>
+<dt>defaultColor</dt>
+<dd>Default color to return in case pixel coordinates are out of bounds</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Pixel color, default color if not found or on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetTextSize"></span><code>function <b>GetTextSize</b>(const text: UnicodeString; const rect: TRect; pFont: TFont; const options: <a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>; hDC: THandle; pCharacters: PInteger = nil; pLines: PInteger = nil): TSize; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get text size        </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>text</dt>
+<dd>Text to measure</dd>
+<dt>rect</dt>
+<dd>Text bounding rectangle</dd>
+<dt>pFont</dt>
+<dd>Text font</dd>
+<dt>options</dt>
+<dd>Text options</dd>
+<dt>hDC</dt>
+<dd>Device context handle</dd>
+<dt>pCharacters</dt>
+<dd><b>[out]</b> Pointer to variable to receive the number of characters that will be displayed in rect, if NULL will be ingored</dd>
+<dt>pLines</dt>
+<dd><b>[out]</b> Pointer to variable to receive the number of lines that will be displayed in rect, if NULL will be ingored</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Text size, empty size on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsDFB"></span><code>class function <b>IsDFB</b>(hBitmap: THandle; out info: BITMAP): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if bitmap is a device format bitmap, i.e. a bitmap located on the device   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>hBitmap</dt>
+<dd>Bitmap handle to check</dd>
+<dt>info</dt>
+<dd><b>[out]</b> Bitmap info</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if bitmap is a device format bitmap, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsDIB"></span><code>class function <b>IsDIB</b>(hBitmap: THandle; out info: BITMAP): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if bitmap is a device independent bitmap, i.e. a bitmap located in memory   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>hBitmap</dt>
+<dd>Bitmap handle to check</dd>
+<dt>info</dt>
+<dd><b>[out]</b> Bitmap info</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if bitmap is a device independent bitmap, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="OpacityToAlpha"></span><code>class function <b>OpacityToAlpha</b>(opacity: Double): Byte; inline; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert opacity value (exprimed in percent between 0.0 and 1.0) to alpha value  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Opacity value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Converted alpha value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="PixelFormatToColorDepth"></span><code>class function <b>PixelFormatToColorDepth</b>(pixelFormat: Vcl.Graphics.TPixelFormat): Cardinal; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert a pixel format to a color depth value    <br> <b>NOTE</b> If pixel format is device dependent, the returned value will be 0</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pixelFormat</dt>
+<dd>Pixel format to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Color depth (1, 2, 4, 8, 16, 32, ...)</p><h6 class="description_section">Exceptions raised</h6>
+<dl class="exceptions_raised">
+<dt><code>Exception</code></dt>
+<dd>on unsupported (i.e. custom pixel format) or unknown pixel format</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetCachedBitmap"></span><code>function <b>GetCachedBitmap</b>(key: <a  href="UTWHelpers.TWGDIHelper.html#IEBitmapKey">IEBitmapKey</a>): Vcl.Graphics.TBitmap; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get cached bitmap  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>key</dt>
+<dd>Bitmap key</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Cached bitmap</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetCachedDIBBitmap"></span><code>function <b>GetCachedDIBBitmap</b>(key: <a  href="UTWHelpers.TWGDIHelper.html#IEBitmapKey">IEBitmapKey</a>; hDC: THandle; var width, height: LONG; pixelFormat: WORD; out pBits: Pointer): HBitmap; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get cached device independent bitmap        <br> <b>NOTE</b> Bitmap will be recreated in case his dc, width, height or pixel format was modified</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>key</dt>
+<dd>Bitmap key</dd>
+<dt>hDC</dt>
+<dd>Device context to use, in case bitmap should be created</dd>
+<dt>width</dt>
+<dd><b>[in, out]</b> Bitmap width, cached width on function ends</dd>
+<dt>height</dt>
+<dd><b>[in, out]</b> Bitmap height, cached height on function ends</dd>
+<dt>pixelFormat</dt>
+<dd>Bitmap pixel format in case bitmap should be created</dd>
+<dt>pBits</dt>
+<dd><b>[out]</b> Array of bits that contains the bitmap pixels if function succeeded</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Cached bitmap</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Blend24"></span><code>class procedure <b>Blend24</b>(const rect: TRect; pBm1: Pointer; const pBm2: Pointer; width, height: NativeUInt; opacity: Single); overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Blend 24 bit bitmaps together       <br> <b>NOTE</b> It is assumed that bitmaps pixel formats are both 24 bit and sizes are equals. An access violation may occur if it's not the case</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle representing surface to blend, entire bitmaps will be blended if empty</dd>
+<dt>pBm1</dt>
+<dd><b>[in, out]</b> First bitmap to blend, blended bitmap when function ends</dd>
+<dt>pBm2</dt>
+<dd>Second bitmap to blend with</dd>
+<dt>width</dt>
+<dd>Bitmap width</dd>
+<dt>height</dt>
+<dd>Bitmap height</dd>
+<dt>opacity</dt>
+<dd>Opacity level, between 0.0 (fully transparent) and 1.0 (fully opaque)</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Blend24"></span><code>class procedure <b>Blend24</b>(const rect: TRect; pBm1, pBm2: Vcl.Graphics.TBitmap; opacity: Single); overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Blend 24 bit bitmaps together     <br> <b>NOTE</b> It is assumed that bitmaps pixel formats are both 24 bit and sizes are equals. An access violation may occur if it's not the case</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle representing surface to blend, entire bitmaps will be blended if empty</dd>
+<dt>pBm1</dt>
+<dd><b>[in, out]</b> First bitmap to blend, blended bitmap when function ends</dd>
+<dt>pBm2</dt>
+<dd>Second bitmap to blend with</dd>
+<dt>opacity</dt>
+<dd>Opacity level, between 0.0 (fully transparent) and 1.0 (fully opaque)</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Blend32"></span><code>class procedure <b>Blend32</b>(const rect: TRect; pBm1: Pointer; const pBm2: Pointer; width, height: NativeUInt; position: Single); overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Blend 32 bit bitmaps together       <br> <b>NOTE</b> It is assumed that bitmaps pixel formats are both 32 bit and sizes are equals. An access violation may occur if it's not the case</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle representing surface to blend, entire bitmaps will be blended if empty</dd>
+<dt>pBm1</dt>
+<dd><b>[in, out]</b> First bitmap to blend, blended bitmap when function ends</dd>
+<dt>pBm2</dt>
+<dd>Second bitmap to blend with</dd>
+<dt>width</dt>
+<dd>Bitmap width</dd>
+<dt>height</dt>
+<dd>Bitmap height</dd>
+<dt>position</dt>
+<dd>Blending level position in percent (0.0 = bitmap1, 1.0 = bitmap2)</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Blend32"></span><code>class procedure <b>Blend32</b>(const rect: TRect; pBm1, pBm2: Vcl.Graphics.TBitmap; position: Single); overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Blend 32 bit bitmaps together     <br> <b>NOTE</b> It is assumed that bitmaps pixel formats are both 32 bit and sizes are equals. An access violation may occur if it's not the case</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle representing surface to blend, entire bitmaps will be blended if empty</dd>
+<dt>pBm1</dt>
+<dd><b>[in, out]</b> First bitmap to blend, blended bitmap when function ends</dd>
+<dt>pBm2</dt>
+<dd>Second bitmap to blend with</dd>
+<dt>position</dt>
+<dd>Blending level position in percent (0.0 = bitmap1, 1.0 = bitmap2)</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>class procedure <b>Clear</b>(pBitmap: Vcl.Graphics.TBitmap; const rect: TRect); overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Partially clear bitmap   <br> <b>NOTE</b> 32 bit bitmap alpha channel will also be cleared</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pBitmap</dt>
+<dd>Bitmap to clear</dd>
+<dt>rect</dt>
+<dd>The rect area to clear</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>class procedure <b>Clear</b>(pBitmap: Vcl.Graphics.TBitmap); overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear a bitmap  <br> <b>NOTE</b> 32 bit bitmap alpha channel will also be cleared</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pBitmap</dt>
+<dd>Bitmap to clear</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ConfigBitmap"></span><code>class procedure <b>ConfigBitmap</b>(pBitmap: Vcl.Graphics.TBitmap; width, height: Integer; higherOnly: Boolean; bmpType: TBitmapHandleType; pixelFormat: Vcl.Graphics.TPixelFormat; alphaFormat: TAlphaFormat = afIgnored); static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Configure bitmap       </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pBitmap</dt>
+<dd>Bitmap to configure</dd>
+<dt>width</dt>
+<dd>Bitmap width</dd>
+<dt>height</dt>
+<dd>Bitmap height</dd>
+<dt>higherOnly</dt>
+<dd>If <code>True</code>, bitmap size will be updated only if higher than actual size</dd>
+<dt>bmpType</dt>
+<dd>Bitmap type, can be device dependent bitmap or device independent bitmap</dd>
+<dt>pixelFormat</dt>
+<dd>Pixel format</dd>
+<dt>alphaFormat</dt>
+<dd>Alpha format, ignored if pixel format is not set to pf32bit</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Copy32"></span><code>class procedure <b>Copy32</b>(const rect: TRect; pSrc: Vcl.Graphics.TBitmap; pDst: Pointer); static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Copy 32 bit bitmap to another bitmap   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle representing surface to copy, entire bitmaps will be copied if empty</dd>
+<dt>pSrc</dt>
+<dd>Source bitmap to copy from</dd>
+<dt>pDst</dt>
+<dd>Destination bitmap to copy to</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawLine"></span><code>class procedure <b>DrawLine</b>(hDC: THandle; const startPos, endPos: TPoint; color: TColor; width: NativeUInt); static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw a line     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>hDC</dt>
+<dd>Device context on which line should be drawn</dd>
+<dt>startPos</dt>
+<dd>Line start position</dd>
+<dt>endPos</dt>
+<dd>Line end position</dd>
+<dt>color</dt>
+<dd>Line color</dd>
+<dt>width</dt>
+<dd>Line width, in logical units. If 0, will be a single pixel width regardless of the current transformations</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawRect"></span><code>procedure <b>DrawRect</b>(const rect: TRect; radiusX, radiusY: Cardinal; const options: <a  href="UTWHelpers.TWGDIHelper.IRectOptions.html">IRectOptions</a>; hDC: THandle); overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw a rectangle     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rect bounding rectangle to draw</dd>
+<dt>radiusX</dt>
+<dd>Radius x value, can be 0</dd>
+<dt>radiusY</dt>
+<dd>Radius y value, can be 0</dd>
+<dt>options</dt>
+<dd>Rectangle options</dd>
+<dt>hDC</dt>
+<dd>Device context to draw to</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawRect"></span><code>procedure <b>DrawRect</b>(const rect: TRect; radiusX, radiusY: Cardinal; opacity: Single; const options: <a  href="UTWHelpers.TWGDIHelper.IRectOptions.html">IRectOptions</a>; hDC: THandle); overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw a transparent rectangle      </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rect bounding rectangle to draw</dd>
+<dt>radiusX</dt>
+<dd>Radius x value, can be 0</dd>
+<dt>radiusY</dt>
+<dd>Radius y value, can be 0</dd>
+<dt>opacity</dt>
+<dd>Opacity level, between 0.0 (fully transparent) and 1.0 (fully opaque)</dd>
+<dt>options</dt>
+<dd>Rectangle options</dd>
+<dt>hDC</dt>
+<dd>Device context to draw to</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawText"></span><code>procedure <b>DrawText</b>(const text: UnicodeString; const rect: TRect; pFont: TFont; opacity: Single; const options: <a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>; hDC: THandle); overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw a transparent text      </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>text</dt>
+<dd>Text to draw</dd>
+<dt>rect</dt>
+<dd>Rect bounding text to draw</dd>
+<dt>pFont</dt>
+<dd>Text font to use</dd>
+<dt>opacity</dt>
+<dd>Opacity level, between 0.0 (fully transparent) and 1.0 (fully opaque)</dd>
+<dt>options</dt>
+<dd>Text options</dd>
+<dt>hDC</dt>
+<dd>Device context to draw to</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawText"></span><code>procedure <b>DrawText</b>(const text: UnicodeString; const rect: TRect; pFont: TFont; const options: <a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>; hDC: THandle); overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw a text     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>text</dt>
+<dd>Text to draw</dd>
+<dt>rect</dt>
+<dd>Rect bounding text to draw</dd>
+<dt>pFont</dt>
+<dd>Text font to use</dd>
+<dt>options</dt>
+<dd>Text options</dd>
+<dt>hDC</dt>
+<dd>Device context to draw to</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Fill"></span><code>class procedure <b>Fill</b>(pBitmap: Vcl.Graphics.TBitmap; const rect: TRect; const color: <a  href="UTWColor.TWColor.html">TWColor</a>); overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Partially fill a bitmap with a color   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pBitmap</dt>
+<dd>Bitmap to fill</dd>
+<dt>rect</dt>
+<dd>The rect area to fill with color</dd>
+<dt>color</dt>
+<dd>Color to fill with</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Fill"></span><code>class procedure <b>Fill</b>(pCanvas: TCanvas; const rect: TRect; const color: <a  href="UTWColor.TWColor.html">TWColor</a>); overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Partially fill a canvas with a color   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pCanvas</dt>
+<dd>Canvas to fill</dd>
+<dt>rect</dt>
+<dd>The rect area to fill with color</dd>
+<dt>color</dt>
+<dd>Color to fill with</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Fill"></span><code>class procedure <b>Fill</b>(pBitmap: Vcl.Graphics.TBitmap; const color: <a  href="UTWColor.TWColor.html">TWColor</a>); overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Fill a bitmap with a color  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pBitmap</dt>
+<dd>Bitmap to fill</dd>
+<dt>color</dt>
+<dd>Color to fill with</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="UpdateTextRectPos"></span><code>procedure <b>UpdateTextRectPos</b>(const refRect: TRect; var rect: TRect; const options: <a  href="UTWHelpers.TWGDIHelper.ITextOptions.html">ITextOptions</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Update text rect position relatively to alignment and reference rect   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>refRect</dt>
+<dd>Reference rect</dd>
+<dt>rect</dt>
+<dd><b>[in, out]</b> Rect to update</dd>
+<dt>options</dt>
+<dd>Text options</dd>
+</dl>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

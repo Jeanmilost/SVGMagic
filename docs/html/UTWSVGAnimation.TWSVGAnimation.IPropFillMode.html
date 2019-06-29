@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGAnimation: Class TWSVGAnimation.IPropFillMode</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="IPropFillMode"></span><h1 class="cio">Class TWSVGAnimation.IPropFillMode</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-EnclosingClass">Enclosing Class</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGAnimation.html">UTWSVGAnimation</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type IPropFillMode = class(<a class="normal" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Animation fill mode property</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a></li>
+<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a></li>
+<li class="thisitem">TWSVGAnimation.IPropFillMode</li></ul><span id="PasDoc-EnclosingClass"></span><h2 class="hierarchy">Enclosing Class</h2>
+<ul class="hierarchy"><li class="thisitem"><a class="ancestor" href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a></li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#IEMode">IEMode</a></b> = (...);</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#Create">Create</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#CreateInstance">CreateInstance</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#ModeToStr">ModeToStr</a></b>(mode: <a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#IEMode">IEMode</a>): UnicodeString; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#Parse">Parse</a></b>(const data: UnicodeString): Boolean; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#Print">Print</a></b>(margin: Cardinal): UnicodeString; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#StrToMode">StrToMode</a></b>(const str: UnicodeString): <a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#IEMode">IEMode</a>; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#ToXml">ToXml</a></b>: UnicodeString; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#Assign">Assign</a></b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#Clear">Clear</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#Log">Log</a></b>(margin: Cardinal); override;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#Mode">Mode</a></b>: <a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#IEMode">IEMode</a> <a  href="UTWSVGItems.TWSVGProperty.html#Read">read</a> m_Mode write m_Mode;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEMode"></span><code><b>IEMode</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Fill mode enumeration   </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_FM_Unknown">IE_FM_Unknown</span>: The animation effect is unknown</li>
+<li>
+<span id="IE_FM_Freeze">IE_FM_Freeze</span>: The animation effect is defined to freeze the effect value at the last value of the active duration. The animation effect is &quot;frozen&quot; for the remainder of the document duration (or until the animation is restarted)</li>
+<li>
+<span id="IE_FM_Remove">IE_FM_Remove</span>: The animation effect is removed (no longer applied) when the active duration of the animation is over. After the active end of the animation, the animation no longer affects the target (unless the animation is restarted)</li>
+</ul>
+</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pParent</dt>
+<dd>Parent item, orphan or root if <code>Nil</code></dd>
+<dt>pOptions</dt>
+<dd>SVG options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CreateInstance"></span><code>function <b>CreateInstance</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Create new element instance  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pParent</dt>
+<dd>Parent item, orphan or root if <code>Nil</code></dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Element instance</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ModeToStr"></span><code>class function <b>ModeToStr</b>(mode: <a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#IEMode">IEMode</a>): UnicodeString; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert fill mode to string   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>mode</dt>
+<dd>Mode to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Converted string</p><h6 class="description_section">Exceptions raised</h6>
+<dl class="exceptions_raised">
+<dt><code>Exception</code></dt>
+<dd>on unknown mode</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Parse"></span><code>function <b>Parse</b>(const data: UnicodeString): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Parse data  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>data</dt>
+<dd>Data to parse</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Print"></span><code>function <b>Print</b>(margin: Cardinal): UnicodeString; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Print content to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Content</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="StrToMode"></span><code>class function <b>StrToMode</b>(const str: UnicodeString): <a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#IEMode">IEMode</a>; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert string to fill mode   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>str</dt>
+<dd>String containing mode to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Converted mode</p><h6 class="description_section">Exceptions raised</h6>
+<dl class="exceptions_raised">
+<dt><code>Exception</code></dt>
+<dd>on unknown mode</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToXml"></span><code>function <b>ToXml</b>: UnicodeString; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get xml formatted string </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">String</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) content from another item </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other item to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Log"></span><code>procedure <b>Log</b>(margin: Cardinal); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Log content </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Mode"></span><code>property <b>Mode</b>: <a  href="UTWSVGAnimation.TWSVGAnimation.IPropFillMode.html#IEMode">IEMode</a> <a  href="UTWSVGItems.TWSVGProperty.html#Read">read</a> m_Mode write m_Mode;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the fill mode</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

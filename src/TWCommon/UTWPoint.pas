@@ -10,9 +10,9 @@ interface
 uses System.Rtti,
      System.Types,
      System.Generics.Defaults,
-     {$if CompilerVersion >= 32}
+     {$if CompilerVersion >= 29}
          System.Hash,
-     {$endif}
+     {$ifend}
      {$ifdef USE_VCL}
         Winapi.Windows,
         Winapi.GDIPAPI,
@@ -489,13 +489,22 @@ end;
 //---------------------------------------------------------------------------
 function TWPoint<T>.Invert: TWPoint<T>;
 begin
-    Result.m_X := -m_X;
-    Result.m_Y := -m_Y;
+    {$if CompilerVersion <= 23}
+        Result.m_X := TWGenericNumber<T>(0.0) - m_X;
+        Result.m_Y := TWGenericNumber<T>(0.0) - m_Y;
+    {$else}
+        Result.m_X := -m_X;
+        Result.m_Y := -m_Y;
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 function TWPoint<T>.IsZero: Boolean;
 begin
-    Result := ((m_X = 0.0) and (m_Y = 0.0));
+    {$if CompilerVersion <= 23}
+        Result := ((m_X = TWGenericNumber<T>(0.0)) and (m_Y = TWGenericNumber<T>(0.0)));
+    {$else}
+        Result := ((m_X = 0.0) and (m_Y = 0.0));
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 {$ifdef USE_VCL}
@@ -566,13 +575,13 @@ end;
 //---------------------------------------------------------------------------
 function TWPoint<T>.GetHashCode(initValue: Integer): Integer;
 begin
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(m_X, SizeOf(T), initValue);
         Result := THashBobJenkins.GetHashValue(m_Y, SizeOf(T), Result);
     {$else}
         Result := BobJenkinsHash(m_X, SizeOf(T), initValue);
         Result := BobJenkinsHash(m_Y, SizeOf(T), Result);
-    {$endif}
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 

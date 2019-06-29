@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWRendererCommon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<h1 class="unit">Unit UTWRendererCommon</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Uses</div><div class="one_section">Classes, Interfaces, Objects and Records</div><div class="one_section">Functions and Procedures</div><div class="one_section"><a class="section" href="#PasDoc-Types">Types</a></div><div class="one_section">Constants</div><div class="one_section">Variables</div></div>
+<span id="PasDoc-Description"></span><h2 class="description">Description</h2>
+<p>
+<code>UTWRendererCommon</code> provides the common types to use in the renderer classes.</p>
+<p>
+  </p>
+<span id="PasDoc-Uses"></span><h2 class="overview">Overview</h2>
+<span id="PasDoc-Types"></span><h3 class="summary">Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWRendererCommon.html#EAlignHorz">EAlignHorz</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWRendererCommon.html#EAlignVert">EAlignVert</a></b> = (...);</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWRendererCommon.html#EDrawTextFunc">EDrawTextFunc</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWRendererCommon.html#EImageResizeMode">EImageResizeMode</a></b> = (...);</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWRendererCommon.html#EOrientation">EOrientation</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><b><a  href="UTWRendererCommon.html#ETextRendering">ETextRendering</a></b> = (...);</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><b><a  href="UTWRendererCommon.html#ETextTrimming">ETextTrimming</a></b> = (...);</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="EAlignHorz"></span><code><b>EAlignHorz</b> = (...);</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Horizontal alignment enumeration   </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="E_H_Left">E_H_Left</span>: Aligned on the left</li>
+<li>
+<span id="E_H_Center">E_H_Center</span>: Centered horizontally</li>
+<li>
+<span id="E_H_Right">E_H_Right</span>: Aligned on the right</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="EAlignVert"></span><code><b>EAlignVert</b> = (...);</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Vertical alignment enumeration   </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="E_V_Top">E_V_Top</span>: Aligned on the top</li>
+<li>
+<span id="E_V_Center">E_V_Center</span>: Centered vertically</li>
+<li>
+<span id="E_V_Bottom">E_V_Bottom</span>: Aligned on the bottom</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="EDrawTextFunc"></span><code><b>EDrawTextFunc</b> = (...);</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Draw text function to use   </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="E_DF_Default">E_DF_Default</span>: Draw text function is selected automatically</li>
+<li>
+<span id="E_DF_GDI">E_DF_GDI</span>: Use the GDI to draw text</li>
+<li>
+<span id="E_DF_WS_Optimized">E_DF_WS_Optimized</span>: Use the WindSolution custom implementation of DrawText() to draw text</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="EImageResizeMode"></span><code><b>EImageResizeMode</b> = (...);</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Image resize algorithms       </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="E_RzMode_Auto">E_RzMode_Auto</span>: The resize algorithm is selected automatically</li>
+<li>
+<span id="E_RzMode_Nearest">E_RzMode_Nearest</span>: The nearest neighbour algorithm will be used to resize the image</li>
+<li>
+<span id="E_RzMode_Bilinear">E_RzMode_Bilinear</span>: The bilinear algorithm will be used to resize the image</li>
+<li>
+<span id="E_RzMode_BilinearHQ">E_RzMode_BilinearHQ</span>: The high quality bilinear algorithm will be used to resize the image</li>
+<li>
+<span id="E_RzMode_Bicubic">E_RzMode_Bicubic</span>: The bicubic algorithm will be used to resize the image</li>
+<li>
+<span id="E_RzMode_BicubicHQ">E_RzMode_BicubicHQ</span>: The high quality bicubic algorithm will be used to resize the image</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="EOrientation"></span><code><b>EOrientation</b> = (...);</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Orientation enumeration    </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="E_O_Left">E_O_Left</span>: Left oriented</li>
+<li>
+<span id="E_O_Top">E_O_Top</span>: Top oriented</li>
+<li>
+<span id="E_O_Right">E_O_Right</span>: Right oriented</li>
+<li>
+<span id="E_O_Bottom">E_O_Bottom</span>: Bottom oriented</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ETextRendering"></span><code><b>ETextRendering</b> = (...);</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Text rendering type enumeration        <br> <b>NOTE</b> WARNING Don't change enum elements order or values, used in type conversions</p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="E_R_None">E_R_None</span>: No text rendering type</li>
+<li>
+<span id="E_R_Default">E_R_Default</span>: Each character is drawn using its glyph bitmap, with the system default rendering hint. The text will be drawn using whatever font-smoothing settings the user has selected for the system</li>
+<li>
+<span id="E_R_AntiAlias">E_R_AntiAlias</span>: Each character is drawn using its antialiased glyph bitmap without hinting. Better quality due to antialiasing. Stem width differences may be noticeable because hinting is turned off</li>
+<li>
+<span id="E_R_AntiAlias_GridFit">E_R_AntiAlias_GridFit</span>: Each character is drawn using its antialiased glyph bitmap with hinting. Much better quality due to antialiasing, but at a higher performance cost</li>
+<li>
+<span id="E_R_ClearType_GridFit">E_R_ClearType_GridFit</span>: Each character is drawn using its glyph ClearType bitmap with hinting. The highest quality setting. Used to take advantage of ClearType font features</li>
+<li>
+<span id="E_R_SingleBitPerPixel">E_R_SingleBitPerPixel</span>: Each character is drawn using its glyph bitmap. Hinting is not used</li>
+<li>
+<span id="E_R_SingleBitPerPixel_GridFit">E_R_SingleBitPerPixel_GridFit</span>: Each character is drawn using its glyph bitmap. Hinting is used to improve character appearance on stems and curvature</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ETextTrimming"></span><code><b>ETextTrimming</b> = (...);</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Text trimming type enumeration      </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="E_TT_None">E_TT_None</span>: No trimming</li>
+<li>
+<span id="E_TT_Character">E_TT_Character</span>: Trim on first char that exceeds the draw rect</li>
+<li>
+<span id="E_TT_Word">E_TT_Word</span>: Trim on first word that exceeds the draw rect</li>
+<li>
+<span id="E_TT_EllipsisCharacter">E_TT_EllipsisCharacter</span>: Using ellipsis, trim on first char that exceeds the draw rect</li>
+<li>
+<span id="E_TT_EllipsisWord">E_TT_EllipsisWord</span>: Using ellipsis, trim on first word that exceeds the draw rect</li>
+<li>
+<span id="E_TT_EllipsisPath">E_TT_EllipsisPath</span>: Using ellipsis, cut the string on the middle and ellipsify the center</li>
+</ul>
+</td></tr>
+</table>
+<h2 class="authors">Author</h2>
+<ul class="authors">
+<li>JMR</li>
+</ul>
+<h2 class="created">Created</h2>
+<p>
+2016-2019 by Ursa Minor
+</p>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

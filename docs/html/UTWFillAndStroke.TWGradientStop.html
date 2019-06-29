@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWFillAndStroke: Class TWGradientStop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWGradientStop"></span><h1 class="cio">Class TWGradientStop</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWFillAndStroke.html">UTWFillAndStroke</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWGradientStop = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Gradient stop, it's a color with a position in the gradient, in pixels or in percent <br> <b>NOTE</b> If percent position is set to -1.0f, the normal position will be used instead</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TWGradientStop</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWFillAndStroke.TWGradientStop.html#Create">Create</a></b>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWFillAndStroke.TWGradientStop.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWFillAndStroke.TWGradientStop.html#Differs">Differs</a></b>(const pOther: <a  href="UTWFillAndStroke.TWGradientStop.html">TWGradientStop</a>): Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWFillAndStroke.TWGradientStop.html#GetHashCode">GetHashCode</a></b>(initValue: Integer): Integer; reintroduce; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWFillAndStroke.TWGradientStop.html#IsEqual">IsEqual</a></b>(const pOther: <a  href="UTWFillAndStroke.TWGradientStop.html">TWGradientStop</a>): Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWFillAndStroke.TWGradientStop.html#GetColor">GetColor</a></b>: <a  href="UTWColor.html#PWColor">PWColor</a>; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWFillAndStroke.TWGradientStop.html#GetPosition">GetPosition</a></b>: <a  href="UTWPoint.html#PWPointF">PWPointF</a>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWFillAndStroke.TWGradientStop.html#Assign">Assign</a></b>(const pOther: <a  href="UTWFillAndStroke.TWGradientStop.html">TWGradientStop</a>); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWFillAndStroke.TWGradientStop.html#SetColor">SetColor</a></b>(const pColor: <a  href="UTWColor.html#PWColor">PWColor</a>); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWFillAndStroke.TWGradientStop.html#SetPosition">SetPosition</a></b>(const pPosition: <a  href="UTWPoint.html#PWPointF">PWPointF</a>); virtual;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWFillAndStroke.TWGradientStop.html#Color">Color</a></b>: <a  href="UTWColor.html#PWColor">PWColor</a> read <a  href="UTWFillAndStroke.TWGradientStop.html#GetColor">GetColor</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWFillAndStroke.TWGradientStop.html#Percent">Percent</a></b>: Double read m_Percent write m_Percent;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWFillAndStroke.TWGradientStop.html#Position">Position</a></b>: <a  href="UTWPoint.html#PWPointF">PWPointF</a> read <a  href="UTWFillAndStroke.TWGradientStop.html#GetPosition">GetPosition</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Differs"></span><code>function <b>Differs</b>(const pOther: <a  href="UTWFillAndStroke.TWGradientStop.html">TWGradientStop</a>): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if gradient stop content differs from another gradient stop  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other gradient stop to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if gradient stops differ, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetHashCode"></span><code>function <b>GetHashCode</b>(initValue: Integer): Integer; reintroduce; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the hash code based on the class content  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>initValue</dt>
+<dd>Initialization value</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Hash code</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsEqual"></span><code>function <b>IsEqual</b>(const pOther: <a  href="UTWFillAndStroke.TWGradientStop.html">TWGradientStop</a>): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if gradient stop content is equal to another gradient stop  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other gradient stop to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if gradient stops are equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetColor"></span><code>function <b>GetColor</b>: <a  href="UTWColor.html#PWColor">PWColor</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get color </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Color</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetPosition"></span><code>function <b>GetPosition</b>: <a  href="UTWPoint.html#PWPointF">PWPointF</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get position </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Position</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWFillAndStroke.TWGradientStop.html">TWGradientStop</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) the gradient stop </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other gradient stop to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetColor"></span><code>procedure <b>SetColor</b>(const pColor: <a  href="UTWColor.html#PWColor">PWColor</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set color </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pColor</dt>
+<dd>Color to set</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetPosition"></span><code>procedure <b>SetPosition</b>(const pPosition: <a  href="UTWPoint.html#PWPointF">PWPointF</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set position </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pPosition</dt>
+<dd>Position to set</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Color"></span><code>property <b>Color</b>: <a  href="UTWColor.html#PWColor">PWColor</a> read <a  href="UTWFillAndStroke.TWGradientStop.html#GetColor">GetColor</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the gradient stop color</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Percent"></span><code>property <b>Percent</b>: Double read m_Percent write m_Percent;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the gradient stop position in percent (between 0.0 and 1.0)</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Position"></span><code>property <b>Position</b>: <a  href="UTWPoint.html#PWPointF">PWPointF</a> read <a  href="UTWFillAndStroke.TWGradientStop.html#GetPosition">GetPosition</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the gradient stop position</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

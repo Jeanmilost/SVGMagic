@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWGenericNumber: Record TWGenericNumber</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWGenericNumber"></span><h1 class="cio">Record TWGenericNumber</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWGenericNumber.html">UTWGenericNumber</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWGenericNumber&lt;T&gt; = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+Generic number</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWGenericNumber.TWGenericNumber.html#Kind">Kind</a></b>: TTypeKind;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Add">Add</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#BitwiseXor">BitwiseXor</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Dec">Dec</a></b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Divide">Divide</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Equal">Equal</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#GreaterThan">GreaterThan</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#GreaterThanOrEqual">GreaterThanOrEqual</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Implicit">Implicit</a></b>(value: Double): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Implicit">Implicit</a></b>(value: Extended): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Implicit">Implicit</a></b>(value: Single): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Implicit">Implicit</a></b>(value: Integer): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Implicit">Implicit</a></b>(value: Cardinal): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Implicit">Implicit</a></b>(value: Int64): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Implicit">Implicit</a></b>(value: NativeUInt): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Implicit">Implicit</a></b>(value: NativeInt): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Implicit">Implicit</a></b>(value: UInt64): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Inc">Inc</a></b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#IntDivide">IntDivide</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#LeftShift">LeftShift</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#LessThan">LessThan</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#LessThanOrEqual">LessThanOrEqual</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Modulus">Modulus</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Multiply">Multiply</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Negative">Negative</a></b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#NotEqual">NotEqual</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#RightShift">RightShift</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Round">Round</a></b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Subtract">Subtract</a></b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWGenericNumber.TWGenericNumber.html#Trunc">Trunc</a></b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>property <b><a  href="UTWGenericNumber.TWGenericNumber.html#Value">Value</a></b>: T read m_Value write m_Value;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Kind"></span><code>function <b>Kind</b>: TTypeKind;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get the kind of value </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Kind of value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Add"></span><code>class operator <b>Add</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Addition operator (allows operations on generic numbers like r := a + b)    <br> <b>NOTE</b> Only numbers of the same type may be added. E.g. trying to add an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to add</dd>
+<dt>b</dt>
+<dd>Second generic number to add</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="BitwiseXor"></span><code>class operator <b>BitwiseXor</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Bitwise xor operator (allows operations on generic numbers like r := a xor b)    <br> <b>NOTE</b> Only numbers of the same type may be processed. E.g. trying to apply a xor on integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Generic number on which xor will be applied</dd>
+<dt>b</dt>
+<dd>Generic number containing xor to apply</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Dec"></span><code>class operator <b>Dec</b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Decrement operator (allows operations on generic numbers like Dec(a))  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Generic number to decrement</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Divide"></span><code>class operator <b>Divide</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Division operator (allows operations on generic numbers like r := a / b)    <br> <b>NOTE</b> Only numbers of the same type may be divided. E.g. trying to divide an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to divide</dd>
+<dt>b</dt>
+<dd>Second generic number to divide</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Equal"></span><code>class operator <b>Equal</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Equality operator (allows operations on generic numbers like a = b)    <br> <b>NOTE</b> Only numbers of the same type may be compared. E.g. trying to compare an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to compare</dd>
+<dt>b</dt>
+<dd>Second generic number to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if numbers are equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GreaterThan"></span><code>class operator <b>GreaterThan</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Greater than operator (allows operations on generic numbers like a &gt; b)    <br> <b>NOTE</b> Only numbers of the same type may be compared. E.g. trying to compare an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to compare</dd>
+<dt>b</dt>
+<dd>Second generic number to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if number a is greater than number b, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GreaterThanOrEqual"></span><code>class operator <b>GreaterThanOrEqual</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Greater than or equal operator (allows operations on generic numbers like a &gt;= b)    <br> <b>NOTE</b> Only numbers of the same type may be compared. E.g. trying to compare an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to compare</dd>
+<dt>b</dt>
+<dd>Second generic number to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if number a is greater than or equal to number b, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Implicit"></span><code>class operator <b>Implicit</b>(value: Double): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Implicit conversion from Double operator (allows operations on generic numbers like r := value)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number assigned to value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Implicit"></span><code>class operator <b>Implicit</b>(value: Extended): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Implicit conversion from Extended operator (allows operations on generic numbers like r := value)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number assigned to value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Implicit"></span><code>class operator <b>Implicit</b>(value: Single): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Implicit conversion from Single operator (allows operations on generic numbers like r := value)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number assigned to value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Implicit"></span><code>class operator <b>Implicit</b>(value: Integer): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Implicit conversion from Integer operator (allows operations on generic numbers like r := value)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number assigned to value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Implicit"></span><code>class operator <b>Implicit</b>(value: Cardinal): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Implicit conversion from Cardinal operator (allows operations on generic numbers like r := value)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number assigned to value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Implicit"></span><code>class operator <b>Implicit</b>(value: Int64): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Implicit conversion from Int64 operator (allows operations on generic numbers like r := value)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number assigned to value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Implicit"></span><code>class operator <b>Implicit</b>(value: NativeUInt): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Implicit conversion from NativeUInt operator (allows operations on generic numbers like r := value)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number assigned to value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Implicit"></span><code>class operator <b>Implicit</b>(value: NativeInt): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Implicit conversion from NativeInt operator (allows operations on generic numbers like r := value)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number assigned to value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Implicit"></span><code>class operator <b>Implicit</b>(value: UInt64): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Implicit conversion from UInt64 operator (allows operations on generic numbers like r := value)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number assigned to value</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Inc"></span><code>class operator <b>Inc</b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Increment operator (allows operations on generic numbers like Inc(a))  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Generic number to increment</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IntDivide"></span><code>class operator <b>IntDivide</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Integer division operator (allows operations on generic numbers like r := a div b)    <br> <b>NOTE</b> Only numbers of the same type may be divided. E.g. trying to divide an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to divide</dd>
+<dt>b</dt>
+<dd>Second generic number to divide</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="LeftShift"></span><code>class operator <b>LeftShift</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Left shift operator (allows operations on generic numbers like r := a shl b)    <br> <b>NOTE</b> Only numbers of the same type may be processed. E.g. trying to apply a shifting on integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Generic number on which shifting will be applied</dd>
+<dt>b</dt>
+<dd>Shift value</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="LessThan"></span><code>class operator <b>LessThan</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Less than operator (allows operations on generic numbers like a &lt; b)    <br> <b>NOTE</b> Only numbers of the same type may be compared. E.g. trying to compare an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to compare</dd>
+<dt>b</dt>
+<dd>Second generic number to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if number a is less than number b, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="LessThanOrEqual"></span><code>class operator <b>LessThanOrEqual</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Less than or equal operator (allows operations on generic numbers like a &lt;= b)    <br> <b>NOTE</b> Only numbers of the same type may be compared. E.g. trying to compare an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to compare</dd>
+<dt>b</dt>
+<dd>Second generic number to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if number a is less than or equal to number b, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Modulus"></span><code>class operator <b>Modulus</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Modulus operator (allows operations on generic numbers like r := a mod b)    <br> <b>NOTE</b> Only numbers of the same type may be processed. E.g. trying to apply a modulus on integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Generic number on which modulus will be applied</dd>
+<dt>b</dt>
+<dd>Modulus to apply</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Multiply"></span><code>class operator <b>Multiply</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplication operator (allows operations on generic numbers like r := a * b)    <br> <b>NOTE</b> Only numbers of the same type may be multiplied. E.g. trying to multiply an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to multiply</dd>
+<dt>b</dt>
+<dd>Second generic number to multiply</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Negative"></span><code>class operator <b>Negative</b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Inversion operator (allows operations on generic numbers like r := -a)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Number to invert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="NotEqual"></span><code>class operator <b>NotEqual</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): Boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Not equality operator (allows operations on generic numbers like a &lt;&gt; b)    <br> <b>NOTE</b> Only numbers of the same type may be compared. E.g. trying to compare an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to compare</dd>
+<dt>b</dt>
+<dd>Second generic number to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if numbers are not equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="RightShift"></span><code>class operator <b>RightShift</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Right shift operator (allows operations on generic numbers like r := a shr b)    <br> <b>NOTE</b> Only numbers of the same type may be processed. E.g. trying to apply a shifting on integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Generic number on which shifting will be applied</dd>
+<dt>b</dt>
+<dd>Shift value</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Round"></span><code>class operator <b>Round</b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Round operator (allows operations on generic numbers like r := Trunc(a))  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Generic number to round</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Subtract"></span><code>class operator <b>Subtract</b>(a, b: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtraction operator (allows operations on generic numbers like r := a - b)    <br> <b>NOTE</b> Only numbers of the same type may be subtracted. E.g. trying to subtract an integer with a cardinal may cause a compiler error</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First generic number to subtract</dd>
+<dt>b</dt>
+<dd>Second generic number to subtract</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Trunc"></span><code>class operator <b>Trunc</b>(a: <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;): <a  href="UTWGenericNumber.TWGenericNumber.html">TWGenericNumber</a>&lt;T&gt;;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Trunc operator (allows operations on generic numbers like r := Trunc(a))  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Generic number to trunc</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Generic number containing the result</p></td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Value"></span><code>property <b>Value</b>: T read m_Value write m_Value;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

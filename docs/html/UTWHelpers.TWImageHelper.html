@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWHelpers: Record TWImageHelper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWImageHelper"></span><h1 class="cio">Record TWImageHelper</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWHelpers.html">UTWHelpers</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWImageHelper = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+Helper class for images</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWImageHelper.html#BitmapTo">BitmapTo</a></b>(const pBitmap: Vcl.Graphics.TBitmap; pImage: TGraphic; useGDIPlus: Boolean): Boolean; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWImageHelper.html#BmpToPng_GDI">BmpToPng_GDI</a></b>(pSrc: Vcl.Graphics.TBitmap): TPngImage; static;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWImageHelper.html#GetProportionalSize">GetProportionalSize</a></b>(wSrc, hSrc: Integer; var wDestMax, hDestMax: Integer; padded: Boolean); static;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="BitmapTo"></span><code>class function <b>BitmapTo</b>(const pBitmap: Vcl.Graphics.TBitmap; pImage: TGraphic; useGDIPlus: Boolean): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Convert a bitmap to any other image format, taking care of preserving the alpha channel     <br> <b>NOTE</b> GDI+ should be previously initialized if useGDIPlus is set to <code>True</code></p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pBitmap</dt>
+<dd>Bitmap to convert</dd>
+<dt>pImage</dt>
+<dd>Image to convert to</dd>
+<dt>useGDIPlus</dt>
+<dd>If <code>True</code>, GDI+ will be used to process the conversion, GDI otherwise</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="BmpToPng_GDI"></span><code>class function <b>BmpToPng_GDI</b>(pSrc: Vcl.Graphics.TBitmap): TPngImage; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Convert a bitmap to a PNG using GDI, taking care of preserving his alpha channel  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSrc</dt>
+<dd>Source bitmap</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">PNG image, <code>Nil</code> if failed or on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetProportionalSize"></span><code>class procedure <b>GetProportionalSize</b>(wSrc, hSrc: Integer; var wDestMax, hDestMax: Integer; padded: Boolean); static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Calculate and get the best image size keeping his proportions     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>wSrc</dt>
+<dd>The image width to resize (must be &gt; 0)</dd>
+<dt>hSrc</dt>
+<dd>The image height to resize (must be &gt; 0)</dd>
+<dt>wDestMax</dt>
+<dd><b>[in, out]</b> As in, the max required width of the resized image. As out, actual computed best width. If zero, it will be computed using the source image aspect ratio and dest height</dd>
+<dt>hDestMax</dt>
+<dd><b>[in, out]</b> As in, the max required height of the resized image. As out, actual computed best height. If zero, it will be computed using source image aspect ratio and dest width</dd>
+<dt>padded</dt>
+<dd>If <code>True</code>, image will be padded, cropped otherwise</dd>
+</dl>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

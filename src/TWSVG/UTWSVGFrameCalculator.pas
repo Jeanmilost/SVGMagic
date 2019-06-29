@@ -78,22 +78,22 @@ type
             {**
              Get frame count
              @returns(The frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used to
-                       determine how many frames, in an ideal situation, should be rendered by
-                       seconds, and thus allows to calculate the time interval between each frames.
-                       Instead, the FPS represents the number of frames per seconds a system can
-                       effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
+                             determine how many frames, in an ideal situation, should be rendered by
+                             seconds, and thus allows to calculate the time interval between each frames.
+                             Instead, the FPS represents the number of frames per seconds a system can
+                             effectively process
             }
             function GetFrameCount: Double; virtual;
 
             {**
              Set frame count
              @param(frameCount Frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used to
-                       determine how many frames, in an ideal situation, should be rendered by
-                       seconds, and thus allows to calculate the time interval between each frames.
-                       Instead, the FPS represents the number of frames per seconds a system can
-                       effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
+                             determine how many frames, in an ideal situation, should be rendered by
+                             seconds, and thus allows to calculate the time interval between each frames.
+                             Instead, the FPS represents the number of frames per seconds a system can
+                             effectively process
             }
             procedure SetFrameCount(frameCount: Double); virtual;
 
@@ -133,11 +133,11 @@ type
         public
             {**
              Get or set the number of frame to render per seconds
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used to
-                       determine how many frames, in an ideal situation, should be rendered by
-                       seconds, and thus allows to calculate the time interval between each frames.
-                       Instead, the FPS represents the number of frames per seconds a system can
-                       effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
+                             determine how many frames, in an ideal situation, should be rendered by
+                             seconds, and thus allows to calculate the time interval between each frames.
+                             Instead, the FPS represents the number of frames per seconds a system can
+                             effectively process
             }
             property FrameCount: Double read m_FrameCount write m_FrameCount;
 

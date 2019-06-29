@@ -31,8 +31,8 @@ type
         public type
             {**
              Animation messages that can be sent to observers
-             @value(EQR_AM_Animate Message notifying that a new animation frame should be generated)
-             @value(EQR_AM_Destroying Message notifying that the animation timer is being destroyed)
+             @value(IE_AM_Animate Message notifying that a new animation frame should be generated)
+             @value(IE_AM_Destroying Message notifying that the animation timer is being destroyed)
              @br @bold(NOTE) These values begin on 0 to not interfere with other messages. The
                              allowed range for a new animation timer message is between 0 and 99
             }

@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGImageList: Class TWSVGImageList</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGImageList"></span><h1 class="cio">Class TWSVGImageList</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGImageList.html">UTWSVGImageList</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGImageList = class(TCustomImageList)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Image list override that supports SVG graphics</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TCustomImageList</li>
+<li class="thisitem">TWSVGImageList</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGImageList.TWSVGImageList.html#Create">Create</a></b>(pOwner: TComponent); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGImageList.TWSVGImageList.html#CreateSize">CreateSize</a></b>(width, height: Integer); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGImageList.TWSVGImageList.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImageList.TWSVGImageList.html#AddSVG">AddSVG</a></b>(pSVG: <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; colorKey: TColor = clNone): Integer; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImageList.TWSVGImageList.html#GetSVG">GetSVG</a></b>(index: Integer): <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImageList.TWSVGImageList.html#GetSVGColorKey">GetSVGColorKey</a></b>(index: Integer): <a  href="UTWColor.TWColor.html">TWColor</a>; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImageList.TWSVGImageList.html#DoScaleWithDPI">DoScaleWithDPI</a></b>: Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImageList.TWSVGImageList.html#IsPixelsPerInchStored">IsPixelsPerInchStored</a></b>: Boolean; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImageList.TWSVGImageList.html#RasterizeAndAssign">RasterizeAndAssign</a></b>(index: Integer; pSVG: <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; colorKey: TColor; doReplace: Boolean): Integer; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#Assign">Assign</a></b>(pSource: TPersistent); override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#Clear">Clear</a></b>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#DeleteSVG">DeleteSVG</a></b>(index: Integer); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#InsertSVG">InsertSVG</a></b>(index: Integer; pSVG: <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; colorKey: TColor = clNone); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#ReplaceSVG">ReplaceSVG</a></b>(index: Integer; pSVG: <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; colorKey: TColor = clNone); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#SetSize">SetSize</a></b>(newWidth, newHeight: Integer); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#SetSVGColorKey">SetSVGColorKey</a></b>(index: Integer; const colorKey: <a  href="UTWColor.TWColor.html">TWColor</a>); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#DefineProperties">DefineProperties</a></b>(pFiler: TFiler); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#DoDraw">DoDraw</a></b>(index: Integer; pCanvas: TCanvas; x, y: Integer; style: Cardinal; enabled: Boolean = True); override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#Loaded">Loaded</a></b>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#LoadPictureListFromStream">LoadPictureListFromStream</a></b>(pList: IWPictureList; pStream: TStream); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#ParentWndProc">ParentWndProc</a></b>(var message: TMessage);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#ReadPictures">ReadPictures</a></b>(pStream: TStream); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#SavePictureListToStream">SavePictureListToStream</a></b>(pList: IWPictureList; pStream: TStream); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#SetDPIScale">SetDPIScale</a></b>(value: Boolean); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#SetHeight">SetHeight</a></b>(value: Integer); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#SetPixelsPerInch">SetPixelsPerInch</a></b>(value: Integer); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#SetWidth">SetWidth</a></b>(value: Integer); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageList.TWSVGImageList.html#WritePictures">WritePictures</a></b>(pStream: TStream); virtual;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#AllocBy">AllocBy</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#BkColor">BkColor</a></b>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#BlendColor">BlendColor</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#ColorDepth">ColorDepth</a></b>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#DPIScale">DPIScale</a></b>: Boolean read m_DPIScale write <a  href="UTWSVGImageList.TWSVGImageList.html#SetDPIScale">SetDPIScale</a> default False;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#DrawingStyle">DrawingStyle</a></b>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#GrayscaleFactor">GrayscaleFactor</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#Height">Height</a></b> write SetHeight;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#ImageType">ImageType</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#Masked">Masked</a></b>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#OnChange">OnChange</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#OnSVGImageListDPIChanged">OnSVGImageListDPIChanged</a></b>: <a  href="UTWSVGImageList.html#TWfOnSVGImageListDPIChanged">TWfOnSVGImageListDPIChanged</a> read m_fOnSVGImageListDPIChanged write m_fOnSVGImageListDPIChanged;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#PixelsPerInch">PixelsPerInch</a></b>: Integer read m_PixelsPerInch write <a  href="UTWSVGImageList.TWSVGImageList.html#SetPixelsPerInch">SetPixelsPerInch</a> stored <a  href="UTWSVGImageList.TWSVGImageList.html#IsPixelsPerInchStored">IsPixelsPerInchStored</a> nodefault;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#ShareImages">ShareImages</a></b>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#Version">Version</a></b>: UnicodeString read GetVersion;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageList.TWSVGImageList.html#Width">Width</a></b> write SetWidth;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pOwner: TComponent); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOwner</dt>
+<dd>Component owner</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CreateSize"></span><code>constructor <b>CreateSize</b>(width, height: Integer); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>width</dt>
+<dd>Width of the images owned by the image list</dd>
+<dt>height</dt>
+<dd>Height of the images owned by the image list</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="AddSVG"></span><code>function <b>AddSVG</b>(pSVG: <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; colorKey: TColor = clNone): Integer; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Add a new SVG image inside the list   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSVG</dt>
+<dd>SVG image to add</dd>
+<dt>colorKey</dt>
+<dd>Color key to use with the image, if clNone the color will be those defined in BkColor</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Index of the newly added image, -1 on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetSVG"></span><code>function <b>GetSVG</b>(index: Integer): <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the SVG image at index  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index of the SVG to get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">The SVG image, <code>Nil</code> on error or if not found</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetSVGColorKey"></span><code>function <b>GetSVGColorKey</b>(index: Integer): <a  href="UTWColor.TWColor.html">TWColor</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the SVG image color key at index  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index of the color key to get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">The color key, default color on error or if not found</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoScaleWithDPI"></span><code>function <b>DoScaleWithDPI</b>: Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get if glyphs should be scaled with DPI </p>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if glyphs should be scaled with DPI, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="IsPixelsPerInchStored"></span><code>function <b>IsPixelsPerInchStored</b>: Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if pixels per inch value should be stored in DFM file </p>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if value should be stored, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="RasterizeAndAssign"></span><code>function <b>RasterizeAndAssign</b>(index: Integer; pSVG: <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; colorKey: TColor; doReplace: Boolean): Integer; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Rasterize the SVG onto a bitmap image and add or insert it inside the base image list     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index at which the SVG will be inserted, if -1 will be added on the end</dd>
+<dt>pSVG</dt>
+<dd>SVG image to add or insert</dd>
+<dt>colorKey</dt>
+<dd>Color key to use as transparent background for the SVG</dd>
+<dt>doReplace</dt>
+<dd>If true, the image will replace another image at index instead of insert it</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">The newly added or inserted position in the list</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(pSource: TPersistent); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) the content from another component </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSource</dt>
+<dd>Source component to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear the entire image list content</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DeleteSVG"></span><code>procedure <b>DeleteSVG</b>(index: Integer); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Delete a SVG image at index </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index of the SVG to delete</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="InsertSVG"></span><code>procedure <b>InsertSVG</b>(index: Integer; pSVG: <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; colorKey: TColor = clNone); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Insert a new SVG image inside the list   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index where the SVG will be inserted</dd>
+<dt>pSVG</dt>
+<dd>SVG image to add</dd>
+<dt>colorKey</dt>
+<dd>Color key to use with the image, if clNone the color will be those defined in BkColor</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ReplaceSVG"></span><code>procedure <b>ReplaceSVG</b>(index: Integer; pSVG: <a  href="UTWSVGGraphic.TWSVGGraphic.html">TWSVGGraphic</a>; colorKey: TColor = clNone); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Replace a SVG image by another   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index of the SVG to replace</dd>
+<dt>pSVG</dt>
+<dd>SVG image to replace by</dd>
+<dt>colorKey</dt>
+<dd>Color key to use with the image, if clNone the color will be those defined in BkColor</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetSize"></span><code>procedure <b>SetSize</b>(newWidth, newHeight: Integer); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set the image list size  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>newWidth</dt>
+<dd>New image list width</dd>
+<dt>newHeight</dt>
+<dd>New image list height</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetSVGColorKey"></span><code>procedure <b>SetSVGColorKey</b>(index: Integer; const colorKey: <a  href="UTWColor.TWColor.html">TWColor</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set the SVG image color key at index  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index of the color key to set</dd>
+<dt>colorKey</dt>
+<dd>The new color key to set</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DefineProperties"></span><code>procedure <b>DefineProperties</b>(pFiler: TFiler); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Declares properties that will deal with DFM files </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pFiler</dt>
+<dd>DFM file manager</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoDraw"></span><code>procedure <b>DoDraw</b>(index: Integer; pCanvas: TCanvas; x, y: Integer; style: Cardinal; enabled: Boolean = True); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Process the draw on the canvas      </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Image index to draw on canvas</dd>
+<dt>pCanvas</dt>
+<dd>Canvas to draw on)</dd>
+<dt>x</dt>
+<dd>X position in pixels at which the image should be drawn</dd>
+<dt>y</dt>
+<dd>Y position in pixels at which the image should be drawn</dd>
+<dt>style</dt>
+<dd>Style to apply to image</dd>
+<dt>enabled</dt>
+<dd>If <code>False</code>, the disabled style will be applied on the image)</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="Loaded"></span><code>procedure <b>Loaded</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called on application starts, after DFM files were read and applied</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="LoadPictureListFromStream"></span><code>procedure <b>LoadPictureListFromStream</b>(pList: IWPictureList; pStream: TStream); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Load the picture list content from a stream  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pList</dt>
+<dd>Picture list to populate</dd>
+<dt>pStream</dt>
+<dd>Stream to load from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ParentWndProc"></span><code>procedure <b>ParentWndProc</b>(var message: TMessage);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Parent form Windows message procedure </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>message</dt>
+<dd>Windows message to process</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ReadPictures"></span><code>procedure <b>ReadPictures</b>(pStream: TStream); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Read the pictures data from DFM stream </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pStream</dt>
+<dd>DFM stream containing the pictures to read</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SavePictureListToStream"></span><code>procedure <b>SavePictureListToStream</b>(pList: IWPictureList; pStream: TStream); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Save the picture list content to a stream  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pList</dt>
+<dd>Picture list to save</dd>
+<dt>pStream</dt>
+<dd>Stream to save to</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetDPIScale"></span><code>procedure <b>SetDPIScale</b>(value: Boolean); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set image list DPI scale </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>If <code>True</code>, DPI scale is enabled, disabled otherwise</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetHeight"></span><code>procedure <b>SetHeight</b>(value: Integer); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set image list height </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>New height to set</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetPixelsPerInch"></span><code>procedure <b>SetPixelsPerInch</b>(value: Integer); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set image list pixels per inch </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Pixels per inch value</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetWidth"></span><code>procedure <b>SetWidth</b>(value: Integer); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set image list width </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>New width to set</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="WritePictures"></span><code>procedure <b>WritePictures</b>(pStream: TStream); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Write the pictures data to DFM stream </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pStream</dt>
+<dd>DFM stream containing the pictures to write</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="AllocBy"></span><code>property <b>AllocBy</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the number of items the list view can store in memory</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="BkColor"></span><code>property <b>BkColor</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the background color</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="BlendColor"></span><code>property <b>BlendColor</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the blend color</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ColorDepth"></span><code>property <b>ColorDepth</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="DPIScale"></span><code>property <b>DPIScale</b>: Boolean read m_DPIScale write <a  href="UTWSVGImageList.TWSVGImageList.html#SetDPIScale">SetDPIScale</a> default False;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set if the image is scaled by the DPI value</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DrawingStyle"></span><code>property <b>DrawingStyle</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GrayscaleFactor"></span><code>property <b>GrayscaleFactor</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="Height"></span><code>property <b>Height</b> write SetHeight;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the height</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ImageType"></span><code>property <b>ImageType</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="Masked"></span><code>property <b>Masked</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="OnChange"></span><code>property <b>OnChange</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the OnChange event</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="OnSVGImageListDPIChanged"></span><code>property <b>OnSVGImageListDPIChanged</b>: <a  href="UTWSVGImageList.html#TWfOnSVGImageListDPIChanged">TWfOnSVGImageListDPIChanged</a> read m_fOnSVGImageListDPIChanged write m_fOnSVGImageListDPIChanged;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set OnSVGImageListDPIChanged event</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="PixelsPerInch"></span><code>property <b>PixelsPerInch</b>: Integer read m_PixelsPerInch write <a  href="UTWSVGImageList.TWSVGImageList.html#SetPixelsPerInch">SetPixelsPerInch</a> stored <a  href="UTWSVGImageList.TWSVGImageList.html#IsPixelsPerInchStored">IsPixelsPerInchStored</a> nodefault;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the pixels per inch value used to scale the image list content</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ShareImages"></span><code>property <b>ShareImages</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="Version"></span><code>property <b>Version</b>: UnicodeString read GetVersion;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the library version number</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="Width"></span><code>property <b>Width</b> write SetWidth;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the width</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

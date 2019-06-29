@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWRect: Record TWRect</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWRect"></span><h1 class="cio">Record TWRect</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWRect.html">UTWRect</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWRect&lt;T&gt; = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+Platform independent rectangle structure</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>constructor <b><a  href="UTWRect.TWRect.html#Create">Create</a></b>(const x, y: T; const size: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;); overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>constructor <b><a  href="UTWRect.TWRect.html#Create">Create</a></b>(const pos: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; const size: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;); overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>constructor <b><a  href="UTWRect.TWRect.html#Create">Create</a></b>(const left, top, right, bottom: T); overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>constructor <b><a  href="UTWRect.TWRect.html#Create">Create</a></b>(const min, max: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;); overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#BottomRight">BottomRight</a></b>: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#Diagonal">Diagonal</a></b>: T; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#Differs">Differs</a></b>(const other: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#GetCenter">GetCenter</a></b>: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#GetHashCode">GetHashCode</a></b>(initValue: Integer): Integer; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#Height">Height</a></b>: T; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#Inside">Inside</a></b>(const rect: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; includeRightBottom: Boolean): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#Intersect">Intersect</a></b>(const rect: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; includeRightBottom: Boolean): Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#Invert">Invert</a></b>: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#IsEmpty">IsEmpty</a></b>: Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#IsEqual">IsEqual</a></b>(const other: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#PtInRect">PtInRect</a></b>(const point: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; includeRightBottom: Boolean): Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#TopLeft">TopLeft</a></b>: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWRect.TWRect.html#Width">Width</a></b>: T; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>procedure <b><a  href="UTWRect.TWRect.html#Inflate">Inflate</a></b>(const left, top, right, bottom: T); overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>procedure <b><a  href="UTWRect.TWRect.html#Inflate">Inflate</a></b>(const x, y: T); overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>procedure <b><a  href="UTWRect.TWRect.html#Normalize">Normalize</a></b>; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>procedure <b><a  href="UTWRect.TWRect.html#Offset">Offset</a></b>(const x, y: T); inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Add">Add</a></b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Add">Add</a></b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Divide">Divide</a></b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Divide">Divide</a></b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Equal">Equal</a></b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#IntDivide">IntDivide</a></b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#IntDivide">IntDivide</a></b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Multiply">Multiply</a></b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Multiply">Multiply</a></b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Negative">Negative</a></b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#NotEqual">NotEqual</a></b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Subtract">Subtract</a></b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWRect.TWRect.html#Subtract">Subtract</a></b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>property <b><a  href="UTWRect.TWRect.html#Bottom">Bottom</a></b>: T read GetBottom write SetBottom;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>property <b><a  href="UTWRect.TWRect.html#Left">Left</a></b>: T read GetLeft write SetLeft;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>property <b><a  href="UTWRect.TWRect.html#Right">Right</a></b>: T read GetRight write SetRight;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>property <b><a  href="UTWRect.TWRect.html#Top">Top</a></b>: T read GetTop write SetTop;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const x, y: T; const size: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;); overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Constructor   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>x</dt>
+<dd>X position</dd>
+<dt>y</dt>
+<dd>Y position</dd>
+<dt>size</dt>
+<dd>Size</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const pos: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; const size: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;); overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pos</dt>
+<dd>Position</dd>
+<dt>size</dt>
+<dd>Size)</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const left, top, right, bottom: T); overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Constructor    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>left</dt>
+<dd>Left edge</dd>
+<dt>top</dt>
+<dd>Top edge</dd>
+<dt>right</dt>
+<dd>Right edge</dd>
+<dt>bottom</dt>
+<dd>Bottom edge</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const min, max: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;); overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>min</dt>
+<dd>Left top corner position</dd>
+<dt>max</dt>
+<dd>Right bottom corner position</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="BottomRight"></span><code>function <b>BottomRight</b>: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get the bottom and right point </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Bottom and right point</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Diagonal"></span><code>function <b>Diagonal</b>: T; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get diagonal length </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Diagonal length</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Differs"></span><code>function <b>Differs</b>(const other: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if rect content differs from another rect  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other rect to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if rects differ, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetCenter"></span><code>function <b>GetCenter</b>: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get center point </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Center point</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetHashCode"></span><code>function <b>GetHashCode</b>(initValue: Integer): Integer; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get the hash code based on the class content  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>initValue</dt>
+<dd>- initialization value</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Hash code</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Height"></span><code>function <b>Height</b>: T; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get rect height </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect height</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Inside"></span><code>function <b>Inside</b>(const rect: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; includeRightBottom: Boolean): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if a rect is inside this rect   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rect to check</dd>
+<dt>includeRightBottom</dt>
+<dd>If <code>True</code>, the points located on the right or bottom edges will be considered as inside the rect (the VCL and the Win API exclude them)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if the rect is inside this rect, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Intersect"></span><code>function <b>Intersect</b>(const rect: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; includeRightBottom: Boolean): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if a rect intersects this rect   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rect to check</dd>
+<dt>includeRightBottom</dt>
+<dd>If <code>True</code>, the points located on the right or bottom edges will be considered as inside the rect (the VCL and the Win API exclude them)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if the rect is intersects this rect, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Invert"></span><code>function <b>Invert</b>: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Invert the rect (e.g. a rect with coordinates [-3, 4, 5, -6] will become [3, -4, -5, 6]) </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Inverted size</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IsEmpty"></span><code>function <b>IsEmpty</b>: Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if rect is empty </p>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if rect is empty, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IsEqual"></span><code>function <b>IsEqual</b>(const other: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if rect content is equal to another rect  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other rect to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if rects are equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="PtInRect"></span><code>function <b>PtInRect</b>(const point: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; includeRightBottom: Boolean): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if a point is inside the rect   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>point</dt>
+<dd>Point to check</dd>
+<dt>includeRightBottom</dt>
+<dd>If <code>True</code>, a point located on the right or bottom edges will be considered as inside the rect (the VCL and the Win API exclude it)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if the point is inside the rect, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="TopLeft"></span><code>function <b>TopLeft</b>: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get the top and left point </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Top and left point</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Width"></span><code>function <b>Width</b>: T; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get rect width </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect width</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Inflate"></span><code>procedure <b>Inflate</b>(const left, top, right, bottom: T); overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Inflate rect    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>left</dt>
+<dd>Value to inflate on the left (deflate if value is negative)</dd>
+<dt>top</dt>
+<dd>Value to inflate on the top (deflate if value is negative)</dd>
+<dt>right</dt>
+<dd>Value to inflate on the right (deflate if value is negative)</dd>
+<dt>bottom</dt>
+<dd>Value to inflate on the bottom (deflate if value is negative)</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Inflate"></span><code>procedure <b>Inflate</b>(const x, y: T); overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Inflate rect  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>x</dt>
+<dd>Value to inflate on x axis (deflate if value is negative)</dd>
+<dt>y</dt>
+<dd>Value to inflate on y axis (deflate if value is negative)</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Normalize"></span><code>procedure <b>Normalize</b>; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Make sure top &gt; left and bottom &gt; top</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Offset"></span><code>procedure <b>Offset</b>(const x, y: T); inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Offset rect  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>x</dt>
+<dd>Value to move on x axis (value can be negative)</dd>
+<dt>y</dt>
+<dd>Value to move on y axis (value can be negative)</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Add"></span><code>class operator <b>Add</b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Addition operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First rect to add</dd>
+<dt>b</dt>
+<dd>Second rect to add</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Add"></span><code>class operator <b>Add</b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Addition operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>rect to add value to</dd>
+<dt>b</dt>
+<dd>Value to add to</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Divide"></span><code>class operator <b>Divide</b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>rect to divide value by</dd>
+<dt>b</dt>
+<dd>Value to divide by</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Divide"></span><code>class operator <b>Divide</b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First rect to divide</dd>
+<dt>b</dt>
+<dd>Second rect to divide</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Equal"></span><code>class operator <b>Equal</b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Equality operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First rect to compare</dd>
+<dt>b</dt>
+<dd>Second rect to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if rects are equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IntDivide"></span><code>class operator <b>IntDivide</b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Integer division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>rect to divide value by</dd>
+<dt>b</dt>
+<dd>Value to divide by</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IntDivide"></span><code>class operator <b>IntDivide</b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Integer division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First rect to divide</dd>
+<dt>b</dt>
+<dd>Second rect to divide</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Multiply"></span><code>class operator <b>Multiply</b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplication operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>rect to multiply value with</dd>
+<dt>b</dt>
+<dd>Value to multiply with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Multiply"></span><code>class operator <b>Multiply</b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplication operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First rect to multiply</dd>
+<dt>b</dt>
+<dd>Second rect to multiply</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Negative"></span><code>class operator <b>Negative</b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Inversion operator  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>rect to invert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="NotEqual"></span><code>class operator <b>NotEqual</b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Not equality operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First rect to compare</dd>
+<dt>b</dt>
+<dd>Second rect to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if rects are not equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Subtract"></span><code>class operator <b>Subtract</b>(a: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; b: T): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtraction operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>rect to subtract value from</dd>
+<dt>b</dt>
+<dd>Value to subtract to</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Subtract"></span><code>class operator <b>Subtract</b>(a, b: <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;): <a  href="UTWRect.TWRect.html">TWRect</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtraction operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First rect to subtract</dd>
+<dt>b</dt>
+<dd>Second rect to subtract</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Rect containing the result</p></td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Bottom"></span><code>property <b>Bottom</b>: T read GetBottom write SetBottom;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get or set the rect bottom value</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Left"></span><code>property <b>Left</b>: T read GetLeft write SetLeft;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get or set the rect left value</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Right"></span><code>property <b>Right</b>: T read GetRight write SetRight;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get or set the rect right value</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Top"></span><code>property <b>Top</b>: T read GetTop write SetTop;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get or set the rect top value</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

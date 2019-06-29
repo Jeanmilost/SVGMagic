@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWRenderer_GDI: Class TWRenderer_GDI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWRenderer_GDI"></span><h1 class="cio">Class TWRenderer_GDI</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWRenderer_GDI.html">UTWRenderer_GDI</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWRenderer_GDI = class(<a class="normal" href="UTWRenderer.TWRenderer.html">TWRenderer</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Renderer using GDI to perform the drawing</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="ancestor"><a class="normal" href="UTWRenderer.TWRenderer.html">TWRenderer</a></li>
+<li class="thisitem">TWRenderer_GDI</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#Create">Create</a></b>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#AddFont">AddFont</a></b>(const name, fileName: UnicodeString): THandle; overload; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#AddFont">AddFont</a></b>(const name: UnicodeString; pStream: TStream; fontLength: NativeUInt): THandle; overload; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#AddFontToSession">AddFontToSession</a></b>(const name, fileName: UnicodeString): Boolean; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#DrawLayeredText">DrawLayeredText</a></b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; hDC: THandle): Boolean; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#DrawPath">DrawPath</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const path: <a  href="UTWGraphicPath.html#TWPathCmds">TWPathCmds</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IShapeOptions.html">TWRenderer.IShapeOptions</a>; hDC: THandle): Boolean; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#DrawPolygon">DrawPolygon</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pointList: <a  href="UTWRenderer.TWRenderer.html#IPointList">TWRenderer.IPointList</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IShapeOptions.html">TWRenderer.IShapeOptions</a>; hDC: THandle):Boolean; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#DrawRect">DrawRect</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; hDC: THandle; out iRect: TRect): Boolean; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#DrawText">DrawText</a></b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; hDC: THandle): Boolean; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#GetCaps">GetCaps</a></b>: <a  href="UTWRenderer.TWRenderer.html#IDrawCaps">TWRenderer.IDrawCaps</a>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#GetTextSize">GetTextSize</a></b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; hDC: THandle; pCharacters: PInteger = nil; pLines: PInteger = nil): <a  href="UTWSize.html#TWSizeF">TWSizeF</a>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#DrawRoundedRect">DrawRoundedRect</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; var pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; hDC: THandle; out iRect: TRect): Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#BeginScene">BeginScene</a></b>(hDC: THandle); override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#DrawImage">DrawImage</a></b>(const pGraphic: TGraphic; const srcRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; hDC: THandle; const destRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IImageOptions.html">TWRenderer.IImageOptions</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDI.TWRenderer_GDI.html#EndScene">EndScene</a></b>; override;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="AddFont"></span><code>function <b>AddFont</b>(const name, fileName: UnicodeString): THandle; overload; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Add new truetype font from stream   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name</dd>
+<dt>fileName</dt>
+<dd>Font file name</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Font handle, <code>Nil</code> on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="AddFont"></span><code>function <b>AddFont</b>(const name: UnicodeString; pStream: TStream; fontLength: NativeUInt): THandle; overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Add new truetype font from stream     <br> <b>NOTE</b> Thus added font will be available for ALL applications until the Windows session is closed or the font is removed using RemoveFont or RemoveFonts. But be careful, this is true ONLY for GDI fonts, and NOT for GDI+</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name</dd>
+<dt>pStream</dt>
+<dd>Stream containing font data</dd>
+<dt>fontLength</dt>
+<dd>Font data length</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="AddFontToSession"></span><code>function <b>AddFontToSession</b>(const name, fileName: UnicodeString): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Add new custom font from file and set it available for applications opened in Windows session    <br> <b>NOTE</b> Thus added font will be available for ALL applications until the Windows session is closed or the font is removed using RemoveFont or RemoveFonts. But be careful, this is true ONLY for GDI fonts, and NOT for GDI+</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name to add</dd>
+<dt>fileName</dt>
+<dd>Font file name</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawLayeredText"></span><code>function <b>DrawLayeredText</b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; hDC: THandle): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw text on layered form     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>text</dt>
+<dd>Text to draw</dd>
+<dt>rect</dt>
+<dd>Rectangle area containing text</dd>
+<dt>pOptions</dt>
+<dd>Text GDI+ options</dd>
+<dt>hDC</dt>
+<dd>Device context handle</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawPath"></span><code>function <b>DrawPath</b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const path: <a  href="UTWGraphicPath.html#TWPathCmds">TWPathCmds</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IShapeOptions.html">TWRenderer.IShapeOptions</a>; hDC: THandle): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw path      <br> <b>NOTE</b> This function is partially implemented</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle in which path should be drawn</dd>
+<dt>path</dt>
+<dd>Path to draw</dd>
+<dt>pOptions</dt>
+<dd>Path paint options</dd>
+<dt>hDC</dt>
+<dd>Device context handle</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawPolygon"></span><code>function <b>DrawPolygon</b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pointList: <a  href="UTWRenderer.TWRenderer.html#IPointList">TWRenderer.IPointList</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IShapeOptions.html">TWRenderer.IShapeOptions</a>; hDC: THandle):Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw polygon      <br> <b>NOTE</b> This function is partially implemented</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle area to draw</dd>
+<dt>pointList</dt>
+<dd>Point list to draw</dd>
+<dt>pOptions</dt>
+<dd>Polygon paint options</dd>
+<dt>hDC</dt>
+<dd>Device context handle</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawRect"></span><code>function <b>DrawRect</b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; hDC: THandle; out iRect: TRect): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw rectangle      <br> <b>NOTE</b> This function is partially implemented</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle area to draw</dd>
+<dt>pOptions</dt>
+<dd><b>[in, out]</b> Rectangle paint options</dd>
+<dt>hDC</dt>
+<dd>Device context handle</dd>
+<dt>iRect</dt>
+<dd><b>[out]</b> Internal rectangle (inside outline)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawText"></span><code>function <b>DrawText</b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; hDC: THandle): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw text     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>text</dt>
+<dd>Text to draw</dd>
+<dt>rect</dt>
+<dd>Rectangle area containing text</dd>
+<dt>pOptions</dt>
+<dd>Text GDI+ options</dd>
+<dt>hDC</dt>
+<dd>Device context handle</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetCaps"></span><code>function <b>GetCaps</b>: <a  href="UTWRenderer.TWRenderer.html#IDrawCaps">TWRenderer.IDrawCaps</a>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get supported draw capabilities </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Supported capabilities</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetTextSize"></span><code>function <b>GetTextSize</b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; hDC: THandle; pCharacters: PInteger = nil; pLines: PInteger = nil): <a  href="UTWSize.html#TWSizeF">TWSizeF</a>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get text size       </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>text</dt>
+<dd>Text to measure</dd>
+<dt>rect</dt>
+<dd>Text bounding rectangle</dd>
+<dt>pOptions</dt>
+<dd>Text options</dd>
+<dt>hDC</dt>
+<dd>Device context handle</dd>
+<dt>pCharacters</dt>
+<dd><b>[out]</b> Pointer to variable to receive the number of characters that will be displayed in rect, if <code>Nil</code> will be ingored</dd>
+<dt>pLines</dt>
+<dd><b>[out]</b> Pointer to variable to receive the number of lines that will be displayed in rect, if <code>Nil</code> will be ingored</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Text size, empty size on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DrawRoundedRect"></span><code>function <b>DrawRoundedRect</b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; var pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; hDC: THandle; out iRect: TRect): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw rounded rectangle      <br> <b>NOTE</b> This function is needed because GDI round rects are ugly when pen width is higher than 1 <br> <b>NOTE</b> This function is partially implemented</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle area to draw</dd>
+<dt>pOptions</dt>
+<dd><b>[in, out]</b> Rectangle paint options</dd>
+<dt>hDC</dt>
+<dd>Graphic device context to draw on</dd>
+<dt>iRect</dt>
+<dd><b>[out]</b> Internal rectangle (inside outline)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="BeginScene"></span><code>procedure <b>BeginScene</b>(hDC: THandle); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Begin a scene </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>hDC</dt>
+<dd>Device context to draw on</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawImage"></span><code>procedure <b>DrawImage</b>(const pGraphic: TGraphic; const srcRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; hDC: THandle; const destRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IImageOptions.html">TWRenderer.IImageOptions</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw image     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pGraphic</dt>
+<dd>Image to draw</dd>
+<dt>srcRect</dt>
+<dd>Source image rect to draw</dd>
+<dt>hDC</dt>
+<dd>Destination device context handle</dd>
+<dt>destRect</dt>
+<dd>Rect where image will be drawn on dest, stretched if not equal to source</dd>
+<dt>pOptions</dt>
+<dd>Options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="EndScene"></span><code>procedure <b>EndScene</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+End a scene</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

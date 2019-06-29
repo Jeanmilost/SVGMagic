@@ -251,7 +251,11 @@ type
             {**
              Convert "move to" path instruction to output
             }
-            IMoveToConverter = class(IConverter)
+            {$if CompilerVersion <= 23}
+                IMoveToConverter = class(TWGraphicPathConverter.IConverter)
+            {$else}
+                IMoveToConverter = class(IConverter)
+            {$ifend}
                 private
                     m_pOutput:    TGpGraphicsPath;
                     m_StartPoint: TWPointF;
@@ -295,7 +299,11 @@ type
             {**
              Convert "line to" path instruction to output
             }
-            ILineToConverter = class(IConverter)
+            {$if CompilerVersion <= 23}
+                ILineToConverter = class(TWGraphicPathConverter.IConverter)
+            {$else}
+                ILineToConverter = class(IConverter)
+            {$ifend}
                 private
                     m_pOutput: TGpGraphicsPath;
 
@@ -331,7 +339,11 @@ type
             {**
              Convert "horizontal line to" path instruction to output
             }
-            IHorzLineToConverter = class(IConverter)
+            {$if CompilerVersion <= 23}
+                IHorzLineToConverter = class(TWGraphicPathConverter.IConverter)
+            {$else}
+                IHorzLineToConverter = class(IConverter)
+            {$ifend}
                 private
                     m_pOutput: TGpGraphicsPath;
 
@@ -367,7 +379,11 @@ type
             {**
              Convert "vertical line to" path instruction to output
             }
-            IVertLineToConverter = class(IConverter)
+            {$if CompilerVersion <= 23}
+                IVertLineToConverter = class(TWGraphicPathConverter.IConverter)
+            {$else}
+                IVertLineToConverter = class(IConverter)
+            {$ifend}
                 private
                     m_pOutput: TGpGraphicsPath;
 
@@ -403,7 +419,11 @@ type
             {**
              Convert "curve to" path instruction to output
             }
-            ICurveToConverter = class(IConverter)
+            {$if CompilerVersion <= 23}
+                ICurveToConverter = class(TWGraphicPathConverter.IConverter)
+            {$else}
+                ICurveToConverter = class(IConverter)
+            {$ifend}
                 private
                     m_pOutput: TGpGraphicsPath;
 
@@ -444,7 +464,11 @@ type
             {**
              Convert "smooth curve to" path instruction to output
             }
-            ISmoothCurveToConverter = class(IConverter)
+            {$if CompilerVersion <= 23}
+                ISmoothCurveToConverter = class(TWGraphicPathConverter.IConverter)
+            {$else}
+                ISmoothCurveToConverter = class(IConverter)
+            {$ifend}
                 private
                     m_pOutput: TGpGraphicsPath;
 
@@ -485,7 +509,11 @@ type
             {**
              Convert "quadratic bezier curve to" path instruction to output
             }
-            IQuadraticBezierCurveToConverter = class(IConverter)
+            {$if CompilerVersion <= 23}
+                IQuadraticBezierCurveToConverter = class(TWGraphicPathConverter.IConverter)
+            {$else}
+                IQuadraticBezierCurveToConverter = class(IConverter)
+            {$ifend}
                 private
                     m_pOutput: TGpGraphicsPath;
 
@@ -526,7 +554,11 @@ type
             {**
              Convert "smooth quadratic bezier curve to" path instruction to output
             }
-            ISmoothQuadraticBezierCurveToConverter = class(IConverter)
+            {$if CompilerVersion <= 23}
+                ISmoothQuadraticBezierCurveToConverter = class(TWGraphicPathConverter.IConverter)
+            {$else}
+                ISmoothQuadraticBezierCurveToConverter = class(IConverter)
+            {$ifend}
                 private
                     m_pOutput: TGpGraphicsPath;
 
@@ -567,7 +599,11 @@ type
             {**
              Convert "elliptical arc" path instruction to output
             }
-            IEllipticalArcConverter = class(IConverter)
+            {$if CompilerVersion <= 23}
+                IEllipticalArcConverter = class(TWGraphicPathConverter.IConverter)
+            {$else}
+                IEllipticalArcConverter = class(IConverter)
+            {$ifend}
                 private
                     m_pOutput:  TGpGraphicsPath;
                     m_Radius:   TWPointF;

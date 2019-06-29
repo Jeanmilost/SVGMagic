@@ -316,20 +316,20 @@ type
 
     {**
      SVG animation descriptor to use when the animation must be applied to a matrix
-     @br @bold (NOTE) This descriptor also uses double as values, instead of WMatrix3x3, as it could
-                      be expected. The reason is that the data are written as follow in the SVG:
-                      <animateTransform
-                          attributeType="xml"
-                          attributeName="transform"
-                          type="rotate"
-                          from="0 20 20"
-                          to="360 20 20"
-                          dur="0.5s"
-                          repeatCount="indefinite"/>
-                      As seen in the above example, a matrix animation is described as a type, that
-                      indicates which kind of matrix should be built, and several value list, that
-                      contain the data to apply to the matrix. But there are no matrix list, it's
-                      the reason why double type is used instead of matrix
+     @br @bold(NOTE) This descriptor also uses double as values, instead of WMatrix3x3, as it could
+                     be expected. The reason is that the data are written as follow in the SVG:
+                     <animateTransform
+                         attributeType="xml"
+                         attributeName="transform"
+                         type="rotate"
+                         from="0 20 20"
+                         to="360 20 20"
+                         dur="0.5s"
+                         repeatCount="indefinite"/>
+                     As seen in the above example, a matrix animation is described as a type, that
+                     indicates which kind of matrix should be built, and several value list, that
+                     contain the data to apply to the matrix. But there are no matrix list, it's
+                     the reason why double type is used instead of matrix
     }
     TWSVGMatrixAnimDesc = class(TWSVGValueAnimDesc)
         private

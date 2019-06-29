@@ -11,9 +11,9 @@ interface
 
 uses System.SysUtils,
      System.Generics.Defaults,
-     {$if CompilerVersion >= 32}
+     {$if CompilerVersion >= 29}
          System.Hash,
-     {$endif}
+     {$ifend}
      {$ifdef USE_VCL}
          Winapi.GDIPObj,
      {$endif}
@@ -203,10 +203,8 @@ type
 
         public
             {**
-             Gets or sets the matrix table item
-             @param(x Horizontal index between 0 and 2)
-             @param(y Vertical index between 0 and 2)
-             @raises(Exception if x or y index is higher than 2)
+             Gets or sets the matrix table item. Example: Table[2, 0] := 12.33f;
+             @br @bold(NOTE) Values for x and y doesn't exceed 2, otherwise an exception will be raised
             }
             property Table[x, y: NativeUInt]: Double read GetTableItem write SetTableItem;
     end;
@@ -303,11 +301,11 @@ end;
 //---------------------------------------------------------------------------
 function TWMatrix3x3.GetHashCode(initValue: Integer): Integer;
 begin
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(m_Table, SizeOf(m_Table), initValue);
     {$else}
         Result := BobJenkinsHash(m_Table, SizeOf(m_Table), initValue);
-    {$endif}
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 procedure TWMatrix3x3.SetIdentity;

@@ -11,9 +11,9 @@ interface
 uses System.SysUtils,
      System.Generics.Defaults,
      System.Generics.Collections,
-     {$if CompilerVersion >= 32}
+     {$if CompilerVersion >= 29}
          System.Hash,
-     {$endif}
+     {$ifend}
      UTWColor,
      UTWPoint,
      UTWSize,
@@ -754,7 +754,7 @@ type
 
             {**
              Check if fill is empty (i.e. if his content has no effect on the drawing)
-             @returns(@true if fill is empty, otherwise @false
+             @returns(@true if fill is empty, otherwise @false)
             }
             function IsEmpty: Boolean; virtual;
 
@@ -995,11 +995,11 @@ end;
 function TWGradientStop.GetHashCode(initValue: Integer): Integer;
 begin
     Result := m_Color.GetHashCode(initValue);
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(m_Percent, SizeOf(Single), Result);
     {$else}
         Result := BobJenkinsHash(m_Percent, SizeOf(Single), Result);
-    {$endif}
+    {$ifend}
     Result := m_Position.GetHashCode(Result);
 end;
 //---------------------------------------------------------------------------
@@ -1218,7 +1218,7 @@ begin
     // compare the gradient stops
     if (m_pStops.Count > 0) then
         for i := 0 to m_pStops.Count - 1 do
-            if (m_pStops[i] <> pSource.m_pStops[i]) then
+            if (m_pStops[i].GetHashCode(0) <> pSource.m_pStops[i].GetHashCode(0)) then
                 Exit(False);
 
     Result := (m_Unit = pSource.m_Unit) and (m_WrapMode = pSource.m_WrapMode)
@@ -1294,13 +1294,13 @@ var
     pStop: TWGradientStop;
 begin
     // hash values
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(m_Unit,     SizeOf(EGradientUnit), initValue);
         Result := THashBobJenkins.GetHashValue(m_WrapMode, SizeOf(EWrapMode),     Result);
     {$else}
         Result := BobJenkinsHash(m_Unit,     SizeOf(EGradientUnit), initValue);
         Result := BobJenkinsHash(m_WrapMode, SizeOf(EWrapMode),     Result);
-    {$endif}
+    {$ifend}
     Result := m_Matrix.GetHashCode(Result);
 
     // hash gradient stops
@@ -1566,11 +1566,11 @@ end;
 //---------------------------------------------------------------------------
 function TWFill.GetHashCode(initValue: Integer): Integer;
 begin
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(m_Type, SizeOf(EBrushType), initValue);
     {$else}
         Result := BobJenkinsHash(m_Type, SizeOf(EBrushType), initValue);
-    {$endif}
+    {$ifend}
     Result := m_pBrush.GetHashCode(Result);
 end;
 //---------------------------------------------------------------------------
@@ -1777,7 +1777,7 @@ var
     i, count: NativeUInt;
     value:    Double;
 begin
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(m_LineCap,    SizeOf(ELineCap),   initValue);
         Result := THashBobJenkins.GetHashValue(m_DashCap,    SizeOf(EDashCap),   Result);
         Result := THashBobJenkins.GetHashValue(m_LineJoin,   SizeOf(ELineJoin),  Result);
@@ -1791,7 +1791,7 @@ begin
         Result := BobJenkinsHash(m_DashOffset, SizeOf(Double),     Result);
         Result := BobJenkinsHash(m_Width,      SizeOf(Double),     Result);
         Result := BobJenkinsHash(m_Type,       SizeOf(EBrushType), Result);
-    {$endif}
+    {$ifend}
     Result := m_Matrix.GetHashCode(Result);
     Result := m_pBrush.GetHashCode(Result);
 
@@ -1801,11 +1801,11 @@ begin
         for i := 0 to count - 1 do
         begin
             value := m_pDashPattern[i];
-            {$if CompilerVersion >= 32}
+            {$if CompilerVersion >= 29}
                 Result := THashBobJenkins.GetHashValue(value, SizeOf(Double), Result);
             {$else}
                 Result := BobJenkinsHash(value, SizeOf(Double), Result);
-            {$endif}
+            {$ifend}
         end;
 end;
 //---------------------------------------------------------------------------

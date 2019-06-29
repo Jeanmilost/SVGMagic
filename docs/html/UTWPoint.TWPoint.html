@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWPoint: Record TWPoint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWPoint"></span><h1 class="cio">Record TWPoint</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWPoint.html">UTWPoint</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWPoint&lt;T&gt; = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+Platform independent point structure</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>constructor <b><a  href="UTWPoint.TWPoint.html#Create">Create</a></b>(const x, y: T); overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWPoint.TWPoint.html#Differs">Differs</a></b>(const other: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWPoint.TWPoint.html#GetHashCode">GetHashCode</a></b>(initValue: Integer): Integer; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWPoint.TWPoint.html#Invert">Invert</a></b>: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWPoint.TWPoint.html#IsEqual">IsEqual</a></b>(const other: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWPoint.TWPoint.html#IsZero">IsZero</a></b>: Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Add">Add</a></b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Add">Add</a></b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Divide">Divide</a></b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Divide">Divide</a></b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Equal">Equal</a></b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#IntDivide">IntDivide</a></b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#IntDivide">IntDivide</a></b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Multiply">Multiply</a></b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Multiply">Multiply</a></b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Negative">Negative</a></b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#NotEqual">NotEqual</a></b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Subtract">Subtract</a></b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWPoint.TWPoint.html#Subtract">Subtract</a></b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>property <b><a  href="UTWPoint.TWPoint.html#X">X</a></b>: T read GetX write SetX;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>property <b><a  href="UTWPoint.TWPoint.html#Y">Y</a></b>: T read GetY write SetY;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const x, y: T); overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>x</dt>
+<dd>x coordinate</dd>
+<dt>y</dt>
+<dd>y coordinate</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Differs"></span><code>function <b>Differs</b>(const other: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if point content differs from another point  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other point to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if points differ, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetHashCode"></span><code>function <b>GetHashCode</b>(initValue: Integer): Integer; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get the hash code based on the class content  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>initValue</dt>
+<dd>- initialization value</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Hash code</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Invert"></span><code>function <b>Invert</b>: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Invert the point (e.g. a point with coordinates [-3, 4] will become [3, -4]) </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Inverted point</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IsEqual"></span><code>function <b>IsEqual</b>(const other: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if point content is equal to another point  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other point to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if point are equals, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IsZero"></span><code>function <b>IsZero</b>: Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if point is set to [0, 0] coordinate </p>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if point is set to [0, 0] coordinate, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Add"></span><code>class operator <b>Add</b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Addition operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First point to add</dd>
+<dt>b</dt>
+<dd>Second point to add</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Add"></span><code>class operator <b>Add</b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Addition operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Point to add value to</dd>
+<dt>b</dt>
+<dd>Value to add to</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Divide"></span><code>class operator <b>Divide</b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Point to divide value by</dd>
+<dt>b</dt>
+<dd>Value to divide by</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Divide"></span><code>class operator <b>Divide</b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First point to divide</dd>
+<dt>b</dt>
+<dd>Second point to divide</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Equal"></span><code>class operator <b>Equal</b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Equality operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First point to compare</dd>
+<dt>b</dt>
+<dd>Second point to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if points are equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IntDivide"></span><code>class operator <b>IntDivide</b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Integer division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First point to divide</dd>
+<dt>b</dt>
+<dd>Second point to divide</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IntDivide"></span><code>class operator <b>IntDivide</b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Integer division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Point to divide value by</dd>
+<dt>b</dt>
+<dd>Value to divide by</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Multiply"></span><code>class operator <b>Multiply</b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplication operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Point to multiply value with</dd>
+<dt>b</dt>
+<dd>Value to multiply with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Multiply"></span><code>class operator <b>Multiply</b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplication operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First point to multiply</dd>
+<dt>b</dt>
+<dd>Second point to multiply</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Negative"></span><code>class operator <b>Negative</b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Inversion operator  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Point to invert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="NotEqual"></span><code>class operator <b>NotEqual</b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Not equality operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First point to compare</dd>
+<dt>b</dt>
+<dd>Second point to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if points are not equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Subtract"></span><code>class operator <b>Subtract</b>(a, b: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtraction operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First point to subtract</dd>
+<dt>b</dt>
+<dd>Second point to subtract</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Subtract"></span><code>class operator <b>Subtract</b>(a: <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; b: T): <a  href="UTWPoint.TWPoint.html">TWPoint</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtraction operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Point to subtract value from</dd>
+<dt>b</dt>
+<dd>Value to subtract to</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Point containing the result</p></td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="X"></span><code>property <b>X</b>: T read GetX write SetX;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Gets or sets the point x coordinate</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Y"></span><code>property <b>Y</b>: T read GetY write SetY;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Gets or sets the point y coordinate</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

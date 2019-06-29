@@ -67,7 +67,7 @@ type
      @value(E_R_SingleBitPerPixel Each character is drawn using its glyph bitmap. Hinting is not used)
      @value(E_R_SingleBitPerPixel_GridFit Each character is drawn using its glyph bitmap. Hinting is
                                           used to improve character appearance on stems and curvature)
-     @warning Don't change enum elements order or values (used in type conversions)
+     @br @bold(NOTE) WARNING Don't change enum elements order or values, used in type conversions
     }
     ETextRendering =
     (

@@ -9,7 +9,11 @@ interface
 
 uses System.Classes,
      System.SysUtils,
-     System.Actions,
+     {$if CompilerVersion <= 23}
+        Vcl.ActnList,
+     {$else}
+        System.Actions,
+     {$ifend}
      System.Generics.Collections,
      Vcl.Graphics,
      Vcl.Controls,
@@ -217,14 +221,6 @@ type
             procedure SetAll(value: Boolean); override;
 
             {**
-             Calculate checkbox rects
-             @param pTarget Target checkbox for which the rects should be calculated)
-             @param(bgRect @bold([out]) Checkbox glyph background rect)
-             @param(cbRect @bold([out]) Checkbox glyph rect)
-            }
-            procedure CalculateRects(pTarget: TCheckBox; var bgRect: TRect; var cbRect: TRect); virtual;
-
-            {**
              Called after component was completely loaded from DFM
             }
             procedure Loaded; override;
@@ -422,8 +418,8 @@ begin
     inherited Notify(pItem, action);
 
     case (action) of
-        // for an unknown (and stupid) reason RAD Studio Rio changed the cnXXX location,
-        // breaking thus the compatibility with prev compilers
+        // for an unknown reason RAD Studio Rio changed the cnXXX location, breaking thus the
+        // compatibility with prev compilers
         {$if CompilerVersion < 33}
             System.Classes.cnAdded:      CollectionChanged(pItem, IE_CC_ItemAdded);
             System.Classes.cnExtracting: CollectionChanged(pItem, IE_CC_ItemExtracting);
@@ -432,7 +428,7 @@ begin
             System.Generics.Collections.cnAdded:      CollectionChanged(pItem, IE_CC_ItemAdded);
             System.Generics.Collections.cnExtracting: CollectionChanged(pItem, IE_CC_ItemExtracting);
             System.Generics.Collections.cnDeleting:   CollectionChanged(pItem, IE_CC_ItemDeleting);
-        {$endif}
+        {$ifend}
     end;
 end;
 //---------------------------------------------------------------------------
@@ -555,48 +551,6 @@ begin
         HookControlsFromCollection;
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGCheckBoxStyle.CalculateRects(pTarget: TCheckBox; var bgRect: TRect; var cbRect: TRect);
-var
-    menuCheckWidth, menuCheckHeight, xInner, yInner, checkWidth, checkHeight, xPos, yPos: Integer;
-begin
-    if (not Assigned(pTarget)) then
-        Exit;
-
-    // get several checkbox measurements
-    if (m_DPIScale) then
-    begin
-        menuCheckWidth  := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CXMENUCHECK), m_PixelsPerInch, m_RefPixelsPerInch);
-        menuCheckHeight := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CYMENUCHECK), m_PixelsPerInch, m_RefPixelsPerInch);
-        xInner          := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CXEDGE),      m_PixelsPerInch, m_RefPixelsPerInch);
-        yInner          := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CYEDGE),      m_PixelsPerInch, m_RefPixelsPerInch);
-    end
-    else
-    begin
-        menuCheckWidth  := GetSystemMetrics(SM_CXMENUCHECK);
-        menuCheckHeight := GetSystemMetrics(SM_CYMENUCHECK);
-        xInner          := GetSystemMetrics(SM_CXEDGE);
-        yInner          := GetSystemMetrics(SM_CYEDGE);
-    end;
-
-    checkWidth  := menuCheckWidth  - xInner;
-    checkHeight := menuCheckHeight - yInner;
-    yPos        := (pTarget.ClientHeight div 2) - (checkHeight div 2);
-
-    // calculate the checkbox rect
-    if (((pTarget.Alignment = taLeftJustify) or (pTarget.BiDiMode = bdRightToLeft))
-            and not ((pTarget.Alignment = taLeftJustify) and (pTarget.BiDiMode = bdRightToLeft)))
-    then
-        // rect is shown on the right
-        xPos := pTarget.ClientWidth - menuCheckWidth
-    else
-        // rect is shown on the left
-        xPos := 0;
-
-    // calculate the rects
-    bgRect := TRect.Create(xPos - 1, yPos - 1, xPos + checkWidth + 2, yPos + checkHeight + 2);
-    cbRect := TRect.Create(xPos, yPos, xPos + checkWidth, yPos + checkHeight);
-end;
-//---------------------------------------------------------------------------
 procedure TWSVGCheckBoxStyle.Loaded;
 begin
     inherited Loaded;
@@ -671,8 +625,14 @@ begin
     pCheckBox := pTarget as TCheckBox;
 
     // is target checkbox disabled?
-    if (not pCheckBox.Enabled or (Assigned(pCheckBox.Action) and (pCheckBox.Action is TContainedAction)
-            and not (pCheckBox.Action as TContainedAction).Enabled))
+    {$if CompilerVersion <= 23}
+        // not really correct, but Enabled property doesn't exist in base classes for this compiler version
+        if (not pCheckBox.Enabled or (Assigned(pCheckBox.Action) and (pCheckBox.Action is TAction)
+                and not (pCheckBox.Action as TAction).Enabled))
+    {$else}
+        if (not pCheckBox.Enabled or (Assigned(pCheckBox.Action) and (pCheckBox.Action is TContainedAction)
+                and not (pCheckBox.Action as TContainedAction).Enabled))
+    {$ifend}
     then
     begin
         // search for checkbox state
@@ -735,11 +695,17 @@ begin
     m_pCanvas.Handle := hDC;
 
     // calculate the checkbox rects
-    CalculateRects(pCheckBox, bgRect, cbRect);
+    CalculateCheckGlyphRects(pCheckBox, pCheckBox.Alignment, bgRect, cbRect);
 
     // is target checkbox disabled?
-    if (not pCheckBox.Enabled or (Assigned(pCheckBox.Action) and (pCheckBox.Action is TContainedAction)
-            and not (pCheckBox.Action as TContainedAction).Enabled))
+    {$if CompilerVersion <= 23}
+        // not really correct, but Enabled property doesn't exist in base classes for this compiler version
+        if (not pCheckBox.Enabled or (Assigned(pCheckBox.Action) and (pCheckBox.Action is TAction)
+                and not (pCheckBox.Action as TAction).Enabled))
+    {$else}
+        if (not pCheckBox.Enabled or (Assigned(pCheckBox.Action) and (pCheckBox.Action is TContainedAction)
+                and not (pCheckBox.Action as TContainedAction).Enabled))
+    {$ifend}
     then
     begin
         // search for checkbox state

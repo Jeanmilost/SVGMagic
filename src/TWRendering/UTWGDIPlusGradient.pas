@@ -394,7 +394,7 @@ type
              Get linear gradient brush
              @param(gradientVector Gradient vector, not used if wrap mode is not IE_Clamp)
              @returns(Linear gradient brush, @nil on error)
-             @note Brush must be deleted when no longer needed
+             @br @bold(NOTE) Brush must be deleted when no longer needed
             }
             function GetLinear(const pGradientVector: TWLinearGradientVector = nil): TGpBrush; virtual;
 
@@ -402,7 +402,7 @@ type
              Get radial gradient brush
              @param(radius Radius)
              @returns(Radial gradient brush, @nil on error)
-             @note Brush must be deleted when no longer needed
+             @br @bold(NOTE) Brush must be deleted when no longer needed
             }
             function GetRadial(const radius: TWSizeF): TGpBrush; virtual;
 
@@ -410,7 +410,7 @@ type
              Get path gradient brush
              @param(path Path from which gradient should be generated)
              @returns(Path gradient brush, @nil on error)
-             @note Brush must be deleted when no longer needed
+             @br @bold(NOTE) Brush must be deleted when no longer needed
             }
             function GetPath(pPath: TGpGraphicsPath): TGpBrush; virtual;
 

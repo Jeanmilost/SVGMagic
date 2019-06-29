@@ -13,7 +13,9 @@ interface
 uses System.SysUtils,
      System.Types,
      System.Math,
-     System.NetEncoding,
+     {$if CompilerVersion > 23}
+        System.NetEncoding,
+     {$ifend}
      Soap.EncdDecd,
      Vcl.Graphics,
      Winapi.GDIPAPI,
@@ -50,7 +52,7 @@ uses System.SysUtils,
 type
     {**
      Scalable Vector Graphics (SVG) rasterizer using GDI+
-     @note See http://www.w3.org/TR/SVGCompositing/
+     @br @bold(NOTE) See http://www.w3.org/TR/SVGCompositing/
     }
     TWSVGGDIPlusRasterizer = class(TWSVGRasterizer)
         private
@@ -222,15 +224,15 @@ type
             procedure UpdateBoundingBox(const point: TGpPointF; var boundingBox: TGpRectF);
 
             {**
-             Apply SVG trial watermark (actual method name is "obfuscated")
-             @exclude(The real purpose of this function is to apply the watermark above the draw
-                      when the library is compiled as trial version)
+             Apply the watermark above the draw when the library is compiled as trial version
              @param(rect SVG rect)
              @param(pos SVG position)
              @param(scaleW Scale width factor)
              @param(scaleH Scale height factor)
              @param(pCanvas GDI canvas from which the GDI+ graphics was get)
              @param(pGraphics GDI+ graphics on which the SVG is drawn)
+             @br @bold(NOTE) Actual method name is "obfuscated"
+             @exclude(From PasDoc documentation)
             }
             {$ifdef TRIAL_BUILD}
                 procedure PrepareRenderer(const rect: TWRectF; const pos: TPoint; scaleW, scaleH: Single;

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWLine: Record TWLine2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWLine2"></span><h1 class="cio">Record TWLine2</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWLine.html">UTWLine</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWLine2 = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+2D line. A line is a straight set of points that extend in opposite directions without ending</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>constructor <b><a  href="UTWLine.TWLine2.html#Create">Create</a></b>(const point, dir: <a  href="UTWVector.TWVector2.html">TWVector2</a>);</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWLine.TWLine2.html#DistanceTo">DistanceTo</a></b>(const point: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Single; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWLine.TWLine2.html#GetDir">GetDir</a></b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWLine.TWLine2.html#GetInvDir">GetInvDir</a></b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWLine.TWLine2.html#GetPoint">GetPoint</a></b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWLine.TWLine2.html#Intersect">Intersect</a></b>(const other: <a  href="UTWLine.TWLine2.html">TWLine2</a>; out intersection: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>procedure <b><a  href="UTWLine.TWLine2.html#SetDir">SetDir</a></b>(const dir: <a  href="UTWVector.TWVector2.html">TWVector2</a>); inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>procedure <b><a  href="UTWLine.TWLine2.html#SetPoint">SetPoint</a></b>(const point: <a  href="UTWVector.TWVector2.html">TWVector2</a>); inline;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>property <b><a  href="UTWLine.TWLine2.html#Dir">Dir</a></b>: <a  href="UTWVector.TWVector2.html">TWVector2</a> read <a  href="UTWLine.TWLine2.html#GetDir">GetDir</a>   write <a  href="UTWLine.TWLine2.html#SetDir">SetDir</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>property <b><a  href="UTWLine.TWLine2.html#InvDir">InvDir</a></b>: <a  href="UTWVector.TWVector2.html">TWVector2</a> read <a  href="UTWLine.TWLine2.html#GetInvDir">GetInvDir</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>property <b><a  href="UTWLine.TWLine2.html#Point">Point</a></b>: <a  href="UTWVector.TWVector2.html">TWVector2</a> read <a  href="UTWLine.TWLine2.html#GetPoint">GetPoint</a> write <a  href="UTWLine.TWLine2.html#SetPoint">SetPoint</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const point, dir: <a  href="UTWVector.TWVector2.html">TWVector2</a>);</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>point</dt>
+<dd>- any point on line</dd>
+<dt>dir</dt>
+<dd>- line direction</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="DistanceTo"></span><code>function <b>DistanceTo</b>(const point: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Single; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Calculate the distance to the line  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>point</dt>
+<dd>Point from which the distance must be calculated</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">The distance to line</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetDir"></span><code>function <b>GetDir</b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get line direction </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Line direction</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetInvDir"></span><code>function <b>GetInvDir</b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get line inverted direction </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Line inverted direction</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetPoint"></span><code>function <b>GetPoint</b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get known point on line </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Known point on line</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Intersect"></span><code>function <b>Intersect</b>(const other: <a  href="UTWLine.TWLine2.html">TWLine2</a>; out intersection: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if the line intersects with another line   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other line to check</dd>
+<dt>intersection</dt>
+<dd><b>[out]</b> The intersection point</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if lines intersect, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="SetDir"></span><code>procedure <b>SetDir</b>(const dir: <a  href="UTWVector.TWVector2.html">TWVector2</a>); inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Set line direction </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>dir</dt>
+<dd>Line direction</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="SetPoint"></span><code>procedure <b>SetPoint</b>(const point: <a  href="UTWVector.TWVector2.html">TWVector2</a>); inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Set known point on line </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>point</dt>
+<dd>Known point on the line</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Dir"></span><code>property <b>Dir</b>: <a  href="UTWVector.TWVector2.html">TWVector2</a> read <a  href="UTWLine.TWLine2.html#GetDir">GetDir</a>   write <a  href="UTWLine.TWLine2.html#SetDir">SetDir</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="InvDir"></span><code>property <b>InvDir</b>: <a  href="UTWVector.TWVector2.html">TWVector2</a> read <a  href="UTWLine.TWLine2.html#GetInvDir">GetInvDir</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Point"></span><code>property <b>Point</b>: <a  href="UTWVector.TWVector2.html">TWVector2</a> read <a  href="UTWLine.TWLine2.html#GetPoint">GetPoint</a> write <a  href="UTWLine.TWLine2.html#SetPoint">SetPoint</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

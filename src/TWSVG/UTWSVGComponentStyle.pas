@@ -39,7 +39,7 @@ type
      @param(newDPI New DPI value)
      @returns(@true if event was handled and should no longer be considered, otherwise @false)
     }
-    TWOnSVGComponentStyleDPIChanged = function(oldDPI, newDPI: Integer): Boolean of object;
+    TWfOnSVGComponentStyleDPIChanged = function(oldDPI, newDPI: Integer): Boolean of object;
 
     {**
      Component style
@@ -174,11 +174,12 @@ type
             m_All:                            Boolean;
             m_fOldParentWndProc:              TWndMethod;
             m_fOnAnimate:                     ITfSVGAnimateEvent;
-            m_fOnSVGComponentStyleDPIChanged: TWOnSVGComponentStyleDPIChanged;
+            m_fOnSVGComponentStyleDPIChanged: TWfOnSVGComponentStyleDPIChanged;
 
             {$if CompilerVersion < 30}
-                m_fGetDpiForMonitor: TWGetDpiForMonitor;
-            {$endif}
+                m_fGetDpiForMonitor:       TWfGetDpiForMonitor;
+                m_fGetProcessDPIAwareness: TWfGetProcessDPIAwareness;
+            {$ifend}
 
             {**
              Get the library version
@@ -192,14 +193,37 @@ type
             m_pCanvas:             TCanvas;
             m_ParentPixelsPerInch: Integer;
             m_RefPixelsPerInch:    Integer;
+            m_StartPixelsPerInch:  Integer;
             m_PixelsPerInch:       Integer;
             m_DPIScale:            Boolean;
+            m_PerMonitorV2Mode:    Boolean;
             m_RestorePaint:        Boolean;
 
             {**
              Called on application starts, after DFM files were read and applied
             }
             procedure Loaded; override;
+
+            {**
+             Get measurements required to draw correctly a check glyph
+             @param(dpiScale If true returned measures should be scaled regarding to the DPI value)
+             @param(width @bold([out]) Menu style check glyph width in pixels)
+             @param(height @bold([out]) Menu style check glyph height in pixels)
+             @param(xInner @bold([out]) Menu style check glyph inner width in pixels)
+             @param(yInner @bold([out]) Menu style check glyph inner height in pixels)
+            }
+            procedure MeasureCheckGlyph(dpiScale: Boolean; out width: Integer; out height: Integer;
+                    out xInner: Integer; out yInner: Integer); virtual;
+
+            {**
+             Calculate checkbox rects
+             @param(pTarget Target component for which the rects should be calculated)
+             @param(alignment Target component alignment)
+             @param(bgRect @bold([out]) Checkbox glyph background rect)
+             @param(cbRect @bold([out]) Checkbox glyph rect)
+            }
+            procedure CalculateCheckGlyphRects(pTarget: TWinControl; alignment: TLeftRight; var bgRect: TRect;
+                    var cbRect: TRect); virtual;
 
             {**
              Set image list DPI scale
@@ -223,6 +247,12 @@ type
              Called when original component size should be saved (before any DPI change was applied)
             }
             procedure DoSaveOriginalSize; virtual; abstract;
+
+            {**
+             Get if glyphs should be scaled with DPI
+             @returns(@true if glyphs should be scaled with DPI, otherwise @false)
+            }
+            function DoScaleWithDPI: Boolean; virtual;
 
             {**
              Called when size should be recalculated due to a DPI change
@@ -396,6 +426,11 @@ type
             property DPIScale: Boolean read m_DPIScale write SetDPIScale default C_TWSVGComponentStyle_Default_DPIScale;
 
             {**
+             Get or set if the per monitor v2 mode is used
+            }
+            property PerMonitorV2Mode: Boolean read m_PerMonitorV2Mode write m_PerMonitorV2Mode default True;
+
+            {**
              Get or set the pixels per inch value used to scale the image list content
             }
             property PixelsPerInch: Integer read m_PixelsPerInch write SetPixelsPerInch stored IsPixelsPerInchStored nodefault;
@@ -408,7 +443,7 @@ type
             {**
              Get or set OnSVGImageListDPIChanged event
             }
-            property OnSVGComponentStyleDPIChanged: TWOnSVGComponentStyleDPIChanged read m_fOnSVGComponentStyleDPIChanged write m_fOnSVGComponentStyleDPIChanged;
+            property OnSVGComponentStyleDPIChanged: TWfOnSVGComponentStyleDPIChanged read m_fOnSVGComponentStyleDPIChanged write m_fOnSVGComponentStyleDPIChanged;
     end;
 
     {**
@@ -660,7 +695,7 @@ constructor TWSVGComponentStyle.Create(pOwner: TComponent);
 {$if CompilerVersion < 30}
     var
         hSHCore: HMODULE;
-{$endif}
+{$ifend}
 begin
     inherited Create(pOwner);
 
@@ -674,9 +709,11 @@ begin
     m_All                            := False;
     m_RestorePaint                   := False;
     m_RefPixelsPerInch               := TWVCLHelper.GetPixelsPerInchRef(pOwner);
+    m_StartPixelsPerInch             := m_RefPixelsPerInch;
     m_ParentPixelsPerInch            := m_RefPixelsPerInch;
     m_PixelsPerInch                  := m_RefPixelsPerInch;
     m_DPIScale                       := C_TWSVGComponentStyle_Default_DPIScale;
+    m_PerMonitorV2Mode               := True;
     m_fOnSVGComponentStyleDPIChanged := nil;
     m_fOldParentWndProc              := nil;
     m_fOnAnimate                     := nil;
@@ -698,10 +735,16 @@ begin
 
         // hook GetDpiForMonitor() function from shcore.dll
         if (hSHCore <> 0) then
-            m_fGetDpiForMonitor := GetProcAddress(hSHCore, 'GetDpiForMonitor')
+        begin
+            m_fGetDpiForMonitor       := GetProcAddress(hSHCore, 'GetDpiForMonitor');
+            m_fGetProcessDpiAwareness := GetProcAddress(hSHCore, 'GetProcessDpiAwareness');
+        end
         else
-            m_fGetDpiForMonitor := nil;
-    {$endif}
+        begin
+            m_fGetDpiForMonitor       := nil;
+            m_fGetProcessDpiAwareness := nil;
+        end;
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGComponentStyle.Destroy;
@@ -728,11 +771,14 @@ begin
 
     // update pixels per inch to match with the current context
     {$if CompilerVersion < 30}
-        m_PixelsPerInch := TWVCLHelper.GetCurrentPixelsPerInch(Owner, m_RefPixelsPerInch,
+        m_PixelsPerInch := TWVCLHelper.GetMonitorPixelsPerInch(Owner, m_RefPixelsPerInch,
                 m_fGetDPIForMonitor);
     {$else}
-        m_PixelsPerInch := TWVCLHelper.GetCurrentPixelsPerInch(Owner, m_RefPixelsPerInch);
-    {$endif}
+        m_PixelsPerInch := TWVCLHelper.GetMonitorPixelsPerInch(Owner, m_RefPixelsPerInch);
+    {$ifend}
+
+    // keep the pixels per inch found on the starting monitor
+    m_StartPixelsPerInch := m_PixelsPerInch;
 
     // notify the children that the glyph reference size should be kept
     DoSaveOriginalSize;
@@ -741,6 +787,109 @@ begin
     DoApplyDPIChange(m_RefPixelsPerInch, m_PixelsPerInch);
 
     inherited Loaded;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.MeasureCheckGlyph(dpiScale: Boolean; out width: Integer;
+        out height: Integer; out xInner: Integer; out yInner: Integer);
+var
+    systemDPI, dpi: Integer;
+begin
+    {$if CompilerVersion >= 33}
+        // is Windows 10 build 1607 (Anniversary update) or higher?
+        if (TWOSWinHelper.CheckWinVersion(10, 0, 14393)) then
+        begin
+            // do component be scaled with DPI?
+            if (dpiScale) then
+            begin
+                // for per monitor v2 only, use the current monitor DPI, for all other use the dpi value found on start
+                if (m_PerMonitorV2Mode) then
+                    dpi := m_PixelsPerInch
+                else
+                    dpi := m_StartPixelsPerInch;
+
+                // get system metric values matching with currently selected DPI
+                width  := GetSystemMetricsForDpi(SM_CXMENUCHECK, dpi);
+                height := GetSystemMetricsForDpi(SM_CYMENUCHECK, dpi);
+                xInner := GetSystemMetricsForDpi(SM_CXEDGE,      dpi);
+                yInner := GetSystemMetricsForDpi(SM_CYEDGE,      dpi);
+                Exit;
+            end;
+
+            // get system metric values matching with DPI at which interface was designed
+            width  := GetSystemMetricsForDpi(SM_CXMENUCHECK, m_RefPixelsPerInch);
+            height := GetSystemMetricsForDpi(SM_CYMENUCHECK, m_RefPixelsPerInch);
+            xInner := GetSystemMetricsForDpi(SM_CXEDGE,      m_RefPixelsPerInch);
+            yInner := GetSystemMetricsForDpi(SM_CYEDGE,      m_RefPixelsPerInch);
+            Exit;
+        end;
+    {$ifend}
+
+    // get the system DPI
+    systemDPI := TWVCLHelper.GetSystemPixelsPerInch;
+
+    // assume that values returned by GetSystemMetrics() are always scaled to system DPI, so
+    // revert them to DPI at which interface was designed
+    width  := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CXMENUCHECK), m_RefPixelsPerInch, systemDPI);
+    height := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CYMENUCHECK), m_RefPixelsPerInch, systemDPI);
+    xInner := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CXEDGE),      m_RefPixelsPerInch, systemDPI);
+    yInner := TWVCLHelper.ScaleByDPI(GetSystemMetrics(SM_CYEDGE),      m_RefPixelsPerInch, systemDPI);
+
+    // do component be scaled with DPI?
+    if (dpiScale) then
+    begin
+        // for per monitor v2 only, use the current monitor DPI, for all other use the dpi value found on start
+        if (m_PerMonitorV2Mode) then
+            dpi := m_PixelsPerInch
+        else
+            dpi := m_StartPixelsPerInch;
+
+        // apply final DPI scaling
+        width  := TWVCLHelper.ScaleByDPI(width,  dpi, m_RefPixelsPerInch);
+        height := TWVCLHelper.ScaleByDPI(height, dpi, m_RefPixelsPerInch);
+        xInner := TWVCLHelper.ScaleByDPI(xInner, dpi, m_RefPixelsPerInch);
+        yInner := TWVCLHelper.ScaleByDPI(yInner, dpi, m_RefPixelsPerInch);
+    end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.CalculateCheckGlyphRects(pTarget: TWinControl; alignment: TLeftRight;
+        var bgRect: TRect; var cbRect: TRect);
+var
+    menuCheckWidth, menuCheckHeight, xInner, yInner, checkWidth, checkHeight, xPos, yPos: Integer;
+    i:                                                                                    Cardinal;
+begin
+    if (not Assigned(pTarget)) then
+        Exit;
+
+    for i := 0 to 1 do
+    begin
+        // get several checkbox measurements. NOTE force DPI to be considered while background rect
+        // is computed, even if option is disabled, otherwise background will not really cover the
+        // default system glyph
+        if (i = 0) then
+            MeasureCheckGlyph(True, menuCheckWidth, menuCheckHeight, xInner, yInner)
+        else
+            MeasureCheckGlyph(DoScaleWithDPI, menuCheckWidth, menuCheckHeight, xInner, yInner);
+
+        checkWidth  := menuCheckWidth  - xInner;
+        checkHeight := menuCheckHeight - yInner;
+        yPos        := (pTarget.ClientHeight div 2) - (checkHeight div 2);
+
+        // calculate the checkbox rect
+        if (((alignment = taLeftJustify) or (pTarget.BiDiMode = bdRightToLeft))
+                and not ((alignment = taLeftJustify) and (pTarget.BiDiMode = bdRightToLeft)))
+        then
+            // rect is shown on the right
+            xPos := pTarget.ClientWidth - menuCheckWidth
+        else
+            // rect is shown on the left
+            xPos := 0;
+
+        // calculate the rects
+        case (i) of
+            0: bgRect := TRect.Create(xPos - 1, yPos - 1, xPos + checkWidth + 2, yPos + checkHeight + 2);
+            1: cbRect := TRect.Create(xPos, yPos, xPos + checkWidth, yPos + checkHeight);
+        end;
+    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGComponentStyle.SetDPIScale(value: Boolean);
@@ -789,6 +938,25 @@ begin
         Exit('#ERROR');
 
     Result := TWLibraryVersion.ToStr;
+end;
+//---------------------------------------------------------------------------
+function TWSVGComponentStyle.DoScaleWithDPI: Boolean;
+var
+    id:       DWORD;
+    hProcess: THandle;
+begin
+    // get the application process
+    id       := WinApi.Windows.GetCurrentProcessId;
+    hProcess := OpenProcess(PROCESS_ALL_ACCESS, False, id);
+
+    if (hProcess = 0) then
+        Exit(False);
+
+    {$if CompilerVersion < 30}
+        Result := m_DPIScale and TWVCLHelper.IsDPIAware(hProcess, m_fGetProcessDpiAwareness);
+    {$else}
+        Result := m_DPIScale and TWVCLHelper.IsDPIAware(hProcess);
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 function TWSVGComponentStyle.DoAnimate(pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;

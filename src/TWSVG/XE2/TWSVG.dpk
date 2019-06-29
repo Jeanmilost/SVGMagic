@@ -1,0 +1,67 @@
+package TWSVG;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$DEFINE USE_VCL}
+{$DEFINE USE_VERYSIMPLEXML}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  TWCommon,
+  TWRendering,
+  xmlrtl,
+  soaprtl;
+
+contains
+  Xml.VerySimple in '..\VerySimpleXML\Xml.VerySimple.pas',
+  UTWSVG in '..\UTWSVG.pas',
+  UTWSVGAnimation in '..\UTWSVGAnimation.pas',
+  UTWSVGAnimationDescriptor in '..\UTWSVGAnimationDescriptor.pas',
+  UTWSVGAttribute in '..\UTWSVGAttribute.pas',
+  UTWSVGCheckBoxStyle in '..\UTWSVGCheckBoxStyle.pas',
+  UTWSVGCommon in '..\UTWSVGCommon.pas',
+  UTWSVGComponentStyle in '..\UTWSVGComponentStyle.pas',
+  UTWSVGElements in '..\UTWSVGElements.pas',
+  UTWSVGFrameCalculator in '..\UTWSVGFrameCalculator.pas',
+  UTWSVGGDIPlusRasterizer in '..\UTWSVGGDIPlusRasterizer.pas',
+  UTWSVGGradients in '..\UTWSVGGradients.pas',
+  UTWSVGGraphic in '..\UTWSVGGraphic.pas',
+  UTWSVGImage in '..\UTWSVGImage.pas',
+  UTWSVGImageButton in '..\UTWSVGImageButton.pas',
+  UTWSVGImageList in '..\UTWSVGImageList.pas',
+  UTWSVGImageListFactory in '..\UTWSVGImageListFactory.pas',
+  UTWSVGItems in '..\UTWSVGItems.pas',
+  UTWSVGMeasure in '..\UTWSVGMeasure.pas',
+  UTWSVGParser in '..\UTWSVGParser.pas',
+  UTWSVGProperties in '..\UTWSVGProperties.pas',
+  UTWSVGRadioButtonStyle in '..\UTWSVGRadioButtonStyle.pas',
+  UTWSVGRasterizer in '..\UTWSVGRasterizer.pas',
+  UTWSVGStyle in '..\UTWSVGStyle.pas',
+  UTWSVGTags in '..\UTWSVGTags.pas';
+
+end.

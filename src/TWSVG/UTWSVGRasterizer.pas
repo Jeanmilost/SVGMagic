@@ -1337,7 +1337,7 @@ type
 
             {**
              Set the combine mode to use for a color with animated opacity
-             @param(colorItem @bold([in, out]) Volor item containing the properties to update
+             @param(colorItem @bold([in, out]) Color item containing the properties to update)
             }
             procedure SetAnimatedOpacityCombineMode(pColorItem: IPropColorItem); virtual;
 
@@ -5162,7 +5162,7 @@ begin
         // found in the function code. Also see this post:
         // http://www.delphigroups.info/2/c9/526281.html
         Result := False;
-    {$endif}
+    {$ifend}
 
     pLinkedElement := GetLinkedElement(pLink);
 

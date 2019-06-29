@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGElements: Class TWSVGPathCmd</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGPathCmd"></span><h1 class="cio">Class TWSVGPathCmd</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGElements.html">UTWSVGElements</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGPathCmd = class(<a class="normal" href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+A Scalable Vector Graphics (SVG) path command is an instruction composed by a command representing an action to be undertaken while the path is drawn, followed by the coordinates necessary to accomplish this command. E.g. an absolute &quot;move to&quot; path command will be written M18.285,1.5 in the SVG file <br> <b>NOTE</b> Several separators may be used to separate the coordinate values. Separators may be a blank space, a negative '-' char or a native separator, as e.g. ',' And many separators may be used in the same instruction to separate the values, e.g. c0,1.76-1.572,3.39-3.615,3.39</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="ancestor"><a class="normal" href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a></li>
+<li class="thisitem">TWSVGPathCmd</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGElements.TWSVGPathCmd.html#Create">Create</a></b>(const pOther: <a  href="UTWSVGElements.TWSVGPathCmd.html">TWSVGPathCmd</a>); reintroduce; overload; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGElements.TWSVGPathCmd.html#Create">Create</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; separator: WideChar); reintroduce; overload; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGElements.TWSVGPathCmd.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGPathCmd.html#Parse">Parse</a></b>(const data: UnicodeString; start, len: NativeInt): Boolean; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGPathCmd.html#Print">Print</a></b>(margin: Cardinal): UnicodeString; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGElements.TWSVGPathCmd.html#SVGToType">SVGToType</a></b>(const cmdType: WideChar; out relative: Boolean): <a  href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGPathCmd.html#ToXml">ToXml</a></b>: UnicodeString; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGElements.TWSVGPathCmd.html#TypeToSVG">TypeToSVG</a></b>(cmdType: <a  href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; relative: Boolean; const defValue: WideChar): WideChar; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGElements.TWSVGPathCmd.html#Assign">Assign</a></b>(const pOther: <a  href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGElements.TWSVGPathCmd.html#Clear">Clear</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGElements.TWSVGPathCmd.html#Log">Log</a></b>(margin: Cardinal); virtual;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const pOther: <a  href="UTWSVGElements.TWSVGPathCmd.html">TWSVGPathCmd</a>); reintroduce; overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Copy constructor </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other command to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; separator: WideChar); reintroduce; overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pParent</dt>
+<dd>Parent item, orphan or root if <code>Nil</code></dd>
+<dt>separator</dt>
+<dd>Default separator to use</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Parse"></span><code>function <b>Parse</b>(const data: UnicodeString; start, len: NativeInt): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Parse data    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>data</dt>
+<dd>Data to parse</dd>
+<dt>start</dt>
+<dd>Start position where data will begin to be read in the string</dd>
+<dt>len</dt>
+<dd>Data length to read in the string</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Print"></span><code>function <b>Print</b>(margin: Cardinal): UnicodeString; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Print content to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Content</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SVGToType"></span><code>class function <b>SVGToType</b>(const cmdType: WideChar; out relative: Boolean): <a  href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert SVG command char to type   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>cmdType</dt>
+<dd>Char containing SVG command type to convert</dd>
+<dt>relative</dt>
+<dd><b>[out]</b> If <code>True</code>, values owned by command are relative</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">SVG command type, IE_IT_Unknown if unknown</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToXml"></span><code>function <b>ToXml</b>: UnicodeString; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get xml formatted string </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">String</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="TypeToSVG"></span><code>class function <b>TypeToSVG</b>(cmdType: <a  href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; relative: Boolean; const defValue: WideChar): WideChar; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert type to SVG command char    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>cmdType</dt>
+<dd>SVG command type to convert</dd>
+<dt>relative</dt>
+<dd>If <code>True</code>, values owned by command are relative</dd>
+<dt>defValue</dt>
+<dd>Default value to return if type is unknown</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">SVG command as char, default value if unknown</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) content from another path command </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other path command</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Log"></span><code>procedure <b>Log</b>(margin: Cardinal); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Log content </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

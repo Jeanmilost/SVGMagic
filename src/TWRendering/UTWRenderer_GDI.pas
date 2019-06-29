@@ -77,7 +77,7 @@ type
              @param(rect Rectangle area to draw)
              @param(pOptions @bold([in, out]) Rectangle paint options)
              @param(hDC Graphic device context to draw on)
-             @param(iRect @bold([out]) Internal rectangle (inside outline)
+             @param(iRect @bold([out]) Internal rectangle (inside outline))
              @returns(@true on success, otherwise @false)
              @br @bold(NOTE) This function is needed because GDI round rects are ugly when pen width
                              is higher than 1

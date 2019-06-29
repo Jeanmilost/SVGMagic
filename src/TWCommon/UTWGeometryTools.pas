@@ -21,7 +21,6 @@ type
         public type
             {**
              Hit edge enumeration
-             @value(IE_None Indicates that no edge was hit)
              @value(IE_Top Indicates that top edge was hit)
              @value(IE_Left Indicates that left edge was hit)
              @value(IE_Bottom Indicates that bottom edge was hit)

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSize: Record TWSize</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSize"></span><h1 class="cio">Record TWSize</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSize.html">UTWSize</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSize&lt;T&gt; = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+Platform independent size structure</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>constructor <b><a  href="UTWSize.TWSize.html#Create">Create</a></b>(const width, height: T); overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWSize.TWSize.html#Differs">Differs</a></b>(const other: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWSize.TWSize.html#GetHashCode">GetHashCode</a></b>(initValue: Integer): Integer; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWSize.TWSize.html#Invert">Invert</a></b>: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWSize.TWSize.html#IsEqual">IsEqual</a></b>(const other: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWSize.TWSize.html#IsZero">IsZero</a></b>: Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Add">Add</a></b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Add">Add</a></b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Divide">Divide</a></b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Divide">Divide</a></b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Equal">Equal</a></b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#IntDivide">IntDivide</a></b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#IntDivide">IntDivide</a></b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Multiply">Multiply</a></b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Multiply">Multiply</a></b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Negative">Negative</a></b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#NotEqual">NotEqual</a></b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Subtract">Subtract</a></b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWSize.TWSize.html#Subtract">Subtract</a></b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>property <b><a  href="UTWSize.TWSize.html#Height">Height</a></b>: T read GetHeight write SetHeight;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>property <b><a  href="UTWSize.TWSize.html#Width">Width</a></b>: T read GetWidth write SetWidth;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const width, height: T); overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>width</dt>
+<dd>Width</dd>
+<dt>height</dt>
+<dd>Height</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Differs"></span><code>function <b>Differs</b>(const other: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if size content differs from another size  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other size to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if sizes differ, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetHashCode"></span><code>function <b>GetHashCode</b>(initValue: Integer): Integer; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get the hash code based on the class content  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>initValue</dt>
+<dd>- initialization value</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Hash code</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Invert"></span><code>function <b>Invert</b>: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Invert the size (e.g. a size with coordinates [-3, 4] will become [3, -4]) </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Inverted size</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IsEqual"></span><code>function <b>IsEqual</b>(const other: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if size content is equal to another size  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other size to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if sizes are equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IsZero"></span><code>function <b>IsZero</b>: Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if size is set to [0, 0] coordinate </p>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if size is set to [0, 0] coordinate, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Add"></span><code>class operator <b>Add</b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Addition operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First size to add</dd>
+<dt>b</dt>
+<dd>Second size to add</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Add"></span><code>class operator <b>Add</b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Addition operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Size to add value to</dd>
+<dt>b</dt>
+<dd>Value to add to</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Divide"></span><code>class operator <b>Divide</b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Size to divide value by</dd>
+<dt>b</dt>
+<dd>Value to divide by</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Divide"></span><code>class operator <b>Divide</b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First size to divide</dd>
+<dt>b</dt>
+<dd>Second size to divide</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Equal"></span><code>class operator <b>Equal</b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Equality operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First size to compare</dd>
+<dt>b</dt>
+<dd>Second size to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if sizes are equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IntDivide"></span><code>class operator <b>IntDivide</b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Integer division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First size to divide</dd>
+<dt>b</dt>
+<dd>Second size to divide</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IntDivide"></span><code>class operator <b>IntDivide</b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Integer division operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Size to divide value by</dd>
+<dt>b</dt>
+<dd>Value to divide by</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Multiply"></span><code>class operator <b>Multiply</b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplication operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Size to multiply value with</dd>
+<dt>b</dt>
+<dd>Value to multiply with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Multiply"></span><code>class operator <b>Multiply</b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplication operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First size to multiply</dd>
+<dt>b</dt>
+<dd>Second size to multiply</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Negative"></span><code>class operator <b>Negative</b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Inversion operator  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Size to invert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="NotEqual"></span><code>class operator <b>NotEqual</b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Not equality operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First size to compare</dd>
+<dt>b</dt>
+<dd>Second size to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if sizes are not equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Subtract"></span><code>class operator <b>Subtract</b>(a, b: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtraction operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First size to subtract</dd>
+<dt>b</dt>
+<dd>Second size to subtract</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Subtract"></span><code>class operator <b>Subtract</b>(a: <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; b: T): <a  href="UTWSize.TWSize.html">TWSize</a>&lt;T&gt;; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtraction operator   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>Size to subtract value from</dd>
+<dt>b</dt>
+<dd>Value to subtract to</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Size containing the result</p></td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Height"></span><code>property <b>Height</b>: T read GetHeight write SetHeight;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get or set the height</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Width"></span><code>property <b>Width</b>: T read GetWidth write SetWidth;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get or set the width</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

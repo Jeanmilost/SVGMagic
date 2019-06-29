@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWControlFont: Class TWControlFont</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWControlFont"></span><h1 class="cio">Class TWControlFont</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWControlFont.html">UTWControlFont</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWControlFont = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Font helper, contains tools to manipulate fonts, add or remove fonts in memory or a Windows session, get font name from a TrueType file, ...</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TWControlFont</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWControlFont.TWControlFont.html#ITfGetFontResourceInfoW">ITfGetFontResourceInfoW</a></b> = function(name: PWideChar; var bufSize: Cardinal; pBuffer: Pointer; infoType: Cardinal): LongBool; stdcall;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWControlFont.TWControlFont.html#Create">Create</a></b>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWControlFont.TWControlFont.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWControlFont.TWControlFont.html#AddFont">AddFont</a></b>(const name, fileName: UnicodeString): THandle; overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWControlFont.TWControlFont.html#AddFont">AddFont</a></b>(const name: UnicodeString; pStream: TStream; fontLength: Cardinal): THandle; overload; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWControlFont.TWControlFont.html#AddFontToSession">AddFontToSession</a></b>(const name, fileName: UnicodeString): Boolean; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWControlFont.TWControlFont.html#FontExists">FontExists</a></b>(const name: UnicodeString): Boolean; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWControlFont.TWControlFont.html#FontExistsInSession">FontExistsInSession</a></b>(const name: UnicodeString): Boolean; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWControlFont.TWControlFont.html#GetFont">GetFont</a></b>(const name: UnicodeString): THandle; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWControlFont.TWControlFont.html#GetFontNameFromFile">GetFontNameFromFile</a></b>(const fileName: UnicodeString): UnicodeString; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWControlFont.TWControlFont.html#RemoveFont">RemoveFont</a></b>(const name: UnicodeString); static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWControlFont.TWControlFont.html#RemoveFontFromSession">RemoveFontFromSession</a></b>(const name: UnicodeString); static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWControlFont.TWControlFont.html#RemoveFonts">RemoveFonts</a></b>; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class procedure <b><a  href="UTWControlFont.TWControlFont.html#RemoveFontsFromSession">RemoveFontsFromSession</a></b>; static;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="ITfGetFontResourceInfoW"></span><code><b>ITfGetFontResourceInfoW</b> = function(name: PWideChar; var bufSize: Cardinal; pBuffer: Pointer; infoType: Cardinal): LongBool; stdcall;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="AddFont"></span><code>class function <b>AddFont</b>(const name, fileName: UnicodeString): THandle; overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Add new truetype font from stream   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name</dd>
+<dt>fileName</dt>
+<dd>Font file name</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Font handle, <code>Nil</code> on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="AddFont"></span><code>class function <b>AddFont</b>(const name: UnicodeString; pStream: TStream; fontLength: Cardinal): THandle; overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Add new truetype font from stream    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name</dd>
+<dt>pStream</dt>
+<dd>Stream containing font data</dd>
+<dt>fontLength</dt>
+<dd>Font data length</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Font handle, <code>Nil</code> on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="AddFontToSession"></span><code>class function <b>AddFontToSession</b>(const name, fileName: UnicodeString): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Add new truetype font from file and make it available for application    <br> <b>NOTE</b> Thus added font will be available for ALL applications until the Windows session is closed or the font is removed using RemoveFontFromSession or RemoveFontsFromSession <br> <b>NOTE</b> All opened applications will be notified that fonts changed</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name</dd>
+<dt>fileName</dt>
+<dd>Font file name</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="FontExists"></span><code>class function <b>FontExists</b>(const name: UnicodeString): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if font exists  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if font exists, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="FontExistsInSession"></span><code>class function <b>FontExistsInSession</b>(const name: UnicodeString): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if font exists in opened Windows session  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if font exists, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetFont"></span><code>class function <b>GetFont</b>(const name: UnicodeString): THandle; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get font   <br> <b>NOTE</b> Only font previously added with AddFont() can be get. Standard or custom font belonging to Windows session are not included</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">font, <code>Nil</code> if not found</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetFontNameFromFile"></span><code>class function <b>GetFontNameFromFile</b>(const fileName: UnicodeString): UnicodeString; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get font name from truetype font file (.ttf)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>fileName</dt>
+<dd>File name</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Font name</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="RemoveFont"></span><code>class procedure <b>RemoveFont</b>(const name: UnicodeString); static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Remove previously added font </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Font name</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="RemoveFontFromSession"></span><code>class procedure <b>RemoveFontFromSession</b>(const name: UnicodeString); static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Remove previously added font from Windows session  <br> <b>NOTE</b> Be careful, on success, font will no longer be available for other applications that eventually use it <br> <b>NOTE</b> All opened applications will be notified that fonts changed</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>- font name</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="RemoveFonts"></span><code>class procedure <b>RemoveFonts</b>; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Remove all previously added fonts</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="RemoveFontsFromSession"></span><code>class procedure <b>RemoveFontsFromSession</b>; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Remove all previously added fonts from Windows session <br> <b>NOTE</b> Be careful, on success, font will no longer be available for other applications that eventually use it <br> <b>NOTE</b> All opened applications will be notified that fonts changed</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

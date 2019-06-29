@@ -165,7 +165,7 @@ type
 
             {**
              Get a SVG attribute
-             @param(pNode Xml node containing the attribute to get
+             @param(pNode Xml node containing the attribute to get)
              @param(name Attribute name to get)
              @param(defVal Default value to return in case the SVG attribute doesn't exist)
              @returns(attribute content, default value if attribute doesnt'exist)
@@ -180,7 +180,7 @@ type
 
             {**
              Get a SVG value
-             @param(pNode Xml node containing the value to get
+             @param(pNode Xml node containing the value to get)
              @returns(value, empty string if node contains no value or on error)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -419,7 +419,7 @@ begin
                 if (firstValidChar <> npos) then
                 begin
                     // get the accumuated string
-                    nextStr := str.Substring(firstValidChar, index - firstValidChar);
+                    nextStr := TWStringHelper.Substr(str, firstValidChar, index - firstValidChar);
 
                     // if last digit of the dest string and first digit of the following substring
                     // are both a number, an extra space should be added to separate the both numbers,
@@ -472,7 +472,7 @@ begin
     if ((firstValidChar < npos) and (lastValidChar < npos) and (firstValidChar <= lastValidChar)) then
     begin
         // get the accumuated string
-        nextStr := str.Substring(firstValidChar, (lastValidChar + 1) - firstValidChar);
+        nextStr := TWStringHelper.Substr(str, firstValidChar, (lastValidChar + 1) - firstValidChar);
 
         // if last digit of the dest string and first digit of the following substring
         // are both a number, an extra space should be added to separate the both numbers,
@@ -566,13 +566,13 @@ begin
                     // extract the value and add it to list. BE CAREFUL, the string in the Substr()
                     // function is ZERO BASED, whereas the entire UnicodeString is 1 based. I will
                     // not give my opinion about that!!!
-                    pValues.Add(data.Substring(trimStart - 1, trimOffset - trimStart));
+                    pValues.Add(TWStringHelper.Substr(data, trimStart - 1, trimOffset - trimStart));
                 end
                 else
                     // extract the value and add it to list. BE CAREFUL, the string in the Substr()
                     // function is ZERO BASED, whereas the entire UnicodeString is 1 based. I will
                     // not give my opinion about that!!!
-                    pValues.Add(data.Substring(start - 1, offset - start));
+                    pValues.Add(TWStringHelper.Substr(data, start - 1, offset - start));
 
                 // read the next value
                 Inc(offset);
@@ -633,14 +633,14 @@ begin
             // extract the last value and add it to list. BE CAREFUL, the string in the Substr()
             // function is ZERO BASED, whereas the entire UnicodeString is 1 based. I will not give
             // my opinion about that!!!
-            pValues.Add(data.Substring(trimStart - 1, trimOffset - trimStart));
+            pValues.Add(TWStringHelper.Substr(data, trimStart - 1, trimOffset - trimStart));
 
         end
         else
             // extract the last value and add it to list. BE CAREFUL, the string in the Substr()
             // function is ZERO BASED, whereas the entire UnicodeString is 1 based. I will not give
             // my opinion about that!!!
-            pValues.Add(data.Substring(start - 1, offset - start));
+            pValues.Add(TWStringHelper.Substr(data, start - 1, offset - start));
 
     Result := pValues.Count;
 end;

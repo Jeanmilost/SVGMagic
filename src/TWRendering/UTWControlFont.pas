@@ -27,7 +27,7 @@ type
     }
     TWControlFont = class
         private type
-            TGetFontResourceInfoW = function(name: PWideChar; var bufSize: Cardinal;
+            ITfGetFontResourceInfoW = function(name: PWideChar; var bufSize: Cardinal;
                     pBuffer: Pointer; infoType: Cardinal): LongBool; stdcall;
 
             ISessionCustomFonts = TDictionary<UnicodeString, UnicodeString>;
@@ -36,7 +36,7 @@ type
         private
             class var m_pSessionCustomFonts:   ISessionCustomFonts;
             class var m_pCustomFonts:          ICustomFonts;
-            class var m_hGetFontResourceInfoW: TGetFontResourceInfoW;
+            class var m_hGetFontResourceInfoW: ITfGetFontResourceInfoW;
 
         public
             {**

@@ -50,7 +50,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -347,7 +347,7 @@ type
 
             {**
              Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read
+             @param(pNode Xml node containing SVG element to read)
              @returns(@true on success, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
@@ -371,9 +371,8 @@ type
 
         public
             {**
-             Get gradient stop at index
-             @param(index Gradient stop index to get)
-             @raises(Exception if index is out of bounds)
+             Get gradient stop at index. Example: gradientStop := GradientStops[0];
+             @br @bold(NOTE) An exception will be raised if index is out of bounds
             }
             property GradientStops[index: Integer]: TWSVGGradientStop read GetGradientStop;
 

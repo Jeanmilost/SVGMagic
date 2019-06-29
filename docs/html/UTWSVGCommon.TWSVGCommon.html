@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGCommon: Class TWSVGCommon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGCommon"></span><h1 class="cio">Class TWSVGCommon</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGCommon.html">UTWSVGCommon</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGCommon = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Scalable Vector Graphics (SVG) common functions and algorithms</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TWSVGCommon</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGCommon.TWSVGCommon.html#IEValueType">IEValueType</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGCommon.TWSVGCommon.html#IValues">IValues</a></b> = TStringList;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Fields"></span><h3 class="summary">Fields</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>internal const <b><a  href="UTWSVGCommon.TWSVGCommon.html#m_Separators">m_Separators</a></b>: UnicodeString = ' ,;:'#13#10#09;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#DetectSeparator">DetectSeparator</a></b>(const str: UnicodeString; start, len: NativeInt): WideChar; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#DoIgnoreLastValue">DoIgnoreLastValue</a></b>(const data: UnicodeString; start, len: NativeInt; out lastValuePos: NativeInt): Boolean; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#ExtractValues">ExtractValues</a></b>&lt;T&gt;(const data: UnicodeString; var values: <a  href="UTWSVGCommon.html#TWSVGArray">TWSVGArray</a>&lt;T&gt;): Boolean; overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#ExtractValues">ExtractValues</a></b>&lt;T&gt;(const data: UnicodeString; start, len: NativeInt; var values: <a  href="UTWSVGCommon.html#TWSVGArray">TWSVGArray</a>&lt;T&gt;): Boolean; overload; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#ExtractValues">ExtractValues</a></b>(const data: UnicodeString; start, len: NativeInt; pValues: <a  href="UTWSVGCommon.TWSVGCommon.html#IValues">IValues</a>; doTrim: Boolean): NativeUInt; overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#ExtractValues_Unoptimized">ExtractValues_Unoptimized</a></b>(const data: UnicodeString; const separator: WideChar; var values: <a  href="UTWSVGCommon.html#TWSVGArray_Unoptimized">TWSVGArray_Unoptimized</a>): Boolean; overload; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#ExtractValues_Unoptimized">ExtractValues_Unoptimized</a></b>(const data: UnicodeString; pValues: <a  href="UTWSVGCommon.TWSVGCommon.html#IValues">IValues</a>; doTrim: Boolean): NativeUInt; overload; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#GetAttribute">GetAttribute</a></b>(const pNode: IXMLNode; const name, defVal: UnicodeString): UnicodeString; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#GetType">GetType</a></b>(name: UnicodeString): <a  href="UTWSVGCommon.TWSVGCommon.html#IEValueType">IEValueType</a>; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#GetValue">GetValue</a></b>(const pNode: IXMLNode): UnicodeString; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <b><a  href="UTWSVGCommon.TWSVGCommon.html#PrepareStr">PrepareStr</a></b>(const str: UnicodeString): UnicodeString; static;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEValueType"></span><code><b>IEValueType</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Value type enumeration         </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_VT_Unknown">IE_VT_Unknown</span>: Unknown value type</li>
+<li>
+<span id="IE_VT_Value">IE_VT_Value</span>: A value or list that contains real numbers</li>
+<li>
+<span id="IE_VT_Color">IE_VT_Color</span>: A value or list that contains colors</li>
+<li>
+<span id="IE_VT_Rect">IE_VT_Rect</span>: A value or list that contains rectangles (x, y, width, height)</li>
+<li>
+<span id="IE_VT_Matrix">IE_VT_Matrix</span>: A value or list that contains matrices</li>
+<li>
+<span id="IE_VT_Text">IE_VT_Text</span>: A value or list that contains texts</li>
+<li>
+<span id="IE_VT_Version">IE_VT_Version</span>: A value or list that contains version numbers</li>
+<li>
+<span id="IE_VT_Enum">IE_VT_Enum</span>: A value or list based on an enumerator (the exact type depends of the context)</li>
+<li>
+<span id="IE_VT_Mixed">IE_VT_Mixed</span>: A value or list that contains several type of values (e.g. the enable-background property)</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IValues"></span><code><b>IValues</b> = TStringList;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Fields</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="m_Separators"></span><code>internal const <b>m_Separators</b>: UnicodeString = ' ,;:'#13#10#09;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DetectSeparator"></span><code>class function <b>DetectSeparator</b>(const str: UnicodeString; start, len: NativeInt): WideChar; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Detect the separator used in a value list    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>str</dt>
+<dd>String containing the values for which the separator should be detected</dd>
+<dt>start</dt>
+<dd>Start pos in string from which the search will begin, in chars</dd>
+<dt>len</dt>
+<dd>Search length in chars</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">detected separator, '\0' if no separator</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DoIgnoreLastValue"></span><code>class function <b>DoIgnoreLastValue</b>(const data: UnicodeString; start, len: NativeInt; out lastValuePos: NativeInt): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if the last value of a list should be ignored because empty      <br> <b>NOTE</b> This function is required to check if the last item in a list is really a value, because several list may be terminated with a semicolon, like e.g: values=&quot;inline;inline;none;inline;&quot; In this case, there is no more value after the semicolon, but the SVG parser believes that an empty value exists after the semicolon, and wrongly process it</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>data</dt>
+<dd>List data to check</dd>
+<dt>start</dt>
+<dd>Start position where data will begin to be read in the string</dd>
+<dt>len</dt>
+<dd>Data length to read in the string</dd>
+<dt>lastValuePos</dt>
+<dd>The last valid position in the string, on the last value end, in chars</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if last value should be ignored, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ExtractValues"></span><code>class function <b>ExtractValues</b>&lt;T&gt;(const data: UnicodeString; var values: <a  href="UTWSVGCommon.html#TWSVGArray">TWSVGArray</a>&lt;T&gt;): Boolean; overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Extract numeric values from a value list (e.g. keyTimes=&quot;0;0.33;0.66;1&quot;)   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>data</dt>
+<dd>Source SVG value list</dd>
+<dt>values</dt>
+<dd><b>[out]</b> List of converted values</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ExtractValues"></span><code>class function <b>ExtractValues</b>&lt;T&gt;(const data: UnicodeString; start, len: NativeInt; var values: <a  href="UTWSVGCommon.html#TWSVGArray">TWSVGArray</a>&lt;T&gt;): Boolean; overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Extract numeric values from a value list (e.g. keyTimes=&quot;0;0.33;0.66;1&quot;)     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>data</dt>
+<dd>Source SVG value list</dd>
+<dt>start</dt>
+<dd>Start position where data will begin to be read in the string</dd>
+<dt>len</dt>
+<dd>Data length to read in the string</dd>
+<dt>values</dt>
+<dd><b>[out]</b> List of converted values</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ExtractValues"></span><code>class function <b>ExtractValues</b>(const data: UnicodeString; start, len: NativeInt; pValues: <a  href="UTWSVGCommon.TWSVGCommon.html#IValues">IValues</a>; doTrim: Boolean): NativeUInt; overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Extract values from a value list (e.g. keyTimes=&quot;0;0.33;0.66;1&quot; or values=&quot;none;inline;none;none&quot;)      </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>data</dt>
+<dd>Data containing values to extract</dd>
+<dt>start</dt>
+<dd>Start position where data will begin to be read in the string</dd>
+<dt>len</dt>
+<dd>Data length to read in the string</dd>
+<dt>pValues</dt>
+<dd>Extracted values</dd>
+<dt>doTrim</dt>
+<dd>If <code>True</code>, extracted values will be trimmed</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Number of extracted values</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ExtractValues_Unoptimized"></span><code>class function <b>ExtractValues_Unoptimized</b>(const data: UnicodeString; const separator: WideChar; var values: <a  href="UTWSVGCommon.html#TWSVGArray_Unoptimized">TWSVGArray_Unoptimized</a>): Boolean; overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Extract numeric values from a value list (e.g. keyTimes=&quot;0;0.33;0.66;1&quot;)     <br> <b>NOTE</b> In this overload, the code clarity is favored on the execution speed. The reason why this function was kept is that it can be used as strongly tested alternative in case an unknown bug happen in the function used in production</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>data</dt>
+<dd>Source SVG value list</dd>
+<dt>separator</dt>
+<dd>Separator used in the current SVG</dd>
+<dt>values</dt>
+<dd><b>[out]</b> List of converted values</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ExtractValues_Unoptimized"></span><code>class function <b>ExtractValues_Unoptimized</b>(const data: UnicodeString; pValues: <a  href="UTWSVGCommon.TWSVGCommon.html#IValues">IValues</a>; doTrim: Boolean): NativeUInt; overload; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Extract values from a value list (e.g. keyTimes=&quot;0;0.33;0.66;1&quot; or values=&quot;none;inline;none;none&quot;)     <br> <b>NOTE</b> In this overload, the code clarity is favored on the execution speed. The reason why this function was kept is that it can be used as strongly tested alternative in case an unknown bug happen in the function used in production</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>data</dt>
+<dd>Data containing values to extract</dd>
+<dt>pValues</dt>
+<dd>Extracted values</dd>
+<dt>doTrim</dt>
+<dd>If <code>True</code>, extracted values will be trimmed</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Number of extracted values</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetAttribute"></span><code>class function <b>GetAttribute</b>(const pNode: IXMLNode; const name, defVal: UnicodeString): UnicodeString; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get a SVG attribute    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pNode</dt>
+<dd>Xml node containing the attribute to get</dd>
+<dt>name</dt>
+<dd>Attribute name to get</dd>
+<dt>defVal</dt>
+<dd>Default value to return in case the SVG attribute doesn't exist</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">attribute content, default value if attribute doesnt'exist</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetType"></span><code>class function <b>GetType</b>(name: UnicodeString): <a  href="UTWSVGCommon.TWSVGCommon.html#IEValueType">IEValueType</a>; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the value type associated with a property  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>- property name</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">value type</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetValue"></span><code>class function <b>GetValue</b>(const pNode: IXMLNode): UnicodeString; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get a SVG value  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pNode</dt>
+<dd>Xml node containing the value to get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">value, empty string if node contains no value or on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="PrepareStr"></span><code>class function <b>PrepareStr</b>(const str: UnicodeString): UnicodeString; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Prepare a string to be parsed (i.e. trim it and remove all CRLF and Tab chars)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>str</dt>
+<dd>- string to prepare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">prepared string</p></td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

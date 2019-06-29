@@ -25,9 +25,9 @@ uses System.Classes,
      System.UITypes,
      System.Generics.Defaults,
      System.Generics.Collections,
-     {$if CompilerVersion >= 32}
+     {$if CompilerVersion >= 29}
          System.Hash,
-     {$endif}
+     {$ifend}
      Vcl.Graphics,
      Winapi.GDIPAPI,
      Winapi.GDIPOBJ,
@@ -300,10 +300,10 @@ type
 
             {**
              Cached data
-             @note WARNING, cached objects are not locked while they are in use. This means that a
-                   cached object can be deleted even if still used, if it's the oldest cached object,
-                   and if the cache needs to create a new object while it's full. For this reason,
-                   the caching limit values should be changed carefully
+             @br @bold(NOTE) WARNING, cached objects are not locked while they are in use. This means
+                             that a cached object can be deleted even if still used, if it's the oldest
+                             cached object, and if the cache needs to create a new object while it's
+                             full. For this reason, the caching limit values should be changed carefully
             }
             ICache = class
                 private
@@ -1005,7 +1005,7 @@ type
              @param(hDC Destination device context handle)
              @param(destRect Rect where image will be drawn on dest, stretched if not equal to source)
              @param(pOptions Options)
-             @exclude(warning NOT TESTED WITH TRANSAPRENT IMAGES)
+             @br @bold(NOTE) WARNING Not tested with transparent images
             }
             procedure DrawImage(const pGraphic: TGraphic; const srcRect: TWRectF; hDC: THandle;
                     const destRect: TWRectF; const pOptions: TWRenderer.IImageOptions); override;
@@ -1350,11 +1350,11 @@ end;
 //---------------------------------------------------------------------------
 function TWRenderer_GDIPlus.ICachedPenKeyComparer.GetHashCode(const pValue: ICachedPen): Integer;
 begin
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(pValue.m_BaseBrushKey, SizeOf(NativeUInt), $ABCD);
     {$else}
         Result := BobJenkinsHash(pValue.m_BaseBrushKey, SizeOf(NativeUInt), $ABCD);
-    {$endif}
+    {$ifend}
     Result := pValue.m_pStroke.GetHashCode(Result);
 end;
 //---------------------------------------------------------------------------
@@ -1430,7 +1430,7 @@ end;
 //---------------------------------------------------------------------------
 function TWRenderer_GDIPlus.ICachedFontKeyComparer.GetHashCode(const pValue: ICachedFont): Integer;
 begin
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(pValue.m_Height,        SizeOf(Integer),                      $BA51);
         Result := THashBobJenkins.GetHashValue(PChar(pValue.m_Name)^,  Length(pValue.m_Name) * SizeOf(Char), Result);
         Result := THashBobJenkins.GetHashValue(pValue.m_Charset,       SizeOf(TFontCharset),                 Result);
@@ -1450,7 +1450,7 @@ begin
         Result := BobJenkinsHash(pValue.m_Pitch,         SizeOf(TFontPitch),                   Result);
         Result := BobJenkinsHash(pValue.m_PixelsPerInch, SizeOf(Integer),                      Result);
         Result := BobJenkinsHash(pValue.m_hDC,           SizeOf(THandle),                      Result);
-    {$endif}
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 // TWRenderer_GDIPlus.ICachedGraphics
@@ -5012,9 +5012,15 @@ begin
                         pColorLine[x].rgbBlue, pColorLine[x].rgbReserved);
 
                 // blend background pixel with outline
-                blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
-                        pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved).Blend(bgColor,
-                        fillOpacity);
+                {$if CompilerVersion <= 23}
+                    blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
+                            pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved);
+                    blendedColor := blendedColor.Blend(bgColor, fillOpacity);
+                {$else}
+                    blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
+                            pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved).Blend(bgColor,
+                            fillOpacity);
+                {$ifend}
 
                 // set newly blended pixel
                 pGeometryLine[x].rgbRed      := blendedColor.GetRed;
@@ -5056,15 +5062,29 @@ begin
             begin
                 // blend background pixel with outline
                 if (Assigned(pStrokeBrush)) then
-                    blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
-                            pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved).Blend
-                                    (pStrokeBrush.Color^, strokeOpacity)
+                    {$if CompilerVersion <= 23}
+                    begin
+                        blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
+                                pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved);
+                        blendedColor := blendedColor.Blend(pStrokeBrush.Color^, strokeOpacity)
+                    end
+                    {$else}
+                        blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
+                                pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved).Blend
+                                        (pStrokeBrush.Color^, strokeOpacity)
+                    {$ifend}
                 else
                 begin
                     color.SetColor(255, 255, 255, 255);
-                    blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
-                            pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved).Blend(color,
-                                    strokeOpacity);
+                    {$if CompilerVersion <= 23}
+                        blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
+                                pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved);
+                        blendedColor := blendedColor.Blend(color, strokeOpacity);
+                    {$else}
+                        blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
+                                pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved).Blend(color,
+                                        strokeOpacity);
+                    {$ifend}
                 end;
 
                 // set newly blended pixel

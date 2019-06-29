@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWHelpers: Record TWVCLHelper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWVCLHelper"></span><h1 class="cio">Record TWVCLHelper</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWHelpers.html">UTWHelpers</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWVCLHelper = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+Helper class for VCL</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWVCLHelper.html#GetDPIAwarenessContext">GetDPIAwarenessContext</a></b>(fGetProcessDpiAwareness: <a  href="UTWHelpers.html#TWfGetProcessDpiAwareness">TWfGetProcessDpiAwareness</a>): <a  href="UTWHelpers.html#EDPIAwarenessContext">EDPIAwarenessContext</a>; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWVCLHelper.html#GetMonitorPixelsPerInch">GetMonitorPixelsPerInch</a></b>(pComponent: TComponent; refDPI: Integer; fGetDpiForMonitor: <a  href="UTWHelpers.html#TWfGetDpiForMonitor">TWfGetDpiForMonitor</a>): Integer; static;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWVCLHelper.html#GetNextParent">GetNextParent</a></b>(pControl: TControl; classID: TClass): TObject; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWVCLHelper.html#GetParentForm">GetParentForm</a></b>(pControl: TControl): TCustomForm; static;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWVCLHelper.html#GetPixelsPerInchRef">GetPixelsPerInchRef</a></b>(pOwner: TComponent): Integer; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWVCLHelper.html#GetSystemPixelsPerInch">GetSystemPixelsPerInch</a></b>: Integer; static;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWVCLHelper.html#IsDPIAware">IsDPIAware</a></b>(hProcess: THandle; fGetProcessDpiAwareness: <a  href="UTWHelpers.html#TWfGetProcessDpiAwareness">TWfGetProcessDpiAwareness</a>): Boolean; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWVCLHelper.html#ScaleByDPI">ScaleByDPI</a></b>(value, dpi, refDPI: Integer): Integer; static;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetDPIAwarenessContext"></span><code>class function <b>GetDPIAwarenessContext</b>(fGetProcessDpiAwareness: <a  href="UTWHelpers.html#TWfGetProcessDpiAwareness">TWfGetProcessDpiAwareness</a>): <a  href="UTWHelpers.html#EDPIAwarenessContext">EDPIAwarenessContext</a>; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get DPI awareness context   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>fGetProcessDpiAwareness</dt>
+<dd>Get process DPI awareness callback to call</dd>
+<dt>pControl</dt>
+<dd>Control or form for which DPI awareness should be tested, can be NULL</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">DPI awareness context</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetMonitorPixelsPerInch"></span><code>class function <b>GetMonitorPixelsPerInch</b>(pComponent: TComponent; refDPI: Integer; fGetDpiForMonitor: <a  href="UTWHelpers.html#TWfGetDpiForMonitor">TWfGetDpiForMonitor</a>): Integer; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get pixels per inch on current running app monitor    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pComponent</dt>
+<dd>Component located on monitor for which the current DPI should be get</dd>
+<dt>refDPI</dt>
+<dd>Pixels per inch reference, i.e DPI at which interface was designed</dd>
+<dt>fGetDpiForMonitor</dt>
+<dd>Get DPI for monitor callback to call</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Pixels per inch</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetNextParent"></span><code>class function <b>GetNextParent</b>(pControl: TControl; classID: TClass): TObject; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get closest parent owning a control  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pControl</dt>
+<dd>Control for which owning parent should be get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">classID Parent class identifier to find</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetParentForm"></span><code>class function <b>GetParentForm</b>(pControl: TControl): TCustomForm; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get form owning a control  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pControl</dt>
+<dd>Control for which owning form should be get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Form owning control, nil if not found or on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetPixelsPerInchRef"></span><code>class function <b>GetPixelsPerInchRef</b>(pOwner: TComponent): Integer; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get pixels per inch reference (i.e declared in design time)  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOwner</dt>
+<dd>Component owning this image list</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Pixels per inch</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetSystemPixelsPerInch"></span><code>class function <b>GetSystemPixelsPerInch</b>: Integer; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get the system pixels per inch </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">The system pixels per inch</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IsDPIAware"></span><code>class function <b>IsDPIAware</b>(hProcess: THandle; fGetProcessDpiAwareness: <a  href="UTWHelpers.html#TWfGetProcessDpiAwareness">TWfGetProcessDpiAwareness</a>): Boolean; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get if application is DPI aware   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>hProcess</dt>
+<dd>Process for which DPI awareness should be tested</dd>
+<dt>fGetProcessDpiAwareness</dt>
+<dd>Get process DPI awareness callback to call</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if system is DPI aware, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ScaleByDPI"></span><code>class function <b>ScaleByDPI</b>(value, dpi, refDPI: Integer): Integer; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Scale value based on DPI    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to scale</dd>
+<dt>dpi</dt>
+<dd>Current pixels per inch value</dd>
+<dt>refDPI</dt>
+<dd>Pixels per inch reference, i.e DPI at which interface was designed</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Scaled value</p></td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

@@ -9,12 +9,15 @@ interface
 
 uses System.Rtti,
      System.Types,
+     {$if CompilerVersion <= 23}
+        System.TypInfo,
+     {$ifend}
      System.SysUtils,
      System.Math,
      System.Generics.Defaults,
-     {$if CompilerVersion >= 32}
+     {$if CompilerVersion >= 29}
          System.Hash,
-     {$endif}
+     {$ifend}
      {$ifdef USE_VCL}
         Vcl.Graphics,
         Winapi.Windows,
@@ -764,9 +767,11 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            if ((w.TypeInfo.Name = 'Cardinal') or (w.TypeInfo.Name = 'NativeUInt')) then
-                res := Sqrt(Power(w.AsUInt64, 2) + Power(h.AsUInt64, 2))
-            else
+            {$if CompilerVersion > 23}
+                if ((w.TypeInfo.Name = 'Cardinal') or (w.TypeInfo.Name = 'NativeUInt')) then
+                    res := Sqrt(Power(w.AsUInt64, 2) + Power(h.AsUInt64, 2))
+                else
+            {$ifend}
                 res := Sqrt(Power(w.AsInt64, 2) + Power(h.AsInt64, 2));
 
         tkFloat:
@@ -793,10 +798,17 @@ end;
 //---------------------------------------------------------------------------
 function TWRect<T>.Invert: TWRect<T>;
 begin
-    Result.m_Left   := -m_Left;
-    Result.m_Top    := -m_Top;
-    Result.m_Right  := -m_Right;
-    Result.m_Bottom := -m_Bottom;
+    {$if CompilerVersion <= 23}
+        Result.m_Left   := TWGenericNumber<T>(0.0) - m_Left;
+        Result.m_Top    := TWGenericNumber<T>(0.0) - m_Top;
+        Result.m_Right  := TWGenericNumber<T>(0.0) - m_Right;
+        Result.m_Bottom := TWGenericNumber<T>(0.0) - m_Bottom;
+    {$else}
+        Result.m_Left   := -m_Left;
+        Result.m_Top    := -m_Top;
+        Result.m_Right  := -m_Right;
+        Result.m_Bottom := -m_Bottom;
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 function TWRect<T>.TopLeft: TWPoint<T>;
@@ -832,7 +844,12 @@ end;
 //---------------------------------------------------------------------------
 function TWRect<T>.GetCenter: TWPoint<T>;
 begin
-    Result := TWPoint<T>.Create(((m_Left + m_Right) / 2.0).Value, ((m_Top + m_Bottom) / 2.0).Value);
+    {$if CompilerVersion <= 23}
+        Result := TWPoint<T>.Create(((m_Left + m_Right) / TWGenericNumber<T>(2.0)).Value,
+                ((m_Top + m_Bottom) / TWGenericNumber<T>(2.0)).Value);
+    {$else}
+        Result := TWPoint<T>.Create(((m_Left + m_Right) / 2.0).Value, ((m_Top + m_Bottom) / 2.0).Value);
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 procedure TWRect<T>.Offset(const x, y: T);
@@ -998,7 +1015,7 @@ end;
 //---------------------------------------------------------------------------
 function TWRect<T>.GetHashCode(initValue: Integer): Integer;
 begin
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(m_Left,   SizeOf(T), initValue);
         Result := THashBobJenkins.GetHashValue(m_Top,    SizeOf(T), Result);
         Result := THashBobJenkins.GetHashValue(m_Right,  SizeOf(T), Result);
@@ -1008,7 +1025,7 @@ begin
         Result := BobJenkinsHash(m_Top,    SizeOf(T), Result);
         Result := BobJenkinsHash(m_Right,  SizeOf(T), Result);
         Result := BobJenkinsHash(m_Bottom, SizeOf(T), Result);
-    {$endif}
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 

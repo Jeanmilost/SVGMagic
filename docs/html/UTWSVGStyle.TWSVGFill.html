@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGStyle: Class TWSVGFill</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGFill"></span><h1 class="cio">Class TWSVGFill</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalCRs">Internal Classes and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGStyle.html">UTWSVGStyle</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGFill = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Style fill properties <br> <b>NOTE</b>A fill attribute may either contains a solid color value, or a link to a local or global define. The property may also indicate explicitly that no fill must be processed. Be careful, the color is a RGB color, the fill opacity level is written in another property (called &quot;fill-opacity&quot;)</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TWSVGFill</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalCRs"></span><h3 class="summary">Internal Classes and Records</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGStyle.TWSVGFill.IPropRule.html">IPropRule</a></b> = class(<a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>)</code></td>
+</tr>
+</table>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGStyle.TWSVGFill.html#IERule">IERule</a></b> = (...);</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGStyle.TWSVGFill.html#Create">Create</a></b>(pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGStyle.TWSVGFill.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGFill.html#Parse">Parse</a></b>(const name, value: UnicodeString; pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGFill.html#Print">Print</a></b>(margin: Cardinal): UnicodeString; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGFill.html#ToXml">ToXml</a></b>(var count: NativeUInt): UnicodeString; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGFill.html#GetProperty">GetProperty</a></b>(index: Integer): <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGFill.html#GetPropertyCount">GetPropertyCount</a></b>: Integer; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGStyle.TWSVGFill.html#Assign">Assign</a></b>(const pOther: <a  href="UTWSVGStyle.TWSVGFill.html">TWSVGFill</a>; pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGStyle.TWSVGFill.html#Clear">Clear</a></b>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGStyle.TWSVGFill.html#Log">Log</a></b>(margin: Cardinal); virtual;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGStyle.TWSVGFill.html#Count">Count</a></b>: Integer read <a  href="UTWSVGStyle.TWSVGFill.html#GetPropertyCount">GetPropertyCount</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGStyle.TWSVGFill.html#NoFill">NoFill</a></b>: Boolean read m_NoFill write m_NoFill;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGStyle.TWSVGFill.html#Properties">Properties</a></b>[index:Integer]: <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a> read <a  href="UTWSVGStyle.TWSVGFill.html#GetProperty">GetProperty</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IERule"></span><code><b>IERule</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Fill rule enumeration   </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_FR_Default">IE_FR_Default</span>: Default fill rule (i.e. nonzero) is used, or inherited from parent</li>
+<li>
+<span id="IE_FR_NonZero">IE_FR_NonZero</span>: This value determines the &quot;insideness&quot; of a point in the shape by drawing a ray from that point to infinity in any direction and then examining the places where a segment of the shape crosses the ray. Starting with a count of zero, add one each time a path segment crosses the ray from left to right and subtract one each time a path segment crosses the ray from right to left. After counting the crossings, if the result is zero then the point is outside the path. Otherwise, it is inside</li>
+<li>
+<span id="IE_FR_EvenOdd">IE_FR_EvenOdd</span>: This value determines the &quot;insideness&quot; of a point in the shape by drawing a ray from that point to infinity in any direction and counting the number of path segments from the given shape that the ray crosses. If this number is odd, the point is inside; if even, the point is outside</li>
+</ul>
+</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOptions</dt>
+<dd>SVG options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Parse"></span><code>function <b>Parse</b>(const name, value: UnicodeString; pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Parse the property content    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Property name to parse</dd>
+<dt>value</dt>
+<dd>Property value</dd>
+<dt>pParent</dt>
+<dd>Parent item at which the new properties will belong</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Print"></span><code>function <b>Print</b>(margin: Cardinal): UnicodeString; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Print content to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Content</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToXml"></span><code>function <b>ToXml</b>(var count: NativeUInt): UnicodeString; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get xml formatted string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>count</dt>
+<dd><b>[in, out]</b> Number of parsed properties</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">String</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetProperty"></span><code>function <b>GetProperty</b>(index: Integer): <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get property at index  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Property index</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Property, <code>Nil</code> if not found or on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetPropertyCount"></span><code>function <b>GetPropertyCount</b>: Integer; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get property count </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Property count</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWSVGStyle.TWSVGFill.html">TWSVGFill</a>; pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) content from another fill  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other fill properties to copy from</dd>
+<dt>pParent</dt>
+<dd>Fill parent style</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear all fill properties</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Log"></span><code>procedure <b>Log</b>(margin: Cardinal); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Log content </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Count"></span><code>property <b>Count</b>: Integer read <a  href="UTWSVGStyle.TWSVGFill.html#GetPropertyCount">GetPropertyCount</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the properties count</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="NoFill"></span><code>property <b>NoFill</b>: Boolean read m_NoFill write m_NoFill;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set if no fill should be processed</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Properties"></span><code>property <b>Properties</b>[index:Integer]: <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a> read <a  href="UTWSVGStyle.TWSVGFill.html#GetProperty">GetProperty</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the property at index. Example: property := Properties[0]; <br> <b>NOTE</b> <code>Nil</code> will be returned if index is out of bounds</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

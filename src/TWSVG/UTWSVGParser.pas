@@ -58,7 +58,7 @@ type
 
                     {**
                      Read SVG element from xml
-                     @param(pNode Xml node containing SVG element to read
+                     @param(pNode Xml node containing SVG element to read)
                      @returns(@true on success, otherwise @false)
                     }
                     {$ifdef USE_VERYSIMPLEXML}
@@ -502,7 +502,7 @@ begin
                 Result := pGroup.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pGroup.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pGroup.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pGroup, m_pDefs, False)) then
@@ -530,7 +530,7 @@ begin
                 Result  := pSwitch.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pSwitch.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pSwitch.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pSwitch, m_pDefs, False)) then
@@ -558,7 +558,7 @@ begin
                 Result  := pAction.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pAction.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pAction.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pAction, m_pDefs, False)) then
@@ -586,7 +586,7 @@ begin
                 Result := pRect.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pRect.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pRect.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pRect, m_pDefs, False)) then
@@ -614,7 +614,7 @@ begin
                 Result  := pCircle.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pCircle.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pCircle.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pCircle, m_pDefs, False)) then
@@ -642,7 +642,7 @@ begin
                 Result   := pEllipse.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pEllipse.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pEllipse.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pEllipse, m_pDefs, False)) then
@@ -670,7 +670,7 @@ begin
                 Result := pLine.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pLine.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pLine.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pLine, m_pDefs, False)) then
@@ -698,7 +698,7 @@ begin
                 Result   := pPolygon.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pPolygon.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pPolygon.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pPolygon, m_pDefs, False)) then
@@ -726,7 +726,7 @@ begin
                 Result    := pPolyline.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pPolyline.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pPolyline.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pPolyline, m_pDefs, False)) then
@@ -754,7 +754,7 @@ begin
                 Result := pPath.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pPath.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pPath.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pPath, m_pDefs, False)) then
@@ -782,7 +782,7 @@ begin
                 Result := pText.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pText.ItemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pText.ItemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pText, m_pDefs, False)) then
@@ -810,7 +810,7 @@ begin
                 Result := pUse.Read(pChildNode) and Result;
 
                 // is item identifier empty?
-                if (not pUse.ITemID.IsEmpty) then
+                if (not TWStringHelper.IsEmpty(pUse.ITemID)) then
                 begin
                     // register the item
                     if (not RegisterLink(pUse, m_pDefs, False)) then

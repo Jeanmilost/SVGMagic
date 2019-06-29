@@ -827,7 +827,7 @@ begin
                 dgImageGrid.SetFocus;
 
             // ignore mouse wheel on empty view, because Embarcadero developers didn't foresee that
-            // may happen, and a stupid "out of range" exception is raised doing that
+            // may happen, and doing that an "out of range" exception is raised
             if (m_pImageList.Count = 0) then
             begin
                 message.Result := 0;

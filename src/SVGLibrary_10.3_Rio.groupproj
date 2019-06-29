@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{E550D8F0-0006-45A5-A994-7B4EDC5AF131}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="TWCommon\10.3 Rio\TWCommon.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TWRendering\10.3 Rio\TWRendering.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TWSVG\10.3 Rio\TWSVG.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TWSVG\10.3 Rio\TWSVGD.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="TWCommon">
+        <MSBuild Projects="TWCommon\10.3 Rio\TWCommon.dproj"/>
+    </Target>
+    <Target Name="TWCommon:Clean">
+        <MSBuild Projects="TWCommon\10.3 Rio\TWCommon.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TWCommon:Make">
+        <MSBuild Projects="TWCommon\10.3 Rio\TWCommon.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TWRendering">
+        <MSBuild Projects="TWRendering\10.3 Rio\TWRendering.dproj"/>
+    </Target>
+    <Target Name="TWRendering:Clean">
+        <MSBuild Projects="TWRendering\10.3 Rio\TWRendering.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TWRendering:Make">
+        <MSBuild Projects="TWRendering\10.3 Rio\TWRendering.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TWSVG">
+        <MSBuild Projects="TWSVG\10.3 Rio\TWSVG.dproj"/>
+    </Target>
+    <Target Name="TWSVG:Clean">
+        <MSBuild Projects="TWSVG\10.3 Rio\TWSVG.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TWSVG:Make">
+        <MSBuild Projects="TWSVG\10.3 Rio\TWSVG.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TWSVGD">
+        <MSBuild Projects="TWSVG\10.3 Rio\TWSVGD.dproj"/>
+    </Target>
+    <Target Name="TWSVGD:Clean">
+        <MSBuild Projects="TWSVG\10.3 Rio\TWSVGD.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TWSVGD:Make">
+        <MSBuild Projects="TWSVG\10.3 Rio\TWSVGD.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="TWCommon;TWRendering;TWSVG;TWSVGD"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="TWCommon:Clean;TWRendering:Clean;TWSVG:Clean;TWSVGD:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="TWCommon:Make;TWRendering:Make;TWSVG:Make;TWSVGD:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

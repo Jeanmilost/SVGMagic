@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGStyle: Class TWSVGStroke</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGStroke"></span><h1 class="cio">Class TWSVGStroke</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalCRs">Internal Classes and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGStyle.html">UTWSVGStyle</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGStroke = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Style stroke properties <br> <b>NOTE</b> A stroke attribute may either contains a solid color value, or a link to a local or global define. The property may also indicate explicitly that no stroke must be processed. Be careful, the color is a RGB color, the stroke opacity level is written in another property (called &quot;stroke-opacity&quot;)</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TWSVGStroke</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalCRs"></span><h3 class="summary">Internal Classes and Records</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGStyle.TWSVGStroke.IPropLineCap.html">IPropLineCap</a></b> = class(<a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>)</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGStyle.TWSVGStroke.IPropLineJoin.html">IPropLineJoin</a></b> = class(<a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>)</code></td>
+</tr>
+</table>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGStyle.TWSVGStroke.html#IELineCap">IELineCap</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGStyle.TWSVGStroke.html#IELineJoin">IELineJoin</a></b> = (...);</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGStyle.TWSVGStroke.html#Create">Create</a></b>(pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGStyle.TWSVGStroke.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGStroke.html#Parse">Parse</a></b>(const name, value: UnicodeString; pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): Boolean; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGStroke.html#Print">Print</a></b>(margin: Cardinal): UnicodeString; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGStroke.html#ToXml">ToXml</a></b>(var count: NativeUInt): UnicodeString; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGStroke.html#GetProperty">GetProperty</a></b>(index: Integer): <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGStyle.TWSVGStroke.html#GetPropertyCount">GetPropertyCount</a></b>: Integer; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGStyle.TWSVGStroke.html#Assign">Assign</a></b>(const pOther: <a  href="UTWSVGStyle.TWSVGStroke.html">TWSVGStroke</a>; pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGStyle.TWSVGStroke.html#Clear">Clear</a></b>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGStyle.TWSVGStroke.html#Log">Log</a></b>(margin: Cardinal); virtual;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGStyle.TWSVGStroke.html#Count">Count</a></b>: Integer read <a  href="UTWSVGStyle.TWSVGStroke.html#GetPropertyCount">GetPropertyCount</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGStyle.TWSVGStroke.html#NoStroke">NoStroke</a></b>: Boolean read m_NoStroke write m_NoStroke;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGStyle.TWSVGStroke.html#Properties">Properties</a></b>[index:Integer]: <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a> read <a  href="UTWSVGStyle.TWSVGStroke.html#GetProperty">GetProperty</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IELineCap"></span><code><b>IELineCap</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Linecap enumeration    </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_LC_Default">IE_LC_Default</span>: Use default line cap. <b>NOTE</b> by default linecap is inherited from parent</li>
+<li>
+<span id="IE_LC_Butt">IE_LC_Butt</span>: Ends the line without termination shape</li>
+<li>
+<span id="IE_LC_Round">IE_LC_Round</span>: Ends the line with a round</li>
+<li>
+<span id="IE_LC_Square">IE_LC_Square</span>: Ends the line with a square</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IELineJoin"></span><code><b>IELineJoin</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Line join enumeration    </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_LJ_Default">IE_LJ_Default</span>: Use default line join. <b>NOTE</b> by default line join is inherited from parent</li>
+<li>
+<span id="IE_LJ_Miter">IE_LJ_Miter</span>: Use square shape to stroke the lines</li>
+<li>
+<span id="IE_LJ_Round">IE_LJ_Round</span>: Use round shape to stroke the lines</li>
+<li>
+<span id="IE_LJ_Bevel">IE_LJ_Bevel</span>: Use no shape to stroke the lines</li>
+</ul>
+</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOptions</dt>
+<dd>SVG options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Parse"></span><code>function <b>Parse</b>(const name, value: UnicodeString; pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Parse the property content    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>name</dt>
+<dd>Property name to parse</dd>
+<dt>value</dt>
+<dd>Property value</dd>
+<dt>pParent</dt>
+<dd>Parent item at which the new properties will belong</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Print"></span><code>function <b>Print</b>(margin: Cardinal): UnicodeString; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Print content to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Content</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToXml"></span><code>function <b>ToXml</b>(var count: NativeUInt): UnicodeString; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get xml formatted string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>count</dt>
+<dd><b>[in, out]</b> Number of parsed properties</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">String</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetProperty"></span><code>function <b>GetProperty</b>(index: Integer): <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get property at index  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Property index</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Property, <code>Nil</code> if not found or on error</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetPropertyCount"></span><code>function <b>GetPropertyCount</b>: Integer; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get property count </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Property count</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWSVGStyle.TWSVGStroke.html">TWSVGStroke</a>; pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) content from another stroke  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other stroke properties to copy from</dd>
+<dt>pParent</dt>
+<dd>Stroke parent style</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear all stroke properties</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Log"></span><code>procedure <b>Log</b>(margin: Cardinal); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Log content </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Count"></span><code>property <b>Count</b>: Integer read <a  href="UTWSVGStyle.TWSVGStroke.html#GetPropertyCount">GetPropertyCount</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the properties count</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="NoStroke"></span><code>property <b>NoStroke</b>: Boolean read m_NoStroke write m_NoStroke;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set if no stroke should be processed <br> <b>NOTE</b> BE CAREFUL, this will be set to true if, and only if the stroke property is explicitly set to 'none'. This distinction is important because a stroke property is also considered as 'none' by default, but in this case the inheritance rules are applied, while the stroke will be effectively applied with an empty color, and will not inherit from his parent, if this property is set to true</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Properties"></span><code>property <b>Properties</b>[index:Integer]: <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a> read <a  href="UTWSVGStyle.TWSVGStroke.html#GetProperty">GetProperty</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the property at index. Example: property := Properties[0]; <br> <b>NOTE</b> <code>Nil</code> will be returned if index is out of bounds</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

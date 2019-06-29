@@ -272,8 +272,8 @@ type
 
         public
             {**
-             Get or set the value at index
-             @param(index Index)
+             Get or set the value at index. Example: pColor := Values[0];
+             @br @bold(NOTE) An exception will be raised if index is out of bounds
             }
             property Values[index: Cardinal]: PWColor read GetValue write SetValue;
 
@@ -486,7 +486,7 @@ type
              Parse data
              @param(data Data to parse)
              @returns(@true on success, otherwise @false)
-             @bold @br(NOTE) In this overload, the code clarity is favored on the execution speed.
+             @br @bold(NOTE) In this overload, the code clarity is favored on the execution speed.
                              The reason why this function was kept is that it can be used as strongly
                              tested alternative in case an unknown bug happen in the function used in
                              production
@@ -1248,7 +1248,7 @@ begin
     // first link char is a #? (this means that the link is local)
     if (data[1] = '#') then
     begin
-        m_Value := data.Substring(1, Length(data) - 1);
+        m_Value := TWStringHelper.Substr(data, 1, Length(data) - 1);
         m_Local := True;
     end
     else
@@ -1309,7 +1309,7 @@ begin
         // can trust the SVG syntax?
         if (m_pOptions.m_TrustSVGSyntax) then
             // strip the "url(...)" surrounding the value
-            url := data.Substring(4, Length(data) - 5)
+            url := TWStringHelper.Substr(data, 4, Length(data) - 5)
         else
         begin
             // the url may contain wrong separators like url(#linearGradient3094) rgb(0, 0, 0); In
@@ -1327,7 +1327,7 @@ begin
                 end;
 
             // extract the value to parse
-            url := data.Substring(4, index - 5);
+            url := TWStringHelper.Substr(data, 4, index - 5);
         end;
 
         // parse the url link
@@ -1662,8 +1662,8 @@ begin
             ')':
             begin
                 // set value
-                if (not SetValue(data.Substring(start, (valuePos - 1) - start),
-                        data.Substring(valuePos, offset - valuePos)))
+                if (not SetValue(TWStringHelper.Substr(data, start, (valuePos - 1) - start),
+                        TWStringHelper.Substr(data, valuePos, offset - valuePos)))
                 then
                     Exit(False);
 
@@ -2078,7 +2078,7 @@ begin
         m_Negative := True;
 
         // unfortunately TWSimpleTime is unable to deal with negative value, so skip it
-        Exit(m_Value.FromSMIL(data.Substring(1, Length(data) - 1)));
+        Exit(m_Value.FromSMIL(TWStringHelper.Substr(data, 1, Length(data) - 1)));
     end;
 
     Result := m_Value.FromSMIL(data);

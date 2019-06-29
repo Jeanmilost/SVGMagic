@@ -423,7 +423,7 @@ type
 
                     {**
                      Assign (i.e. copy) the text options content from another text options
-                     @param(pOther Other text options to copy from
+                     @param(pOther Other text options to copy from)
                     }
                     procedure Assign(const pOther: ITextOptions); virtual;
 
@@ -777,7 +777,7 @@ type
              @param(pStream Stream containing font data)
              @param(fontLength Font data length)
              @returns(@true on success, otherwise @false)
-             @bold @br(NOTE) Thus added font will be available for ALL applications until the Windows
+             @br @bold(NOTE) Thus added font will be available for ALL applications until the Windows
                              session is closed or the font is removed using RemoveFont or RemoveFonts.
                              But be careful, this is true ONLY for GDI fonts, and NOT for GDI+
             }
@@ -788,8 +788,8 @@ type
              Get font
              @param(name Font name)
              @returns(font, @nil if not found)
-             @br @bold Only font previously added with AddFont() can be get. Standard or custom font
-                       belonging to Windows session are not included
+             @br @bold(NOTE) Only font previously added with AddFont() can be get. Standard or custom
+                             font belonging to Windows session are not included
             }
             function GetFont(const name: UnicodeString): THandle; virtual;
 
@@ -1519,7 +1519,7 @@ begin
                                     begin
                                         // new word, add it
                                         SetLength(words, Length(words) + 1);
-                                        words[Length(words) - 1] := text.Substring(wordStart, j - wordStart);
+                                        words[Length(words) - 1] := TWStringHelper.Substr(text, wordStart, j - wordStart);
 
                                         // skip character from next word
                                         wordStart := j + 1;
@@ -1539,7 +1539,7 @@ begin
                                     begin
                                         // new word, add it
                                         SetLength(words, Length(words) + 1);
-                                        words[Length(words) - 1] := text.Substring(wordStart, j - wordStart);
+                                        words[Length(words) - 1] := TWStringHelper.Substr(text, wordStart, j - wordStart);
 
                                         wordStart := j;
                                     end;
@@ -1551,7 +1551,7 @@ begin
                         if (Integer(wordStart) < Length(text)) then
                         begin
                             SetLength(words, Length(words) + 1);
-                            words[Length(words) - 1] := text.Substring(wordStart, Length(text) - Integer(wordStart));
+                            words[Length(words) - 1] := TWStringHelper.Substr(text, wordStart, Length(text) - Integer(wordStart));
                         end;
                     end;
 

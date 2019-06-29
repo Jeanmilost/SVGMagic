@@ -227,8 +227,8 @@ type
             property NoFill: Boolean read m_NoFill write m_NoFill;
 
             {**
-             Get the property at index
-             @param index - property index
+             Get the property at index. Example: property := Properties[0];
+             @br @bold(NOTE) @nil will be returned if index is out of bounds
             }
             property Properties[index: Integer]: TWSVGProperty read GetProperty;
 
@@ -523,8 +523,8 @@ type
             property NoStroke: Boolean read m_NoStroke write m_NoStroke;
 
             {**
-             Get the property at index
-             @param index - property index
+             Get the property at index. Example: property := Properties[0];
+             @br @bold(NOTE) @nil will be returned if index is out of bounds
             }
             property Properties[index: Integer]: TWSVGProperty read GetProperty;
 
@@ -679,8 +679,8 @@ type
 
                 public
                     {**
-                     Get or set the value at index
-                     @param(index Index)
+                     Get or set the value at index. Example: display := Values[0];
+                     @br @bold(NOTE) An exception will be raised if index is out of bounds
                     }
                     property Values[index: Cardinal]: IEDisplay read GetValue write SetValue;
 
@@ -811,8 +811,8 @@ type
             property Stroke: TWSVGStroke read m_pStroke;
 
             {**
-             Get the property at index
-             @param index - property index
+             Get the property at index. Example: property := Properties[0];
+             @br @bold(NOTE) @nil will be returned if index is out of bounds
             }
             property Properties[index: Integer]: TWSVGProperty read GetProperty;
 

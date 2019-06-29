@@ -68,9 +68,9 @@ type
         public
             {**
              Constructor/Destructor
-             @note Because some objects used by this class, as e.g. WTRenderer_GDIPlus, must be
-                   initialized only once during application lifetime, no instance of this object
-                   should be created dynamically
+             @br @bold(NOTE) Because some objects used by this class, as e.g. WTRenderer_GDIPlus,
+                             must be initialized only once during application lifetime, no instance
+                             of this object should be created dynamically
             }
             constructor Create; virtual;
 
@@ -164,10 +164,10 @@ type
 
             {**
              Get text size
-             @param(text - text to measure
-             @param(rect - text bounding rectangle
-             @param(pOptions - text options
-             @param(hDC - device context handle
+             @param(text - text to measure)
+             @param(rect - text bounding rectangle)
+             @param(pOptions - text options)
+             @param(hDC - device context handle)
              @param(pCharacters @bold([out]) Pointer to variable to receive the number of characters
                                              that will be displayed in rect, if @nil will be ingored)
              @param(pLines @bold([out]) Pointer to variable to receive the number of lines that will

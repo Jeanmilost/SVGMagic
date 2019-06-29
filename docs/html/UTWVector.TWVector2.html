@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWVector: Record TWVector2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWVector2"></span><h1 class="cio">Record TWVector2</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWVector.html">UTWVector</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWVector2 = record</code></p>
+<h2 class="description">Description</h2>
+<p>
+2D vector</p>
+<h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>constructor <b><a  href="UTWVector.TWVector2.html#Create">Create</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>); overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>constructor <b><a  href="UTWVector.TWVector2.html#Create">Create</a></b>(const x, y: Single); overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Add">Add</a></b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Add">Add</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#AddAndAssign">AddAndAssign</a></b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#AddAndAssign">AddAndAssign</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Cross">Cross</a></b>(const vector: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Differs">Differs</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#DivAndAssign">DivAndAssign</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#DivAndAssign">DivAndAssign</a></b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Divide">Divide</a></b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Divide">Divide</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Dot">Dot</a></b>(const vector: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Single; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#GetHashCode">GetHashCode</a></b>(initValue: Integer): Integer; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Invert">Invert</a></b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#IsEqual">IsEqual</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#IsZero">IsZero</a></b>: Boolean; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Length">Length</a></b>: Single; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Mul">Mul</a></b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Mul">Mul</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#MulAndAssign">MulAndAssign</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#MulAndAssign">MulAndAssign</a></b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Normalize">Normalize</a></b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Sub">Sub</a></b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#Sub">Sub</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#SubAndAssign">SubAndAssign</a></b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <b><a  href="UTWVector.TWVector2.html#SubAndAssign">SubAndAssign</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>procedure <b><a  href="UTWVector.TWVector2.html#Assign">Assign</a></b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>); inline;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>class operator <b><a  href="UTWVector.TWVector2.html#Equal">Equal</a></b>(a, b: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>class operator <b><a  href="UTWVector.TWVector2.html#NotEqual">NotEqual</a></b>(a, b: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="itemcode"><code>property <b><a  href="UTWVector.TWVector2.html#X">X</a></b>: Single read m_X write m_X;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>property <b><a  href="UTWVector.TWVector2.html#Y">Y</a></b>: Single read m_Y write m_Y;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>); overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Copy constructor </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const x, y: Single); overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>x</dt>
+<dd>x coordinate</dd>
+<dt>y</dt>
+<dd>y coordinate</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Add"></span><code>function <b>Add</b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Adds a value to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to add to vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Added vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Add"></span><code>function <b>Add</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Adds the content of another vector to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to add to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Added vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="AddAndAssign"></span><code>function <b>AddAndAssign</b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Adds a value and assigns the result to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to add to vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Added vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="AddAndAssign"></span><code>function <b>AddAndAssign</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Adds the content of another vector and assigns the result to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to add to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Added vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Cross"></span><code>function <b>Cross</b>(const vector: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get cross product between 2 vectors  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>vector</dt>
+<dd>Other vector to calculate with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Cross product</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Differs"></span><code>function <b>Differs</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Compares the content of 2 vectors and determines if they are different  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if vectors differ, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="DivAndAssign"></span><code>function <b>DivAndAssign</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Divides the content of another vector and assigns the result to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to divide to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Divided vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="DivAndAssign"></span><code>function <b>DivAndAssign</b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Divides a value and assigns the result to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to divide to vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Divided vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Divide"></span><code>function <b>Divide</b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Divides a value to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to divide to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Divided vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Divide"></span><code>function <b>Divide</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Divides the content of another vector to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to divide to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Divided vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Dot"></span><code>function <b>Dot</b>(const vector: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Single; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get dot product between 2 vectors (i.e. angle between 2 vectors)   <br> <b>NOTE</b> To find correct angle value, result must be divided by the product of vector lengths (v1.Length * v2.Length) in case they weren't normalized before <br> <b>NOTE</b> Resulting angle is exprimed in Radians</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>vector</dt>
+<dd>Other vector to calculate with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Dot product</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GetHashCode"></span><code>function <b>GetHashCode</b>(initValue: Integer): Integer; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get the hash code based on the class content  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>initValue</dt>
+<dd>- initialization value</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Hash code</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Invert"></span><code>function <b>Invert</b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Inverts the vector </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Inverted vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IsEqual"></span><code>function <b>IsEqual</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Compares the content of 2 vectors and determines if they are equal  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to compare with</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if vectors are equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IsZero"></span><code>function <b>IsZero</b>: Boolean; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Check if vector is empty (i.e. all values are equals to 0) </p>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if vector is empty, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Length"></span><code>function <b>Length</b>: Single; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Calculate vector length </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Length</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Mul"></span><code>function <b>Mul</b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplies a value to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to multiply to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Multiplied vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Mul"></span><code>function <b>Mul</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplies the content of another vector to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to multiply to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Multiplied vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="MulAndAssign"></span><code>function <b>MulAndAssign</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multiplies the content of another vector and assigns the result to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to multiply to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Multiplied vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="MulAndAssign"></span><code>function <b>MulAndAssign</b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Multilpies a value and assigns the result to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to multiply to vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Multiplied vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Normalize"></span><code>function <b>Normalize</b>: <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Get normalized vector </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Normalized vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Sub"></span><code>function <b>Sub</b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtracts a value to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to subtract to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Subtracted vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Sub"></span><code>function <b>Sub</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtracts to this vector the contents of another vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to subtract to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Subtracted vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="SubAndAssign"></span><code>function <b>SubAndAssign</b>(const value: Single): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtracts a value and assigns the result to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to subtract to vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Subtracted vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="SubAndAssign"></span><code>function <b>SubAndAssign</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; overload; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Subtracts the content of another vector and assigns the result to this vector  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to subtract to this vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Subtracted vector</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const other: <a  href="UTWVector.TWVector2.html">TWVector2</a>); inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Assigns (i.e. copies) the content from another vector </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>other</dt>
+<dd>Other vector to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Equal"></span><code>class operator <b>Equal</b>(a, b: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Equality operator (allows operations on vectors like a = b)   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First vector to compare</dd>
+<dt>b</dt>
+<dd>Second vector to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if vectors are equal, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="NotEqual"></span><code>class operator <b>NotEqual</b>(a, b: <a  href="UTWVector.TWVector2.html">TWVector2</a>): Boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Not equality operator (allows operations on vectors like a &lt;&gt; b)   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>a</dt>
+<dd>First vector to compare</dd>
+<dt>b</dt>
+<dd>Second vector to compare</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if vectors are not equal, otherwise <code>False</code></p></td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="X"></span><code>property <b>X</b>: Single read m_X write m_X;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Y"></span><code>property <b>Y</b>: Single read m_Y write m_Y;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

@@ -172,7 +172,7 @@ type
 
             {**
              Set animation speed
-             @param(speed Animation speed (value < 1.0 decreases the speed and > 1.0 increases it)
+             @param(speed Animation speed (value < 1.0 decreases the speed and > 1.0 increases it))
             }
             procedure SetAnimSpeed(speed: Double); virtual;
 
@@ -197,22 +197,22 @@ type
             {**
              Get the frame count
              @returns(The frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used
-                       to determine how many frames, in an ideal situation, should be rendered
-                       by seconds, and thus allows to calculate the time interval between each
-                       frames. Instead, the FPS represents the number of frames per seconds
-                       a system can effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used
+                             to determine how many frames, in an ideal situation, should be rendered
+                             by seconds, and thus allows to calculate the time interval between each
+                             frames. Instead, the FPS represents the number of frames per seconds
+                             a system can effectively process
             }
             function GetFrameCount: Cardinal; virtual;
 
             {**
              Set the frame count
              @param(count Frame count)
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used
-                       to determine how many frames, in an ideal situation, should be rendered
-                       by seconds, and thus allows to calculate the time interval between each
-                       frames. Instead, the FPS represents the number of frames per seconds
-                       a system can effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used
+                             to determine how many frames, in an ideal situation, should be rendered
+                             by seconds, and thus allows to calculate the time interval between each
+                             frames. Instead, the FPS represents the number of frames per seconds
+                             a system can effectively process
             }
             procedure SetFrameCount(count: Cardinal); virtual;
 
@@ -380,11 +380,11 @@ type
 
             {**
              Get or set the number of frame to render per seconds
-             @br @bold Be careful, this is not identical to the FPS. The frame count is used
-                       to determine how many frames, in an ideal situation, should be rendered
-                       by seconds, and thus allows to calculate the time interval between each
-                       frames. Instead, the FPS represents the number of frames per seconds
-                       a system can effectively process
+             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used
+                             to determine how many frames, in an ideal situation, should be rendered
+                             by seconds, and thus allows to calculate the time interval between each
+                             frames. Instead, the FPS represents the number of frames per seconds
+                             a system can effectively process
             }
             property FrameCount: Cardinal read GetFrameCount write SetFrameCount nodefault;
 
@@ -995,7 +995,7 @@ var
     {$if defined (WTCONTROLS_LOG) and defined (ENABLE_SVG_GRAPHIC_LOGGING)}
         pStrStream: TStringStream;
         content:    UnicodeString;
-    {$endif}
+    {$ifend}
     pStrWriter: TStreamWriter;
     data:       UnicodeString;
     c:          WideChar;
@@ -1025,7 +1025,7 @@ begin
 
         TWLogHelper.LogToCompiler('WTSVGGraphic - save - stream content - ' + content
                 + ' - buffer content - ' + m_Data);
-    {$endif}
+    {$ifend}
 
     i := 0;
 
@@ -1039,7 +1039,7 @@ begin
     end;
 
     // get the SVG data without the TWSVGGraphic prefixes
-    data       := m_Data.Substring(i);
+    data       := TWStringHelper.Substr(m_Data, i);
     pStrWriter := nil;
 
     try

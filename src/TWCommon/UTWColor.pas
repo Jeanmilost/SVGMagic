@@ -15,9 +15,9 @@ uses System.SysUtils,
      System.Math,
      System.Generics.Defaults,
      System.UITypes,
-     {$if CompilerVersion >= 32}
+     {$if CompilerVersion >= 29}
          System.Hash,
-     {$endif}
+     {$ifend}
      {$ifdef USE_VCL}
          Vcl.Graphics,
          Vcl.GraphUtil,
@@ -31,7 +31,7 @@ uses System.SysUtils,
      UTWMajorSettings;
 
 const
-    // stupidly no doc explain which are the range of the returned hsl values, that are between
+    // unfortunately no doc explain which are the range of the returned hsl values, that are between
     // 0 and 240, as mentioned on the only doc that speak correctly about this function, see:
     // https://source.winehq.org/WineAPI/ColorRGBToHLS.html
     C_TWColor_Max_HSL_Value:  Byte = 240;
@@ -45,8 +45,8 @@ type
 
     {**
      Universal color class, supporting VCL, GDI and GDI+ colors and conversion tools
-     @exclude(The code has been optimized to gain maximum possible speed, therefore, do not clean it
-              unless you are really aware of what you are doing)
+     @br @bold(NOTE) The code has been optimized to gain maximum possible speed, therefore, do not
+                     clean it unless you are really aware of what you are doing
     }
     TWColor = record
         public type
@@ -74,6 +74,40 @@ type
             m_Green: Byte;
             m_Blue:  Byte;
             m_Alpha: Byte;
+
+            {**
+             Gets a substring of a string
+             @param(str String from which the substring should be extracted)
+             @param(index Start index in the source string from which the substring should be copied)
+             @param(length Substring length to copy in the source string)
+             @br @bold(NOTE) This function is a duplicate of the TWStringHelper.Substr() one,
+                             unfortunately it's not possible to use the helper version here because
+                             UTWColor unit is included in UTWHelpers. For that reason this function
+                             was duplicated as a workaround
+            }
+            function Substr(const str: UnicodeString; index, length: Integer): UnicodeString; inline;
+
+            {**
+             Converts a string to upper case
+             @param(str Source string to convert)
+             @returns(Converted string to uppercase)
+             @br @bold(NOTE) This function is a duplicate of the TWStringHelper.ToUpper() one,
+                             unfortunately it's not possible to use the helper version here because
+                             UTWColor unit is included in UTWHelpers. For that reason this function
+                             was duplicated as a workaround
+            }
+            class function ToUpper(const str: UnicodeString): UnicodeString; inline; static;
+
+            {**
+             Converts a string to lower case
+             @param(str Source string to convert)
+             @returns(Converted string to lowercase)
+             @br @bold(NOTE) This function is a duplicate of the TWStringHelper.ToLower() one,
+                             unfortunately it's not possible to use the helper version here because
+                             UTWColor unit is included in UTWHelpers. For that reason this function
+                             was duplicated as a workaround
+            }
+            class function ToLower(const str: UnicodeString): UnicodeString; inline; static;
 
             {**
              Convert the hue value of a HSL color to a RGB value
@@ -112,8 +146,8 @@ type
              @param(green Color green component)
              @param(blue Color blue component)
              @param(alpha Color alpha component)
-             *@note Use an overload instead of a default parameter, otherwise the wrong code will be
-             *      emitted in the .hpp files
+             @br @bold(NOTE) Use an overload instead of a default parameter, otherwise the wrong
+                             code will be emitted in the .hpp files
             }
             constructor Create(red, green, blue, alpha: Byte); overload;
 
@@ -129,8 +163,8 @@ type
              Constructor
              @param(color Standard VCL color)
              @param(alpha Color alpha component)
-             *@note Use an overload instead of a default parameter, otherwise the wrong code will be
-             *      emitted in the .hpp files
+             @br @bold(NOTE) Use an overload instead of a default parameter, otherwise the wrong
+                             code will be emitted in the .hpp files
             }
             {$ifdef USE_VCL}
                 constructor Create(const color: TColor; alpha: Byte); overload;
@@ -148,8 +182,8 @@ type
              Constructor
              @param(color Standard GDI color)
              @param(alpha Color alpha component)
-             *@note Use an overload instead of a default parameter, otherwise the wrong code will be
-             *      emitted in the .hpp files
+             @br @bold(NOTE) Use an overload instead of a default parameter, otherwise the wrong
+                             code will be emitted in the .hpp files
             }
             {$ifdef MSWINDOWS}
                 constructor Create(const color: TColorRef; alpha: Byte); overload;
@@ -746,6 +780,34 @@ begin
     Assign(pOther^);
 end;
 //---------------------------------------------------------------------------
+function TWColor.Substr(const str: UnicodeString; index, length: Integer): UnicodeString;
+begin
+    {$if CompilerVersion <= 23}
+        // NOTE + 1 to compensate 1 based UnicodeString indexes
+        Result := Copy(str, index + 1, length);
+    {$else}
+        Result := str.Substring(index, length);
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
+class function TWColor.ToUpper(const str: UnicodeString): UnicodeString;
+begin
+    {$if CompilerVersion <= 23}
+        Result := WideUpperCase(str);
+    {$else}
+        Result := str.ToUpper;
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
+class function TWColor.ToLower(const str: UnicodeString): UnicodeString;
+begin
+    {$if CompilerVersion <= 23}
+        Result := WideLowerCase(str);
+    {$else}
+        Result := str.ToLower;
+    {$ifend}
+end;
+//---------------------------------------------------------------------------
 {$ifndef MSWINDOWS}
     function TWColor.HueToRGB(hue, mid1, mid2: Word): Word;
     begin
@@ -822,7 +884,7 @@ end;
 //---------------------------------------------------------------------------
 function TWColor.GetHashCode(initValue: Integer): Integer;
 begin
-    {$if CompilerVersion >= 32}
+    {$if CompilerVersion >= 29}
         Result := THashBobJenkins.GetHashValue(m_Red,   SizeOf(Byte), initValue);
         Result := THashBobJenkins.GetHashValue(m_Green, SizeOf(Byte), Result);
         Result := THashBobJenkins.GetHashValue(m_Blue,  SizeOf(Byte), Result);
@@ -832,7 +894,7 @@ begin
         Result := BobJenkinsHash(m_Green, SizeOf(Byte), Result);
         Result := BobJenkinsHash(m_Blue,  SizeOf(Byte), Result);
         Result := BobJenkinsHash(m_Alpha, SizeOf(Byte), Result);
-    {$endif}
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 procedure TWColor.Assign(const other: TWColor);
@@ -960,14 +1022,6 @@ end;
 {$ifdef USE_VCL}
     procedure TWColor.SetGDIPlusColor(const color: TGpColor);
     begin
-        {FIXME to be verified
-        // convert from GDI+ color
-        m_Red   := color.GetRed;
-        m_Green := color.GetGreen;
-        m_Blue  := color.GetBlue;
-        m_Alpha := color.GetAlpha;
-        }
-
         // convert from GDI+ color
         m_Red   := ((color shr RedShift)   and $ff);
         m_Green := ((color shr GreenShift) and $ff);
@@ -1352,9 +1406,9 @@ begin
     end;
 
     if (upperCase) then
-        Result := Result.ToUpper
+        Result := ToUpper(Result)
     else
-        Result := Result.ToLower;
+        Result := ToLower(Result);
 end;
 //---------------------------------------------------------------------------
 function TWColor.FromHex(const hex: UnicodeString; format: IEHexFormat): Boolean;
@@ -1368,7 +1422,7 @@ begin
         Exit(False);
 
     // convert value to lower case
-    value := hex.ToLower;
+    value := ToLower(hex);
 
     // get char count
     count := Length(value);
@@ -1378,7 +1432,7 @@ begin
     begin
         // remove prefix
         Dec(count, 2);
-        value := value.Substring(2, count);
+        value := Substr(value, 2, count);
     end;
 
     // iterate through chars
@@ -1397,9 +1451,9 @@ begin
                 Exit(False);
 
             // convert RGB values
-            m_Red   := StrToInt('$' + hexValue.Substring(0, 2));
-            m_Green := StrToInt('$' + hexValue.Substring(2, 2));
-            m_Blue  := StrToInt('$' + hexValue.Substring(4, 2));
+            m_Red   := StrToInt('$' + Substr(hexValue, 0, 2));
+            m_Green := StrToInt('$' + Substr(hexValue, 2, 2));
+            m_Blue  := StrToInt('$' + Substr(hexValue, 4, 2));
             m_Alpha := 255;
             Result  := True;
         end;
@@ -1411,9 +1465,9 @@ begin
                 Exit(False);
 
             // convert RGB values
-            m_Blue  := StrToInt('$' + hexValue.Substring(0, 2));
-            m_Green := StrToInt('$' + hexValue.Substring(2, 2));
-            m_Red   := StrToInt('$' + hexValue.Substring(4, 2));
+            m_Blue  := StrToInt('$' + Substr(hexValue, 0, 2));
+            m_Green := StrToInt('$' + Substr(hexValue, 2, 2));
+            m_Red   := StrToInt('$' + Substr(hexValue, 4, 2));
             m_Alpha := 255;
             Result  := True;
         end;
@@ -1425,10 +1479,10 @@ begin
                 Exit(False);
 
             // convert ARGB values
-            m_Alpha := StrToInt('$' + hexValue.Substring(0, 2));
-            m_Red   := StrToInt('$' + hexValue.Substring(2, 2));
-            m_Green := StrToInt('$' + hexValue.Substring(4, 2));
-            m_Blue  := StrToInt('$' + hexValue.Substring(6, 2));
+            m_Alpha := StrToInt('$' + Substr(hexValue, 0, 2));
+            m_Red   := StrToInt('$' + Substr(hexValue, 2, 2));
+            m_Green := StrToInt('$' + Substr(hexValue, 4, 2));
+            m_Blue  := StrToInt('$' + Substr(hexValue, 6, 2));
             Result  := True;
         end;
 
@@ -1439,10 +1493,10 @@ begin
                 Exit(False);
 
             // convert ARGB values
-            m_Red   := StrToInt('$' + hexValue.Substring(0, 2));
-            m_Green := StrToInt('$' + hexValue.Substring(2, 2));
-            m_Blue  := StrToInt('$' + hexValue.Substring(4, 2));
-            m_Alpha := StrToInt('$' + hexValue.Substring(6, 2));
+            m_Red   := StrToInt('$' + Substr(hexValue, 0, 2));
+            m_Green := StrToInt('$' + Substr(hexValue, 2, 2));
+            m_Blue  := StrToInt('$' + Substr(hexValue, 4, 2));
+            m_Alpha := StrToInt('$' + Substr(hexValue, 6, 2));
             Result  := true;
         end;
 
@@ -1453,10 +1507,10 @@ begin
                 Exit(False);
 
             // convert ARGB values
-            m_Alpha := StrToInt('$' + hexValue.Substring(0, 2));
-            m_Blue  := StrToInt('$' + hexValue.Substring(2, 2));
-            m_Green := StrToInt('$' + hexValue.Substring(4, 2));
-            m_Red   := StrToInt('$' + hexValue.Substring(6, 2));
+            m_Alpha := StrToInt('$' + Substr(hexValue, 0, 2));
+            m_Blue  := StrToInt('$' + Substr(hexValue, 2, 2));
+            m_Green := StrToInt('$' + Substr(hexValue, 4, 2));
+            m_Red   := StrToInt('$' + Substr(hexValue, 6, 2));
             Result  := True;
         end;
 
@@ -1467,10 +1521,10 @@ begin
                 Exit(False);
 
             // convert ARGB values
-            m_Blue  := StrToInt('$' + hexValue.Substring(0, 2));
-            m_Green := StrToInt('$' + hexValue.Substring(2, 2));
-            m_Red   := StrToInt('$' + hexValue.Substring(4, 2));
-            m_Alpha := StrToInt('$' + hexValue.Substring(6, 2));
+            m_Blue  := StrToInt('$' + Substr(hexValue, 0, 2));
+            m_Green := StrToInt('$' + Substr(hexValue, 2, 2));
+            m_Red   := StrToInt('$' + Substr(hexValue, 4, 2));
+            m_Alpha := StrToInt('$' + Substr(hexValue, 6, 2));
             Result  := True;
         end;
     else
@@ -1489,7 +1543,7 @@ begin
         Exit(False);
 
     // convert value to lower case
-    value := hex.ToLower;
+    value := ToLower(hex);
 
     // get char count
     count := Length(value);
@@ -1499,7 +1553,7 @@ begin
     begin
         // remove prefix
         Dec(count, 2);
-        value := value.Substring(2, count);
+        value := Substr(value, 2, count);
     end;
 
     // iterate through chars
@@ -1518,9 +1572,9 @@ begin
                 Exit(False);
 
             // convert RGB values
-            m_Red   := StrToInt('$' + hexValue.Substring(0, 2));
-            m_Green := StrToInt('$' + hexValue.Substring(2, 2));
-            m_Blue  := StrToInt('$' + hexValue.Substring(4, 2));
+            m_Red   := StrToInt('$' + Substr(hexValue, 0, 2));
+            m_Green := StrToInt('$' + Substr(hexValue, 2, 2));
+            m_Blue  := StrToInt('$' + Substr(hexValue, 4, 2));
             SetOpacity(opacity);
 
             Result := True;
@@ -1532,10 +1586,10 @@ begin
             if (Length(hexValue) <> 6) then
                 Exit(False);
 
-            // convert RGB values
-            m_Blue  := StrToInt('$' + hexValue.Substring(0, 2));
-            m_Green := StrToInt('$' + hexValue.Substring(2, 2));
-            m_Red   := StrToInt('$' + hexValue.Substring(4, 2));
+            // convert BGR values
+            m_Blue  := StrToInt('$' + Substr(hexValue, 0, 2));
+            m_Green := StrToInt('$' + Substr(hexValue, 2, 2));
+            m_Red   := StrToInt('$' + Substr(hexValue, 4, 2));
             SetOpacity(opacity);
 
             Result := True;
@@ -1552,7 +1606,7 @@ var
     c:                                             WideChar;
     valueCount:                                    NativeUInt;
 begin
-    srcStr := functionStr.ToLower;
+    srcStr := ToLower(functionStr);
 
     // detect the function type
     rgbFunc  := (Pos('rgb(',  srcStr) = 1);
@@ -1570,9 +1624,9 @@ begin
 
     // extract the function value list (i.e. remove the function name and the start/end parenthesis)
     if (rgbFunc) then
-        valueList := srcStr.Substring(4, Length(srcStr) - 5)
+        valueList := Substr(srcStr, 4, Length(srcStr) - 5)
     else
-        valueList := srcStr.Substring(5, Length(srcStr) - 6);
+        valueList := Substr(srcStr, 5, Length(srcStr) - 6);
 
     valueCount := 0;
     percent    := False;
@@ -1738,7 +1792,7 @@ var
             Result := StrToInt(value);
     end;
 begin
-    srcStr := functionStr.ToLower;
+    srcStr := ToLower(functionStr);
 
     // detect the function type
     rgbFunc  := (Pos('rgb(',  srcStr) = 1);
@@ -1756,9 +1810,9 @@ begin
 
     // extract the function value list (i.e. remove the function name and the start/end parenthesis)
     if (rgbFunc) then
-        valueList := functionStr.Substring(4, Length(functionStr) - 5)
+        valueList := Substr(functionStr, 4, Length(functionStr) - 5)
     else
-        valueList := functionStr.Substring(5, Length(functionStr) - 6);
+        valueList := Substr(functionStr, 5, Length(functionStr) - 6);
 
     valueCount := 0;
     hue        := 0;
