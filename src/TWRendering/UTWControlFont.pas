@@ -88,7 +88,7 @@ type
 
             {**
              Remove previously added font from Windows session
-             @param name - font name
+             @param(name Font name)
              @br @bold(NOTE) Be careful, on success, font will no longer be available for other
                              applications that eventually use it
              @br @bold(NOTE) All opened applications will be notified that fonts changed

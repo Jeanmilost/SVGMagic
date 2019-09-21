@@ -259,9 +259,9 @@ type
             procedure DoAddTarget(pControl: TControl); override;
 
             {**
-             Run all the animations
+             Notify that the animation status has changed and should be updated
             }
-            procedure DoRunAnimations; override;
+            procedure DoUpdateAnimStatus; override;
 
             {**
              Draw the advanced paint on the target component
@@ -269,11 +269,6 @@ type
              @param(pTarget Target control to paint)
             }
             procedure Draw(hDC: THandle; pTarget: TWinControl); override;
-
-            {**
-             Called when next animation frame should be processed
-            }
-            procedure OnProcessAnimation; override;
 
             {**
              Called when a target is freed
@@ -558,8 +553,8 @@ begin
     // hook all controls existing in the collection
     HookControlsFromCollection;
 
-    // calculate next glyph frames
-    DoRunAnimations;
+    // update the animation status
+    DoUpdateAnimStatus;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGCheckBoxStyle.HookControlsFromCollection(allowCleanup: Boolean;
@@ -665,17 +660,17 @@ begin
     AddTarget(pControl as TWinControl);
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGCheckBoxStyle.DoRunAnimations;
+procedure TWSVGCheckBoxStyle.DoUpdateAnimStatus;
 begin
     if (not Animate) then
         Exit;
 
-    m_pUncheckedGlyph.RunAnimation;
-    m_pCheckedGlyph.RunAnimation;
-    m_pGrayedGlyph.RunAnimation;
-    m_pDisabledUncheckedGlyph.RunAnimation;
-    m_pDisabledCheckedGlyph.RunAnimation;
-    m_pDisabledGrayedGlyph.RunAnimation;
+    m_pUncheckedGlyph.UpdateAnimStatus(Animate);
+    m_pCheckedGlyph.UpdateAnimStatus(Animate);
+    m_pGrayedGlyph.UpdateAnimStatus(Animate);
+    m_pDisabledUncheckedGlyph.UpdateAnimStatus(Animate);
+    m_pDisabledCheckedGlyph.UpdateAnimStatus(Animate);
+    m_pDisabledGrayedGlyph.UpdateAnimStatus(Animate);
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGCheckBoxStyle.Draw(hDC: THandle; pTarget: TWinControl);
@@ -776,19 +771,6 @@ begin
             m_pCanvas.StretchDraw(cbRect, m_pGrayedGlyph.Picture.Graphic);
         end;
     end;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGCheckBoxStyle.OnProcessAnimation;
-begin
-    // calculate next glyph frames
-    m_pUncheckedGlyph.CalculateNextFrame;
-    m_pCheckedGlyph.CalculateNextFrame;
-    m_pGrayedGlyph.CalculateNextFrame;
-    m_pDisabledUncheckedGlyph.CalculateNextFrame;
-    m_pDisabledCheckedGlyph.CalculateNextFrame;
-    m_pDisabledGrayedGlyph.CalculateNextFrame;
-
-    InvalidateAllTargets;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGCheckBoxStyle.OnFreeTarget(pTarget: TWinControl);

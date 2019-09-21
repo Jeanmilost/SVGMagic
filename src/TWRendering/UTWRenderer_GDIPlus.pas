@@ -738,7 +738,7 @@ type
              Add left bottom rounded corner to graphical path
              @param(rect Rectangle area)
              @param(radius Corner radius)
-             @param(pPath - graphic path to add to)
+             @param(pPath Graphic path to add to)
              @returns(@true on success, otherwise @false)
              @br @bold(NOTE) Round corner will be drawn clockwise
             }
@@ -1051,7 +1051,7 @@ type
             {**
              Fill a rectangle. It's a wrapper around the GDI+ FillRectangle() that supports the radial wrapping
              @param(rect Rectangle to fill)
-             @param(pFill - fill options)
+             @param(pFill Fill options)
              @param(pGraphics GDI+ graphics on which the rectangle will be filled)
              @returns(@true on success, otherwise @false)
             }
@@ -1071,7 +1071,7 @@ type
             {**
              Fill a path. It's a wrapper around the GDI+ FillPath() that supports the radial wrapping
              @param(pPath Path to fill)
-             @param(pFill - fill options)
+             @param(pFill Fill options)
              @param(pGraphics GDI+ graphics on which the path will be filled)
              @param(rect Rect surrounding the path. If empty, the path bounding rect will be used)
              @returns(@true on success, otherwise @false)
@@ -1096,7 +1096,7 @@ type
              @param(y Ellipse center position on the y axis)
              @param(width Ellipse width)
              @param(height Ellipse height)
-             @param(pFill - fill options)
+             @param(pFill Fill options)
              @param(pGraphics GDI+ graphics on which the ellipse will be filled)
              @param(rect Rect surrounding the ellipse. If empty, the ellipse bounding rect will be used)
              @returns(@true on success, otherwise @false)
@@ -1121,7 +1121,7 @@ type
             {**
              Fill a polygon. It's a wrapper around the GDI+ FillPolygon() that supports the radial wrapping
              @param(points Point list composing the polygon)
-             @param(pFill - fill options)
+             @param(pFill Fill options)
              @param(pGraphics GDI+ graphics on which the polygon will be filled)
              @param(rect Rect surrounding the polygon)
              @returns(@true on success, otherwise @false)
@@ -1170,7 +1170,7 @@ type
              @param(text Text to draw)
              @param(textPos Text position)
              @param(pFont Text font)
-             @param(pFill - fill options)
+             @param(pFill Fill options)
              @param(pGraphics GDI+ graphics on which the text will be drawn)
              @param(rect Rect surrounding the text)
              @returns(@true on success, otherwise @false)
@@ -1213,8 +1213,8 @@ type
 
             {**
              Compare GDI font instances
-             @param(pFont1 - First font to compare)
-             @param(pFont2 - Second font to compare with)
+             @param(pFont1 First font to compare)
+             @param(pFont2 Second font to compare with)
              @returns(@true if GDI font instances are equals, otherwise @false)
              @br @bold(NOTE) This function is needed to avoid to include WGDIHelper in this header
             }
@@ -1222,7 +1222,7 @@ type
 
             {**
              Convert GDI+ status to string
-             @param(status - GDI+ status to convert)
+             @param(status GDI+ status to convert)
              @returns(GDI+ status as string)
             }
             class function GdiplusStatusToStr(status: GpStatus): UnicodeString; static;

@@ -1,15 +1,16 @@
 package TWSVGD;
 
 {$R *.res}
+{$R *.dres}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
-{$DEBUGINFO ON}
+{$DEBUGINFO OFF}
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS ON}
+{$LOCALSYMBOLS OFF}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
 {$OPTIMIZATION ON}
@@ -32,8 +33,8 @@ package TWSVGD;
 
 requires
   rtl,
-  designide,
-  TWSVG;
+  TWSVG,
+  designide;
 
 contains
   UTWSVGImageListEditorDlg in '..\Dialogs\UTWSVGImageListEditorDlg.pas',

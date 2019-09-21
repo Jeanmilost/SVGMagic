@@ -164,10 +164,10 @@ type
 
             {**
              Get text size
-             @param(text - text to measure)
-             @param(rect - text bounding rectangle)
-             @param(pOptions - text options)
-             @param(hDC - device context handle)
+             @param(text Text to measure)
+             @param(rect Text bounding rectangle)
+             @param(pOptions Text options)
+             @param(hDC Device context handle)
              @param(pCharacters @bold([out]) Pointer to variable to receive the number of characters
                                              that will be displayed in rect, if @nil will be ingored)
              @param(pLines @bold([out]) Pointer to variable to receive the number of lines that will

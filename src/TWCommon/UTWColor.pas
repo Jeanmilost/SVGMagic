@@ -265,7 +265,7 @@ type
 
             {**
              Get the hash code based on the class content
-             @param(initValue - initialization value)
+             @param(initValue Initialization value)
              @returns(Hash code)
             }
             function GetHashCode(initValue: Integer): Integer; inline;
@@ -391,7 +391,7 @@ type
 
             {**
              Set 16 bit (RGB 555) color
-             @param color - color to set
+             @param(color Color to set)
             }
             procedure SetRGB555(const color: Word); inline;
 

@@ -44,13 +44,13 @@ type
     {**
      Component style
     }
-    TWSVGComponentStyle = class(TComponent, IWObserver)
+    TWSVGComponentStyle = class(TComponent)
         protected type
             IWGlyph = class
                 private
-                    m_pOwnerStyle:      TWSVGComponentStyle;
-                    m_pPicture:         TPicture;
-                    m_pFrameCalculator: TWSVGFrameCalculator;
+                    m_pOwnerStyle:          TWSVGComponentStyle;
+                    m_pPicture:             TPicture;
+                    m_fPrevOnPictureChange: TNotifyEvent;
 
                 protected
                     {**
@@ -58,6 +58,22 @@ type
                      @param(pPicture Picture to set)
                     }
                     procedure SetPicture(pPicture: TPicture); virtual;
+
+                    {**
+                     Called while SVG animation is running
+                     @param(pSender Event sender)
+                     @param(pAnimDesc Animation description)
+                     @param(pCustomData Custom data)
+                     @returns(@true if animation can continue, otherwise @false)
+                    }
+                    function DoAnimate(pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;
+                            pCustomData: Pointer): Boolean; virtual;
+
+                    {**
+                     Called when the internal picture changed
+                     @param(pSender Event sender)
+                    }
+                    procedure OnPictureChange(pSender: TObject); virtual;
 
                 public
                     {**
@@ -78,25 +94,16 @@ type
                     function IsEmpty: Boolean; virtual;
 
                     {**
-                     Check if animation can be run, run it if yes
+                     Updates the animation status
+                     @param(animated If @true, the picture should be animated)
                     }
-                    procedure RunAnimation; virtual;
-
-                    {**
-                     Calculate the next animation frame
-                    }
-                    procedure CalculateNextFrame; virtual;
+                    procedure UpdateAnimStatus(animated: Boolean); virtual;
 
                 public
                     {**
                      Get or set the glyph picture
                     }
                     property Picture: TPicture read m_pPicture write SetPicture;
-
-                    {**
-                     Get the frame calculator
-                    }
-                    property FrameCalculator: TWSVGFrameCalculator read m_pFrameCalculator;
             end;
 
             {**
@@ -285,9 +292,9 @@ type
             procedure DoAddTarget(pControl: TControl); virtual; abstract;
 
             {**
-             Run all the animations
+             Notify that the animation status has changed and should be updated
             }
-            procedure DoRunAnimations; virtual; abstract;
+            procedure DoUpdateAnimStatus; virtual; abstract;
 
             {**
              Draw the advanced paint on the target component
@@ -358,17 +365,6 @@ type
              @param(operation Operation currently applied on the target control)
             }
             procedure Notification(pComponent: TComponent; operation: TOperation); override;
-
-            {**
-             Called when subject send a notification to the observer
-             @param(message Notification message)
-            }
-            procedure OnNotified(message: TWMessage); virtual;
-
-            {**
-             Called when next animation frame should be processed
-            }
-            procedure OnProcessAnimation; virtual; abstract;
 
             {**
              Called when a target is freed
@@ -457,6 +453,86 @@ type
     TWSVGStyleWinControlAccess = class(TWinControl);
 
 implementation
+//---------------------------------------------------------------------------
+// TWSVGComponentStyle.IWGlyph
+//---------------------------------------------------------------------------
+constructor TWSVGComponentStyle.IWGlyph.Create(pOwnerStyle: TWSVGComponentStyle);
+begin
+    inherited Create;
+
+    m_pOwnerStyle := pOwnerStyle;
+    m_pPicture    := TPicture.Create;
+
+    // override the picture OnChange event
+    m_fPrevOnPictureChange := m_pPicture.OnChange;
+    m_pPicture.OnChange    := OnPictureChange;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGComponentStyle.IWGlyph.Destroy;
+begin
+    FreeAndNil(m_pPicture);
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.IWGlyph.SetPicture(pPicture: TPicture);
+begin
+    m_pPicture.Assign(pPicture);
+
+    m_pOwnerStyle.InvalidateAllTargets;
+end;
+//---------------------------------------------------------------------------
+function TWSVGComponentStyle.IWGlyph.DoAnimate(pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;
+        pCustomData: Pointer): Boolean;
+begin
+    // notify that animation is allowed to continue
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.IWGlyph.OnPictureChange(pSender: TObject);
+begin
+    UpdateAnimStatus(m_pOwnerStyle.Animate);
+
+    if (Assigned(m_fPrevOnPictureChange)) then
+        m_fPrevOnPictureChange(pSender);
+
+    m_pOwnerStyle.InvalidateAllTargets;
+end;
+//---------------------------------------------------------------------------
+function TWSVGComponentStyle.IWGlyph.IsEmpty: Boolean;
+begin
+    // is picture empty?
+    if (not Assigned(m_pPicture.Graphic)) then
+        Exit(True);
+
+    // is a bitmap?
+    if (m_pPicture.Graphic is Vcl.Graphics.TBitmap) then
+    begin
+        // is picture bitmap empty?
+        if ((m_pPicture.Bitmap.Width = 0) or (m_pPicture.Bitmap.Height = 0)) then
+            Exit(True);
+    end
+    else
+        // is picture graphic empty?
+        if ((m_pPicture.Graphic.Width = 0) or (m_pPicture.Graphic.Height = 0)) then
+            Exit(True);
+
+    Result := False;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.IWGlyph.UpdateAnimStatus(animated: Boolean);
+var
+    pSVG: TWSVGGraphic;
+begin
+    // is a SVG?
+    if (Assigned(m_pPicture.Graphic) and (m_pPicture.Graphic is TWSVGGraphic)) then
+    begin
+        // get and configure the SVG
+        pSVG           := m_pPicture.Graphic as TWSVGGraphic;
+        pSVG.OnAnimate := DoAnimate;
+        pSVG.Animate   := animated and (not(csDesigning in m_pOwnerStyle.ComponentState));
+    end;
+end;
 //---------------------------------------------------------------------------
 // TWSVGComponentStyle.IWSVGComponentStyleHook
 //---------------------------------------------------------------------------
@@ -581,114 +657,6 @@ begin
         m_fOldWndProc(message);
 end;
 //---------------------------------------------------------------------------
-// TWSVGComponentStyle.IWGlyph
-//---------------------------------------------------------------------------
-constructor TWSVGComponentStyle.IWGlyph.Create(pOwnerStyle: TWSVGComponentStyle);
-begin
-    inherited Create;
-
-    m_pOwnerStyle      := pOwnerStyle;
-    m_pPicture         := TPicture.Create;
-    m_pFrameCalculator := TWSVGFrameCalculator.Create;
-end;
-//---------------------------------------------------------------------------
-destructor TWSVGComponentStyle.IWGlyph.Destroy;
-begin
-    FreeAndNil(m_pPicture);
-    FreeAndNil(m_pFrameCalculator);
-
-    inherited Destroy;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGComponentStyle.IWGlyph.SetPicture(pPicture: TPicture);
-begin
-    m_pPicture.Assign(pPicture);
-
-    RunAnimation;
-
-    m_pOwnerStyle.InvalidateAllTargets;
-end;
-//---------------------------------------------------------------------------
-function TWSVGComponentStyle.IWGlyph.IsEmpty: Boolean;
-begin
-    // is picture empty?
-    if (not Assigned(m_pPicture.Graphic)) then
-        Exit(True);
-
-    // is a bitmap?
-    if (m_pPicture.Graphic is Vcl.Graphics.TBitmap) then
-    begin
-        // is picture bitmap empty?
-        if ((m_pPicture.Bitmap.Width = 0) or (m_pPicture.Bitmap.Height = 0)) then
-            Exit(True);
-    end
-    else
-        // is picture graphic empty?
-        if ((m_pPicture.Graphic.Width = 0) or (m_pPicture.Graphic.Height = 0)) then
-            Exit(True);
-
-    Result := False;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGComponentStyle.IWGlyph.RunAnimation;
-var
-    pSVG:     TWSVGGraphic;
-    duration: Double;
-begin
-    // on design time animation is never allowed to start
-    if (csDesigning in m_pOwnerStyle.ComponentState) then
-        Exit;
-
-    // is a SVG?
-    if (Assigned(m_pPicture.Graphic) and (m_pPicture.Graphic is TWSVGGraphic)) then
-    begin
-        // get and configure the SVG
-        pSVG           := m_pPicture.Graphic as TWSVGGraphic;
-        pSVG.OnAnimate := m_pOwnerStyle.DoAnimate;
-
-        // get animation duration
-        duration := pSVG.AnimationDuration;
-
-        // do animate this SVG?
-        if (duration <> 0.0) then
-        begin
-
-            // configure animation duration
-            m_pFrameCalculator.SetDuration(duration, 100);
-
-            // start FPS timer
-            m_pFrameCalculator.StartTimer;
-        end;
-    end;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGComponentStyle.IWGlyph.CalculateNextFrame;
-var
-    pSVG: TWSVGGraphic;
-    info: TWSVGFrameCalculator.IInfo;
-begin
-    if (not Assigned(m_pPicture.Graphic)) then
-        Exit;
-
-    if (m_pPicture.Graphic is TWSVGGraphic) then
-    begin
-        pSVG := m_pPicture.Graphic as TWSVGGraphic;
-
-        // calculate next position
-        if (m_pOwnerStyle.Animate) then
-        begin
-            m_pFrameCalculator.GetInfo(info);
-
-            m_pOwnerStyle.m_Position :=
-                    TWSVGFrameCalculator.ValidateIndex
-                            (m_pOwnerStyle.m_Position + info.m_FrameCountSinceLastPaint, 0, 99);
-        end;
-
-        // change svg position and refresh the viewer
-        pSVG.Position := m_pOwnerStyle.m_Position * 0.01;
-    end;
-end;
-//---------------------------------------------------------------------------
 // TWSVGComponentStyle
 //---------------------------------------------------------------------------
 constructor TWSVGComponentStyle.Create(pOwner: TComponent);
@@ -717,10 +685,6 @@ begin
     m_fOnSVGComponentStyleDPIChanged := nil;
     m_fOldParentWndProc              := nil;
     m_fOnAnimate                     := nil;
-
-    // attach to animation timer to receive time notifications (runtime only)
-    if (not(csDesigning in ComponentState)) then
-        TWAnimationTimer.GetInstance.Attach(Self);
 
     // intercepts the parent Windows procedure
     if (Assigned(pOwner) and (pOwner is TControl)) then
@@ -752,10 +716,6 @@ begin
     // restore the parent Windows procedure
     if (Assigned(m_fOldParentWndProc) and Assigned(m_pOwnerCtrl)) then
         m_pOwnerCtrl.WindowProc := m_fOldParentWndProc;
-
-    // detach from animation timer and stop to receive time notifications (runtime only)
-    if (not(csDesigning in ComponentState)) then
-        TWAnimationTimer.GetInstance.Detach(Self);
 
     FreeAndNil(m_pHooks);
     FreeAndNil(m_pOverlay);
@@ -1064,7 +1024,7 @@ begin
 
     m_Animate := value;
 
-    DoRunAnimations;
+    DoUpdateAnimStatus;
     InvalidateAllTargets;
 end;
 //---------------------------------------------------------------------------
@@ -1258,19 +1218,6 @@ begin
                 InvalidateAllTargets;
                 Exit;
             end;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGComponentStyle.OnNotified(message: TWMessage);
-begin
-    case (TWAnimationTimer.EWAnimationTimerMessages(message.m_Type)) of
-        TWAnimationTimer.EWAnimationTimerMessages.IE_AM_Animate:
-        begin
-            if (not m_Animate) then
-                Exit;
-
-            OnProcessAnimation;
-        end;
-    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGComponentStyle.ParentWndProc(var message: TMessage);

@@ -24,8 +24,8 @@ type
         public
             {**
              Constructor
-             @param point - any point on line
-             @param dir - line direction
+             @param(point Any point on line)
+             @param(dir Line direction)
             }
             constructor Create(const point, dir: TWVector2);
 

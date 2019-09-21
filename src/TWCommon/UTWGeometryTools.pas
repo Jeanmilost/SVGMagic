@@ -116,8 +116,8 @@ type
 
             {**
              Get rect center point
-             @param rect - rect
-             @returns center point
+             @param(rect Rectangle)
+             @returns(Center point)
             }
             class function GetCenter(const rect: TRect): TPoint; inline; static;
 

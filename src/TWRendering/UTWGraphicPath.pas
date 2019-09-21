@@ -135,11 +135,11 @@ type
                 protected
                     {**
                      Called when a path instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
                      @param(point Point to convert (it's a part of the instruction))
-                     @param(relative - if @true, point is relative)
+                     @param(relative If @true, point is relative)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @returns(@true on success, otherwise @false)
@@ -150,12 +150,12 @@ type
 
                     {**
                      Called when a path curve instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
-                     @param(point - point to convert)
-                     @param(relative - if @true, point is relative)
-                     @param(lastOp - last executed operation)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
+                     @param(point Point to convert)
+                     @param(relative If @true, point is relative)
+                     @param(lastOp Last executed operation)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @param(curveStart @bold([in, out]) Calculated curve start)
@@ -263,11 +263,11 @@ type
                 protected
                     {**
                      Called when a path instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
                      @param(point Point to convert (it's a part of the instruction))
-                     @param(relative - if @true, point is relative)
+                     @param(relative If @true, point is relative)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @returns(@true on success, otherwise @false)
@@ -310,11 +310,11 @@ type
                 protected
                     {**
                      Called when a path instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
                      @param(point Point to convert (it's a part of the instruction))
-                     @param(relative - if @true, point is relative)
+                     @param(relative If @true, point is relative)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @returns(@true on success, otherwise @false)
@@ -350,11 +350,11 @@ type
                 protected
                     {**
                      Called when a path instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
                      @param(point Point to convert (it's a part of the instruction))
-                     @param(relative - if @true, point is relative)
+                     @param(relative If @true, point is relative)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @returns(@true on success, otherwise @false)
@@ -390,11 +390,11 @@ type
                 protected
                     {**
                      Called when a path instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
                      @param(point Point to convert (it's a part of the instruction))
-                     @param(relative - if @true, point is relative)
+                     @param(relative If @true, point is relative)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @returns(@true on success, otherwise @false)
@@ -430,12 +430,12 @@ type
                 protected
                     {**
                      Called when a path curve instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
-                     @param(point - point to convert)
-                     @param(relative - if @true, point is relative)
-                     @param(lastOp - last executed operation)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
+                     @param(point Point to convert)
+                     @param(relative If @true, point is relative)
+                     @param(lastOp Last executed operation)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @param(curveStart @bold([in, out]) Calculated curve start)
@@ -475,12 +475,12 @@ type
                 protected
                     {**
                      Called when a path curve instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
-                     @param(point - point to convert)
-                     @param(relative - if @true, point is relative)
-                     @param(lastOp - last executed operation)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
+                     @param(point Point to convert)
+                     @param(relative If @true, point is relative)
+                     @param(lastOp Last executed operation)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @param(curveStart @bold([in, out]) Calculated curve start)
@@ -520,12 +520,12 @@ type
                 protected
                     {**
                      Called when a path curve instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
-                     @param(point - point to convert)
-                     @param(relative - if @true, point is relative)
-                     @param(lastOp - last executed operation)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
+                     @param(point Point to convert)
+                     @param(relative If @true, point is relative)
+                     @param(lastOp Last executed operation)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @param(curveStart @bold([in, out]) Calculated curve start)
@@ -565,12 +565,12 @@ type
                 protected
                     {**
                      Called when a path curve instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
-                     @param(point - point to convert)
-                     @param(relative - if @true, point is relative)
-                     @param(lastOp - last executed operation)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
+                     @param(point Point to convert)
+                     @param(relative If @true, point is relative)
+                     @param(lastOp Last executed operation)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @param(curveStart @bold([in, out]) Calculated curve start)
@@ -614,11 +614,11 @@ type
                 protected
                     {**
                      Called when a path instruction must be converted to output
-                     @param(index - point index)
-                     @param(x - start x position in pixels)
-                     @param(y - start y position in pixels)
+                     @param(index Point index)
+                     @param(x Start x position in pixels)
+                     @param(y Start y position in pixels)
                      @param(point Point to convert (it's a part of the instruction))
-                     @param(relative - if @true, point is relative)
+                     @param(relative If @true, point is relative)
                      @param(coordinate @bold([in, out]) Current coordinate, new coordinate after conversion)
                      @param(nextCoordinate @bold([in, out]) Next calculated coordinate)
                      @returns(@true on success, otherwise @false)

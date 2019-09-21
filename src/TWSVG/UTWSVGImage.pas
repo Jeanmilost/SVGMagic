@@ -14,7 +14,6 @@ uses System.Classes,
      Vcl.Graphics,
      Vcl.ExtCtrls,
      UTWMajorSettings,
-     UTWDesignPatterns,
      UTWAnimationTimer,
      UTWSVGAnimationDescriptor,
      UTWSVGRasterizer,
@@ -25,46 +24,35 @@ type
     {**
      Image that supports animated SVG graphics
     }
-    TWSVGImage = class(TImage, IWObserver)
+    TWSVGImage = class(TImage)
         public type
             {**
              Class to group and expose all SVG animation properties
             }
             IAnimationProps = class(TPersistent)
                 private
-                    m_pOwner:           TWSVGImage;
-                    m_Position:         Cardinal;
-                    m_Animate:          Boolean;
-                    m_FramePosChanging: Boolean;
+                    m_pOwner:     TWSVGImage;
+                    m_FrameCount: Cardinal;
+                    m_Position:   Cardinal;
+                    m_Animate:    Boolean;
 
                 protected
                     {**
-                     Get the frame count
-                     @returns(The frame count)
-                     @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count
-                                     is used to determine how many frames, in an ideal situation,
-                                     should be rendered by seconds, and thus allows to calculate the
-                                     time interval between each frames. Instead, the FPS represents
-                                     the number of frames per seconds a system can effectively process
-                    }
-                    function GetFrameCount: Cardinal; virtual;
-
-                    {**
                      Set the frame count
-                     @param(count Frame count)
+                     @param(value Frame count)
                      @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count
                                      is used to determine how many frames, in an ideal situation,
                                      should be rendered by seconds, and thus allows to calculate the
                                      time interval between each frames. Instead, the FPS represents
                                      the number of frames per seconds a system can effectively process
                     }
-                    procedure SetFrameCount(count: Cardinal); virtual;
+                    procedure SetFrameCount(value: Cardinal); virtual;
 
                     {**
                      Set animation position
-                     @param(pos Animation position in percent (between 0 and 100))
+                     @param(value Animation position in percent (between 0 and 100))
                     }
-                    procedure SetPosition(pos: Cardinal); virtual;
+                    procedure SetPosition(value: Cardinal); virtual;
 
                     {**
                      Enable or disable the animation
@@ -93,7 +81,7 @@ type
                                      time interval between each frames. Instead, the FPS represents
                                      the number of frames per seconds a system can effectively process
                     }
-                    property FrameCount: Cardinal read GetFrameCount write SetFrameCount nodefault;
+                    property FrameCount: Cardinal read m_FrameCount write SetFrameCount nodefault;
 
                     {**
                      Get or set the animation position, in percent (between 0 and 100)
@@ -117,9 +105,8 @@ type
                     pCustomData: Pointer): Boolean of object;
 
         private
+            m_ImgGUID:              UnicodeString;
             m_pAnimationProps:      IAnimationProps;
-            m_pFrameCalculator:     TWSVGFrameCalculator;
-            m_LastKnownAnimDur:     Double;
             m_fOnAnimate:           ITfSVGAnimateEvent;
             m_fPrevOnPictureChange: TNotifyEvent;
 
@@ -131,41 +118,25 @@ type
 
         protected
             {**
-             Check if animation can be run, run it if yes
-             @param(pPicture Picture for which next animation should be calculated)
-             @param(pFrameCalculator Frame calculator linked with the picture)
-            }
-            procedure RunAnimation(pPicture: TPicture; pFrameCalculator: TWSVGFrameCalculator); virtual;
-
-            {**
-             Calculate the next animation frame
-             @param(pPicture Picture for which next animation should be calculated)
-             @param(pFrameCalculator Frame calculator linked with the picture)
-             @param(pAnimProps Animation properties)
-            }
-            procedure CalculateNextFrame(pPicture: TPicture; pFrameCalculator: TWSVGFrameCalculator;
-                    pAnimProps: IAnimationProps); virtual;
-
-            {**
-             Called when the frame count should be get from properties
-             @param(pSender Sender for which the frame count should be get)
-             @returns(The frame count)
-            }
-            function DoGetFrameCount(pSender: IAnimationProps): Cardinal; virtual;
-
-            {**
              Called when the frame count should be set to properties
              @param(pSender Sender for which the frame count should be set)
-             @param(frameCount Frame count)
+             @param(value Frame count)
             }
-            procedure DoSetFrameCount(pSender: IAnimationProps; frameCount: Cardinal); virtual;
+            procedure DoSetFrameCount(pSender: IAnimationProps; value: Cardinal); virtual;
+
+            {**
+             Set animation position
+             @param(pSender Sender for which the position should be set)
+             @param(value Animation position in percent (between 0 and 100))
+            }
+            procedure DoSetPosition(pSender: IAnimationProps; value: Cardinal); virtual;
 
             {**
              Enable or disable the animation
-             @param(pProps Animation properties in which animate value changed)
+             @param(pSender Sender for which the animation should be enabled or disabled)
              @param(value If @true the animation will be enabled, disabled otherwise)
             }
-            procedure SetAnimate(pProps: IAnimationProps; value: Boolean); virtual;
+            procedure DoSetAnimate(pSender: IAnimationProps; value: Boolean); virtual;
 
             {**
              Called while SVG animation is running
@@ -178,21 +149,26 @@ type
                     pCustomData: Pointer): Boolean; virtual;
 
             {**
-             Called when next animation frame should be processed
+             Gets the animation properties from SVG
+             @param(pSVG SVG from which animation properties should be get)
+             @param(pProps Animation properties to update)
+             @returns(@true on success, otherwise @false)
             }
-            procedure OnProcessAnimation; virtual;
+            function GetAnimPropsFromSVG(pSVG: TWSVGGraphic; pAnimProps: IAnimationProps): Boolean; virtual;
+
+            {**
+             Run the animation
+             @param(guid Currently loaded SVG guid)
+             @param(pGraphic Graphic for which animation should be run if required)
+             @param(pAnimProps Animation properties)
+            }
+            procedure RunAnimation(var guid: UnicodeString; pGraphic: TGraphic; pAnimProps: IAnimationProps); virtual;
 
             {**
              Called when the internal picture changed
              @param(pSender Event sender)
             }
             procedure OnPictureChange(pSender: TObject); virtual;
-
-            {**
-             Called when subject send a notification to the observer
-             @param(message Notification message)
-            }
-            procedure OnNotified(message: TWMessage); virtual;
 
         public
             {**
@@ -205,28 +181,6 @@ type
              Destructor
             }
             destructor Destroy; override;
-
-            {**
-             Get the frame count
-             @returns(The frame count)
-             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
-                             determine how many frames, in an ideal situation, should be rendered by
-                             seconds, and thus allows to calculate the time interval between each frames.
-                             Instead, the FPS represents the number of frames per seconds a system can
-                             effectively process
-            }
-            function GetFrameCount: Double; virtual;
-
-            {**
-             Set the frame count
-             @param(frameCount Frame count)
-             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
-                             determine how many frames, in an ideal situation, should be rendered by
-                             seconds, and thus allows to calculate the time interval between each frames.
-                             Instead, the FPS represents the number of frames per seconds a system can
-                             effectively process
-            }
-            procedure SetFrameCount(frameCount: Double); virtual;
 
         published
             {**
@@ -253,10 +207,10 @@ constructor TWSVGImage.IAnimationProps.Create(pOwner: TWSVGImage);
 begin
     inherited Create;
 
-    m_pOwner           := pOwner;
-    m_Position         := 0;
-    m_Animate          := C_TWSVGGraphic_Default_Animate;
-    m_FramePosChanging := False;
+    m_pOwner     := pOwner;
+    m_FrameCount := 0;
+    m_Position   := 0;
+    m_Animate    := C_TWSVGGraphic_Default_Animate;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGImage.IAnimationProps.Destroy;
@@ -264,33 +218,28 @@ begin
     inherited Destroy;
 end;
 //---------------------------------------------------------------------------
-function TWSVGImage.IAnimationProps.GetFrameCount: Cardinal;
+procedure TWSVGImage.IAnimationProps.SetFrameCount(value: Cardinal);
 begin
-    Result := m_pOwner.DoGetFrameCount(Self);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImage.IAnimationProps.SetFrameCount(count: Cardinal);
-begin
-    m_pOwner.DoSetFrameCount(Self, count);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImage.IAnimationProps.SetPosition(pos: Cardinal);
-begin
-    // sometimes frame position may be updated while OnProcessAnimation() function is called. This
-    // prevent an infinite callback loop in this case
-    if (m_FramePosChanging) then
+    if (value = m_FrameCount) then
         Exit;
 
-    m_Position := Min(pos, 100);
+    m_FrameCount := value;
 
-    // process animation manually if animation is disabled
-    if (not m_Animate) then
-        try
-            m_FramePosChanging := True;
-            m_pOwner.OnProcessAnimation;
-        finally
-            m_FramePosChanging := False;
-        end;
+    m_pOwner.DoSetFrameCount(Self, m_FrameCount);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGImage.IAnimationProps.SetPosition(value: Cardinal);
+var
+    pos: Cardinal;
+begin
+    pos := Min(value, 100);
+
+    if (pos = m_Position) then
+        Exit;
+
+    m_Position := pos;
+
+    m_pOwner.DoSetPosition(Self, m_Position);
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImage.IAnimationProps.SetAnimate(value: Boolean);
@@ -300,7 +249,7 @@ begin
 
     m_Animate := value;
 
-    m_pOwner.SetAnimate(Self, value);
+    m_pOwner.DoSetAnimate(Self, m_Animate);
 end;
 //---------------------------------------------------------------------------
 // TWSVGImage
@@ -309,27 +258,16 @@ constructor TWSVGImage.Create(pOwner: TComponent);
 begin
     inherited Create(pOwner);
 
-    m_pAnimationProps  := IAnimationProps.Create(Self);
-    m_pFrameCalculator := TWSVGFrameCalculator.Create;
-    m_LastKnownAnimDur := 0.0;
-    m_fOnAnimate       := nil;
+    m_pAnimationProps := IAnimationProps.Create(Self);
+    m_fOnAnimate      := nil;
 
     // override the picture OnChange event
     m_fPrevOnPictureChange := Picture.OnChange;
     Picture.OnChange       := OnPictureChange;
-
-    // attach to animation timer to receive time notifications (runtime only)
-    if (not(csDesigning in ComponentState)) then
-        TWAnimationTimer.GetInstance.Attach(Self);
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGImage.Destroy;
 begin
-    // detach from animation timer and stop to receive time notifications (runtime only)
-    if (not(csDesigning in ComponentState)) then
-        TWAnimationTimer.GetInstance.Detach(Self);
-
-    FreeAndNil(m_pFrameCalculator);
     FreeAndNil(m_pAnimationProps);
 
     inherited Destroy;
@@ -343,95 +281,87 @@ begin
     Result := TWLibraryVersion.ToStr;
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGImage.RunAnimation(pPicture: TPicture; pFrameCalculator: TWSVGFrameCalculator);
+procedure TWSVGImage.DoSetFrameCount(pSender: IAnimationProps; value: Cardinal);
 var
     pSVG:     TWSVGGraphic;
-    duration: Double;
+    position: Double;
 begin
-    // on design time animation is never allowed to start
     if (csDesigning in ComponentState) then
         Exit;
 
     // is a SVG?
-    if (Assigned(pPicture.Graphic) and (pPicture.Graphic is TWSVGGraphic)) then
+    if (Assigned(Picture.Graphic) and (Picture.Graphic is TWSVGGraphic)) then
     begin
-        // get and configure the SVG
-        pSVG           := pPicture.Graphic as TWSVGGraphic;
-        pSVG.OnAnimate := DoAnimate;
+        position := pSender.Position;
 
-        // get animation duration
-        duration := pSVG.AnimationDuration;
-
-        // animation duration changed?
-        if (duration = m_LastKnownAnimDur) then
-            Exit;
-
-        // can animate this SVG?
-        if (duration <> 0.0) then
-        begin
-            // configure animation duration
-            pFrameCalculator.SetDuration(duration, 100);
-
-            // start frame animation
-            pFrameCalculator.StartTimer;
-        end;
-
-        m_LastKnownAnimDur := duration;
-    end
-    else
-        m_LastKnownAnimDur := 0.0;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImage.CalculateNextFrame(pPicture: TPicture; pFrameCalculator: TWSVGFrameCalculator;
-        pAnimProps: IAnimationProps);
-var
-    pSVG: TWSVGGraphic;
-    info: TWSVGFrameCalculator.IInfo;
-begin
-    if (not Assigned(pPicture.Graphic)) then
-        Exit;
-
-    // nothing to do if component isn't visible
-    if (not Visible) then
-        Exit;
-
-    if (pPicture.Graphic is TWSVGGraphic) then
-    begin
-        pSVG := pPicture.Graphic as TWSVGGraphic;
-
-        // calculate next position
-        if (m_pAnimationProps.Animate) then
-        begin
-            pFrameCalculator.GetInfo(info);
-
-            pAnimProps.Position := TWSVGFrameCalculator.ValidateIndex(pAnimProps.Position
-                    + info.m_FrameCountSinceLastPaint, 0, 99);
-        end;
-
-        // change svg position and refresh the viewer
-        pSVG.Position := pAnimProps.Position * 0.01;
+        // get and configure the SVG. NOTE the animate property should be set first because it may
+        // overwrite the other values
+        pSVG            := Picture.Graphic as TWSVGGraphic;
+        pSVG.Animate    := pSender.Animate and (not(csDesigning in ComponentState));
+        pSVG.FrameCount := value;
+        pSVG.Position   := (position * 0.01);
     end;
 end;
 //---------------------------------------------------------------------------
-function TWSVGImage.DoGetFrameCount(pSender: IAnimationProps): Cardinal;
+procedure TWSVGImage.DoSetPosition(pSender: IAnimationProps; value: Cardinal);
+var
+    pSVG:     TWSVGGraphic;
+    position: Double;
 begin
-    Result := Round(GetFrameCount);
+    if (csDesigning in ComponentState) then
+        Exit;
+
+    // is a SVG?
+    if (Assigned(Picture.Graphic) and (Picture.Graphic is TWSVGGraphic)) then
+    begin
+        position := value;
+
+        // get and configure the SVG. NOTE the animate property should be set first because it may
+        // overwrite the other values
+        pSVG            := Picture.Graphic as TWSVGGraphic;
+        pSVG.Animate    := pSender.Animate and (not(csDesigning in ComponentState));
+        pSVG.FrameCount := pSender.m_FrameCount;
+        pSVG.Position   := (position * 0.01);
+    end;
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGImage.DoSetFrameCount(pSender: IAnimationProps; frameCount: Cardinal);
+procedure TWSVGImage.DoSetAnimate(pSender: IAnimationProps; value: Boolean);
+var
+    pSVG:     TWSVGGraphic;
+    position: Double;
 begin
-    SetFrameCount(frameCount);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImage.SetAnimate(pProps: IAnimationProps; value: Boolean);
-begin
-    if (value) then
-        RunAnimation(Picture, m_pFrameCalculator)
+    if (csDesigning in ComponentState) then
+        Exit;
+
+    // is a SVG?
+    if (Assigned(Picture.Graphic) and (Picture.Graphic is TWSVGGraphic)) then
+    begin
+        position := pSender.Position;
+
+        // get and configure the SVG. NOTE the animate property should be set first because it may
+        // overwrite the other values
+        pSVG            := Picture.Graphic as TWSVGGraphic;
+        pSVG.Animate    := value and (not(csDesigning in ComponentState));
+        pSVG.FrameCount := pSender.FrameCount;
+        pSVG.Position   := (position * 0.01);
+    end;
 end;
 //---------------------------------------------------------------------------
 function TWSVGImage.DoAnimate(pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;
         pCustomData: Pointer): Boolean;
+var
+    pSVG: TWSVGGraphic;
 begin
+    if (pSender is TWSVGGraphic) then
+    begin
+        // get the SVG
+        pSVG := pSender as TWSVGGraphic;
+
+        // update the published values
+        m_pAnimationProps.FrameCount := pSVG.FrameCount;
+        m_pAnimationProps.Position   := Round(pSVG.Position * 100.0);
+    end;
+
     // ask user about continuing animation
     if (Assigned(m_fOnAnimate)) then
         Exit(m_fOnAnimate(pSender, pAnimDesc, pCustomData));
@@ -440,50 +370,91 @@ begin
     Result := True;
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGImage.OnProcessAnimation;
+function TWSVGImage.GetAnimPropsFromSVG(pSVG: TWSVGGraphic; pAnimProps: IAnimationProps): Boolean;
 begin
-    CalculateNextFrame(Picture, m_pFrameCalculator, m_pAnimationProps);
-    Invalidate;
+    if (not Assigned(pSVG)) then
+        Exit(False);
+
+    if (not Assigned(pAnimProps)) then
+        Exit(False);
+
+    // ignore if loading from properties
+    if (csLoading in ComponentState) then
+        Exit(False);
+
+    // set the default animation properties values
+    if (pSVG.AnimationDuration <> 0.0) then
+    begin
+        pAnimProps.FrameCount := Round(100.0 * (1000.0 / pSVG.AnimationDuration));
+        pAnimProps.Animate    := True;
+    end
+    else
+    begin
+        pAnimProps.FrameCount := 0;
+        pAnimProps.Animate    := False;
+    end;
+
+    pAnimProps.Position := 0;
+    Result              := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGImage.RunAnimation(var guid: UnicodeString; pGraphic: TGraphic; pAnimProps: IAnimationProps);
+var
+    pSVG: TWSVGGraphic;
+begin
+    if (not Assigned(pAnimProps)) then
+        Exit;
+
+    // is a SVG?
+    if (Assigned(pGraphic) and (pGraphic is TWSVGGraphic)) then
+    begin
+        // get the SVG
+        pSVG := pGraphic as TWSVGGraphic;
+
+        // design time?
+        if (csDesigning in ComponentState) then
+        begin
+            GetAnimPropsFromSVG(pSVG, pAnimProps);
+            Exit;
+        end;
+
+        // svg changed since last check?
+        if (pSVG.Native.GetUUID <> guid) then
+        begin
+            // get and apply animation properties from SVG
+            if (not GetAnimPropsFromSVG(pSVG, pAnimProps)) then
+            begin
+                // properties weren't loaded from svg, use the existing one to configure the svg.
+                // NOTE the animate property should be set first because it may overwrite the other
+                // values
+                pSVG.Animate    := pAnimProps.Animate;
+                pSVG.FrameCount := pAnimProps.FrameCount;
+                pSVG.Position   := pAnimProps.Position;
+            end;
+
+            pSVG.OnAnimate := DoAnimate;
+            guid           := pSVG.Native.GetUUID;
+        end;
+    end;
+
+    // design time and not a SVG graphic?
+    if (csDesigning in ComponentState) then
+    begin
+        // reset animation properties
+        pAnimProps.FrameCount := 0;
+        pAnimProps.Position   := 0;
+        pAnimProps.Animate    := False;
+
+        Exit;
+    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImage.OnPictureChange(pSender: TObject);
 begin
+    RunAnimation(m_ImgGUID, Picture.Graphic, m_pAnimationProps);
+
     if (Assigned(m_fPrevOnPictureChange)) then
         m_fPrevOnPictureChange(pSender);
-
-    if (m_pAnimationProps.Animate) then
-        RunAnimation(Picture, m_pFrameCalculator);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImage.OnNotified(message: TWMessage);
-begin
-    case (TWAnimationTimer.EWAnimationTimerMessages(message.m_Type)) of
-        TWAnimationTimer.EWAnimationTimerMessages.IE_AM_Animate:
-        begin
-            if (not m_pAnimationProps.Animate) then
-                Exit;
-
-            OnProcessAnimation;
-        end;
-    end;
-end;
-//---------------------------------------------------------------------------
-function TWSVGImage.GetFrameCount: Double;
-begin
-    if (not Assigned(m_pFrameCalculator)) then
-        Exit(0.0);
-
-    // get the frame count
-    Result := m_pFrameCalculator.GetFrameCount;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImage.SetFrameCount(frameCount: Double);
-begin
-    if (not Assigned(m_pFrameCalculator)) then
-        exit;
-
-    // apply the new frame count
-    m_pFrameCalculator.SetFrameCount(frameCount);
 end;
 //---------------------------------------------------------------------------
 

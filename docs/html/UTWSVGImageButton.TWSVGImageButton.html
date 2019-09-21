@@ -37,44 +37,28 @@ Image that acts as a button and supports animated SVG graphics</p>
 <td class="itemcode"><code>destructor <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#Destroy">Destroy</a></b>; override;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#GetClickedFrameCount">GetClickedFrameCount</a></b>: Double; virtual;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#GetDisabledFrameCount">GetDisabledFrameCount</a></b>: Double; virtual;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#GetHoveredFrameCount">GetHoveredFrameCount</a></b>: Double; virtual;</code></td>
-</tr>
-<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#CalculateDestRect">CalculateDestRect</a></b>(pPicture: TPicture): TRect; virtual;</code></td>
 </tr>
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#DoGetFrameCount">DoGetFrameCount</a></b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>): Cardinal; override;</code></td>
-</tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#DoAnimate">DoAnimate</a></b>(pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; override;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#IsEmpty">IsEmpty</a></b>(pPicture: TPicture): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#SetClickedFrameCount">SetClickedFrameCount</a></b>(frameCount: Double); virtual;</code></td>
-</tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#SetDisabledFrameCount">SetDisabledFrameCount</a></b>(frameCount: Double); virtual;</code></td>
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#DoSetAnimate">DoSetAnimate</a></b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; value: Boolean); override;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#SetHoveredFrameCount">SetHoveredFrameCount</a></b>(frameCount: Double); virtual;</code></td>
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#DoSetFrameCount">DoSetFrameCount</a></b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; value: Cardinal); override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#DoSetFrameCount">DoSetFrameCount</a></b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; frameCount: Cardinal); override;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#DoSetPosition">DoSetPosition</a></b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; value: Cardinal); override;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
@@ -98,15 +82,7 @@ Image that acts as a button and supports animated SVG graphics</p>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#OnProcessAnimation">OnProcessAnimation</a></b>; override;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#Paint">Paint</a></b>(pPicture: TPicture; pCanvas: TCanvas); reintroduce; virtual;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#SetAnimate">SetAnimate</a></b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; value: Boolean); override;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
@@ -129,7 +105,7 @@ Image that acts as a button and supports animated SVG graphics</p>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#ClickedAnimation">ClickedAnimation</a></b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pClickedAnimation write m_pClickedAnimation;</code></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#ClickedAnimation">ClickedAnimation</a></b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pClickedAnimationProps write m_pClickedAnimationProps;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
@@ -137,7 +113,7 @@ Image that acts as a button and supports animated SVG graphics</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#DisabledAnimation">DisabledAnimation</a></b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pDisabledAnimation write m_pDisabledAnimation;</code></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#DisabledAnimation">DisabledAnimation</a></b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pDisabledAnimationProps write m_pDisabledAnimationProps;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
@@ -145,11 +121,23 @@ Image that acts as a button and supports animated SVG graphics</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#HoveredAnimation">HoveredAnimation</a></b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pHoveredAnimation write m_pHoveredAnimation;</code></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#HoveredAnimation">HoveredAnimation</a></b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pHoveredAnimationProps write m_pHoveredAnimationProps;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#HoveredPicture">HoveredPicture</a></b>: TPicture read m_pHoveredPicture write <a  href="UTWSVGImageButton.TWSVGImageButton.html#SetHoveredPicture">SetHoveredPicture</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#OnClickedPictureAnimate">OnClickedPictureAnimate</a></b>: <a  href="UTWSVGImage.TWSVGImage.html#ITfSVGAnimateEvent">TWSVGImage.ITfSVGAnimateEvent</a> read m_fOnClickedPictureAnimate write m_fOnClickedPictureAnimate;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#OnDisabledPictureAnimate">OnDisabledPictureAnimate</a></b>: <a  href="UTWSVGImage.TWSVGImage.html#ITfSVGAnimateEvent">TWSVGImage.ITfSVGAnimateEvent</a> read m_fOnDisabledPictureAnimate write m_fOnDisabledPictureAnimate;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImageButton.TWSVGImageButton.html#OnHoveredPictureAnimate">OnHoveredPictureAnimate</a></b>: <a  href="UTWSVGImage.TWSVGImage.html#ITfSVGAnimateEvent">TWSVGImage.ITfSVGAnimateEvent</a> read m_fOnHoveredPictureAnimate write m_fOnHoveredPictureAnimate;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -181,39 +169,6 @@ Destructor</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="GetClickedFrameCount"></span><code>function <b>GetClickedFrameCount</b>: Double; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get the clicked state frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
-<h6 class="description_section">Returns</h6>
-<p class="return">The frame count</p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="GetDisabledFrameCount"></span><code>function <b>GetDisabledFrameCount</b>: Double; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get the disabled state frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
-<h6 class="description_section">Returns</h6>
-<p class="return">The frame count</p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="GetHoveredFrameCount"></span><code>function <b>GetHoveredFrameCount</b>: Double; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get the hovered state frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
-<h6 class="description_section">Returns</h6>
-<p class="return">The frame count</p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="CalculateDestRect"></span><code>function <b>CalculateDestRect</b>(pPicture: TPicture): TRect; virtual;</code></td>
 </tr>
@@ -231,18 +186,22 @@ Calculate the destination rect in which the picture should be drawn  </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoGetFrameCount"></span><code>function <b>DoGetFrameCount</b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>): Cardinal; override;</code></td>
+<td class="itemcode"><span id="DoAnimate"></span><code>function <b>DoAnimate</b>(pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Called when the frame count should be get from properties  </p>
+Called while SVG animation is running    </p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>pSender</dt>
-<dd>Sender for which the frame count should be get</dd>
+<dd>Event sender</dd>
+<dt>pAnimDesc</dt>
+<dd>Animation description</dd>
+<dt>pCustomData</dt>
+<dd>Custom data</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
-<p class="return">The frame count</p></td></tr>
+<p class="return"><code>True</code> if animation can continue, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -262,53 +221,25 @@ Check if a picture is empty  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="SetClickedFrameCount"></span><code>procedure <b>SetClickedFrameCount</b>(frameCount: Double); virtual;</code></td>
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoSetAnimate"></span><code>procedure <b>DoSetAnimate</b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; value: Boolean); override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Set the clicked state frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
+Enable or disable the animation  </p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
-<dt>frameCount</dt>
-<dd>Frame count</dd>
-</dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="SetDisabledFrameCount"></span><code>procedure <b>SetDisabledFrameCount</b>(frameCount: Double); virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Set the disabled state frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>frameCount</dt>
-<dd>Frame count</dd>
-</dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="SetHoveredFrameCount"></span><code>procedure <b>SetHoveredFrameCount</b>(frameCount: Double); virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Set the hovered state frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>frameCount</dt>
-<dd>Frame count</dd>
+<dt>pSender</dt>
+<dd>Sender for which the animation should be enabled or disabled</dd>
+<dt>value</dt>
+<dd>If <code>True</code> the animation will be enabled, disabled otherwise</dd>
 </dl>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoSetFrameCount"></span><code>procedure <b>DoSetFrameCount</b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; frameCount: Cardinal); override;</code></td>
+<td class="itemcode"><span id="DoSetFrameCount"></span><code>procedure <b>DoSetFrameCount</b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; value: Cardinal); override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -317,8 +248,25 @@ Called when the frame count should be set to properties  </p>
 <dl class="parameters">
 <dt>pSender</dt>
 <dd>Sender for which the frame count should be set</dd>
-<dt>frameCount</dt>
+<dt>value</dt>
 <dd>Frame count</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoSetPosition"></span><code>procedure <b>DoSetPosition</b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; value: Cardinal); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set animation position  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Sender for which the position should be set</dd>
+<dt>value</dt>
+<dd>Animation position in percent (between 0 and 100)</dd>
 </dl>
 </td></tr>
 </table>
@@ -412,16 +360,6 @@ Called when the hovered picture changed </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="OnProcessAnimation"></span><code>procedure <b>OnProcessAnimation</b>; override;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Called when next animation frame should be processed</p>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="Paint"></span><code>procedure <b>Paint</b>(pPicture: TPicture; pCanvas: TCanvas); reintroduce; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -433,23 +371,6 @@ Paint the image  </p>
 <dd>Picture to paint</dd>
 <dt>pCanvas</dt>
 <dd>Canvas on which the picture will be painted</dd>
-</dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetAnimate"></span><code>procedure <b>SetAnimate</b>(pSender: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a>; value: Boolean); override;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Enable or disable the animation  </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>pSender</dt>
-<dd>Animation properties in which animate value changed</dd>
-<dt>value</dt>
-<dd>If <code>True</code> the animation will be enabled, disabled otherwise</dd>
 </dl>
 </td></tr>
 </table>
@@ -517,7 +438,7 @@ Windows procedure </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="ClickedAnimation"></span><code>property <b>ClickedAnimation</b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pClickedAnimation write m_pClickedAnimation;</code></td>
+<td class="itemcode"><span id="ClickedAnimation"></span><code>property <b>ClickedAnimation</b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pClickedAnimationProps write m_pClickedAnimationProps;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -537,7 +458,7 @@ Get or set the clicked picture</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="DisabledAnimation"></span><code>property <b>DisabledAnimation</b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pDisabledAnimation write m_pDisabledAnimation;</code></td>
+<td class="itemcode"><span id="DisabledAnimation"></span><code>property <b>DisabledAnimation</b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pDisabledAnimationProps write m_pDisabledAnimationProps;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -557,7 +478,7 @@ Get or set the disabled picture</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="HoveredAnimation"></span><code>property <b>HoveredAnimation</b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pHoveredAnimation write m_pHoveredAnimation;</code></td>
+<td class="itemcode"><span id="HoveredAnimation"></span><code>property <b>HoveredAnimation</b>: <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html">TWSVGImage.IAnimationProps</a> read m_pHoveredAnimationProps write m_pHoveredAnimationProps;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -572,6 +493,36 @@ Get or set the hovered state animation properties</p>
 <tr><td colspan="2">
 <p>
 Get or set the hovered picture</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="OnClickedPictureAnimate"></span><code>property <b>OnClickedPictureAnimate</b>: <a  href="UTWSVGImage.TWSVGImage.html#ITfSVGAnimateEvent">TWSVGImage.ITfSVGAnimateEvent</a> read m_fOnClickedPictureAnimate write m_fOnClickedPictureAnimate;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the OnClickedPictureAnimate event</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="OnDisabledPictureAnimate"></span><code>property <b>OnDisabledPictureAnimate</b>: <a  href="UTWSVGImage.TWSVGImage.html#ITfSVGAnimateEvent">TWSVGImage.ITfSVGAnimateEvent</a> read m_fOnDisabledPictureAnimate write m_fOnDisabledPictureAnimate;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the OnDisabledPictureAnimate event</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="OnHoveredPictureAnimate"></span><code>property <b>OnHoveredPictureAnimate</b>: <a  href="UTWSVGImage.TWSVGImage.html#ITfSVGAnimateEvent">TWSVGImage.ITfSVGAnimateEvent</a> read m_fOnHoveredPictureAnimate write m_fOnHoveredPictureAnimate;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the OnHoverPictureAnimate event</p>
 </td></tr>
 </table>
 <hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>

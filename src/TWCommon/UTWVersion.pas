@@ -83,7 +83,7 @@ type
 
             {**
              Get version item at index
-             @param(index - item index to get)
+             @param(index Item index to get)
              @returns(Item at index)
              @raises(Exception if index is out of bounds)
             }
@@ -91,8 +91,8 @@ type
 
             {**
              Set version item at index
-             @param(index - item index)
-             @param(value - item value)
+             @param(index Item index)
+             @param(value Item value)
              @raises(Exception if index is out of bounds)
             }
             procedure SetVersion(index, value: Cardinal); virtual;

@@ -39,14 +39,18 @@
 <td class="itemcode"><code>function <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#IsEmpty">IsEmpty</a></b>: Boolean; virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#CalculateNextFrame">CalculateNextFrame</a></b>; virtual;</code></td>
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#DoAnimate">DoAnimate</a></b>(pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#RunAnimation">RunAnimation</a></b>; virtual;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#UpdateAnimStatus">UpdateAnimStatus</a></b>(animated: Boolean); virtual;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#OnPictureChange">OnPictureChange</a></b>(pSender: TObject); virtual;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#SetPicture">SetPicture</a></b>(pPicture: TPicture); virtual;</code></td>
 </tr>
@@ -54,10 +58,6 @@
 <span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#FrameCalculator">FrameCalculator</a></b>: <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html">TWSVGFrameCalculator</a> read m_pFrameCalculator;</code></td>
-</tr>
-<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#Picture">Picture</a></b>: TPicture read m_pPicture write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html#SetPicture">SetPicture</a>;</code></td>
 </tr>
@@ -102,22 +102,52 @@ Check if the glyph is empty </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="CalculateNextFrame"></span><code>procedure <b>CalculateNextFrame</b>; virtual;</code></td>
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoAnimate"></span><code>function <b>DoAnimate</b>(pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Calculate the next animation frame</p>
-</td></tr>
+Called while SVG animation is running    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Event sender</dd>
+<dt>pAnimDesc</dt>
+<dd>Animation description</dd>
+<dt>pCustomData</dt>
+<dd>Custom data</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if animation can continue, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="RunAnimation"></span><code>procedure <b>RunAnimation</b>; virtual;</code></td>
+<td class="itemcode"><span id="UpdateAnimStatus"></span><code>procedure <b>UpdateAnimStatus</b>(animated: Boolean); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Check if animation can be run, run it if yes</p>
+Updates the animation status </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>animated</dt>
+<dd>If <code>True</code>, the picture should be animated</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="OnPictureChange"></span><code>procedure <b>OnPictureChange</b>(pSender: TObject); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called when the internal picture changed </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Event sender</dd>
+</dl>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -136,16 +166,6 @@ Set the glyph picture </p>
 </td></tr>
 </table>
 <h3 class="detail">Properties</h3>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="FrameCalculator"></span><code>property <b>FrameCalculator</b>: <a  href="UTWSVGFrameCalculator.TWSVGFrameCalculator.html">TWSVGFrameCalculator</a> read m_pFrameCalculator;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get the frame calculator</p>
-</td></tr>
-</table>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>

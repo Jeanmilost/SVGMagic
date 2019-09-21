@@ -709,7 +709,7 @@ begin
 
                     // create a fake pen. The color is not important, but the width will be used to
                     // measure the path bounds. Without a such pen, the stroke may be calculated
-                    // incorrectly around the path. NOTE don't worry if the pen is NULL, in this case
+                    // incorrectly around the path. NOTE don't worry if the pen is nil, in this case
                     // the GetBounds() function will measure from the middle of the stroke
                     if (pProps.Style.Stroke.Width.Value > 0.0) then
                     begin

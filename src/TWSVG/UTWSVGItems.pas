@@ -118,7 +118,7 @@ type
         public
             {**
              Constructor
-             @param pParent - parent item, orphan or root if NULL
+             @param(pParent Parent item, orphan or root if @nil)
              @param(pOptions SVG options)
             }
             constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;

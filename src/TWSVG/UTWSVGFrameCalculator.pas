@@ -139,7 +139,7 @@ type
                              Instead, the FPS represents the number of frames per seconds a system can
                              effectively process
             }
-            property FrameCount: Double read m_FrameCount write m_FrameCount;
+            property FrameCount: Double read m_FrameCount write SetFrameCount;
 
             {**
              Get or set the interval

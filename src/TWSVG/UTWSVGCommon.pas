@@ -65,8 +65,8 @@ type
         public
             {**
              Get the value type associated with a property
-             @param name - property name
-             @return value type
+             @param(name Property name)
+             @return(Value type)
             }
             class function GetType(name: UnicodeString): IEValueType; static;
 
@@ -81,8 +81,8 @@ type
 
             {**
              Prepare a string to be parsed (i.e. trim it and remove all CRLF and Tab chars)
-             @param str - string to prepare
-             @returns prepared string
+             @param(str String to prepare)
+             @returns(Prepared string)
             }
             class function PrepareStr(const str: UnicodeString): UnicodeString; static;
 

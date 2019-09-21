@@ -14,6 +14,8 @@ uses System.Classes,
      Winapi.Messages,
      Winapi.Windows,
      Winapi.UxTheme,
+     UTWSVGGraphic,
+     UTWSVGAnimationDescriptor,
      UTWSVGImage,
      UTWSVGFrameCalculator;
 
@@ -23,18 +25,24 @@ type
     }
     TWSVGImageButton = class(TWSVGImage)
         private
-            m_pCanvas:             TCanvas;
-            m_pHoveredPicture:     TPicture;
-            m_pClickedPicture:     TPicture;
-            m_pDisabledPicture:    TPicture;
-            m_pHoveredCalculator:  TWSVGFrameCalculator;
-            m_pClickedCalculator:  TWSVGFrameCalculator;
-            m_pDisabledCalculator: TWSVGFrameCalculator;
-            m_pHoveredAnimation:   TWSVGImage.IAnimationProps;
-            m_pClickedAnimation:   TWSVGImage.IAnimationProps;
-            m_pDisabledAnimation:  TWSVGImage.IAnimationProps;
-            m_Hovered:             Boolean;
-            m_Clicked:             Boolean;
+            m_pCanvas:                      TCanvas;
+            m_HoveredImgGUID:               UnicodeString;
+            m_ClickedImgGUID:               UnicodeString;
+            m_DisabledImgGUID:              UnicodeString;
+            m_pHoveredPicture:              TPicture;
+            m_pClickedPicture:              TPicture;
+            m_pDisabledPicture:             TPicture;
+            m_pHoveredAnimationProps:       TWSVGImage.IAnimationProps;
+            m_pClickedAnimationProps:       TWSVGImage.IAnimationProps;
+            m_pDisabledAnimationProps:      TWSVGImage.IAnimationProps;
+            m_Hovered:                      Boolean;
+            m_Clicked:                      Boolean;
+            m_fOnHoveredPictureAnimate:     TWSVGImage.ITfSVGAnimateEvent;
+            m_fOnClickedPictureAnimate:     TWSVGImage.ITfSVGAnimateEvent;
+            m_fOnDisabledPictureAnimate:    TWSVGImage.ITfSVGAnimateEvent;
+            m_fPrevOnHoveredPictureChange:  TNotifyEvent;
+            m_fPrevOnClickedPictureChange:  TNotifyEvent;
+            m_fPrevOnDisabledPictureChange: TNotifyEvent;
 
             {**
              Windows paint message override
@@ -42,14 +50,21 @@ type
             }
             procedure WMPaint(var message: TWMPaint); message WM_PAINT;
 
-        protected
             {**
-             Enable or disable the animation
-             @param(pSender Animation properties in which animate value changed)
-             @param(value If @true the animation will be enabled, disabled otherwise)
+             Get the SVG matching with an animation properties set
+             @param(pAnimProps Animation properties set)
+             @returns(The matching SVG graphic, @nil if not found or on error)
             }
-            procedure SetAnimate(pSender: TWSVGImage.IAnimationProps; value: Boolean); override;
+            function GetSVG(pAnimProps: TWSVGImage.IAnimationProps): TWSVGGraphic;
 
+            {**
+             Get the animation properties set matching with an SVG
+             @param(pSVG The SVG graphic)
+             @returns(The matching animation set, @nil if not found or on error)
+            }
+            function GetAnimationProps(pSVG: TWSVGGraphic): TWSVGImage.IAnimationProps;
+
+        protected
             {**
              Set hovered picture
              @param(pPicture Picture to set)
@@ -114,23 +129,35 @@ type
             procedure Paint(pPicture: TPicture; pCanvas: TCanvas); reintroduce; virtual;
 
             {**
-             Called when the frame count should be get from properties
-             @param(pSender Sender for which the frame count should be get)
-             @returns(The frame count)
-            }
-            function DoGetFrameCount(pSender: TWSVGImage.IAnimationProps): Cardinal; override;
-
-            {**
              Called when the frame count should be set to properties
              @param(pSender Sender for which the frame count should be set)
-             @param(frameCount Frame count)
+             @param(value Frame count)
             }
-            procedure DoSetFrameCount(pSender: TWSVGImage.IAnimationProps; frameCount: Cardinal); override;
+            procedure DoSetFrameCount(pSender: TWSVGImage.IAnimationProps; value: Cardinal); override;
 
             {**
-             Called when next animation frame should be processed
+             Set animation position
+             @param(pSender Sender for which the position should be set)
+             @param(value Animation position in percent (between 0 and 100))
             }
-            procedure OnProcessAnimation; override;
+            procedure DoSetPosition(pSender: TWSVGImage.IAnimationProps; value: Cardinal); override;
+
+            {**
+             Enable or disable the animation
+             @param(pSender Sender for which the animation should be enabled or disabled)
+             @param(value If @true the animation will be enabled, disabled otherwise)
+            }
+            procedure DoSetAnimate(pSender: TWSVGImage.IAnimationProps; value: Boolean); override;
+
+            {**
+             Called while SVG animation is running
+             @param(pSender Event sender)
+             @param(pAnimDesc Animation description)
+             @param(pCustomData Custom data)
+             @returns(@true if animation can continue, otherwise @false)
+            }
+            function DoAnimate(pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;
+                    pCustomData: Pointer): Boolean; override;
 
             {**
              Called when the hovered picture changed
@@ -162,77 +189,11 @@ type
             }
             destructor Destroy; override;
 
-            {**
-             Get the hovered state frame count
-             @returns(The frame count)
-             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
-                             determine how many frames, in an ideal situation, should be rendered by
-                             seconds, and thus allows to calculate the time interval between each frames.
-                             Instead, the FPS represents the number of frames per seconds a system can
-                             effectively process
-            }
-            function GetHoveredFrameCount: Double; virtual;
-
-            {**
-             Set the hovered state frame count
-             @param(frameCount Frame count)
-             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
-                             determine how many frames, in an ideal situation, should be rendered by
-                             seconds, and thus allows to calculate the time interval between each frames.
-                             Instead, the FPS represents the number of frames per seconds a system can
-                             effectively process
-            }
-            procedure SetHoveredFrameCount(frameCount: Double); virtual;
-
-            {**
-             Get the clicked state frame count
-             @returns(The frame count)
-             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
-                             determine how many frames, in an ideal situation, should be rendered by
-                             seconds, and thus allows to calculate the time interval between each frames.
-                             Instead, the FPS represents the number of frames per seconds a system can
-                             effectively process
-            }
-            function GetClickedFrameCount: Double; virtual;
-
-            {**
-             Set the clicked state frame count
-             @param(frameCount Frame count)
-             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
-                             determine how many frames, in an ideal situation, should be rendered by
-                             seconds, and thus allows to calculate the time interval between each frames.
-                             Instead, the FPS represents the number of frames per seconds a system can
-                             effectively process
-            }
-            procedure SetClickedFrameCount(frameCount: Double); virtual;
-
-            {**
-             Get the disabled state frame count
-             @returns(The frame count)
-             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
-                             determine how many frames, in an ideal situation, should be rendered by
-                             seconds, and thus allows to calculate the time interval between each frames.
-                             Instead, the FPS represents the number of frames per seconds a system can
-                             effectively process
-            }
-            function GetDisabledFrameCount: Double; virtual;
-
-            {**
-             Set the disabled state frame count
-             @param(frameCount Frame count)
-             @br @bold(NOTE) Be careful, this is not identical to the FPS. The frame count is used to
-                             determine how many frames, in an ideal situation, should be rendered by
-                             seconds, and thus allows to calculate the time interval between each frames.
-                             Instead, the FPS represents the number of frames per seconds a system can
-                             effectively process
-            }
-            procedure SetDisabledFrameCount(frameCount: Double); virtual;
-
         published
             {**
              Get or set the hovered state animation properties
             }
-            property HoveredAnimation: TWSVGImage.IAnimationProps read m_pHoveredAnimation write m_pHoveredAnimation;
+            property HoveredAnimation: TWSVGImage.IAnimationProps read m_pHoveredAnimationProps write m_pHoveredAnimationProps;
 
             {**
              Get or set the hovered picture
@@ -240,9 +201,14 @@ type
             property HoveredPicture: TPicture read m_pHoveredPicture write SetHoveredPicture;
 
             {**
+             Get or set the OnHoverPictureAnimate event
+            }
+            property OnHoveredPictureAnimate: TWSVGImage.ITfSVGAnimateEvent read m_fOnHoveredPictureAnimate write m_fOnHoveredPictureAnimate;
+
+            {**
              Get or set the clicked state animation properties
             }
-            property ClickedAnimation: TWSVGImage.IAnimationProps read m_pClickedAnimation write m_pClickedAnimation;
+            property ClickedAnimation: TWSVGImage.IAnimationProps read m_pClickedAnimationProps write m_pClickedAnimationProps;
 
             {**
              Get or set the clicked picture
@@ -250,14 +216,24 @@ type
             property ClickedPicture: TPicture read m_pClickedPicture write SetClickedPicture;
 
             {**
+             Get or set the OnClickedPictureAnimate event
+            }
+            property OnClickedPictureAnimate: TWSVGImage.ITfSVGAnimateEvent read m_fOnClickedPictureAnimate write m_fOnClickedPictureAnimate;
+
+            {**
              Get or set the disabled state animation properties
             }
-            property DisabledAnimation: TWSVGImage.IAnimationProps read m_pDisabledAnimation write m_pDisabledAnimation;
+            property DisabledAnimation: TWSVGImage.IAnimationProps read m_pDisabledAnimationProps write m_pDisabledAnimationProps;
 
             {**
              Get or set the disabled picture
             }
             property DisabledPicture: TPicture read m_pDisabledPicture write SetDisabledPicture;
+
+            {**
+             Get or set the OnDisabledPictureAnimate event
+            }
+            property OnDisabledPictureAnimate: TWSVGImage.ITfSVGAnimateEvent read m_fOnDisabledPictureAnimate write m_fOnDisabledPictureAnimate;
     end;
 
 implementation
@@ -266,22 +242,25 @@ constructor TWSVGImageButton.Create(pOwner: TComponent);
 begin
     inherited Create(pOwner);
 
-    m_pCanvas             := TCanvas.Create;
-    m_pHoveredPicture     := TPicture.Create;
-    m_pClickedPicture     := TPicture.Create;
-    m_pDisabledPicture    := TPicture.Create;
-    m_pHoveredCalculator  := TWSVGFrameCalculator.Create;
-    m_pClickedCalculator  := TWSVGFrameCalculator.Create;
-    m_pDisabledCalculator := TWSVGFrameCalculator.Create;
-    m_pHoveredAnimation   := TWSVGImage.IAnimationProps.Create(Self);
-    m_pClickedAnimation   := TWSVGImage.IAnimationProps.Create(Self);
-    m_pDisabledAnimation  := TWSVGImage.IAnimationProps.Create(Self);
-    m_Clicked             := False;
+    m_pCanvas                   := TCanvas.Create;
+    m_pHoveredPicture           := TPicture.Create;
+    m_pClickedPicture           := TPicture.Create;
+    m_pDisabledPicture          := TPicture.Create;
+    m_pHoveredAnimationProps    := TWSVGImage.IAnimationProps.Create(Self);
+    m_pClickedAnimationProps    := TWSVGImage.IAnimationProps.Create(Self);
+    m_pDisabledAnimationProps   := TWSVGImage.IAnimationProps.Create(Self);
+    m_fOnHoveredPictureAnimate  := nil;
+    m_fOnClickedPictureAnimate  := nil;
+    m_fOnDisabledPictureAnimate := nil;
+    m_Clicked                   := False;
 
     // configure pictures
-    m_pHoveredPicture.OnChange  := OnHoveredPictureChange;
-    m_pClickedPicture.OnChange  := OnClickedPictureChange;
-    m_pDisabledPicture.OnChange := OnDisabledPictureChange;
+    m_fPrevOnHoveredPictureChange  := m_pHoveredPicture.OnChange;
+    m_pHoveredPicture.OnChange     := OnHoveredPictureChange;
+    m_fPrevOnClickedPictureChange  := m_pClickedPicture.OnChange;
+    m_pClickedPicture.OnChange     := OnClickedPictureChange;
+    m_fPrevOnDisabledPictureChange := m_pDisabledPicture.OnChange;
+    m_pDisabledPicture.OnChange    := OnDisabledPictureChange;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGImageButton.Destroy;
@@ -290,12 +269,9 @@ begin
     FreeAndNil(m_pHoveredPicture);
     FreeAndNil(m_pClickedPicture);
     FreeAndNil(m_pDisabledPicture);
-    FreeAndNil(m_pHoveredCalculator);
-    FreeAndNil(m_pClickedCalculator);
-    FreeAndNil(m_pDisabledCalculator);
-    FreeAndNil(m_pHoveredAnimation);
-    FreeAndNil(m_pClickedAnimation);
-    FreeAndNil(m_pDisabledAnimation);
+    FreeAndNil(m_pHoveredAnimationProps);
+    FreeAndNil(m_pClickedAnimationProps);
+    FreeAndNil(m_pDisabledAnimationProps);
 
     inherited Destroy;
 end;
@@ -333,27 +309,65 @@ begin
     end;
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGImageButton.SetAnimate(pSender: TWSVGImage.IAnimationProps; value: Boolean);
+function TWSVGImageButton.GetSVG(pAnimProps: TWSVGImage.IAnimationProps): TWSVGGraphic;
 begin
-    if (pSender = m_pHoveredAnimation) then
+    if (not Assigned(pAnimProps)) then
+        Exit(nil);
+
+    // search for SVG matching with the animation properties set
+    if (pAnimProps = m_pHoveredAnimationProps) then
     begin
-        RunAnimation(Picture, m_pHoveredCalculator);
-        Exit;
+        if (Assigned(m_pHoveredPicture.Graphic) and (m_pHoveredPicture.Graphic is TWSVGGraphic)) then
+            Exit(m_pHoveredPicture.Graphic as TWSVGGraphic);
     end
     else
-    if (pSender = m_pClickedAnimation) then
+    if (pAnimProps = m_pClickedAnimationProps) then
     begin
-        RunAnimation(Picture, m_pClickedCalculator);
-        Exit;
+        if (Assigned(m_pClickedPicture.Graphic) and (m_pClickedPicture.Graphic is TWSVGGraphic)) then
+            Exit(m_pClickedPicture.Graphic as TWSVGGraphic);
     end
     else
-    if (pSender = m_pDisabledAnimation) then
+    if (pAnimProps = m_pDisabledAnimationProps) then
     begin
-        RunAnimation(Picture, m_pDisabledCalculator);
-        Exit;
+        if (Assigned(m_pDisabledPicture.Graphic) and (m_pDisabledPicture.Graphic is TWSVGGraphic)) then
+            Exit(m_pDisabledPicture.Graphic as TWSVGGraphic);
     end;
 
-    inherited SetAnimate(pSender, value);
+    Result := nil;
+end;
+//---------------------------------------------------------------------------
+function TWSVGImageButton.GetAnimationProps(pSVG: TWSVGGraphic): TWSVGImage.IAnimationProps;
+var
+    pSrcSVG: TWSVGGraphic;
+begin
+    if (not Assigned(pSVG)) then
+        Exit(nil);
+
+    if ((m_pHoveredPicture.Graphic is TWSVGGraphic) and (not IsEmpty(m_pHoveredPicture))) then
+    begin
+        pSrcSvg := (m_pHoveredPicture.Graphic as TWSVGGraphic);
+
+        if (pSrcSvg.Native.UUID = pSVG.Native.UUID) then
+            Exit (m_pHoveredAnimationProps);
+    end;
+
+    if ((m_pClickedPicture.Graphic is TWSVGGraphic) and (not IsEmpty(m_pClickedPicture))) then
+    begin
+        pSrcSvg := (m_pClickedPicture.Graphic as TWSVGGraphic);
+
+        if (pSrcSvg.Native.UUID = pSVG.Native.UUID) then
+            Exit (m_pClickedAnimationProps);
+    end;
+
+    if ((m_pDisabledPicture.Graphic is TWSVGGraphic) and (not IsEmpty(m_pDisabledPicture))) then
+    begin
+        pSrcSvg := (m_pDisabledPicture.Graphic as TWSVGGraphic);
+
+        if (pSrcSvg.Native.UUID = pSVG.Native.UUID) then
+            Exit (m_pDisabledAnimationProps);
+    end;
+
+    Result := nil;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageButton.SetHoveredPicture(pPicture: TPicture);
@@ -413,9 +427,9 @@ begin
             Exit(True);
     end
     else
-        // is picture graphic empty?
-        if ((pPicture.Graphic.Width = 0) or (pPicture.Graphic.Height = 0)) then
-            Exit(True);
+    // is picture graphic empty?
+    if ((pPicture.Graphic.Width = 0) or (pPicture.Graphic.Height = 0)) then
+        Exit(True);
 
     Result := False;
 end;
@@ -423,7 +437,7 @@ end;
 function TWSVGImageButton.CalculateDestRect(pPicture: TPicture): TRect;
 var
     w, h, cw, ch: Integer;
-    xyaspect:     Double;
+    xyAspect:     Double;
 begin
     w  := pPicture.Width;
     h  := pPicture.Height;
@@ -434,30 +448,30 @@ begin
     begin
         if (Proportional and (w > 0) and (h > 0)) then
         begin
-            xyaspect := w / h;
+            xyAspect := w / h;
 
             if (w > h) then
             begin
                 w := cw;
-                h := Trunc(cw / xyaspect);
+                h := Trunc(cw / xyAspect);
 
                 // is too big?
                 if (h > ch) then
                 begin
                     h := ch;
-                    w := Trunc(ch * xyaspect);
+                    w := Trunc(ch * xyAspect);
                 end;
             end
             else
             begin
                 h := ch;
-                w := Trunc(ch * xyaspect);
+                w := Trunc(ch * xyAspect);
 
                 // is too big?
                 if (w > cw) then
                 begin
                     w := cw;
-                    h := Trunc(cw / xyaspect);
+                    h := Trunc(cw / xyAspect);
                 end;
             end;
         end
@@ -512,125 +526,168 @@ begin
         pCanvas.StretchDraw(CalculateDestRect(pPicture), pPicture.Graphic);
 end;
 //---------------------------------------------------------------------------
-function TWSVGImageButton.DoGetFrameCount(pSender: TWSVGImage.IAnimationProps): Cardinal;
+procedure TWSVGImageButton.DoSetFrameCount(pSender: TWSVGImage.IAnimationProps; value: Cardinal);
+var
+    pSVG:     TWSVGGraphic;
+    position: Double;
 begin
-    if (pSender = m_pHoveredAnimation) then
-        Exit(Round(GetHoveredFrameCount))
-    else
-    if (pSender = m_pClickedAnimation) then
-        Exit(Round(GetClickedFrameCount))
-    else
-    if (pSender = m_pDisabledAnimation) then
-        Exit(Round(GetDisabledFrameCount));
+    if (csDesigning in ComponentState) then
+        Exit;
 
-    Result := inherited DoGetFrameCount(pSender);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImageButton.DoSetFrameCount(pSender: TWSVGImage.IAnimationProps; frameCount: Cardinal);
-begin
-    if (pSender = m_pHoveredAnimation) then
+    // get the SVG matching with the sender
+    pSVG := GetSVG(pSender);
+
+    // found the SVG?
+    if (Assigned(pSVG)) then
     begin
-        SetHoveredFrameCount(frameCount);
-        Exit;
-    end
-    else
-    if (pSender = m_pClickedAnimation) then
-    begin
-        SetClickedFrameCount(frameCount);
-        Exit;
-    end
-    else
-    if (pSender = m_pDisabledAnimation) then
-    begin
-        SetDisabledFrameCount(frameCount);
+        position := pSender.Position;
+
+        // configure the SVG. NOTE the animate property should be set first because it may overwrite
+        // the other values
+        pSVG.Animate    := pSender.Animate and (not(csDesigning in ComponentState));
+        pSVG.FrameCount := value;
+        pSVG.Position   := (position * 0.01);
+
         Exit;
     end;
 
-    inherited SetFrameCount(frameCount);
+    // prevent the incorrect animation set to be applied to default picture
+    if (pSender <> Animation) then
+        Exit;
+
+    inherited DoSetFrameCount(pSender, value);
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGImageButton.OnProcessAnimation;
+procedure TWSVGImageButton.DoSetPosition(pSender: TWSVGImage.IAnimationProps; value: Cardinal);
+var
+    pSVG:     TWSVGGraphic;
+    position: Double;
 begin
-    inherited OnProcessAnimation;
+    if (csDesigning in ComponentState) then
+        Exit;
 
-    // animate pictures
-    CalculateNextFrame(m_pHoveredPicture,  m_pHoveredCalculator,  m_pHoveredAnimation);
-    CalculateNextFrame(m_pClickedPicture,  m_pClickedCalculator,  m_pClickedAnimation);
-    CalculateNextFrame(m_pDisabledPicture, m_pDisabledCalculator, m_pDisabledAnimation);
+    // get the SVG matching with the sender
+    pSVG := GetSVG(pSender);
 
-    Invalidate;
+    // found the SVG?
+    if (Assigned(pSVG)) then
+    begin
+        position := value;
+
+        // configure the SVG. NOTE the animate property should be set first because it may overwrite
+        // the other values
+        pSVG.Animate    := pSender.Animate and (not(csDesigning in ComponentState));
+        pSVG.FrameCount := pSender.FrameCount;
+        pSVG.Position   := (position * 0.01);
+
+        Exit;
+    end;
+
+    // prevent the incorrect animation set to be applied to default picture
+    if (pSender <> Animation) then
+        Exit;
+
+    inherited DoSetPosition(pSender, value);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGImageButton.DoSetAnimate(pSender: TWSVGImage.IAnimationProps; value: Boolean);
+var
+    pSVG:     TWSVGGraphic;
+    position: Double;
+begin
+    if (csDesigning in ComponentState) then
+        Exit;
+
+    // get the SVG matching with the sender
+    pSVG := GetSVG(pSender);
+
+    // found the SVG?
+    if (Assigned(pSVG)) then
+    begin
+        position := pSender.Position;
+
+        // configure the SVG. NOTE the animate property should be set first because it may overwrite
+        // the other values
+        pSVG.Animate    := value and (not(csDesigning in ComponentState));
+        pSVG.FrameCount := pSender.FrameCount;
+        pSVG.Position   := (position * 0.01);
+
+        Exit;
+    end;
+
+    // prevent the incorrect animation set to be applied to default picture
+    if (pSender <> Animation) then
+        Exit;
+
+    inherited DoSetAnimate(pSender, value);
+end;
+//---------------------------------------------------------------------------
+function TWSVGImageButton.DoAnimate(pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;
+        pCustomData: Pointer): Boolean;
+var
+    pSVG:       TWSVGGraphic;
+    pAnimProps: TWSVGImage.IAnimationProps;
+begin
+    if (pSender is TWSVGGraphic) then
+    begin
+        // get the SVG
+        pSVG := pSender as TWSVGGraphic;
+
+        // get the matching animation properties
+        pAnimProps := GetAnimationProps(pSVG);
+
+        if (Assigned(pAnimProps)) then
+        begin
+            // update the published values
+            pAnimProps.FrameCount := pSVG.FrameCount;
+            pAnimProps.Position   := Round(pSVG.Position * 100.0);
+
+            // ask user about continuing animation
+            if (Assigned(m_fOnHoveredPictureAnimate) and (pAnimProps = m_pHoveredAnimationProps)) then
+                Exit(m_fOnHoveredPictureAnimate(pSender, pAnimDesc, pCustomData))
+            else
+            if (Assigned(m_fOnClickedPictureAnimate) and (pAnimProps = m_pClickedAnimationProps)) then
+                Exit(m_fOnClickedPictureAnimate(pSender, pAnimDesc, pCustomData))
+            else
+            if (Assigned(m_fOnDisabledPictureAnimate) and (pAnimProps = m_pDisabledAnimationProps)) then
+                Exit(m_fOnDisabledPictureAnimate(pSender, pAnimDesc, pCustomData));
+
+            // notify that animation is allowed to continue
+            Exit(True);
+        end;
+    end;
+
+    Result := inherited DoAnimate(pSender, pAnimDesc, pCustomData);
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageButton.OnHoveredPictureChange(pSender: TObject);
 begin
-    if (m_pHoveredAnimation.Animate) then
-        RunAnimation(m_pHoveredPicture, m_pHoveredCalculator);
+    RunAnimation(m_HoveredImgGUID, m_pHoveredPicture.Graphic, m_pHoveredAnimationProps);
+
+    if (Assigned(m_fPrevOnHoveredPictureChange)) then
+        m_fPrevOnHoveredPictureChange(pSender);
+
+    Invalidate;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageButton.OnClickedPictureChange(pSender: TObject);
 begin
-    if (m_pClickedAnimation.Animate) then
-        RunAnimation(m_pClickedPicture, m_pClickedCalculator);
+    RunAnimation(m_ClickedImgGUID, m_pClickedPicture.Graphic, m_pClickedAnimationProps);
+
+    if (Assigned(m_fPrevOnClickedPictureChange)) then
+        m_fPrevOnClickedPictureChange(pSender);
+
+    Invalidate;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageButton.OnDisabledPictureChange(pSender: TObject);
 begin
-    if (m_pDisabledAnimation.Animate) then
-        RunAnimation(m_pDisabledPicture, m_pDisabledCalculator);
-end;
-//---------------------------------------------------------------------------
-function TWSVGImageButton.GetHoveredFrameCount: Double;
-begin
-    if (not Assigned(m_pHoveredCalculator)) then
-        Exit(0.0);
+    RunAnimation(m_DisabledImgGUID, m_pDisabledPicture.Graphic, m_pDisabledAnimationProps);
 
-    // get the frame count
-    Result := m_pHoveredCalculator.GetFrameCount;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImageButton.SetHoveredFrameCount(frameCount: Double);
-begin
-    if (not Assigned(m_pHoveredCalculator)) then
-        exit;
+    if (Assigned(m_fPrevOnDisabledPictureChange)) then
+        m_fPrevOnDisabledPictureChange(pSender);
 
-    // apply the new frame count
-    m_pHoveredCalculator.SetFrameCount(frameCount);
-end;
-//---------------------------------------------------------------------------
-function TWSVGImageButton.GetClickedFrameCount: Double;
-begin
-    if (not Assigned(m_pClickedCalculator)) then
-        Exit(0.0);
-
-    // get the frame count
-    Result := m_pClickedCalculator.GetFrameCount;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImageButton.SetClickedFrameCount(frameCount: Double);
-begin
-    if (not Assigned(m_pClickedCalculator)) then
-        exit;
-
-    // apply the new frame count
-    m_pClickedCalculator.SetFrameCount(frameCount);
-end;
-//---------------------------------------------------------------------------
-function TWSVGImageButton.GetDisabledFrameCount: Double;
-begin
-    if (not Assigned(m_pDisabledCalculator)) then
-        Exit(0.0);
-
-    // get the frame count
-    Result := m_pDisabledCalculator.GetFrameCount;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGImageButton.SetDisabledFrameCount(frameCount: Double);
-begin
-    if (not Assigned(m_pDisabledCalculator)) then
-        exit;
-
-    // apply the new frame count
-    m_pDisabledCalculator.SetFrameCount(frameCount);
+    Invalidate;
 end;
 //---------------------------------------------------------------------------
 

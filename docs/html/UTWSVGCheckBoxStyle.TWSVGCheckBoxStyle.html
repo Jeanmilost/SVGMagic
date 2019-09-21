@@ -96,11 +96,11 @@ Style to apply to checkbox</p>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#DoRunAnimations">DoRunAnimations</a></b>; override;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#DoSaveOriginalSize">DoSaveOriginalSize</a></b>; override;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#DoSaveOriginalSize">DoSaveOriginalSize</a></b>; override;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#DoUpdateAnimStatus">DoUpdateAnimStatus</a></b>; override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
@@ -124,37 +124,33 @@ Style to apply to checkbox</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#OnProcessAnimation">OnProcessAnimation</a></b>; override;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#SetAll">SetAll</a></b>(value: Boolean); override;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#SetCheckedGlyph">SetCheckedGlyph</a></b>(pPicture: TPicture); virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#SetDisabledCheckedGlyph">SetDisabledCheckedGlyph</a></b>(pPicture: TPicture); virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#SetDisabledGrayedGlyph">SetDisabledGrayedGlyph</a></b>(pPicture: TPicture); virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#SetDisabledUncheckedGlyph">SetDisabledUncheckedGlyph</a></b>(pPicture: TPicture); virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#SetGrayedGlyph">SetGrayedGlyph</a></b>(pPicture: TPicture); virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#SetTargetsCollection">SetTargetsCollection</a></b>(pCollection: <a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.IWCheckBoxCollection.html">IWCheckBoxCollection</a>); virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGCheckBoxStyle.TWSVGCheckBoxStyle.html#SetUncheckedGlyph">SetUncheckedGlyph</a></b>(pPicture: TPicture); virtual;</code></td>
 </tr>
@@ -375,21 +371,21 @@ Called when size should be recalculated due to a DPI change  </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoRunAnimations"></span><code>procedure <b>DoRunAnimations</b>; override;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Run all the animations</p>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="DoSaveOriginalSize"></span><code>procedure <b>DoSaveOriginalSize</b>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
 Called when original component size should be saved (before any DPI change was applied)</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoUpdateAnimStatus"></span><code>procedure <b>DoUpdateAnimStatus</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Notify that the animation status has changed and should be updated</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -468,16 +464,6 @@ Called when a target is freed </p>
 <dt>pTarget</dt>
 <dd>Target about to be freed</dd>
 </dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="OnProcessAnimation"></span><code>procedure <b>OnProcessAnimation</b>; override;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Called when next animation frame should be processed</p>
 </td></tr>
 </table>
 <table class="detail wide_list">

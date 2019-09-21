@@ -1331,7 +1331,7 @@ type
 
             {**
              Initialize SVG to rasterize
-             @param(pSVG - SVG)
+             @param(pSVG SVG)
             }
             procedure Initialize(const pSVG: TWSVG); virtual;
 

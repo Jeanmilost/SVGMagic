@@ -18,7 +18,7 @@
 <a  href="UTWSVGComponentStyle.html">UTWSVGComponentStyle</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type TWSVGComponentStyle = class(TComponent, <a class="normal" href="UTWDesignPatterns.IWObserver.html">IWObserver</a>)</code></p>
+<code>type TWSVGComponentStyle = class(TComponent)</code></p>
 <h2 class="description">Description</h2>
 <p>
 Component style</p>
@@ -142,11 +142,11 @@ Component style</p>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoRunAnimations">DoRunAnimations</a></b>; virtual; abstract;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoSaveOriginalSize">DoSaveOriginalSize</a></b>; virtual; abstract;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoSaveOriginalSize">DoSaveOriginalSize</a></b>; virtual; abstract;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoUpdateAnimStatus">DoUpdateAnimStatus</a></b>; virtual; abstract;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
@@ -178,14 +178,6 @@ Component style</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#OnNotified">OnNotified</a></b>(message: <a  href="UTWDesignPatterns.TWMessage.html">TWMessage</a>); virtual;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#OnProcessAnimation">OnProcessAnimation</a></b>; virtual; abstract;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#ParentWndProc">ParentWndProc</a></b>(var message: TMessage); virtual;</code></td>
 </tr>
 <tr class="list2">
@@ -198,11 +190,11 @@ Component style</p>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a></b>(value: Boolean); overload; virtual; abstract;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a></b>(value: Boolean; styleClass, targetClass: TClass); overload; virtual;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a></b>(value: Boolean; styleClass, targetClass: TClass); overload; virtual;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a></b>(value: Boolean); overload; virtual; abstract;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
@@ -548,21 +540,21 @@ Called when size should be recalculated due to a DPI change  </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoRunAnimations"></span><code>procedure <b>DoRunAnimations</b>; virtual; abstract;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Run all the animations</p>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="DoSaveOriginalSize"></span><code>procedure <b>DoSaveOriginalSize</b>; virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
 Called when original component size should be saved (before any DPI change was applied)</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoUpdateAnimStatus"></span><code>procedure <b>DoUpdateAnimStatus</b>; virtual; abstract;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Notify that the animation status has changed and should be updated</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -679,31 +671,6 @@ Called when a target is freed </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="OnNotified"></span><code>procedure <b>OnNotified</b>(message: <a  href="UTWDesignPatterns.TWMessage.html">TWMessage</a>); virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Called when subject send a notification to the observer </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>message</dt>
-<dd>Notification message</dd>
-</dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="OnProcessAnimation"></span><code>procedure <b>OnProcessAnimation</b>; virtual; abstract;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Called when next animation frame should be processed</p>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="ParentWndProc"></span><code>procedure <b>ParentWndProc</b>(var message: TMessage); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -744,21 +711,6 @@ Repaint all the targets</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetAll"></span><code>procedure <b>SetAll</b>(value: Boolean); overload; virtual; abstract;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Enable or disable if all components mathcing with style are skinned </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>value</dt>
-<dd>If <code>True</code>, all components matching with style will be skinned</dd>
-</dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="SetAll"></span><code>procedure <b>SetAll</b>(value: Boolean; styleClass, targetClass: TClass); overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -772,6 +724,21 @@ Enable or disable if all components mathcing with style are skinned   </p>
 <dd>Style class</dd>
 <dt>targetClass</dt>
 <dd>Target class</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetAll"></span><code>procedure <b>SetAll</b>(value: Boolean); overload; virtual; abstract;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Enable or disable if all components mathcing with style are skinned </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>If <code>True</code>, all components matching with style will be skinned</dd>
 </dl>
 </td></tr>
 </table>

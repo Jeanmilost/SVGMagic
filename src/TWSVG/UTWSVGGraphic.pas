@@ -344,14 +344,19 @@ type
             property Version: UnicodeString read GetVersion;
 
             {**
-            * Get the native SVG object
+             Get the native SVG object
             }
             property Native: TWSVG read m_pSVG;
 
             {**
-            * Get the rasterizer used to draw the SVG
+             Get the rasterizer used to draw the SVG
             }
             property Rasterizer: TWSVGRasterizer read GetRasterizer;
+
+            {**
+             Get the SVG data
+            }
+            property Data: UnicodeString read m_Data;
 
             {**
              Get or set if the SVG is animated
@@ -709,7 +714,7 @@ end;
 //---------------------------------------------------------------------------
 procedure TWSVGGraphic.SetFrameCount(count: Cardinal);
 begin
-    m_pFrameCalculator.FrameCount := count;;
+    m_pFrameCalculator.FrameCount := count;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGGraphic.SetAnimate(value: Boolean);
@@ -766,7 +771,6 @@ begin
     // may svg be animated?
     if (duration > 0.0) then
     begin
-
         // configure animation duration
         m_pFrameCalculator.SetDuration(duration, 100);
 
@@ -800,7 +804,7 @@ begin
     framesToAdd := info.m_FrameCountSinceLastPaint;
 
     // calculate the next frame position
-    newFramePos   := m_FramePos + ((framesToAdd + info.m_InterpolationFactor) * 0.01 * m_AnimSpeed);
+    newFramePos   := m_FramePos + (framesToAdd * 0.01 * m_AnimSpeed);
     animPerformed := 0;
 
     // remove the exceeding frame position and count the number of times the animation ended

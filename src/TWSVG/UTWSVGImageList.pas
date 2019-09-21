@@ -820,7 +820,11 @@ begin
                 imgNameBytes := TEncoding.UTF8.GetBytes(imgClassName);
                 size         := Length(imgNameBytes);
                 pStream.WriteBuffer(size, SizeOf(size));
-                pStream.Write(imgNameBytes, size);
+                {$if CompilerVersion <= 23}
+                    pStream.WriteBuffer(PByte(imgNameBytes)^, size);
+                {$else}
+                    pStream.Write(imgNameBytes, size);
+                {$ifend}
 
                 // save the image in the stream
                 pList[i].m_pPicture.Graphic.SaveToStream(pMemStr);
@@ -848,15 +852,9 @@ end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageList.LoadPictureListFromStream(pList: IWPictureList; pStream: TStream);
 var
-    {$if CompilerVersion <= 23}
-        pImgNameBytes: Pointer;
-        pData:         Pointer;
-    {$else}
-        imgNameBytes:  TBytes;
-    {$ifend}
-
     count, i:      Integer;
     color:         Cardinal;
+    imgNameBytes:  TBytes;
     imgClassName:  string;
     pMemStr:       TMemoryStream;
     size:          Int64;
@@ -873,6 +871,19 @@ begin
 
     pMemStr := TMemoryStream.Create;
 
+    // enable the code below to save the received stream content in a file
+    {$ifdef _DEBUG}
+        {
+        size := pStream.Position;
+        pStream.Position := 0;
+        pMemStr.CopyFrom(pStream, pStream.Size);
+        pMemStr.Position := 0;
+        pMemStr.SaveToFile('__DfmStreamContent.bin');
+        pMemStr.Clear;
+        pStream.Position := size;
+        }
+    {$endif}
+
     try
         for i := 0 to count - 1 do
         begin
@@ -886,18 +897,15 @@ begin
                 if (size > 0) then
                 begin
                     {$if CompilerVersion <= 23}
-                        pImgNameBytes := nil;
+                        SetLength(imgNameBytes, size{$if CompilerVersion < 20} + 1{$ifend});
+                        pStream.ReadBuffer(PByte(imgNameBytes)^, size);
 
-                        try
-                            GetMem(pImgNameBytes, size + 1);
-                            pStream.ReadBuffer(pImgNameBytes^, size);
-                            pData           := Pointer(NativeUInt(pImgNameBytes) + NativeUInt(size));
-                            (PByte(pData))^ := 0;
-                            imgClassName    := UTF8ToString(pImgNameBytes);
-                        finally
-                            if (Assigned(pImgNameBytes)) then
-                                FreeMem(pImgNameBytes);
-                        end;
+                        {$if CompilerVersion < 20}
+                            imgNameBytes[High(imgNameBytes)] := $0;
+                            imgClassName := UTF8ToString(PAnsiChar(pImgNameBytes));
+                        {$else}
+                            imgClassName := TEncoding.UTF8.GetString(imgNameBytes);
+                        {$ifend}
                     {$else}
                         SetLength(imgNameBytes, size);
                         pStream.Read(imgNameBytes, size);

@@ -587,7 +587,7 @@ type
                 protected
                     {**
                      Get value at index
-                     @param(index - value index to get)
+                     @param(index Value index to get)
                      @returns(Value at index)
                      @raises(Exception if index is out of bounds)
                     }
@@ -595,8 +595,8 @@ type
 
                     {**
                      Set value at index
-                     @param(index - value index)
-                     @param(value - value)
+                     @param(index Value index)
+                     @param(value Value)
                      @raises(Exception if index is out of bounds)
                     }
                     procedure SetValue(index: Cardinal; value: IEDisplay); virtual;

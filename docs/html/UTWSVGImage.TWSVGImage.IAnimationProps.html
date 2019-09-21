@@ -38,19 +38,15 @@ Class to group and expose all SVG animation properties</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#GetFrameCount">GetFrameCount</a></b>: Cardinal; virtual;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetAnimate">SetAnimate</a></b>(value: Boolean); virtual;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetAnimate">SetAnimate</a></b>(value: Boolean); virtual;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetFrameCount">SetFrameCount</a></b>(value: Cardinal); virtual;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetFrameCount">SetFrameCount</a></b>(count: Cardinal); virtual;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetPosition">SetPosition</a></b>(pos: Cardinal); virtual;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetPosition">SetPosition</a></b>(value: Cardinal); virtual;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
@@ -61,7 +57,7 @@ Class to group and expose all SVG animation properties</p>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#FrameCount">FrameCount</a></b>: Cardinal read <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#GetFrameCount">GetFrameCount</a> write <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetFrameCount">SetFrameCount</a> nodefault;</code></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#FrameCount">FrameCount</a></b>: Cardinal read m_FrameCount write <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetFrameCount">SetFrameCount</a> nodefault;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
@@ -98,17 +94,6 @@ Destructor</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="GetFrameCount"></span><code>function <b>GetFrameCount</b>: Cardinal; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get the frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
-<h6 class="description_section">Returns</h6>
-<p class="return">The frame count</p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="SetAnimate"></span><code>procedure <b>SetAnimate</b>(value: Boolean); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -124,14 +109,14 @@ Enable or disable the animation </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetFrameCount"></span><code>procedure <b>SetFrameCount</b>(count: Cardinal); virtual;</code></td>
+<td class="itemcode"><span id="SetFrameCount"></span><code>procedure <b>SetFrameCount</b>(value: Cardinal); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
 Set the frame count  <br> <b>NOTE</b> Be careful, this is not identical to the FPS. The frame count is used to determine how many frames, in an ideal situation, should be rendered by seconds, and thus allows to calculate the time interval between each frames. Instead, the FPS represents the number of frames per seconds a system can effectively process</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
-<dt>count</dt>
+<dt>value</dt>
 <dd>Frame count</dd>
 </dl>
 </td></tr>
@@ -139,14 +124,14 @@ Set the frame count  <br> <b>NOTE</b> Be careful, this is not identical to the F
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetPosition"></span><code>procedure <b>SetPosition</b>(pos: Cardinal); virtual;</code></td>
+<td class="itemcode"><span id="SetPosition"></span><code>procedure <b>SetPosition</b>(value: Cardinal); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
 Set animation position </p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
-<dt>pos</dt>
+<dt>value</dt>
 <dd>Animation position in percent (between 0 and 100)</dd>
 </dl>
 </td></tr>
@@ -165,7 +150,7 @@ Enable or disable the animation</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="FrameCount"></span><code>property <b>FrameCount</b>: Cardinal read <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#GetFrameCount">GetFrameCount</a> write <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetFrameCount">SetFrameCount</a> nodefault;</code></td>
+<td class="itemcode"><span id="FrameCount"></span><code>property <b>FrameCount</b>: Cardinal read m_FrameCount write <a  href="UTWSVGImage.TWSVGImage.IAnimationProps.html#SetFrameCount">SetFrameCount</a> nodefault;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>

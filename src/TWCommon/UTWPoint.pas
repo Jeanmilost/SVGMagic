@@ -259,7 +259,7 @@ type
 
             {**
              Get the hash code based on the class content
-             @param(initValue - initialization value)
+             @param(initValue Initialization value)
              @returns(Hash code)
             }
             function GetHashCode(initValue: Integer): Integer; inline;

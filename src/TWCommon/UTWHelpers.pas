@@ -305,10 +305,10 @@ type
         {**
          Complete string length with selected character
          E.g. FillStrLeft("Hello", 10, '#') -> "#####Hello"
-         @param str - string to complete
-         @param fillLen - length of string to reach
-         @param delimiter - character to use to fill the space
-         @returns completed string
+         @param(str String to complete)
+         @param(fillLen Length of string to reach)
+         @param(delimiter Character to use to fill the space)
+         @returns(Completed string)
          @br @bold(NOTE) If string is already >= length, it won't be modified
         }
         class function FillStrLeft(const str: UnicodeString; fillLen: NativeInt;
@@ -532,8 +532,8 @@ type
 
     {**
      RtlGetVersion function prototype
-     @param pOsvi - windows version info structure to populate, populated structure on function ends
-     @returns STATUS_SUCCESS (i.e 0x0) on success, otherwise error code
+     @param(pOsvi Windows version info structure to populate, populated structure on function ends)
+     @returns(STATUS_SUCCESS (i.e 0x0) on success, otherwise error code)
     }
     TWfRtlGetVersion = function(pOsvi: PRTL_OSVERSIONINFOW): NTSTATUS; stdcall;
 
@@ -1018,9 +1018,9 @@ type
              @param(options Text options)
              @param(hDC Device context handle)
              @param(pCharacters @bold([out]) Pointer to variable to receive the number of characters
-                                             that will be displayed in rect, if NULL will be ingored)
+                                             that will be displayed in rect, if @nil will be ingored)
              @param(pLines @bold([out]) Pointer to variable to receive the number of lines that will
-                                        be displayed in rect, if NULL will be ingored)
+                                        be displayed in rect, if @nil will be ingored)
              @returns(Text size, empty size on error)
             }
             function GetTextSize(const text: UnicodeString; const rect: TRect; pFont: TFont;
@@ -1385,7 +1385,7 @@ type
 
             {**
              Create GDI+ bitmap from TBitmap
-             @param pBitmap - bitmap object to convert
+             @param(pBitmap Bitmap object to convert)
              @returns(@nil if pBitmap is @nil, otherwise newly created bitmap, caller is responsible to
                       free it)
             }
@@ -1548,7 +1548,7 @@ type
         {**
          Get DPI awareness context
          @param(fGetProcessDpiAwareness Get process DPI awareness callback to call)
-         @param(pControl Control or form for which DPI awareness should be tested, can be NULL)
+         @param(pControl Control or form for which DPI awareness should be tested, can be @nil)
          @returns(DPI awareness context)
         }
         {$if CompilerVersion < 30}
