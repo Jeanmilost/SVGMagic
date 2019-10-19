@@ -1,0 +1,982 @@
+{**
+ @abstract(@name provides a class that allows component glyphs to be overriden by SVG.)
+ @author(JMR)
+ @created(2016-2018 by Ursa Minor)
+}
+unit UTWSVGComponentStyle;
+
+interface
+
+uses System.Classes,
+     System.SysUtils,
+     System.Generics.Collections,
+     Vcl.Graphics,
+     Vcl.Controls,
+     Vcl.ComCtrls,
+     Winapi.Messages,
+     Winapi.Windows,
+     {$IFDEF DEBUG}
+        UTWHelpers,
+     {$ENDIF}
+     UTWDesignPatterns,
+     UTWAnimationTimer,
+     UTWSmartPointer,
+     UTWSVGAnimationDescriptor,
+     UTWSVGRasterizer,
+     UTWSVGGraphic,
+     UTWSVGFrameCalculator;
+
+type
+    {**
+     Component style
+    }
+    TWSVGComponentStyle = class(TComponent, IWObserver)
+        protected type
+            IWGlyph = class
+                private
+                    m_pOwnerStyle:      TWSVGComponentStyle;
+                    m_pPicture:         TPicture;
+                    m_pFrameCalculator: TWSVGFrameCalculator;
+
+                protected
+                    {**
+                     Set the glyph picture
+                     @param(pPicture Picture to set)
+                    }
+                    procedure SetPicture(pPicture: TPicture); virtual;
+
+                public
+                    {**
+                     Constructor
+                     @param(pOwnerStyle Owner style)
+                    }
+                    constructor Create(pOwnerStyle: TWSVGComponentStyle); virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Check if the glyph is empty
+                     @returns(@true if the glyph is empty, otherwise @false)
+                    }
+                    function IsEmpty: Boolean; virtual;
+
+                    {**
+                     Check if animation can be run, run it if yes
+                    }
+                    procedure RunAnimation; virtual;
+
+                    {**
+                     Calculate the next animation frame
+                    }
+                    procedure CalculateNextFrame; virtual;
+
+                public
+                    {**
+                     Get or set the glyph picture
+                    }
+                    property Picture: TPicture read m_pPicture write SetPicture;
+
+                    {**
+                     Get the frame calculator
+                    }
+                    property FrameCalculator: TWSVGFrameCalculator read m_pFrameCalculator;
+            end;
+
+            {**
+             Style hook, used to subclass the target painting
+            }
+            IWSVGComponentStyleHook = class
+                private
+                    m_pOwnerStyle: TWSVGComponentStyle;
+                    m_pTarget:     TWinControl;
+                    m_fOldWndProc: TWndMethod;
+
+                    {**
+                     Hook the target Windows procedure
+                    }
+                    procedure HookControlProcedure;
+
+                    {**
+                     Restore the Windows procedure that the target was using before the hook
+                    }
+                    procedure RestoreHookedProcedure;
+
+                protected
+                    {**
+                     Called when the Windows procedure is executed on a target
+                     @param(message Windows message)
+                    }
+                    procedure TargetWndProc(var message: TMessage); virtual;
+
+                public
+                    {**
+                     Constructor
+                     @param(pOwnerStyle Owner style)
+                     @param(pTarget Target component to hook)
+                    }
+                    constructor Create(pOwnerStyle: TWSVGComponentStyle; pTarget: TWinControl); virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                public
+                    {**
+                     Get the target control
+                    }
+                    property Target: TWinControl read m_pTarget;
+            end;
+
+            {**
+             Target list
+            }
+            IWTargets = TList<TWinControl>;
+
+        public type
+            {**
+             Style hook list
+            }
+            IWSVGComponentStyleHooks = TObjectList<IWSVGComponentStyleHook>;
+
+            {**
+             Called when a SVG is about to be animated
+             @param(pSender Event sender)
+             @param(pAnimDesc Animation description)
+             @param(pCustomData Custom data)
+             @returns(@true if animation can continue, otherwise @false)
+            }
+            ITfSVGAnimateEvent = function (pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;
+                    pCustomData: Pointer): Boolean of object;
+
+        private
+            m_pOwnerCtrl:        TControl;
+            m_Position:          NativeUInt;
+            m_Animate:           Boolean;
+            m_Enabled:           Boolean;
+            m_All:               Boolean;
+            m_fOldParentWndProc: TWndMethod;
+            m_fOnAnimate:        ITfSVGAnimateEvent;
+
+        protected
+            m_pHooks:       IWSVGComponentStyleHooks;
+            m_pOverlay:     Vcl.Graphics.TBitmap;
+            m_pCanvas:      TCanvas;
+            m_RestorePaint: Boolean;
+
+            {**
+             Called while SVG animation is running
+             @param(pSender Event sender)
+             @param(pAnimDesc Animation description)
+             @param(pCustomData Custom data)
+             @returns(@true if animation can continue, otherwise @false)
+            }
+            function DoAnimate(pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;
+                    pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Check if advanced paint should be done
+             @param(pTarget Target component to paint)
+             @returns(@true if advanced paint should be done, otherwise @false)
+            }
+            function DoProcessAdvancedPaint(pTarget: TWinControl): Boolean; virtual; abstract;
+
+            {**
+             Check if a newly added control should be added to skin engine, and add it if yes
+             @param(pControl Newly added control)
+            }
+            procedure DoAddTarget(pControl: TControl); virtual; abstract;
+
+            {**
+             Run all the animations
+            }
+            procedure DoRunAnimations; virtual; abstract;
+
+            {**
+             Draw the advanced paint on the target component
+             @param(hDC Device context to paint on)
+             @param(pTarget Target control to paint)
+            }
+            procedure Draw(hDC: THandle; pTarget: TWinControl); virtual; abstract;
+
+            {**
+             Fill a rect using the background color
+             @param(rect Background rect to fill)
+             @param(pTarget Target control for which background should be painted)
+             @param(pCanvas Canvas on which the background should be filled)
+            }
+            procedure FillBg(const rect: TRect; pTarget: TWinControl; pCanvas: TCanvas); virtual;
+
+            {**
+             Enable or disable if animations are running
+             @param(value If @true, animations are running)
+            }
+            procedure SetAnimate(value: Boolean); virtual;
+
+            {**
+             Enable or disable the style
+             @param(value If @true, the style is enabled)
+            }
+            procedure SetEnabled(value: Boolean); virtual;
+
+            {**
+             Enable or disable if all components mathcing with style are skinned
+             @param(value If @true, all components matching with style will be skinned)
+            }
+            procedure SetAll(value: Boolean); overload; virtual; abstract;
+
+            {**
+             Enable or disable if all components mathcing with style are skinned
+             @param(value If @true, all components matching with style will be skinned)
+             @param(styleClass Style class)
+             @param(targetClass Target class)
+            }
+            procedure SetAll(value: Boolean; styleClass, targetClass: TClass); overload; virtual;
+
+            {**
+             Add a target control to the style
+             @param(pTarget Target control to add)
+            }
+            procedure AddTarget(pTarget: TWinControl); virtual;
+
+            {**
+             Remove a target control from the style
+             @param(pTarget Target control to remove)
+            }
+            procedure RemoveTarget(pTarget: TWinControl); virtual;
+
+            {**
+             Invalidate all the targets
+            }
+            procedure InvalidateAllTargets; virtual;
+
+            {**
+             Repaint all the targets
+            }
+            procedure RepaintAllTargets; virtual;
+
+            {**
+             Receive notification from the target control
+             @param(pComponent Target control that raised the event)
+             @param(operation Operation currently applied on the target control)
+            }
+            procedure Notification(pComponent: TComponent; operation: TOperation); override;
+
+            {**
+             Called when subject send a notification to the observer
+             @param(message Notification message)
+            }
+            procedure OnNotified(message: TWMessage); virtual;
+
+            {**
+             Called when next animation frame should be processed
+            }
+            procedure OnProcessAnimation; virtual; abstract;
+
+            {**
+             Called when a target is freed
+             @param(pTarget Target about to be freed)
+            }
+            procedure OnFreeTarget(pTarget: TWinControl); virtual; abstract;
+
+            {**
+             Called when the Windows procedure is executed on the parent component
+             @param(message Windows message)
+            }
+            procedure ParentWndProc(var message: TMessage); virtual;
+
+        public
+            {**
+             Constructor
+             @param(pOwner Component owner)
+            }
+            constructor Create(pOwner: TComponent); override;
+
+            {**
+             Destructor
+            }
+            destructor Destroy; override;
+
+            {**
+             Called before the component is freeing
+            }
+            procedure BeforeDestruction; override;
+
+        published
+            {**
+             Enable or disable the animation
+            }
+            property Animate: Boolean read m_Animate write SetAnimate default True;
+
+            {**
+             Enable or disable the style
+            }
+            property Enabled: Boolean read m_Enabled write SetEnabled default True;
+
+            {**
+             Enable or disable if all components on the form are skinned
+            }
+            property All: Boolean read m_All write SetAll default False;
+
+            {**
+             Get or set the OnAnimate event
+            }
+            property OnAnimate: ITfSVGAnimateEvent read m_fOnAnimate write m_fOnAnimate;
+    end;
+
+    {**
+     Control access that allows to access several protected properties in TControl descendents
+    }
+    TWSVGStyleControlAccess = class(TControl);
+
+    {**
+     Control access that allows to access several protected properties in TWinControl descendents
+    }
+    TWSVGStyleWinControlAccess = class(TWinControl);
+
+implementation
+//---------------------------------------------------------------------------
+// TWSVGComponentStyle.IWSVGComponentStyleHook
+//---------------------------------------------------------------------------
+constructor TWSVGComponentStyle.IWSVGComponentStyleHook.Create(pOwnerStyle: TWSVGComponentStyle;
+        pTarget: TWinControl);
+begin
+    inherited Create;
+
+    m_pOwnerStyle := pOwnerStyle;
+    m_pTarget     := pTarget;
+    m_fOldWndProc := nil;
+
+    HookControlProcedure;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGComponentStyle.IWSVGComponentStyleHook.Destroy;
+begin
+    RestoreHookedProcedure;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.IWSVGComponentStyleHook.HookControlProcedure;
+begin
+    m_fOldWndProc        := m_pTarget.WindowProc;
+    m_pTarget.WindowProc := TargetWndProc;
+
+    // tell the target control to notify when important actions are taken
+    m_pTarget.FreeNotification(m_pOwnerStyle);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.IWSVGComponentStyleHook.RestoreHookedProcedure;
+begin
+    if (Assigned(m_pTarget) and Assigned(m_fOldWndProc)) then
+        m_pTarget.WindowProc := m_fOldWndProc;
+
+    m_fOldWndProc := nil;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.IWSVGComponentStyleHook.TargetWndProc(var message: TMessage);
+var
+    hDC: THandle;
+    ps:  PAINTSTRUCT;
+begin
+    {$IFDEF DEBUG}
+        //if (Assigned(m_pTarget)) then
+            //TWLogHelper.LogToCompiler('TargetWndProc - ' + TWLogHelper.WinMsgToStr(m_pTarget, message));
+    {$ENDIF}
+
+    case (message.Msg) of
+        WM_PAINT:
+        begin
+            // do subclass the control painting?
+            if (m_pOwnerStyle.Enabled and Assigned(m_pTarget) and m_pOwnerStyle.DoProcessAdvancedPaint(m_pTarget)
+                    and not m_pOwnerStyle.m_RestorePaint and not (csDestroying in m_pTarget.ComponentState))
+            then
+            begin
+                // do increase the overlay size?
+                if ((m_pOwnerStyle.m_pOverlay.Width < m_pTarget.ClientWidth)
+                        or (m_pOwnerStyle.m_pOverlay.Height < m_pTarget.ClientHeight))
+                then
+                    m_pOwnerStyle.m_pOverlay.SetSize(m_pTarget.ClientWidth, m_pTarget.ClientHeight);
+
+                // paint the target control content on the overlay
+                try
+                    m_pOwnerStyle.m_pOverlay.Canvas.Lock;
+                    m_pTarget.Perform(WM_ERASEBKGND,  m_pOwnerStyle.m_pOverlay.Canvas.Handle,
+                            m_pOwnerStyle.m_pOverlay.Canvas.Handle);
+                    m_pTarget.Perform(WM_PRINTCLIENT, m_pOwnerStyle.m_pOverlay.Canvas.Handle,
+                            PRF_CLIENT);
+                finally
+                    m_pOwnerStyle.m_pOverlay.Canvas.Unlock;
+                end;
+
+                // draw the glyph to subclass
+                m_pOwnerStyle.Draw(m_pOwnerStyle.m_pOverlay.Canvas.Handle, m_pTarget);
+
+                // get device context from message
+                hDC := message.WParam;
+
+                // no device context in received message?
+                if (hDC <> 0) then
+                    // copy the overlay content on the control canvas
+                    BitBlt(hDC, 0, 0, m_pTarget.ClientWidth, m_pTarget.ClientHeight,
+                            m_pOwnerStyle.m_pOverlay.Canvas.Handle, 0, 0, SRCCOPY)
+                else
+                begin
+                    try
+                        // begin paint
+                        hDC := BeginPaint(m_pTarget.Handle, ps);
+
+                        // succeeded?
+                        if (hDC = 0) then
+                        begin
+                            if (Assigned(m_fOldWndProc)) then
+                                m_fOldWndProc(message);
+
+                            Exit;
+                        end;
+
+                        // copy the overlay content on the control canvas
+                        BitBlt(hDC, 0, 0, m_pTarget.ClientWidth, m_pTarget.ClientHeight,
+                                m_pOwnerStyle.m_pOverlay.Canvas.Handle, 0, 0, SRCCOPY);
+                    finally
+                        // end paint
+                        if (hDC <> 0) then
+                            EndPaint(m_pTarget.Handle, ps);
+                    end;
+                end;
+
+                // validate entire client rect (it has just been completely redrawn)
+                ValidateRect(m_pTarget.Handle, nil);
+
+                // notify main windows procedure that component was repainted
+                message.Result := 0;
+                Exit;
+            end;
+        end;
+    end;
+
+    if (Assigned(m_fOldWndProc)) then
+        m_fOldWndProc(message);
+end;
+//---------------------------------------------------------------------------
+// TWSVGComponentStyle.IWGlyph
+//---------------------------------------------------------------------------
+constructor TWSVGComponentStyle.IWGlyph.Create(pOwnerStyle: TWSVGComponentStyle);
+begin
+    inherited Create;
+
+    m_pOwnerStyle      := pOwnerStyle;
+    m_pPicture         := TPicture.Create;
+    m_pFrameCalculator := TWSVGFrameCalculator.Create;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGComponentStyle.IWGlyph.Destroy;
+begin
+    FreeAndNil(m_pPicture);
+    FreeAndNil(m_pFrameCalculator);
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.IWGlyph.SetPicture(pPicture: TPicture);
+begin
+    m_pPicture.Assign(pPicture);
+
+    RunAnimation;
+
+    m_pOwnerStyle.InvalidateAllTargets;
+end;
+//---------------------------------------------------------------------------
+function TWSVGComponentStyle.IWGlyph.IsEmpty: Boolean;
+begin
+    // is picture empty?
+    if (not Assigned(m_pPicture.Graphic)) then
+        Exit(True);
+
+    // is a bitmap?
+    if (m_pPicture.Graphic is Vcl.Graphics.TBitmap) then
+    begin
+        // is picture bitmap empty?
+        if ((m_pPicture.Bitmap.Width = 0) or (m_pPicture.Bitmap.Height = 0)) then
+            Exit(True);
+    end
+    else
+        // is picture graphic empty?
+        if ((m_pPicture.Graphic.Width = 0) or (m_pPicture.Graphic.Height = 0)) then
+            Exit(True);
+
+    Result := False;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.IWGlyph.RunAnimation;
+var
+    pSVG:     TWSVGGraphic;
+    duration: Double;
+begin
+    // on design time animation is never allowed to start
+    if (csDesigning in m_pOwnerStyle.ComponentState) then
+        Exit;
+
+    // is a SVG?
+    if (Assigned(m_pPicture.Graphic) and (m_pPicture.Graphic is TWSVGGraphic)) then
+    begin
+        // get and configure the SVG
+        pSVG           := m_pPicture.Graphic as TWSVGGraphic;
+        pSVG.OnAnimate := m_pOwnerStyle.DoAnimate;
+
+        // get animation duration
+        duration := pSVG.AnimationDuration;
+
+        // do animate this SVG?
+        if (duration <> 0.0) then
+        begin
+
+            // configure animation duration
+            m_pFrameCalculator.SetDuration(duration, 100);
+
+            // start FPS timer
+            m_pFrameCalculator.StartTimer;
+        end;
+    end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.IWGlyph.CalculateNextFrame;
+var
+    pSVG: TWSVGGraphic;
+    info: TWSVGFrameCalculator.IInfo;
+begin
+    if (not Assigned(m_pPicture.Graphic)) then
+        Exit;
+
+    if (m_pPicture.Graphic is TWSVGGraphic) then
+    begin
+        pSVG := m_pPicture.Graphic as TWSVGGraphic;
+
+        // calculate next position
+        if (m_pOwnerStyle.Animate) then
+        begin
+            m_pFrameCalculator.GetInfo(info);
+
+            m_pOwnerStyle.m_Position :=
+                    TWSVGFrameCalculator.ValidateIndex
+                            (m_pOwnerStyle.m_Position + info.m_FrameCountSinceLastPaint, 0, 99);
+        end;
+
+        // change svg position and refresh the viewer
+        pSVG.Position := m_pOwnerStyle.m_Position * 0.01;
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGComponentStyle
+//---------------------------------------------------------------------------
+constructor TWSVGComponentStyle.Create(pOwner: TComponent);
+begin
+    inherited Create(pOwner);
+
+    m_pOwnerCtrl        := nil;
+    m_pHooks            := IWSVGComponentStyleHooks.Create;
+    m_pOverlay          := Vcl.Graphics.TBitmap.Create;
+    m_pCanvas           := TCanvas.Create;
+    m_Position          := 0;
+    m_Animate           := True;
+    m_Enabled           := True;
+    m_All               := False;
+    m_RestorePaint      := False;
+    m_fOldParentWndProc := nil;
+    m_fOnAnimate        := nil;
+
+    // attach to animation timer to receive time notifications (runtime only)
+    if (not(csDesigning in ComponentState)) then
+        TWAnimationTimer.GetInstance.Attach(Self);
+
+    // intercepts the parent Windows procedure
+    if (Assigned(pOwner) and (pOwner is TControl)) then
+    begin
+        m_pOwnerCtrl            := pOwner as TControl;
+        m_fOldParentWndProc     := m_pOwnerCtrl.WindowProc;
+        m_pOwnerCtrl.WindowProc := ParentWndProc;
+    end;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGComponentStyle.Destroy;
+begin
+    // restore the parent Windows procedure
+    if (Assigned(m_fOldParentWndProc) and Assigned(m_pOwnerCtrl)) then
+        m_pOwnerCtrl.WindowProc := m_fOldParentWndProc;
+
+    // detach from animation timer and stop to receive time notifications (runtime only)
+    if (not(csDesigning in ComponentState)) then
+        TWAnimationTimer.GetInstance.Detach(Self);
+
+    FreeAndNil(m_pHooks);
+    FreeAndNil(m_pOverlay);
+    FreeAndNil(m_pCanvas);
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.BeforeDestruction;
+begin
+    // as the style is shutting down, force all targets to repaint their native content
+    try
+        m_RestorePaint := True;
+        InvalidateAllTargets;
+    finally
+        m_RestorePaint := False;
+    end;
+
+    inherited BeforeDestruction;
+end;
+//---------------------------------------------------------------------------
+function TWSVGComponentStyle.DoAnimate(pSender: TObject; pAnimDesc: TWSVGAnimationDescriptor;
+        pCustomData: Pointer): Boolean;
+begin
+    // ask user about continuing animation
+    if (Assigned(m_fOnAnimate)) then
+        Exit(m_fOnAnimate(pSender, pAnimDesc, pCustomData));
+
+    // notify that animation is allowed to continue
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.FillBg(const rect: TRect; pTarget: TWinControl; pCanvas: TCanvas);
+    {**
+     Get color property value of a TControl
+     @param(pControl Control for which the property should be get)
+     @returns(Color property value)
+    }
+    function ColorOf(var pControl: TWinControl): TColor;
+    begin
+        Result := TWSVGStyleControlAccess(pControl).Color;
+    end;
+
+    {**
+     Get parent color property value of a TControl
+     @param(pControl Control for which the property should be get)
+     @returns(Parent color property value)
+    }
+    function ParentColorOf(var pControl: TWinControl): Boolean;
+    begin
+        Result := TWSVGStyleControlAccess(pControl).ParentColor;
+    end;
+
+    {**
+     Get parent background property value of a TWinControl
+     @param(pControl Control for which the property should be get)
+     @returns(Parent background property value)
+    }
+    function ParentBackgroundOf(var pControl: TWinControl): Boolean;
+    begin
+        Result := TWSVGStyleWinControlAccess(pControl).ParentBackground;
+    end;
+
+var
+    pParent:   TWinControl;
+    pPageCtrl: TPageControl;
+begin
+    // check if parent color should be used
+    if (ParentColorOf(pTarget) and Assigned(pTarget.Parent)) then
+    begin
+        // configure the default parent color and get next parent
+        m_pCanvas.Brush.Color := pTarget.Parent.Brush.Color;
+        pParent               := pTarget.Parent;
+
+        // iterate through parents
+        while (Assigned(pParent)) do
+            // check if color of this parent may be used
+            if (pParent is TTabSheet) then
+            begin
+                // parent is a tab sheet, the color is always clWhite, except if page control style
+                // property is set to another value than tsTabs, in this case the color is always
+                // clBtnFace
+                if (Assigned(pParent.Parent) and (pParent.Parent is TPageControl)) then
+                begin
+                    pPageCtrl := pParent.Parent as TPageControl;
+
+                    if (pPageCtrl.Style = tsTabs) then
+                        m_pCanvas.Brush.Color := clWhite
+                    else
+                        m_pCanvas.Brush.Color := clBtnFace;
+                end
+                else
+                    m_pCanvas.Brush.Color := clWhite;
+
+                break;
+            end
+            else
+            if (ParentBackgroundOf(pParent) or ParentColorOf(pParent)) then
+            begin
+                // go to next parent
+                pParent := pParent.Parent;
+                continue;
+            end
+            else
+            begin
+                // get the parent color and break the loop
+                m_pCanvas.Brush.Color := ColorOf(pParent);
+                break;
+            end;
+    end
+    else
+        // use the control color
+        m_pCanvas.Brush.Color := pTarget.Brush.Color;
+
+    // fill the rect with the background color
+    m_pCanvas.Brush.Style := bsSolid;
+    m_pCanvas.FillRect(rect);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.SetAnimate(value: Boolean);
+begin
+    // nothing to do?
+    if (m_Animate = value) then
+        Exit;
+
+    m_Animate := value;
+
+    DoRunAnimations;
+    InvalidateAllTargets;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.SetEnabled(value: Boolean);
+begin
+    // nothing to do?
+    if (m_Enabled = value) then
+        Exit;
+
+    m_Enabled := value;
+
+    InvalidateAllTargets;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.SetAll(value: Boolean; styleClass, targetClass: TClass);
+var
+    count, i:   NativeInt;
+    pComponent: TComponent;
+    pTargets:   IWSmartPointer<IWTargets>;
+    pTarget:    TWinControl;
+    pItem:      IWSVGComponentStyleHook;
+begin
+    // value changed?
+    if (value = m_All) then
+        Exit;
+
+    m_All := value;
+
+    pTargets := TWSmartPointer<IWTargets>.Create();
+
+    // copy the targets to invalidate on the end
+    for pItem in m_pHooks do
+        pTargets.Add(pItem.Target);
+
+    // unhook and clear all previous targets
+    m_pHooks.Clear;
+
+    try
+        // do enable style on all components?
+        if (m_All) then
+        begin
+            // is owner defined?
+            if (not Assigned(Owner)) then
+                Exit;
+
+            // get owner children count
+            count := Owner.ComponentCount;
+
+            // iterate htrough owner children
+            for i := 0 to count - 1 do
+            begin
+                // get next component
+                pComponent := Owner.Components[i];
+
+                // found itself?
+                if (pComponent = Self) then
+                    continue;
+
+                // is a style clas?
+                if (pComponent.InheritsFrom(styleClass)) then
+                    // disable the "all" property in this class
+                    (pComponent as TWSVGComponentStyle).All := False
+            end;
+
+            // iterate htrough owner children again
+            for i := 0 to count - 1 do
+            begin
+                // get next component
+                pComponent := Owner.Components[i];
+
+                // found itself?
+                if (pComponent = Self) then
+                    continue;
+
+                // is a target class?
+                if (pComponent.InheritsFrom(targetClass)) then
+                begin
+                    pTarget := pComponent as TWinControl;
+
+                    // link it with the style
+                    AddTarget(pTarget);
+
+                    // remove the target from the previous target list to avoid to invalidate twice
+                    pTargets.Remove(pTarget);
+                end;
+            end;
+        end;
+    except
+        // assignment failed, unhook and clear all targets
+        m_pHooks.Clear;
+        raise;
+    end;
+
+    InvalidateAllTargets;
+
+    // also invalidate removed targets
+    for pTarget in pTargets do
+        pTarget.Invalidate;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.AddTarget(pTarget: TWinControl);
+var
+    pItem: IWSVGComponentStyleHook;
+begin
+    if (not Assigned(pTarget)) then
+        Exit;
+
+    // check if target already exists in list
+    for pItem in m_pHooks do
+        if (pItem.Target = pTarget) then
+            Exit;
+
+    pItem := nil;
+
+    // hook the target control
+    try
+        pItem := IWSVGComponentStyleHook.Create(Self, pTarget);
+        m_pHooks.Add(pItem);
+        pItem := nil;
+    finally
+        pItem.Free;
+    end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.RemoveTarget(pTarget: TWinControl);
+var
+    pItem: IWSVGComponentStyleHook;
+begin
+    if (not Assigned(pTarget)) then
+        Exit;
+
+    // check if target exists in list
+    for pItem in m_pHooks do
+        if (pItem.Target = pTarget) then
+        begin
+            // unhook the target. NOTE the list will free the item so do it explicitly isn't required
+            m_pHooks.Remove(pItem);
+            Exit;
+        end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.InvalidateAllTargets;
+var
+    pItem: IWSVGComponentStyleHook;
+begin
+    if (not Assigned(m_pHooks)) then
+        Exit;
+
+    // invalidate all targets
+    for pItem in m_pHooks do
+        pItem.Target.Invalidate;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.RepaintAllTargets;
+var
+    pItem: IWSVGComponentStyleHook;
+begin
+    if (not Assigned(m_pHooks)) then
+        Exit;
+
+    // invalidate all targets
+    for pItem in m_pHooks do
+        pItem.Target.Repaint;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.Notification(pComponent: TComponent; operation: TOperation);
+var
+    pItem:   IWSVGComponentStyleHook;
+    pTarget: TWinControl;
+begin
+    inherited Notification(pComponent, operation);
+
+    // is target deleting?
+    if (operation <> opRemove) then
+        Exit;
+
+    // check if target exists in list
+    if (Assigned(m_pHooks)) then
+        for pItem in m_pHooks do
+            if (pItem.Target = pComponent) then
+            begin
+                pTarget := pItem.Target;
+
+                // unhook the target. NOTE the list will free the item so do it explicitly isn't required
+                m_pHooks.Remove(pItem);
+
+                // notify that the target is removing
+                OnFreeTarget(pTarget);
+
+                // invalidate all remaining targets
+                InvalidateAllTargets;
+                Exit;
+            end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.OnNotified(message: TWMessage);
+begin
+    case (TWAnimationTimer.EWAnimationTimerMessages(message.m_Type)) of
+        TWAnimationTimer.EWAnimationTimerMessages.IE_AM_Animate:
+        begin
+            if (not m_Animate) then
+                Exit;
+
+            OnProcessAnimation;
+        end;
+    end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGComponentStyle.ParentWndProc(var message: TMessage);
+var
+    pControl: TControl;
+begin
+    {$IFDEF DEBUG}
+        //TWLogHelper.LogToCompiler('ParentWndProc - ' + TWLogHelper.WinMsgToStr(Self, message));
+    {$ENDIF}
+
+    case (message.Msg) of
+        CM_CONTROLLISTCHANGE:
+        begin
+            // all controls should be skinned?
+            if (m_All) then
+            begin
+                // a new control was added?
+                if (message.LParam = 1) then
+                begin
+                    // get it
+                    pControl := TControl(message.WParam);
+
+                    // successfully assigned?
+                    if (Assigned(pControl)) then
+                        DoAddTarget(pControl);
+                end;
+            end;
+        end;
+    end;
+
+    if (Assigned(m_fOldParentWndProc)) then
+        m_fOldParentWndProc(message);
+end;
+//---------------------------------------------------------------------------
+
+end.

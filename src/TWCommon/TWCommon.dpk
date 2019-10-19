@@ -1,0 +1,61 @@
+package TWCommon;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$DEFINE USE_VCL}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Common functions and types for the Ursa Minor''s packages and apps'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  vclimg;
+
+contains
+  UTWMatrix in 'UTWMatrix.pas',
+  UTWPoint in 'UTWPoint.pas',
+  UTWRect in 'UTWRect.pas',
+  UTWSize in 'UTWSize.pas',
+  UTWTypes in 'UTWTypes.pas',
+  UTWVector in 'UTWVector.pas',
+  UTWSmartPointer in 'UTWSmartPointer.pas',
+  UTWHelpers in 'UTWHelpers.pas',
+  UTWCacheHit in 'UTWCacheHit.pas',
+  UTWColor in 'UTWColor.pas',
+  UTWGeometryTools in 'UTWGeometryTools.pas',
+  UTWPadding in 'UTWPadding.pas',
+  UTWVersion in 'UTWVersion.pas',
+  UTWDateTime in 'UTWDateTime.pas',
+  UTWGenericNumber in 'UTWGenericNumber.pas',
+  UTWStandardColor in 'UTWStandardColor.pas',
+  UTWAnimationTimer in 'UTWAnimationTimer.pas',
+  UTWDesignPatterns in 'UTWDesignPatterns.pas',
+  usp10 in 'Uniscribe\usp10.pas',
+  UTWLine in 'UTWLine.pas',
+  UTWFillAndStroke in 'UTWFillAndStroke.pas';
+
+end.
