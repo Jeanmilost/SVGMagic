@@ -82,7 +82,6 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <UWP_DelphiLogo44>..\Resources\44x44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>..\Resources\150x150.png</UWP_DelphiLogo150>
-        <DCC_UnitSearchPath>$(BDSCOMMONDIR)\Dcu\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <AppEnableHighDPI>true</AppEnableHighDPI>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
@@ -91,7 +90,6 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <UWP_DelphiLogo44>..\Resources\44x44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>..\Resources\150x150.png</UWP_DelphiLogo150>
-        <DCC_UnitSearchPath>$(BDSCOMMONDIR)\Dcu\Win64\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <AppEnableHighDPI>true</AppEnableHighDPI>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
@@ -106,10 +104,12 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\10.2 Tokyo\Win32\Release\;..\..\..\src\TWRendering\10.2 Tokyo\Win32\Release\;..\..\..\src\TWSVG\10.2 Tokyo\Win32\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\10.2 Tokyo\Win64\Release\;..\..\..\src\TWRendering\10.2 Tokyo\Win64\Release\;..\..\..\src\TWSVG\10.2 Tokyo\Win64\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -122,11 +122,13 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\10.2 Tokyo\Win32\Debug\;..\..\..\src\TWRendering\10.2 Tokyo\Win32\Debug\;..\..\..\src\TWSVG\10.2 Tokyo\Win32\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <BT_BuildType>Debug</BT_BuildType>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\10.2 Tokyo\Win64\Debug\;..\..\..\src\TWRendering\10.2 Tokyo\Win64\Debug\;..\..\..\src\TWSVG\10.2 Tokyo\Win64\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

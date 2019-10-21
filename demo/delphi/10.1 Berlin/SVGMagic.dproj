@@ -61,7 +61,6 @@
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
-        <DCC_UnitSearchPath>$(BDSCOMMONDIR)\Dcu\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <DCC_UsePackage>madBasic_;Mels_VCL;bindcompfmx;DBXSqliteDriver;RESTBackendComponents;fmx;rtl;dbrtl;DbxClientDriver;IndySystem;tethering;bindcomp;inetdb;DBXInterBaseDriver;madDisAsm_;xmlrtl;svnui;SynEdit_R;DbxCommonDriver;Mels_Models;vclimg;IndyProtocols;dbxcds;DBXMySQLDriver;MetropolisUILiveTile;soaprtl;vclactnband;bindengine;vcldb;bindcompdbx;vcldsnap;bindcompvcl;vclie;madExcept_;Mels_Base;vcltouch;TWSVG;emsclient;CustomIPTransport;DragDropDXE7;MPCommonLibD21;vclribbon;VclSmp;dsnap;VCLRESTComponents;VirtualShellToolsD21;Mels_VCLComponentsGL;fmxase;vcl;IndyCore;IndyIPServer;CloudService;IndyIPCommon;dsnapcon;inet;fmxobj;soapserver;soapmidas;vclx;inetdbxpress;dclGraphicEx210;svn;dsnapxml;fmxdae;RESTComponents;EasyListviewD21;VirtualTreesR;adortl;dbexpress;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
@@ -74,6 +73,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\10.1 Berlin\Win32\Debug\;..\..\..\src\TWRendering\10.1 Berlin\Win32\Debug\;..\..\..\src\TWSVG\10.1 Berlin\Win32\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -85,6 +85,7 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\10.1 Berlin\Win32\Release\;..\..\..\src\TWRendering\10.1 Berlin\Win32\Release\;..\..\..\src\TWSVG\10.1 Berlin\Win32\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
     </PropertyGroup>
