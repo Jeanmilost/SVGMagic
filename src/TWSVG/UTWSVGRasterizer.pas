@@ -27,6 +27,7 @@ uses System.SysUtils,
      UTWSVGAttribute,
      UTWSVGMeasure,
      UTWSVGGradients,
+     UTWSVGFilters,
      UTWSVGAnimation,
      UTWSVGProperties,
      UTWSVGElements,
@@ -701,7 +702,7 @@ type
                     m_pGradientStops: IGradientStops;
                     m_Matrix:         TWMatrix3x3;
                     m_MatrixType:     TWSVGPropMatrix.IEType;
-                    m_Unit:           TWSVGGradient.IEGradientUnit;
+                    m_Unit:           TWSVGPropUnit.IEType;
                     m_SpreadMethod:   TWSVGGradient.IEGradientSpreadMethod;
 
                 protected
@@ -753,7 +754,7 @@ type
                     {**
                      Get or set the gradient unit property
                     }
-                    property GradientUnit: TWSVGGradient.IEGradientUnit read m_Unit write m_Unit;
+                    property GradientUnit: TWSVGPropUnit.IEType read m_Unit write m_Unit;
 
                     {**
                      Get or set the spread method property
@@ -1071,12 +1072,115 @@ type
             end;
 
             {**
+             Effect to add to a filter
+            }
+            IEffect = class(IPropItem)
+                public
+                    {**
+                     Constructor
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(rule: IEPropRule = IE_PR_Inherit); override;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; virtual; abstract;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IEffect); virtual; abstract;
+            end;
+
+            IEffects = TObjectList<IEffect>;
+
+            {**
+             Gaussian blur effect
+            }
+            IGaussianBlur = class(IEffect)
+                private
+                    m_Deviation: TSize;
+
+                public
+                    {**
+                     Constructor
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(rule: IEPropRule = IE_PR_Inherit); override;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IEffect); override;
+
+                public
+                    {**
+                     Get the Gaussian blur deviation
+                    }
+                    property Deviation: TSize read m_Deviation;
+            end;
+
+            {**
+             Filter, contains an effect list to apply
+            }
+            IFilter = class
+                private
+                    m_pX:       IPropFloatItem;
+                    m_pY:       IPropFloatItem;
+                    m_pWidth:   IPropFloatItem;
+                    m_pHeight:  IPropFloatItem;
+                    m_pPercent: IPropBoolItem;
+                    m_pEffects: IEffects;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; virtual;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IFilter); virtual;
+            end;
+
+            {**
              Style parameters structure
             }
             IStyle = class
                 private
                     m_pFill:        IFill;
                     m_pStroke:      IStroke;
+                    m_pFilter:      IFilter;
                     m_pOpacity:     IPropFloatItem;
                     m_pDisplayMode: IPropDisplayItem;
                     m_Width:        NativeInt;
@@ -1204,7 +1308,6 @@ type
                     m_pColorAnims:   TList<TWSVGAnimation>;
                     m_pMatrixAnims:  TList<TWSVGAnimation>;
                     m_pUnknownAnims: TList<TWSVGAnimation>;
-                    m_ValueType:     TWSVGCommon.IEValueType;
                     m_Position:      Double;
 
                 public
@@ -1219,11 +1322,6 @@ type
                     destructor Destroy; override;
 
                 public
-                    {**
-                     Get or set the value type
-                    }
-                    property ValueType: TWSVGCommon.IEValueType read m_ValueType write m_ValueType;
-
                     {**
                      Get or set the position, in percent (between 0.0 and 1.0)
                     }
@@ -1486,8 +1584,16 @@ type
             function MergeUseProperties(const pUse: TWSVGUse; pElement: TWSVGElement): Boolean; virtual;
 
             {**
-             Get the color from a link
-             @param(pLink Link of the color object to parse)
+             Get a filter from a link
+            @param(pLink Filter object link to parse)
+            @param(pFilter Filter to populate)
+            @returns(@true on success, otherwise @false)
+            }
+            function GetFilterFromLink(const pLink: TWSVGPropLink; pFilter: IFilter): Boolean; virtual;
+
+            {**
+             Get a color from a link
+             @param(pLink Color object link to parse)
              @param(pBrush Brush to populate)
              @returns(@true on success, otherwise @false)
             }
@@ -2363,7 +2469,7 @@ begin
     inherited Create(rule);
 
     m_pGradientStops := IGradientStops.Create;
-    m_Unit           := TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox;
+    m_Unit           := TWSVGPropUnit.IEType.IE_UT_ObjectBoundingBox;
     m_SpreadMethod   := TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad;
     m_Matrix         := TWMatrix3x3.GetDefault;
     m_MatrixType     := TWSVGPropMatrix.IEType.IE_Unknown;
@@ -2387,7 +2493,7 @@ begin
     // all objects it contains, for that an explicit Free() on each item isn't required
     m_pGradientStops.Clear;
 
-    m_Unit         := TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox;
+    m_Unit         := TWSVGPropUnit.IEType.IE_UT_ObjectBoundingBox;
     m_SpreadMethod := TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad;
     m_Matrix       := TWMatrix3x3.GetDefault;
     m_MatrixType   := TWSVGPropMatrix.IEType.IE_Unknown;
@@ -2740,6 +2846,136 @@ begin
     m_pNoStroke.Merge(pOther.m_pNoStroke);
 end;
 //---------------------------------------------------------------------------
+// TWSVGRasterizer.IEffect
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IEffect.Create(rule: IEPropRule = IE_PR_Inherit);
+begin
+    inherited Create(rule);
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IEffect.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IGaussianBlur
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IGaussianBlur.Create(rule: IEPropRule = IE_PR_Inherit);
+begin
+    inherited Create(rule);
+
+    m_Deviation := System.Default(TSize);
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IGaussianBlur.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IGaussianBlur.Default;
+begin
+    m_Deviation := System.Default(TSize);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IGaussianBlur.Merge(const pOther: IEffect);
+var
+    pSource: IGaussianBlur;
+begin
+    if (not(pOther is IGaussianBlur)) then
+    begin
+        Default;
+        Exit;
+    end;
+
+    pSource := pOther as IGaussianBlur;
+    Assert(Assigned(pSource));
+
+    case (m_Rule) of
+        IE_PR_Inherit:
+        begin
+            m_Deviation := pSource.m_Deviation;
+            Exit;
+        end;
+
+        IE_PR_Default: Exit;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IFilter
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IFilter.Create;
+begin
+    inherited Create;
+
+    m_pX       := IPropFloatItem.Create;
+    m_pY       := IPropFloatItem.Create;
+    m_pWidth   := IPropFloatItem.Create;
+    m_pHeight  := IPropFloatItem.Create;
+    m_pPercent := IPropBoolItem.Create(False);
+    m_pEffects := IEffects.Create;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IFilter.Destroy;
+begin
+    m_pX.Free;
+    m_pY.Free;
+    m_pWidth.Free;
+    m_pHeight.Free;
+    m_pPercent.Free;
+
+    // clear all effects. NOTE as a TObjectList is used, the list will take care of freeing all
+    // objects it contains, for that an explicit Free() on each item isn't required
+    m_pEffects.Clear;
+    m_pEffects.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IFilter.Default;
+var
+    pEffect: IEffect;
+begin
+    m_pX.Free;
+    m_pY.Free;
+    m_pWidth.Free;
+    m_pHeight.Free;
+    m_pPercent.Free;
+
+    // default pos and size are expressed in percent, and are 10% higher around the whole canvas
+    m_pX       := IPropFloatItem.Create(-0.1,  IE_PR_Default);
+    m_pY       := IPropFloatItem.Create(-0.1,  IE_PR_Default);
+    m_pWidth   := IPropFloatItem.Create( 1.2,  IE_PR_Default);
+    m_pHeight  := IPropFloatItem.Create( 1.2,  IE_PR_Default);
+    m_pPercent := IPropBoolItem.Create ( True, IE_PR_Default);
+
+    // reset the effects
+    for pEffect in m_pEffects do
+        pEffect.Default();
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IFilter.Merge(const pOther: IFilter);
+{
+var
+    pEffect: IEffect;
+}
+begin
+    m_pX.Merge(pOther.m_pX);
+    m_pY.Merge(pOther.m_pY);
+    m_pWidth.Merge(pOther.m_pWidth);
+    m_pHeight.Merge(pOther.m_pHeight);
+    m_pPercent.Merge(pOther.m_pPercent);
+
+    // todo -cFeature -oJean: Don't know if effects should be merged, and if yes, how to do that
+    //                        (because the source may have a completely different effect list)
+    {
+    // merge the effects
+    for pEffect in m_pEffects do
+        pEffect.Merge();
+    }
+end;
+//---------------------------------------------------------------------------
 // TWSVGRasterizer.IStyle
 //---------------------------------------------------------------------------
 constructor TWSVGRasterizer.IStyle.Create;
@@ -2748,6 +2984,7 @@ begin
 
     m_pFill        := IFill.Create;
     m_pStroke      := IStroke.Create;
+    m_pFilter      := IFilter.Create;
     m_pOpacity     := IPropFloatItem.Create;
     m_pDisplayMode := IPropDisplayItem.Create;
     m_Width        := 0;
@@ -2758,6 +2995,7 @@ destructor TWSVGRasterizer.IStyle.Destroy;
 begin
     m_pFill.Free;
     m_pStroke.Free;
+    m_pFilter.Free;
     m_pOpacity.Free;
     m_pDisplayMode.Free;
 
@@ -2768,6 +3006,7 @@ procedure TWSVGRasterizer.IStyle.Default;
 begin
     m_pFill.Default;
     m_pStroke.Default;
+    m_pFilter.Default;
 
     m_pOpacity.Free;
     m_pOpacity := IPropFloatItem.Create(1.0, IE_PR_Default);
@@ -2783,6 +3022,7 @@ procedure TWSVGRasterizer.IStyle.Merge(const pOther: IStyle);
 begin
     m_pFill.Merge(pOther.m_pFill);
     m_pStroke.Merge(pOther.m_pStroke);
+    m_pFilter.Merge(pOther.m_pFilter);
     m_pOpacity.Merge(pOther.m_pOpacity);
 
     // the size should never change between groups, so simply copy it
@@ -2863,7 +3103,6 @@ begin
     m_pColorAnims   := TList<TWSVGAnimation>.Create;
     m_pMatrixAnims  := TList<TWSVGAnimation>.Create;
     m_pUnknownAnims := TList<TWSVGAnimation>.Create;
-    m_ValueType     := TWSVGCommon.IEValueType.IE_VT_Unknown;
     m_Position      := 0.0;
 end;
 //---------------------------------------------------------------------------
@@ -2948,8 +3187,12 @@ begin
     if (localDuration = animDuration) then
         Exit(animationData.m_Position);
 
+    // convert animation and local duration to double values
+    animDur  := animDuration;
+    localDur := localDuration;
+
     // calculate local position (can be higher than 100%)
-    localPos := ((animationData.m_Position * animDuration) / localDuration);
+    localPos := ((animationData.m_Position * animDur) / localDur);
 
     // is local duration a multiple of total duration?
     if ((animDuration mod localDuration) = 0) then
@@ -2963,12 +3206,10 @@ begin
     // calculate final position
     finalPos := clearingVal + localPos;
 
-    // animation was looped?
-    if (finalPos < lastPos) then
+    // animation was looped? (NOTE rounded to 4 digits after the dot because rounding errors could
+    // bias the claculation, and thus create jerks during the animation)
+    if (RoundTo(finalPos, -4) < RoundTo(lastPos, -4)) then
     begin
-        animDur  := animDuration;
-        localDur := localDuration;
-
         // recalculate new clearing value and final position
         clearingVal := TWMathHelper.ExtMod(clearingVal + (animDur / localDur), 1.0);
         finalPos    := clearingVal + localPos;
@@ -3307,7 +3548,7 @@ begin
     for pAnimation in pAnimationData.m_pSetAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -3350,7 +3591,7 @@ begin
     for pAnimation in pAnimationData.m_pAttribAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -3519,7 +3760,7 @@ begin
     for pAnimation in pAnimationData.m_pSetAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -3570,7 +3811,7 @@ begin
     for pAnimation in pAnimationData.m_pAttribAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -3697,7 +3938,7 @@ begin
     for pAnimation in pAnimationData.m_pSetAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -3736,7 +3977,7 @@ begin
     for pAnimation in pAnimationData.m_pAttribAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -3865,7 +4106,7 @@ begin
     for pAnimation in pAnimationData.m_pSetAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -3908,7 +4149,7 @@ begin
     for pAnimation in pAnimationData.m_pAttribAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -4041,7 +4282,7 @@ begin
     for pAnimation in pAnimationData.m_pSetAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -4084,7 +4325,7 @@ begin
     for pAnimation in pAnimationData.m_pAttribAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -4240,7 +4481,7 @@ begin
     for pAnimation in pAnimationData.m_pSetAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -4275,7 +4516,7 @@ begin
     for pAnimation in pAnimationData.m_pAttribAnims do
     begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -4467,6 +4708,20 @@ begin
             pPropFloatItem := TWSmartPointer<IPropFloatItem>.Create
                     (IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default));
             pProperties.m_pStyle.m_pOpacity.Assign(pPropFloatItem);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Filter) and (pProperty is TWSVGPropLink)) then
+        begin
+            // get filter link
+            pLink := pProperty as TWSVGPropLink;
+
+            // found it?
+            if (not Assigned(pLink)) then
+                continue;
+
+            // get filter
+            if (not GetFilterFromLink(pLink, pProperties.m_pStyle.m_pFilter)) then
+                TWLogHelper.LogToCompiler('Get style props - invalid filter - id - ' + pLink.Value);
         end;
     end;
 
@@ -4828,9 +5083,8 @@ begin
 
     // iterate through set animations (i.e. set a particular style attribute at elapsed time)
     for pAnimation in pAnimationData.m_pSetAnims do
-    begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -4854,6 +5108,7 @@ begin
                     else
                     if (attribName = C_SVG_Prop_Fill_Opacity) then
                     begin
+                        // todo -cFeature -oJean: gradient colors are not supported, do support them
                         // do modify the fill opacity
                         pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pValueAnimDesc.ToList[0] * 100.0));
                         SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor);
@@ -4861,6 +5116,7 @@ begin
                     else
                     if (attribName = C_SVG_Prop_Stroke_Opacity) then
                     begin
+                        // todo -cFeature -oJean: gradient colors are not supported, do support them
                         // do modify the stroke opacity
                         pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pValueAnimDesc.ToList[0] * 100.0));
                         SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor);
@@ -4868,6 +5124,7 @@ begin
                     else
                     if (attribName = C_SVG_Prop_Opacity) then
                     begin
+                        // todo -cFeature -oJean: gradient colors are not supported, do support them
                         // do modify the fill and stroke opacity
                         pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pValueAnimDesc.ToList[0] * 100.0));
                         pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(pValueAnimDesc.ToList[0] * 100.0));
@@ -4895,35 +5152,35 @@ begin
                 if (pAnimationData.m_Position <> 1.0) then
                     continue;
 
-                // search for attribute to modify
-                if (attribName = C_SVG_Prop_Fill) then
-                begin
-                    // do modify the fill color
-                    pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.Assign(pColorAnimDesc.ToList[0]);
+                // is to value defined?
+                if (Length(pColorAnimDesc.ToList) > 0) then
+                    // search for attribute to modify
+                    if (attribName = C_SVG_Prop_Fill) then
+                    begin
+                        // do modify the fill color
+                        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.Assign(pColorAnimDesc.ToList[0]);
 
-                    // if inherited, change the rule to default, because the animated color will be used
-                    if (pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
-                        pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
-                end
-                else
-                if (attribName = C_SVG_Prop_Stroke) then
-                begin
-                    // do modify the stroke color
-                    pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.Assign(pColorAnimDesc.ToList[0]);
+                        // if inherited, change the rule to default, because the animated color will be used
+                        if (pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
+                            pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+                    end
+                    else
+                    if (attribName = C_SVG_Prop_Stroke) then
+                    begin
+                        // do modify the stroke color
+                        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.Assign(pColorAnimDesc.ToList[0]);
 
-                    // if inherited, change the rule to default, because the animated color will be used
-                    if (pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
-                        pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
-                end;
+                        // if inherited, change the rule to default, because the animated color will be used
+                        if (pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
+                            pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
+                    end;
             end;
         end;
-    end;
 
     // iterate through attribute animations (i.e. animations linked to a particular style attribute)
     for pAnimation in pAnimationData.m_pAttribAnims do
-    begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Value:
             begin
                 // configure animation description
@@ -4948,6 +5205,7 @@ begin
                 else
                 if (attribName = C_SVG_Prop_Fill_Opacity) then
                 begin
+                    // todo -cFeature -oJean: gradient colors are not supported, do support them
                     // do modify the fill opacity
                     pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(animPos * 100.0));
                     SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor);
@@ -4955,6 +5213,7 @@ begin
                 else
                 if (attribName = C_SVG_Prop_Stroke_Opacity) then
                 begin
+                    // todo -cFeature -oJean: gradient colors are not supported, do support them
                     // do modify the stroke opacity
                     pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(animPos * 100.0));
                     SetAnimatedOpacityCombineMode(pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor);
@@ -4962,6 +5221,7 @@ begin
                 else
                 if (attribName = C_SVG_Prop_Opacity) then
                 begin
+                    // todo -cFeature -oJean: gradient colors are not supported, do support them
                     // do modify the fill and stroke opacity
                     pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(animPos * 100.0));
                     pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.SetOpacity(Trunc(animPos * 100.0));
@@ -5007,13 +5267,11 @@ begin
                 break;
             end;
         end;
-    end;
 
     // iterate through color animations
     for pAnimation in pAnimationData.m_pColorAnims do
-    begin
         // search for animation type to apply
-        case (pAnimationData.m_ValueType) of
+        case (pAnimation.ValueType) of
             TWSVGCommon.IEValueType.IE_VT_Color:
             begin
                 // configure animation description
@@ -5053,7 +5311,6 @@ begin
                 end;
             end;
         end;
-    end;
 
     Result := True;
 end;
@@ -5140,13 +5397,210 @@ begin
     Result := True;
 end;
 //---------------------------------------------------------------------------
+function TWSVGRasterizer.GetFilterFromLink(const pLink: TWSVGPropLink; pFilter: IFilter): Boolean;
+var
+    pProperty:                                   TWSVGProperty;
+    pLinkedElement:                              TWSVGElement;
+    pSVGFilter:                                  TWSVGFilter;
+    pSVGEffect:                                  TWSVGEffect;
+    pSVGGaussianBlur:                            TWSVGGaussianBlur;
+    pMeasure:                                    TWSVGMeasure<Single>;
+    pAttribute:                                  TWSVGAttribute<Single>;
+    pGaussianBlur:                               IGaussianBlur;
+    propCount, effectCount, valueCount, i, j, k: NativeInt;
+begin
+    pLinkedElement := GetLinkedElement(pLink);
+
+    if (not Assigned(pLinkedElement)) then
+        Exit(False);
+
+    // search for linked element type
+    if ((pLinkedElement.ItemName = C_SVG_Tag_Filter) and (pLinkedElement is TWSVGFilter)) then
+    begin
+        // convert to filter
+        pSVGFilter := pLinkedElement as TWSVGFilter;
+
+        // failed?
+        if (not Assigned(pSVGFilter)) then
+            Exit(False);
+
+        propCount := pSVGFilter.Count;
+
+        // iterate through filter properties
+        for i := 0 to propCount - 1 do
+        begin
+            pProperty := pSVGFilter.Properties[i];
+
+            // get filter property
+            if ((pProperty.ItemName = C_SVG_Prop_X) and (pProperty is TWSVGMeasure<Single>)) then
+            begin
+                // get x position
+                pMeasure := pProperty as TWSVGMeasure<Single>;
+
+                // found it?
+                if (not Assigned(pMeasure)) then
+                    continue;
+
+                // set x position
+                if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                begin
+                    pFilter.m_pX       := IPropFloatItem.Create(pMeasure.Value.Value * 0.01, IE_PR_Default);
+                    pFilter.m_pPercent := IPropBoolItem.Create (True,                        IE_PR_Default);
+                end
+                else
+                begin
+                    pFilter.m_pX := IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default);
+
+                    if (pFilter.m_pPercent.Value) then
+                        TWLogHelper.LogToCompiler('Get filter - mixed percent and pixel values - ' + pSVGFilter.ItemID);
+                end;
+            end
+            else
+            if ((pProperty.ItemName = C_SVG_Prop_Y) and (pProperty is TWSVGMeasure<Single>)) then
+            begin
+                // get y position
+                pMeasure := pProperty as TWSVGMeasure<Single>;
+
+                // found it?
+                if (not Assigned(pMeasure)) then
+                    continue;
+
+                // set y position
+                if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                begin
+                    pFilter.m_pY       := IPropFloatItem.Create(pMeasure.Value.Value * 0.01, IE_PR_Default);
+                    pFilter.m_pPercent := IPropBoolItem.Create (True,                        IE_PR_Default);
+                end
+                else
+                begin
+                    pFilter.m_pY := IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default);
+
+                    if (pFilter.m_pPercent.Value) then
+                        TWLogHelper.LogToCompiler('Get filter - mixed percent and pixel values - ' + pSVGFilter.ItemID);
+                end;
+            end
+            else
+            if ((pProperty.ItemName = C_SVG_Prop_Width) and (pProperty is TWSVGMeasure<Single>)) then
+            begin
+                // get width
+                pMeasure := pProperty as TWSVGMeasure<Single>;
+
+                // found it?
+                if (not Assigned(pMeasure)) then
+                    continue;
+
+                // set width
+                if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                begin
+                    pFilter.m_pWidth   := IPropFloatItem.Create(pMeasure.Value.Value * 0.01, IE_PR_Default);
+                    pFilter.m_pPercent := IPropBoolItem.Create (True,                        IE_PR_Default);
+                end
+                else
+                begin
+                    pFilter.m_pWidth := IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default);
+
+                    if (pFilter.m_pPercent.Value) then
+                        TWLogHelper.LogToCompiler('Get filter - mixed percent and pixel values - ' + pSVGFilter.ItemID);
+                end;
+            end
+            else
+            if ((pProperty.ItemName = C_SVG_Prop_Height) and (pProperty is TWSVGMeasure<Single>)) then
+            begin
+                // get height
+                pMeasure := pProperty as TWSVGMeasure<Single>;
+
+                // found it?
+                if (not Assigned(pMeasure)) then
+                    continue;
+
+                // set height
+                if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                begin
+                    pFilter.m_pHeight  := IPropFloatItem.Create(pMeasure.Value.Value * 0.01, IE_PR_Default);
+                    pFilter.m_pPercent := IPropBoolItem.Create (True,                        IE_PR_Default);
+                end
+                else
+                begin
+                    pFilter.m_pHeight := IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default);
+
+                    if (pFilter.m_pPercent.Value) then
+                        TWLogHelper.LogToCompiler('Get filter - mixed percent and pixel values - ' + pSVGFilter.ItemID);
+                end;
+            end;
+        end;
+
+        effectCount := pSVGFilter.EffectCount;
+
+        // iterate through filter effects
+        for i := 0 to effectCount - 1 do
+        begin
+            pSVGEffect := pSVGFilter.Effects[i];
+
+            // search for effect to create
+            if ((pSVGEffect.ItemName = C_SVG_Filter_Gaussian_Blur) and (pSVGEffect is TWSVGGaussianBlur)) then
+            begin
+                // get gaussian blur effect
+                pSVGGaussianBlur := pSVGEffect as TWSVGGaussianBlur;
+
+                if (not Assigned(pSVGGaussianBlur)) then
+                    continue;
+
+                pGaussianBlur := nil;
+
+                try
+                    // create a gaussian blur effect
+                    pGaussianBlur := IGaussianBlur.Create;
+                    propCount     := pSVGEffect.Count;
+
+                    // iterate through blur properties
+                    for j := 0 to propCount - 1 do
+                    begin
+                        pProperty := pSVGEffect.Properties[j];
+
+                        // get blur property
+                        if ((pProperty.ItemName = C_SVG_Filter_STD_Deviation) and (pProperty is TWSVGAttribute<Single>)) then
+                        begin
+                            // get deviation
+                            pAttribute := pProperty as TWSVGAttribute<Single>;
+
+                            if (not Assigned(pAttribute)) then
+                                continue;
+
+                            valueCount := pAttribute.Count;
+
+                            // set deviation
+                            for k := 0 to valueCount - 1 do
+                                case (k) of
+                                    0:  pGaussianBlur.m_Deviation.Width  := Round(pAttribute.Values[k]);
+                                    1:  pGaussianBlur.m_Deviation.Height := Round(pAttribute.Values[k]);
+                                else
+                                    raise Exception.CreateFmt('Too many blur deviation values - %d', [valueCount]);
+                                end;
+                        end;
+                    end;
+
+                    // add gaussian blur effect to list
+                    pFilter.m_pEffects.Add(pGaussianBlur);
+                    pGaussianBlur := nil;
+                finally
+                    pGaussianBlur.Free;
+                end;
+            end;
+        end;
+
+        Exit(True);
+    end;
+
+    Result := False;
+end;
+//---------------------------------------------------------------------------
 function TWSVGRasterizer.GetColorFromLink(const pLink: TWSVGPropLink; pBrush: IBrush): Boolean;
 var
     pProperty:                                    TWSVGProperty;
     pLinkedElement:                               TWSVGElement;
     pLinkedBrush:                                 IBrush;
     pGradient:                                    TWSVGGradient;
-    pGradientUnit:                                TWSVGGradient.IGradientUnit;
+    pGradientUnit:                                TWSVGPropUnit;
     pGradientSpreadMethod:                        TWSVGGradient.IGradientSpreadMethod;
     pMatrix:                                      TWSVGPropMatrix;
     pX1, pX2, pY1, pY2, pCX, pCY, pR, pFX, pFY:   TWSVGMeasure<Single>;
@@ -5217,18 +5671,16 @@ begin
                     end;
                 end
                 else
-                if ((pProperty.ItemName = C_SVG_Gradient_Units)
-                        and (pProperty is TWSVGGradient.IGradientUnit))
-                then
+                if ((pProperty.ItemName = C_SVG_Gradient_Units) and (pProperty is TWSVGPropUnit)) then
                 begin
                     // get gradient unit
-                    pGradientUnit := pProperty as TWSVGGradient.IGradientUnit;
+                    pGradientUnit := pProperty as TWSVGPropUnit;
 
                     // found it?
                     if (not Assigned(pGradientUnit)) then
                         continue;
 
-                    pBrush.m_pLinearGradient.m_Unit := pGradientUnit.GradientUnit;
+                    pBrush.m_pLinearGradient.m_Unit := pGradientUnit.UnitType;
                 end
                 else
                 if ((pProperty.ItemName = C_SVG_Gradient_Spread_Method)
@@ -5367,7 +5819,7 @@ begin
                         end;
 
                         // copy unit parameter if undefined
-                        if (pBrush.m_pLinearGradient.m_Unit = TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox) then
+                        if (pBrush.m_pLinearGradient.m_Unit = TWSVGPropUnit.IEType.IE_UT_ObjectBoundingBox) then
                             pBrush.m_pLinearGradient.m_Unit := linkedBrushes[i].m_pLinearGradient.m_Unit;
 
                         // copy spread method parameter if undefined
@@ -5388,7 +5840,7 @@ begin
                         end;
 
                         // copy unit parameter if undefined
-                        if (pBrush.m_pLinearGradient.m_Unit = TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox) then
+                        if (pBrush.m_pLinearGradient.m_Unit = TWSVGPropUnit.IEType.IE_UT_ObjectBoundingBox) then
                             pBrush.m_pLinearGradient.m_Unit := linkedBrushes[i].m_pRadialGradient.m_Unit;
 
                         // copy spread method parameter if undefined
@@ -5431,7 +5883,7 @@ begin
             SetLength(linkedBrushes, 0);
         end;
 
-        pBrush.m_Type                   := E_BT_Linear;
+        pBrush.m_Type                   :=  E_BT_Linear;
         pBrush.m_Rule                   := IE_PR_Default;
         pBrush.m_pLinearGradient.m_Rule := IE_PR_Default;
         Exit(True);
@@ -5484,18 +5936,16 @@ begin
                     end;
                 end
                 else
-                if ((pProperty.ItemName = C_SVG_Gradient_Units)
-                        and (pProperty is TWSVGGradient.IGradientUnit))
-                then
+                if ((pProperty.ItemName = C_SVG_Gradient_Units) and (pProperty is TWSVGPropUnit)) then
                 begin
                     // get gradient unit
-                    pGradientUnit := pProperty as TWSVGGradient.IGradientUnit;
+                    pGradientUnit := pProperty as TWSVGPropUnit;
 
                     // found it?
                     if (not Assigned(pGradientUnit)) then
                         continue;
 
-                    pBrush.m_pRadialGradient.m_Unit := pGradientUnit.GradientUnit;
+                    pBrush.m_pRadialGradient.m_Unit := pGradientUnit.UnitType;
                 end
                 else
                 if ((pProperty.ItemName = C_SVG_Gradient_Spread_Method)
@@ -5634,7 +6084,7 @@ begin
                         end;
 
                         // copy unit parameter if undefined
-                        if (pBrush.m_pRadialGradient.m_Unit = TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox) then
+                        if (pBrush.m_pRadialGradient.m_Unit = TWSVGPropUnit.IEType.IE_UT_ObjectBoundingBox) then
                             pBrush.m_pRadialGradient.m_Unit := linkedBrushes[i].m_pLinearGradient.m_Unit;
 
                         // copy spread method parameter if undefined
@@ -5675,7 +6125,7 @@ begin
                         end;
 
                         // copy unit parameter if undefined
-                        if (pBrush.m_pRadialGradient.m_Unit = TWSVGGradient.IEGradientUnit.IE_GU_ObjectBoundingBox) then
+                        if (pBrush.m_pRadialGradient.m_Unit = TWSVGPropUnit.IEType.IE_UT_ObjectBoundingBox) then
                             pBrush.m_pRadialGradient.m_Unit := linkedBrushes[i].m_pRadialGradient.m_Unit;
 
                         // copy spread method parameter if undefined
@@ -5857,39 +6307,24 @@ begin
 
         // search for animation type
         if (pAnimation.ItemName = C_SVG_Tag_Set) then
-        begin
             // add animation to list
-            pAnimationData.m_ValueType := pAnimation.ValueType;
-            pAnimationData.m_pSetAnims.Add(pAnimation);
-        end
+            pAnimationData.m_pSetAnims.Add(pAnimation)
         else
         if (pAnimation.ItemName = C_SVG_Tag_Animate) then
-        begin
             // add animation to list
-            pAnimationData.m_ValueType := pAnimation.ValueType;
             pAnimationData.m_pAttribAnims.Add(pAnimation)
-        end
         else
         if (pAnimation.ItemName = C_SVG_Tag_Animate_Color) then
-        begin
             // add animation to list
-            pAnimationData.m_ValueType := pAnimation.ValueType;
             pAnimationData.m_pColorAnims.Add(pAnimation)
-        end
         else
         if (pAnimation.ItemName = C_SVG_Tag_Animate_Transform) then
-        begin
             // add animation to list
-            pAnimationData.m_ValueType := pAnimation.ValueType;
             pAnimationData.m_pMatrixAnims.Add(pAnimation)
-        end
         else
         if ((pAnimation.ItemName = C_SVG_Tag_Set) or (pAnimation.ItemName = C_SVG_Tag_Animate_Motion)) then
-        begin
             // add animation to list
-            pAnimationData.m_ValueType := pAnimation.ValueType;
             pAnimationData.m_pUnknownAnims.Add(pAnimation);
-        end;
     end;
 end;
 //---------------------------------------------------------------------------
@@ -5901,6 +6336,7 @@ var
     pAttribName:                                              TWSVGAnimation.IPropAttributeName;
     pRepeatCount:                                             TWSVGAnimation.IPropRepeatCount;
     pAnimType:                                                TWSVGAnimation.IPropAnimTransformType;
+    pAdditiveMode:                                            TWSVGAnimation.IPropAdditiveMode;
     pCalcMode:                                                TWSVGAnimation.IPropCalcMode;
     pValueDesc:                                               TWSVGValueAnimDesc;
     pMatrixDesc:                                              TWSVGMatrixAnimDesc;
@@ -6623,6 +7059,18 @@ begin
             for j := 0 to valueCount - 1 do
                 // set key time
                 pAnimDesc.AddKeyTime(pValues.Values[j]);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Animation_Additive) and (pProperty is TWSVGAnimation.IPropAdditiveMode)) then
+        begin
+            // get animation additive mode property
+            pAdditiveMode := pProperty as TWSVGAnimation.IPropAdditiveMode;
+
+            // found it?
+            if (not Assigned(pAdditiveMode)) then
+                continue;
+
+            pAnimDesc.AdditiveMode := pAdditiveMode.AdditiveType;
         end;
     end;
 
@@ -7111,7 +7559,7 @@ begin
     //cycleRestarted := (position < pCacheItem.m_LastPos);
 
     // update last known position
-    pCacheItem.m_LastPos := position;
+    pCacheItem.m_LastPos := 0.0;//position;
 
     // get current animation item, create one if not found
     if (not pCacheItem.m_pAnimCache.TryGetValue(pAnimDesc.Animation, pItem)) then

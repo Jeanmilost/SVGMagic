@@ -39,6 +39,8 @@ type
             m_NegativeEnd:      Boolean;
             m_NegativeDuration: Boolean;
             m_CalcMode:         TWSVGAnimation.IPropCalcMode.IECalcModeType;
+            m_AdditiveMode:     TWSVGAnimation.IPropAdditiveMode.IEType;
+
 
         protected
             {**
@@ -147,6 +149,11 @@ type
              Get or set the calculation mode
             }
             property CalcMode: TWSVGAnimation.IPropCalcMode.IECalcModeType read m_CalcMode write m_CalcMode;
+
+            {**
+             Get or set the additive mode
+            }
+            property AdditiveMode: TWSVGAnimation.IPropAdditiveMode.IEType read m_AdditiveMode write m_AdditiveMode;
     end;
 
     {**
@@ -457,6 +464,7 @@ begin
     m_NegativeEnd      := False;
     m_NegativeDuration := False;
     m_CalcMode         := TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear;
+    m_AdditiveMode     := TWSVGAnimation.IPropAdditiveMode.IEType.IE_AT_Replace;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGAnimationDescriptor.Destroy;
@@ -837,9 +845,25 @@ end;
 //---------------------------------------------------------------------------
 procedure TWSVGMatrixAnimDesc.Combine(position: Double; var matrix: TWMatrix3x3);
 var
-    xMat, yMat, xLength, yLength, animLength: Double;
-    fromCount, toCount:                       NativeUInt;
-    rotationCenter:                           TWVector2;
+    xMat,
+    yMat,
+    xLength,
+    yLength,
+    animLength,
+    indexCount,
+    timePerFrame,
+    frameStart,
+    framePos,
+    fIndex:         Double;
+    fromCount,
+    toCount,
+    valueCount,
+    index,
+    fromXIndex,
+    fromYIndex,
+    toXIndex,
+    toYIndex:       NativeUInt;
+    rotationCenter: TWVector2;
 begin
     // search for transformation type
     case (m_TransformType) of
@@ -893,8 +917,45 @@ begin
                 Exit;
             end;
 
-            raise Exception.CreateFmt('Malformed animation transform - translation - value count - %d',
-                    [Length(m_Values)]);
+            valueCount := Length(m_Values);
+
+            // x values mean an array of from x:y, to x:y values. The value count should always be even
+            if ((valueCount = 0) or ((valueCount mod 2) <> 0)) then
+            begin
+                TWLogHelper.LogToCompiler('malformed animation - the number of values must be even - '
+                        + IntToStr(valueCount));
+                Exit;
+            end;
+
+            // calculate the index count and the current index
+            indexCount := valueCount div 2;
+            index      := Floor(position * indexCount);
+
+            // calculate the from and to indexes for each x and y values
+            fromXIndex := (index * 2)      mod valueCount;
+            fromYIndex := (fromXIndex + 1) mod valueCount;
+            toXIndex   := (fromXIndex + 2) mod valueCount;
+            toYIndex   := (fromXIndex + 3) mod valueCount;
+
+            fIndex := index;
+
+            // calculate the animation position inside the frame
+            timePerFrame := 1.0 / indexCount;
+            frameStart   := timePerFrame * fIndex;
+            framePos     := (position - frameStart) / timePerFrame;
+
+            // calculate animation length
+            xLength := (m_Values[toXIndex] - m_Values[fromXIndex]);
+            yLength := (m_Values[toYIndex] - m_Values[fromYIndex]);
+
+            // calculate matrix values
+            xMat := m_Values[fromXIndex] + (framePos * xLength);
+            yMat := m_Values[fromYIndex] + (framePos * yLength);
+
+            // set translation matrix
+            matrix.Translate(TWVector2.Create(xMat, yMat));
+
+            Exit;
         end;
 
         TWSVGAnimation.IPropAnimTransformType.IETransformType.IE_TT_Rotate:

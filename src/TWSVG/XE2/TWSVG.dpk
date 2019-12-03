@@ -62,6 +62,7 @@ contains
   UTWSVGRadioButtonStyle in '..\UTWSVGRadioButtonStyle.pas',
   UTWSVGRasterizer in '..\UTWSVGRasterizer.pas',
   UTWSVGStyle in '..\UTWSVGStyle.pas',
-  UTWSVGTags in '..\UTWSVGTags.pas';
+  UTWSVGTags in '..\UTWSVGTags.pas',
+  UTWSVGFilters in '..\UTWSVGFilters.pas';
 
 end.

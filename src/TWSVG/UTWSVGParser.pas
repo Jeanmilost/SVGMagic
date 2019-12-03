@@ -832,7 +832,10 @@ begin
             Result := inherited ReadLinearGradient(pChildNode, m_pDefs) and Result
         else
         if (name = C_SVG_Tag_Radial_Gradient) then
-            Result := inherited ReadRadialGradient(pChildNode, m_pDefs) and Result;
+            Result := inherited ReadRadialGradient(pChildNode, m_pDefs) and Result
+        else
+        if (name = C_SVG_Tag_Filter) then
+            Result := inherited ReadFilter(pChildNode, m_pDefs) and Result;
     end;
 end;
 //---------------------------------------------------------------------------

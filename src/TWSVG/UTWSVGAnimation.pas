@@ -743,6 +743,103 @@ type
                     property TransformType: IETransformType read m_Type write m_Type;
             end;
 
+            {**
+             Transformation combinations additive mode property
+            }
+            IPropAdditiveMode = class(TWSVGProperty)
+                public type
+                    {**
+                     Additive mode enumeration
+                     @value(IE_AT_Replace The first value should replace the second)
+                     @value(IE_AT_Sum The first value should be added to the second)
+                    }
+                    IEType =
+                    (
+                        IE_AT_Replace,
+                        IE_AT_Sum
+                    );
+
+                private
+                    m_Type: IEType;
+
+                public
+                    {**
+                     Constructor
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @param(pOptions SVG options)
+                    }
+                    constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: TWSVGItem); override;
+
+                    {**
+                     Clear
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Create new element instance
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @returns(Element instance)
+                    }
+                    function CreateInstance(pParent: TWSVGItem): TWSVGProperty; override;
+
+                    {**
+                     Parse data
+                     @param(data Data to parse)
+                     @returns(@true on success, otherwise @false)
+                    }
+                    function Parse(const data: UnicodeString): Boolean; override;
+
+                    {**
+                     Log content
+                     @param(margin Margin length in chars)
+                    }
+                    procedure Log(margin: Cardinal); override;
+
+                    {**
+                     Print content to string
+                     @param(margin Margin length in chars)
+                     @returns(Content)
+                    }
+                    function Print(margin: Cardinal): UnicodeString; override;
+
+                    {**
+                     Get xml formatted string
+                     @returns(String)
+                    }
+                    function ToXml: UnicodeString; override;
+
+                    {**
+                     Convert type to string
+                     @param(type Type to convert)
+                     @returns(Converted string)
+                    }
+                    class function TypeToStr(transformType: IEType): UnicodeString; static;
+
+                    {**
+                     Convert string to type
+                     @param(str String containing type to convert)
+                     @returns(Converted type)
+                    }
+                    class function StrToType(const str: UnicodeString): IEType; static;
+
+                public
+                    {**
+                     Get or set the transformation type
+                    }
+                    property AdditiveType: IEType read m_Type write m_Type;
+            end;
+
         private
             m_Type:      IEAnimType;
             m_ValueType: TWSVGCommon.IEValueType;
@@ -1511,6 +1608,92 @@ begin
         Exit(IE_TT_Unknown);
 end;
 //---------------------------------------------------------------------------
+// TWSVGAnimation.IPropAdditiveMode
+//---------------------------------------------------------------------------
+constructor TWSVGAnimation.IPropAdditiveMode.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    m_Type := IE_AT_Replace;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGAnimation.IPropAdditiveMode.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGAnimation.IPropAdditiveMode.Assign(const pOther: TWSVGItem);
+var
+    pSource: IPropAdditiveMode;
+begin
+    inherited Assign(pOther);
+
+    // invalid item?
+    if (not(pOther is IPropAdditiveMode)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    // get source object
+    pSource := pOther as IPropAdditiveMode;
+
+    // copy data from source
+    m_Type := pSource.m_Type;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGAnimation.IPropAdditiveMode.Clear;
+begin
+    inherited Clear;
+
+    m_Type := IE_AT_Replace;
+end;
+//---------------------------------------------------------------------------
+function TWSVGAnimation.IPropAdditiveMode.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
+begin
+    Result := IPropAdditiveMode.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+function TWSVGAnimation.IPropAdditiveMode.Parse(const data: UnicodeString): Boolean;
+begin
+    m_Type := StrToType(data);
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGAnimation.IPropAdditiveMode.Log(margin: Cardinal);
+begin
+    TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - '
+            + TypeToStr(m_Type));
+end;
+//---------------------------------------------------------------------------
+function TWSVGAnimation.IPropAdditiveMode.Print(margin: Cardinal): UnicodeString;
+begin
+    Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + TypeToStr(m_Type) + #13 + #10;
+end;
+//---------------------------------------------------------------------------
+function TWSVGAnimation.IPropAdditiveMode.ToXml: UnicodeString;
+begin
+    Result := ItemName + '=\"' + TypeToStr(m_Type) + '\"';
+end;
+//---------------------------------------------------------------------------
+class function TWSVGAnimation.IPropAdditiveMode.TypeToStr(transformType: IEType): UnicodeString;
+begin
+    case (transformType) of
+        IE_AT_Replace: Exit(C_SVG_Animation_Additive_Replace);
+        IE_AT_Sum:     Exit(C_SVG_Animation_Additive_Sum);
+    else
+        raise Exception.CreateFmt('Unknown animate addtive type - %d', [Integer(transformType)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+class function TWSVGAnimation.IPropAdditiveMode.StrToType(const str: UnicodeString): IEType;
+begin
+    if (str = C_SVG_Animation_Additive_Sum) then
+        Exit(IE_AT_Sum);
+
+    Result := IE_AT_Replace;
+end;
+//---------------------------------------------------------------------------
 // TWSVGAnimation
 //---------------------------------------------------------------------------
 constructor TWSVGAnimation.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
@@ -1577,6 +1760,7 @@ var
     pBegin, pEnd, pDuration, pMin, pMax, pRepeatDur:             TWSVGPropTime;
     pRestart:                                                    IPropRestart;
     pAnimTransformType:                                          IPropAnimTransformType;
+    pAdditiveMode:                                               IPropAdditiveMode;
     attribName:                                                  UnicodeString;
     useValues:                                                   Boolean;
 begin
@@ -2008,6 +2192,21 @@ begin
         end;
     finally
         pKeyTimes.Free;
+    end;
+
+    pAdditiveMode := nil;
+
+    try
+        pAdditiveMode := IPropAdditiveMode.Create(Self, m_pOptions);
+
+        // read additive mode property (optional)
+        if (pAdditiveMode.Read(C_SVG_Animation_Additive, pNode)) then
+        begin
+            m_pProperties.Add(pAdditiveMode);
+            pAdditiveMode := nil;
+        end;
+    finally
+        pAdditiveMode.Free;
     end;
 
     Result := True;

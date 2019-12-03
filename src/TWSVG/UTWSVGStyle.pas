@@ -1943,6 +1943,9 @@ begin
     if ((name = C_SVG_Prop_Opacity) and ParseStyle(name, value)) then
         Exit(True)
     else
+    if ((name = C_SVG_Prop_Filter) and ParseStyle(name, value)) then
+        Exit(True)
+    else
     if ((name = C_SVG_Gradient_Stop_Color) and ParseStyle(name, value)) then
         Exit(True)
     else
@@ -1998,6 +2001,7 @@ var
     pColor:                    TWSVGPropColor;
     pBg:                       TWSVGPropBackground;
     pDisplay:                  IPropDisplay;
+    pLink:                     TWSVGPropLink;
     color:                     TWColor;
     data:                      UnicodeString;
     pData:                     PUnicodeString;
@@ -2123,6 +2127,24 @@ begin
         Exit(True);
     end
     else
+    if (name = C_SVG_Prop_Filter) then
+    begin
+        pLink := nil;
+
+        try
+        // create link property and populate with effect link
+            pLink          := TWSVGPropLink.Create(Self, m_pOptions);
+            pLink.ItemName := name;
+            pLink.Parse(pData^);
+            m_pProperties.Add(pLink);
+            pLink := nil;
+        finally
+            pLink.Free;
+        end;
+
+        Exit(True);
+    end
+    else
     if (name = C_SVG_Prop_Enable_Background) then
     begin
         pBg := nil;
@@ -2227,6 +2249,7 @@ var
     opacity,
     gradientStopColor,
     gradientStopOpacity,
+    filter,
     fillColor,
     fillOpacity,
     fillRule,
@@ -2264,6 +2287,11 @@ begin
     gradientStopOpacity := TWSVGCommon.GetAttribute(pNode, C_SVG_Gradient_Stop_Opacity, C_SVG_Global_Error);
     if (gradientStopOpacity <> C_SVG_Global_Error) then
         ParseStyle(C_SVG_Gradient_Stop_Opacity, gradientStopOpacity);
+
+    // get filter
+    filter := TWSVGCommon.GetAttribute(pNode, C_SVG_Prop_Filter, C_SVG_Global_Error);
+    if (filter <> C_SVG_Global_Error) then
+        ParseStyle(C_SVG_Prop_Filter, filter);
 
     // get fill color
     fillColor := TWSVGCommon.GetAttribute(pNode, C_SVG_Prop_Fill, C_SVG_Global_Error);

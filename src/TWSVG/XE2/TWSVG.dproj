@@ -147,6 +147,7 @@
 			<DCCReference Include="..\UTWSVGRasterizer.pas"/>
 			<DCCReference Include="..\UTWSVGStyle.pas"/>
 			<DCCReference Include="..\UTWSVGTags.pas"/>
+			<DCCReference Include="..\UTWSVGFilters.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

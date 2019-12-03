@@ -217,6 +217,17 @@ type
                     const animation: TWSVGRasterizer.IAnimation; pGraphics: TGpGraphics);
 
             {**
+             Combine a matrix with its animation matrix
+             @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
+             @param(animationData Shape animation data)
+             @param(matrix Matrix to combine, combined matrix on function ends)
+             @param(doOverride If @true, the animation matrix will override the transform one instead of combining with it)
+            }
+            procedure CombineMatrix(const animation: TWSVGRasterizer.IAnimation;
+                    const pAnimationData: TWSVGRasterizer.IAnimationData; pMatrix: PWMatrix3x3;
+                    doOverride: Boolean);
+
+            {**
              Update a bounding box
              @param(point New point to add to bounding box)
              @param(boundingBox @bold([in, out]) Bounding box, new bounding box on function ends)
@@ -437,52 +448,6 @@ begin
     // iterate through SVG elements
     for pElement in pElements do
     begin
-        // is a switch?
-        if (pElement is TWSVGSwitch) then
-        begin
-            // get switch
-            pSwitch := pElement as TWSVGSwitch;
-
-            // found it?
-            if (Assigned(pSwitch)) then
-            begin
-                // configure animation
-                pAnimationData          := TWSmartPointer<IAnimationData>.Create();
-                pAnimationData.Position := animation.m_Position;
-
-                // get all animations linked to this container
-                GetAnimations(pSwitch, pAnimationData);
-
-                pProps := TWSmartPointer<IProperties>.Create();
-
-                // get draw properties from element
-                if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
-                    Exit(False);
-
-                pProps.Merge(pParentProps);
-
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
-                    continue;
-
-                // extract position and size properties
-                if (not GetPosAndSizeProps(pSwitch, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
-                    Exit(False);
-
-                // get the switch position (in relation to the initial position)
-                posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
-
-                // draw switch subelements
-                if (not DrawElements(pHeader, viewBox, pProps, pSwitch.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, True, animation, pCanvas, pGraphics))
-                then
-                    Exit(False);
-
-                continue;
-            end;
-        end;
-
         // is a group?
         if (pElement is TWSVGGroup) then
         begin
@@ -519,9 +484,65 @@ begin
                 // get the group position (in relation to the initial position)
                 posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
 
+                // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
+                //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
+                // combine the animation matrix with the group matrix
+                CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
+
                 // draw group subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pGroup.ElementList, posFromProps,
                         scaleW, scaleH, antialiasing, False, animation, pCanvas, pGraphics))
+                then
+                    Exit(False);
+
+                continue;
+            end;
+        end;
+
+        // is a switch?
+        if (pElement is TWSVGSwitch) then
+        begin
+            // get switch
+            pSwitch := pElement as TWSVGSwitch;
+
+            // found it?
+            if (Assigned(pSwitch)) then
+            begin
+                // configure animation
+                pAnimationData          := TWSmartPointer<IAnimationData>.Create();
+                pAnimationData.Position := animation.m_Position;
+
+                // get all animations linked to this container
+                GetAnimations(pSwitch, pAnimationData);
+
+                pProps := TWSmartPointer<IProperties>.Create();
+
+                // get draw properties from element
+                if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
+                    Exit(False);
+
+                pProps.Merge(pParentProps);
+
+                // is element visible? (NOTE for now the only supported mode is "none". All other
+                // modes are considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                    continue;
+
+                // extract position and size properties
+                if (not GetPosAndSizeProps(pSwitch, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                    Exit(False);
+
+                // get the switch position (in relation to the initial position)
+                posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
+
+                // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
+                //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
+                // combine the animation matrix with the switch matrix
+                CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
+
+                // draw switch subelements
+                if (not DrawElements(pHeader, viewBox, pProps, pSwitch.ElementList, posFromProps,
+                        scaleW, scaleH, antialiasing, True, animation, pCanvas, pGraphics))
                 then
                     Exit(False);
 
@@ -564,6 +585,11 @@ begin
 
                 // get the action position (in relation to the initial position)
                 posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
+
+                // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
+                //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
+                // combine the animation matrix with the group matrix
+                CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
 
                 // draw action subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pAction.ElementList, posFromProps,
@@ -1698,7 +1724,7 @@ begin
 
     // apply the unit mode
     case (pGradient.GradientUnit) of
-        TWSVGGradient.IEGradientUnit.IE_GU_UserSpaceOnUse: pBrush.GradientUnit := E_GU_UserSpaceOnUse;
+        TWSVGPropUnit.IEType.IE_UT_UserSpaceOnUse: pBrush.GradientUnit := E_GU_UserSpaceOnUse;
     else
         pBrush.GradientUnit := E_GU_ObjectBoundingBox;
 
@@ -1778,7 +1804,7 @@ var
 begin
     // apply the unit mode
     case (pGradient.GradientUnit) of
-        TWSVGGradient.IEGradientUnit.IE_GU_UserSpaceOnUse:
+        TWSVGPropUnit.IEType.IE_UT_UserSpaceOnUse:
         begin
             radius := TWSizeF.Create(pGradient.R * 2.0, pGradient.R * 2.0);
             center := TWPointF.Create(pGradient.CX, pGradient.CY);
@@ -1960,10 +1986,6 @@ var
     attribName: UnicodeString;
     position:   Double;
 begin
-    // not a matrix animation type?
-    if (pAnimationData.ValueType <> TWSVGCommon.IEValueType.IE_VT_Matrix) then
-        Exit(False);
-
     // do animate shape?
     if (not m_Animate) then
         Exit(False);
@@ -1975,6 +1997,10 @@ begin
     // iterate through matrix animations
     for pAnimation in pAnimationData.MatrixAnims do
     begin
+        // not a matrix animation type?
+        if (pAnimation.ValueType <> TWSVGCommon.IEValueType.IE_VT_Matrix) then
+            continue;
+
         // configure animation description
         pAnimDesc           := TWSmartPointer<TWSVGMatrixAnimDesc>.Create();
         pAnimDesc.Animation := pAnimation;
@@ -2030,7 +2056,7 @@ begin
     case (pGradient.GradientUnit) of
         // do calculate the gradient pos relatively to the viewport. The values contain coordinates
         // expressed in the viewport unit
-        TWSVGGradient.IEGradientUnit.IE_GU_UserSpaceOnUse:
+        TWSVGPropUnit.IEType.IE_UT_UserSpaceOnUse:
         begin
             // are values expressed in percent?
             if (usePercent) then
@@ -2102,6 +2128,34 @@ begin
 
     // apply transformation matrix to path
     pGraphics.SetTransform(pTransformMatrix);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGGDIPlusRasterizer.CombineMatrix(const animation: TWSVGGDIPlusRasterizer.IAnimation;
+        const pAnimationData: TWSVGGDIPlusRasterizer.IAnimationData; pMatrix: PWMatrix3x3;
+        doOverride: Boolean);
+var
+    pAnimMatrix, pResultMatrix: IWSmartPointer<TGpMatrix>;
+begin
+    pAnimMatrix := TWSmartPointer<TGpMatrix>.Create();
+
+    // get matrix animation
+    if (not GetTransformAnimMatrix(pAnimationData, pAnimMatrix, animation.m_pCustomData)) then
+        Exit;
+
+    // do override the existing matrix by the animated one?
+    if (doOverride) then
+    begin
+        pMatrix.Assign(TWMatrix3x3.Create(pAnimMatrix));
+        Exit;
+    end;
+
+    pResultMatrix := TWSmartPointer<TGpMatrix>.Create();
+    pMatrix.ToGpMatrix(pResultMatrix);
+
+    // combine matrix with animation matrix
+    pResultMatrix.Multiply(pAnimMatrix);
+
+    pMatrix.Assign(TWMatrix3x3.Create(pResultMatrix));
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGGDIPlusRasterizer.UpdateBoundingBox(const point: TGpPointF; var boundingBox: TGpRectF);

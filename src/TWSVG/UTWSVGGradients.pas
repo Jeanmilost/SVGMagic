@@ -79,136 +79,6 @@ type
     TWSVGGradient = class(TWSVGElement)
         public type
             {**
-             Gradient unit enumeration
-             @value(IE_GU_ObjectBoundingBox For <lineargradient>, the user coordinate system for
-                                            attributes x1, y1, x2 and y2 is established using the
-                                            bounding box of the element to which the gradient is
-                                            applied (see Object bounding box units) and then applying
-                                            the transform specified by attribute gradientTransform.
-                                            When gradientUnits="objectBoundingBox" and gradientTransform
-                                            is the identity matrix, the normal of the linear gradient
-                                            is perpendicular to the gradient vector in object bounding
-                                            box space (i.e., the abstract coordinate system where (0,0)
-                                            is at the top/left of the object bounding box and (1,1)
-                                            is at the bottom/right of the object bounding box).
-                                            When the object's bounding box is not square, the gradient
-                                            normal which is initially perpendicular to the gradient
-                                            vector within object bounding box space may render
-                                            non-perpendicular relative to the gradient vector in user
-                                            space. If the gradient vector is parallel to one of the
-                                            axes of the bounding box, the gradient normal will remain
-                                            perpendicular. This transformation is due to application
-                                            of the non-uniform scaling transformation from bounding
-                                            box space to user space.
-                                            For <radialgradient>: the user coordinate system for
-                                            attributes cx, cy, r, fx and fy is established using the
-                                            bounding box of the element to which the gradient is
-                                            applied (see Object bounding box units) and then applying
-                                            the transform specified by attribute gradientTransform.
-                                            When gradientUnits="objectBoundingBox" and gradientTransform
-                                            is the identity matrix, then the rings of the radial
-                                            gradient are circular with respect to the object bounding
-                                            box space (i.e., the abstract coordinate system where (0,0)
-                                            is at the top/left of the object bounding box and (1,1)
-                                            is at the bottom/right of the object bounding box). When
-                                            the object's bounding box is not square, the rings that
-                                            are conceptually circular within object bounding box space
-                                            will render as elliptical due to application of the
-                                            non-uniform scaling transformation from bounding box
-                                            space to user space)
-             @value(IE_GU_UserSpaceOnUse x1, y1, x2, y2, cx, cy, r, fx and fy represent values in the
-                                         coordinate system that results from taking the current user
-                                         coordinate system in place at the time when the gradient
-                                         element is referenced (i.e, the user coordinate system for
-                                         the element referencing the gradient element via a fill or
-                                         stroke property) and then applying the transform specified
-                                         by attribute gradientTransform)
-            }
-            IEGradientUnit =
-            (
-                IE_GU_ObjectBoundingBox,
-                IE_GU_UserSpaceOnUse
-            );
-
-            {**
-             Gradient unit property
-            }
-            IGradientUnit = class(TWSVGProperty)
-                private
-                    m_Unit: IEGradientUnit;
-
-                public
-                    {**
-                     Constructor
-                     @param(pParent Parent item, orphan or root if @nil)
-                     @param(pOptions SVG options)
-                    }
-                    constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
-
-                    {**
-                     Destructor
-                    }
-                    destructor Destroy; override;
-
-                    {**
-                     Assign (i.e. copy) content from another item
-                     @param(pOther Other item to copy from)
-                    }
-                    procedure Assign(const pOther: TWSVGItem); override;
-
-                    {**
-                     Clear
-                    }
-                    procedure Clear; override;
-
-                    {**
-                     Create new property instance
-                     @param(pParent Parent item, orphan or root if @nil)
-                     @returns(Property instance)
-                    }
-                    function CreateInstance(pParent: TWSVGItem): TWSVGProperty; override;
-
-                    {**
-                     Parse data
-                     @param(data Data to parse)
-                     @returns(@true on success, otherwise @false)
-                    }
-                    function Parse(const data: UnicodeString): Boolean; override;
-
-                    {**
-                     Log content
-                     @param(margin Margin length in chars)
-                    }
-                    procedure Log(margin: Cardinal); override;
-
-                    {**
-                     Print content to string
-                     @param(margin Margin length in chars)
-                     @returns(Content)
-                    }
-                    function Print(margin: Cardinal): UnicodeString; override;
-
-                    {**
-                     Get xml formatted string
-                     @returns(String)
-                    }
-                    function ToXml: UnicodeString; override;
-
-                    {**
-                     Convert gradient unit to string
-                     @param(gradientUnit Gradient unit to convert)
-                     @returns(Gradient unit as string)
-                    }
-                    class function ToStr(gradientUnit: IEGradientUnit): UnicodeString; static;
-
-                public
-                    {**
-                     Get or set the gradient unit
-                    }
-                    property GradientUnit: IEGradientUnit read m_Unit write m_Unit;
-            end;
-
-            {**
              Gradient spread method enumeration
             }
             IEGradientSpreadMethod =
@@ -563,93 +433,6 @@ begin
     Result := '<Gradient stop>' + #13 + #10 + inherited Print(margin) + '</Gradient stop>' + #13 + #10;
 end;
 //---------------------------------------------------------------------------
-// TWSVGGradient.IGradientUnit
-//---------------------------------------------------------------------------
-constructor TWSVGGradient.IGradientUnit.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
-begin
-    inherited Create(pParent, pOptions);
-
-    m_Unit := IE_GU_ObjectBoundingBox;
-end;
-//---------------------------------------------------------------------------
-destructor TWSVGGradient.IGradientUnit.Destroy;
-begin
-    inherited Destroy;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGGradient.IGradientUnit.Assign(const pOther: TWSVGItem);
-var
-    pSource: IGradientUnit;
-begin
-    inherited Assign(pOther);
-
-    // invalid item?
-    if (not(pOther is IGradientUnit)) then
-    begin
-        Clear;
-        Exit;
-    end;
-
-    // get source object
-    pSource := pOther as IGradientUnit;
-
-    // copy data from source
-    m_Unit := pSource.m_Unit;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGGradient.IGradientUnit.Clear;
-begin
-    inherited Clear;
-
-    m_Unit := IE_GU_ObjectBoundingBox;
-end;
-//---------------------------------------------------------------------------
-function TWSVGGradient.IGradientUnit.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
-begin
-    Result := IGradientUnit.Create(pParent, m_pOptions);
-end;
-//---------------------------------------------------------------------------
-function TWSVGGradient.IGradientUnit.Parse(const data: UnicodeString): Boolean;
-begin
-    if (data = C_SVG_Gradient_Unit_Object_Bounding_Box) then
-        m_Unit := IE_GU_ObjectBoundingBox
-    else
-    if (data = C_SVG_Gradient_Unit_User_Space_On_Use) then
-        m_Unit := IE_GU_UserSpaceOnUse
-    else
-    begin
-        TWLogHelper.LogToCompiler('Parse gradient unit - unknown unit - ' + data);
-        m_Unit := IE_GU_ObjectBoundingBox;
-    end;
-
-    Result := True;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGGradient.IGradientUnit.Log(margin: Cardinal);
-begin
-    TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + ToStr(m_Unit));
-end;
-//---------------------------------------------------------------------------
-function TWSVGGradient.IGradientUnit.Print(margin: Cardinal): UnicodeString;
-begin
-    Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + ToStr(m_Unit) + #13 + #10;
-end;
-//---------------------------------------------------------------------------
-function TWSVGGradient.IGradientUnit.ToXml: UnicodeString;
-begin
-    Result := ItemName + '=\"' + ToStr(m_Unit) + '\"';
-end;
-//---------------------------------------------------------------------------
-class function TWSVGGradient.IGradientUnit.ToStr(gradientUnit: IEGradientUnit): UnicodeString;
-begin
-    case (gradientUnit) of
-        IE_GU_ObjectBoundingBox: Exit(C_SVG_Gradient_Unit_Object_Bounding_Box);
-        IE_GU_UserSpaceOnUse:    Exit(C_SVG_Gradient_Unit_User_Space_On_Use);
-    else
-        raise Exception.CreateFmt('Unknown gradient unit - %d', [Integer(gradientUnit)]);
-    end;
-end;
-//---------------------------------------------------------------------------
 // TWSVGGradient.IGradientSpreadMethod
 //---------------------------------------------------------------------------
 constructor TWSVGGradient.IGradientSpreadMethod.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
@@ -827,7 +610,8 @@ end;
     function TWSVGGradient.Read(const pNode: IXMLNode): Boolean;
 {$endif}
 var
-    pGradientUnit:     IGradientUnit;
+    pID:               TWSVGPropText;
+    pGradientUnit:     TWSVGPropUnit;
     pSpreadMethod:     IGradientSpreadMethod;
     pMatrix:           TWSVGPropMatrix;
     pHRef, pXLinkHRef: TWSVGPropLink;
@@ -839,27 +623,46 @@ var
     {$endif}
     pGradientStop:     TWSVGGradientStop;
 begin
-    // get gradient identifier (required to do the link later with the element that will use it)
-    ItemID := TWSVGCommon.GetAttribute(pNode, C_SVG_Prop_ID, C_SVG_Global_Error);
-
-    // found it?
-    if ((ItemID = C_SVG_Global_Error) or (Length(ItemID) = 0)) then
-    begin
-        ItemID := '';
+    // no element?
+    if (not Assigned(pNode)) then
         Exit(False);
+
+    pID := nil;
+
+    try
+        pID := TWSVGPropText.Create(Self, m_pOptions);
+
+        // read identifier
+        if (pID.Read(C_SVG_Prop_ID, pNode)) then
+        begin
+            // expose the identifier
+            ItemID := pID.Value;
+
+            m_pProperties.Add(pID);
+            pID := nil;
+        end;
+    finally
+        pID.Free;
     end;
+
+    // normally a filter should always contain an identifier, otherwise it cannot be get and used
+    if (Length(ItemID) = 0) then
+    begin
+        TWLogHelper.LogToCompiler('Read filter - FAILED - identifier is empty');
+        Exit(False);
+    End;
 
     pGradientUnit := nil;
 
     try
-        pGradientUnit := IGradientUnit.Create(Self, m_pOptions);
+        pGradientUnit := TWSVGPropUnit.Create(Self, m_pOptions);
 
         // read gradient unit (optional)
         if (not pGradientUnit.Read(C_SVG_Gradient_Units, pNode)) then
         begin
             // set default value if gradient unit was omitted
-            pGradientUnit.ItemName     := C_SVG_Gradient_Units;
-            pGradientUnit.GradientUnit := IE_GU_ObjectBoundingBox;
+            pGradientUnit.ItemName := C_SVG_Gradient_Units;
+            pGradientUnit.UnitType := TWSVGPropUnit.IEType.IE_UT_ObjectBoundingBox;
         end;
 
         m_pProperties.Add(pGradientUnit);

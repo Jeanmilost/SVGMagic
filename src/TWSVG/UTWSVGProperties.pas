@@ -119,7 +119,7 @@ type
 
             {**
              Convert string to background mode
-             @param(bgMode String background mode to convert)
+             @param(bgMode String containing the background mode to convert)
              @returns(Converted background mode, IE_BM_Unknown if unknown)
             }
             class function StrToBgMode(const bgMode: UnicodeString): IEBgMode; static;
@@ -768,6 +768,106 @@ type
     end;
 
     {**
+     Scalable Vector Graphics (SVG) unit property
+    }
+    TWSVGPropUnit = class(TWSVGProperty)
+        public type
+            {**
+             Unit type enumeration
+             @value(IE_UT_ObjectBoundingBox All coordinates for the geometry properties refer to the
+                                            user coordinate system as defined when the item was applied)
+             @value(IE_UT_UserSpaceOnUse All coordinates for the geometry properties represent fractions
+                                             or percentages of the item bounding box)
+            }
+            IEType =
+            (
+                IE_UT_ObjectBoundingBox,
+                IE_UT_UserSpaceOnUse
+            );
+
+        private
+            m_Type: IEType;
+
+        public
+            {**
+             Constructor
+             @param(pParent Parent item, orphan or root if @nil)
+             @param(pOptions SVG options)
+            }
+            constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+            {**
+             Destructor
+            }
+            destructor Destroy; override;
+
+            {**
+             Assign (i.e. copy) content from another item
+             @param(pOther Other item to copy from)
+            }
+            procedure Assign(const pOther: TWSVGItem); override;
+
+            {**
+             Clear
+            }
+            procedure Clear; override;
+
+            {**
+             Create new property instance
+             @param(pParent Parent item, orphan or root if @nil)
+             @returns(Property instance)
+            }
+            function CreateInstance(pParent: TWSVGItem): TWSVGProperty; override;
+
+            {**
+             Parse data
+             @param(data Data to parse)
+             @returns(@true on success, otherwise @false)
+            }
+            function Parse(const data: UnicodeString): Boolean; override;
+
+            {**
+             Log content
+             @param(margin Margin length in chars)
+            }
+            procedure Log(margin: Cardinal); override;
+
+            {**
+             Print content to string
+             @param(margin Margin length in chars)
+             @returns(Content)
+            }
+            function Print(margin: Cardinal): UnicodeString; override;
+
+            {**
+             Get xml formatted string
+             @returns(String)
+            }
+            function ToXml: UnicodeString; override;
+
+            {**
+             Convert string to unit type
+             @param(unitType String containing the unit type to convert)
+             @returns(Converted unit type, IE_UT_ObjectBoundingBox if unknown)
+            }
+            class function StrToUnitType(const unitType: UnicodeString): IEType; static;
+
+            {**
+             Convert unit type to string
+             @param(unitType Unit type)
+             @param(defValue Default value to return if unit type is unknown)
+             @returns(Converted string, default value if unknown)
+            }
+            class function UnitTypeToStr(unitType: IEType; const defValue: UnicodeString): UnicodeString; static;
+
+        public
+            {**
+             Get or set the unit type
+            }
+            property UnitType: IEType read m_Type write m_Type;
+    end;
+
+    {**
      Scalable Vector Graphics (SVG) version property
     }
     TWSVGPropVersion = class(TWSVGProperty)
@@ -846,6 +946,7 @@ constructor TWSVGPropBackground.Create(pParent: TWSVGItem; pOptions: PWSVGOption
 begin
     inherited Create(pParent, pOptions);
 
+    m_BgMode := IE_BM_Unknown;
     m_X      := 0.0;
     m_Y      := 0.0;
     m_Width  := 0.0;
@@ -2119,6 +2220,106 @@ begin
         Result := Result + m_Value.ToSMIL;
 
     Result := Result + '\"';
+end;
+//---------------------------------------------------------------------------
+// TWSVGPropUnit
+//---------------------------------------------------------------------------
+constructor TWSVGPropUnit.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    m_Type := IE_UT_ObjectBoundingBox;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGPropUnit.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropUnit.Assign(const pOther: TWSVGItem);
+var
+    pSource: TWSVGPropUnit;
+begin
+    inherited Assign(pOther);
+
+    // invalid item?
+    if (not(pOther is TWSVGPropUnit)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    // get source object
+    pSource := pOther as TWSVGPropUnit;
+
+    // copy data from source
+    m_Type := pSource.m_Type;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropUnit.Clear;
+begin
+    inherited Clear;
+
+    m_Type := IE_UT_ObjectBoundingBox;
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropUnit.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
+begin
+    Result := TWSVGPropUnit.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropUnit.Parse(const data: UnicodeString): Boolean;
+begin
+    if (data = C_SVG_Unit_Object_Bounding_Box) then
+        m_Type := IE_UT_ObjectBoundingBox
+    else
+    if (data = C_SVG_Unit_User_Space_On_Use) then
+        m_Type := IE_UT_UserSpaceOnUse
+    else
+    begin
+        TWLogHelper.LogToCompiler('Parse unit - unknown type - ' + data);
+        m_Type := IE_UT_ObjectBoundingBox;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropUnit.Log(margin: Cardinal);
+begin
+    TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - '
+            + UnitTypeToStr(m_Type, ''));
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropUnit.Print(margin: Cardinal): UnicodeString;
+begin
+    Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + UnitTypeToStr(m_Type, '')
+            + #13 + #10;
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropUnit.ToXml: UnicodeString;
+begin
+    // format string
+    Result := ItemName + '=\"' + UnitTypeToStr(m_Type, '') + '\"';
+end;
+//---------------------------------------------------------------------------
+class function TWSVGPropUnit.StrToUnitType(const unitType: UnicodeString): IEType;
+begin
+    // search for matching type
+    if (unitType = C_SVG_Unit_User_Space_On_Use) then
+        Exit(IE_UT_UserSpaceOnUse)
+    else
+        Exit(IE_UT_ObjectBoundingBox);
+end;
+//---------------------------------------------------------------------------
+class function TWSVGPropUnit.UnitTypeToStr(unitType: IEType; const defValue: UnicodeString): UnicodeString;
+begin
+    // search for unit type
+    case (unitType) of
+        IE_UT_UserSpaceOnUse:    Exit(C_SVG_Unit_User_Space_On_Use);
+        IE_UT_ObjectBoundingBox: Exit(C_SVG_Unit_Object_Bounding_Box);
+    else
+        Exit(defValue);
+    end;
 end;
 //---------------------------------------------------------------------------
 // TWSVGPropVersion

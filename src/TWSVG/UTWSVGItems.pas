@@ -165,15 +165,15 @@ type
             IElements   = TObjectList<TWSVGElement>;
             IProperties = TObjectList<TWSVGProperty>;
 
-        protected
-            m_pProperties: IProperties;
-
+        private
             {**
              Delete and clear all data
             }
             procedure DelAndClear;
 
         protected
+            m_pProperties: IProperties;
+
             {**
              Get property at index
              @param(index Property index)

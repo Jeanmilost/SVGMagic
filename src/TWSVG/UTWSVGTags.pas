@@ -32,6 +32,7 @@ const
     C_SVG_Tag_Animate_Motion:                          UnicodeString = 'animateMotion';
     C_SVG_Tag_Linear_Gradient:                         UnicodeString = 'linearGradient';
     C_SVG_Tag_Radial_Gradient:                         UnicodeString = 'radialGradient';
+    C_SVG_Tag_Filter:                                  UnicodeString = 'filter';
     C_SVG_Prop_ID:                                     UnicodeString = 'id';
     C_SVG_Prop_Version:                                UnicodeString = 'version';
     C_SVG_Prop_ViewBox:                                UnicodeString = 'viewBox';
@@ -76,6 +77,7 @@ const
     C_SVG_Prop_XLink_HRef:                             UnicodeString = 'xlink:href';
     C_SVG_Prop_HRef:                                   UnicodeString = 'href';
     C_SVG_Prop_Display:                                UnicodeString = 'display';
+    C_SVG_Prop_Filter:                                 UnicodeString = 'filter';
     C_SVG_Value_New:                                   UnicodeString = 'new';
     C_SVG_Value_Accumulate:                            UnicodeString = 'accumulate';
     C_SVG_Value_CM:                                    UnicodeString = 'cm';
@@ -180,17 +182,25 @@ const
     C_SVG_Animation_Key_Splines:                       UnicodeString = 'keySplines';
     C_SVG_Animation_Key_Times:                         UnicodeString = 'keyTimes';
     C_SVG_Animation_Indefinite:                        UnicodeString = 'indefinite';
+    C_SVG_Animation_Additive:                          UnicodeString = 'additive';
+    C_SVG_Animation_Additive_Replace:                  UnicodeString = 'replace';
+    C_SVG_Animation_Additive_Sum:                      UnicodeString = 'sum';
     C_SVG_Gradient_Stop_Offset:                        UnicodeString = 'offset';
     C_SVG_Gradient_Stop_Color:                         UnicodeString = 'stop-color';
     C_SVG_Gradient_Stop_Opacity:                       UnicodeString = 'stop-opacity';
     C_SVG_Gradient_Units:                              UnicodeString = 'gradientUnits';
-    C_SVG_Gradient_Unit_Object_Bounding_Box:           UnicodeString = 'objectBoundingBox';
-    C_SVG_Gradient_Unit_User_Space_On_Use:             UnicodeString = 'userSpaceOnUse';
     C_SVG_Gradient_Transform:                          UnicodeString = 'gradientTransform';
     C_SVG_Gradient_Spread_Method:                      UnicodeString = 'spreadMethod';
     C_SVG_Gradient_Spread_Method_Pad:                  UnicodeString = 'pad';
     C_SVG_Gradient_Spread_Method_Reflect:              UnicodeString = 'reflect';
     C_SVG_Gradient_Spread_Method_Repeat:               UnicodeString = 'repeat';
+    C_SVG_Filter_Res:                                  UnicodeString = 'filterRes';
+    C_SVG_Filter_Units:                                UnicodeString = 'filterUnits';
+    C_SVG_Primitive_Units:                             UnicodeString = 'primitiveUnits';
+    C_SVG_Filter_Gaussian_Blur:                        UnicodeString = 'feGaussianBlur';
+    C_SVG_Filter_STD_Deviation:                        UnicodeString = 'stdDeviation';
+    C_SVG_Unit_Object_Bounding_Box:                    UnicodeString = 'objectBoundingBox';
+    C_SVG_Unit_User_Space_On_Use:                      UnicodeString = 'userSpaceOnUse';
     C_SVG_Blank_Text_Attribute:                        UnicodeString = '#text';
     C_SVG_Global_Error:                                UnicodeString = '#ERROR';
     //---------------------------------------------------------------------------

@@ -3996,7 +3996,7 @@ begin
         width  := leftTopRect.Width;
         height := leftTopRect.Height;
 
-        // calculate Bezier curve start, end and contols points
+        // calculate Bezier curve start, end and controls points
         startPoint.X   := leftTopRect.Left;
         startPoint.Y   := leftTopRect.Top  + height;
         endPoint.X     := leftTopRect.Left + width;
@@ -4053,7 +4053,7 @@ begin
         width  := rightTopRect.Width;
         height := rightTopRect.Height;
 
-        // calculate Bezier curve start, end and contols points
+        // calculate Bezier curve start, end and controls points
         startPoint.X   := rightTopRect.Left;
         startPoint.Y   := rightTopRect.Top;
         endPoint.X     := rightTopRect.Left + width;
@@ -4110,7 +4110,7 @@ begin
         width  := leftBottomRect.Width;
         height := leftBottomRect.Height;
 
-        // calculate Bezier curve start, end and contols points
+        // calculate Bezier curve start, end and controls points
         startPoint.X   := leftBottomRect.Left + width;
         startPoint.Y   := leftBottomRect.Top  + height;
         endPoint.X     := leftBottomRect.Left;
@@ -4167,7 +4167,7 @@ begin
         width  := rightBottomRect.Width;
         height := rightBottomRect.Height;
 
-        // calculate Bezier curve start, end and contols points
+        // calculate Bezier curve start, end and controls points
         startPoint.X   := rightBottomRect.Left + width;
         startPoint.Y   := rightBottomRect.Top;
         endPoint.X     := rightBottomRect.Left;
@@ -4325,7 +4325,7 @@ begin
         width  := leftTopRect.Width;
         height := leftTopRect.Height;
 
-        // calculate Bezier curve start, end and contols points
+        // calculate Bezier curve start, end and controls points
         startPoint.X   := leftTopRect.Left;
         startPoint.Y   := leftTopRect.Top  + height;
         endPoint.X     := leftTopRect.Left + width;
@@ -4379,7 +4379,7 @@ begin
         width  := rightTopRect.Width;
         height := rightTopRect.Height;
 
-        // calculate Bezier curve start, end and contols points
+        // calculate Bezier curve start, end and controls points
         startPoint.X   := rightTopRect.Left;
         startPoint.Y   := rightTopRect.Top;
         endPoint.X     := rightTopRect.Left +  width;
@@ -4433,7 +4433,7 @@ begin
         width  := leftBottomRect.Width;
         height := leftBottomRect.Height;
 
-        // calculate Bezier curve start, end and contols points
+        // calculate Bezier curve start, end and controls points
         startPoint.X   := leftBottomRect.Left + width;
         startPoint.Y   := leftBottomRect.Top  + height;
         endPoint.X     := leftBottomRect.Left;
@@ -4487,7 +4487,7 @@ begin
         width  := rightBottomRect.Width;
         height := rightBottomRect.Height;
 
-        // calculate Bezier curve start, end and contols points
+        // calculate Bezier curve start, end and controls points
         startPoint.X   := rightBottomRect.Left +  width;
         startPoint.Y   := rightBottomRect.Top;
         endPoint.X     := rightBottomRect.Left;
@@ -4758,7 +4758,7 @@ begin
     rectTop  := Round(rect.Top);
 
     // iterate through bitmap lines
-    for y := rectTop to height - 1 do
+    for y := Max(rectTop, 0) to height - 1 do
     begin
         // get lines
         pMaskLine     := PWRGBQuadArray(pMaskBitmap.ScanLine[y]);
@@ -4766,7 +4766,7 @@ begin
         pGeometryLine := PWRGBQuadArray(pGeometryBitmap.ScanLine[y]);
 
         // iterate through bitmap pixels
-        for x := rectLeft to width - 1 do
+        for x := Max(rectLeft, 0) to width - 1 do
         begin
             // do apply color pixel to final geometry?
             if ((pMaskLine[x].rgbRed      = 0) and

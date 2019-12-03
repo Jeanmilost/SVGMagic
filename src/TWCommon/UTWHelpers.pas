@@ -1586,6 +1586,13 @@ type
         class function GdiPlusStatusToStr(status: TStatus): UnicodeString; static;
 
         {**
+         Convert GDI+ matrix content to string
+         @param(pMatrix Matrix to convert)
+         @return(Matrix as string)
+        }
+        class function GdiPlusMatrixToStr(pMatrix: TGpMatrix): UnicodeString; static;
+
+        {**
          Log a message to the compiler console
          @param(msg Message to log)
         }
@@ -7027,6 +7034,17 @@ begin
         // unknown message
         Exit('Unknown [' + IntToHex(Integer(status), 8) + ']');
     end;
+end;
+//---------------------------------------------------------------------------
+class function TWLogHelper.GdiPlusMatrixToStr(pMatrix: TGpMatrix): UnicodeString;
+var
+    elements: TMatrixArray;
+begin
+    pMatrix.GetElements(elements);
+
+    Result := 'Table[0][0] = ' + FloatToStr(elements[0]) + ' - Table[1][0] = ' + FloatToStr(elements[2]) + ' - Table[2][0] = ' + FloatToStr(elements[4]) + #13 + #10 +
+              'Table[0][1] = ' + FloatToStr(elements[1]) + ' - Table[1][1] = ' + FloatToStr(elements[3]) + ' - Table[2][1] = ' + FloatToStr(elements[5]) + #13 + #10 +
+              'Table[0][2] = 0.0 - Table[1][2] = 0.0 - Table[2][2] = 1.0';
 end;
 //---------------------------------------------------------------------------
 class procedure TWLogHelper.LogToCompiler(const msg: UnicodeString);

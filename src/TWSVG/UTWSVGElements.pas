@@ -24,6 +24,7 @@ uses System.SysUtils,
      UTWSVGItems,
      UTWSVGProperties,
      UTWSVGStyle,
+     UTWSVGFilters,
      UTWSVGAnimation,
      UTWSVGGradients;
 
@@ -118,6 +119,18 @@ type
                 function ReadRadialGradient(const pNode: TXMLNode; var defs: IDefs): Boolean; virtual;
             {$else}
                 function ReadRadialGradient(const pNode: IXMLNode; var defs: IDefs): Boolean; virtual;
+            {$endif}
+
+            {**
+             Read filter item and link it with defines table
+             @param(pNode Xml node containing the filter to read)
+             @param(defs @bold([out]) Definition list in which filter will be added)
+             @returns(@true if filter item was successfully read, otherwise @false)
+            }
+            {$ifdef USE_VERYSIMPLEXML}
+                function ReadFilter(const pNode: TXMLNode; var defs: IDefs): Boolean; virtual;
+            {$else}
+                function ReadFilter(const pNode: IXMLNode; var defs: IDefs): Boolean; virtual;
             {$endif}
 
             {**
@@ -1414,7 +1427,10 @@ begin
         Result := ReadLinearGradient(pNode, defs) and Result
     else
     if (name = C_SVG_Tag_Radial_Gradient) then
-        Result := ReadRadialGradient(pNode, defs) and Result;
+        Result := ReadRadialGradient(pNode, defs) and Result
+    else
+    if (name = C_SVG_Tag_Filter) then
+        result := ReadFilter(pNode, defs) and Result;
 end;
 //---------------------------------------------------------------------------
 {$ifdef USE_VERYSIMPLEXML}
@@ -1484,6 +1500,41 @@ begin
         pRadialGradient := nil;
     finally
         pRadialGradient.Free
+    end;
+end;
+//---------------------------------------------------------------------------
+{$ifdef USE_VERYSIMPLEXML}
+    function TWSVGContainer.ReadFilter(const pNode: TXMLNode; var defs: IDefs): Boolean;
+{$else}
+    function TWSVGContainer.ReadFilter(const pNode: IXMLNode; var defs: IDefs): Boolean;
+{$endif}
+var
+    pFilter: TWSVGFilter;
+begin
+    Result  := True;
+    pFilter := nil;
+
+    try
+        // read radial gradient
+        pFilter := TWSVGFilter.Create(Self, m_pOptions);
+        Result  := pFilter.Read(pNode) and Result;
+
+        // is filter identifier empty?
+        if (not TWStringHelper.IsEmpty(pFilter.ItemID)) then
+        begin
+            // register the filter link
+            if (not RegisterLink(pFilter, defs, False)) then
+                Exit(False);
+        end
+        else
+        begin
+            TWLogHelper.LogToCompiler('Read filter - FAILED - filter ID is empty');
+            Exit(False);
+        end;
+
+        pFilter := nil;
+    finally
+        pFilter.Free
     end;
 end;
 //---------------------------------------------------------------------------
