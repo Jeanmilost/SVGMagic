@@ -126,7 +126,7 @@
                 </Source>
             </Delphi.Personality>
             <Deployment Version="2">
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\15.0\Bpl\TWSVGD.bpl" Configuration="Release" Class="ProjectOutput">
+                <DeployFile LocalName="$(BDSCOMMONDIR)\Bpl\TWSVGD.bpl" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>TWSVGD.bpl</RemoteName>
                         <Overwrite>true</Overwrite>

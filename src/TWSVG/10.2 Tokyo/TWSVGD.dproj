@@ -135,7 +135,7 @@
                 </Source>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\15.0\Bpl\TWSVGD.bpl" Configuration="Release" Class="ProjectOutput"/>
+                <DeployFile LocalName="$(BDSCOMMONDIR)\Bpl\TWSVGD.bpl" Configuration="Release" Class="ProjectOutput"/>
                 <DeployFile LocalName="$(BDSCOMMONDIR)\Bpl\TWSVGD.bpl" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="OSX32">

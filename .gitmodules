@@ -1,0 +1,3 @@
+[submodule "src/TWSVG/VerySimpleXML"]
+	path = src/TWSVG/VerySimpleXML
+	url = https://github.com/Dennis1000/VerySimpleXML

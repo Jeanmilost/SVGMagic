@@ -71,7 +71,6 @@
         <DCC_K>false</DCC_K>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <Debugger_HostApplication>C:\Program Files (x86)\Embarcadero\Studio\15.0\bin\bds.exe</Debugger_HostApplication>
         <DCC_UsePackage>rtl;xmlrtl;TWRendering;TWCommon;soaprtl;$(DCC_UsePackage)</DCC_UsePackage>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
@@ -121,7 +120,6 @@
         <DCCReference Include="TWRendering.dcp"/>
         <DCCReference Include="xmlrtl.dcp"/>
         <DCCReference Include="soaprtl.dcp"/>
-        <DCCReference Include="..\VerySimpleXML\Xml.VerySimple.pas"/>
         <DCCReference Include="..\UTWSVG.pas"/>
         <DCCReference Include="..\UTWSVGAnimation.pas"/>
         <DCCReference Include="..\UTWSVGAnimationDescriptor.pas"/>
@@ -147,6 +145,7 @@
         <DCCReference Include="..\UTWSVGStyle.pas"/>
         <DCCReference Include="..\UTWSVGTags.pas"/>
         <DCCReference Include="..\UTWSVGFilters.pas"/>
+        <DCCReference Include="..\VerySimpleXML\Source\Xml.VerySimple.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -183,7 +182,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\15.0\Bpl\TWSVG.bpl" Configuration="Release" Class="ProjectOutput">
+                <DeployFile LocalName="$(BDSCOMMONDIR)\Bpl\TWSVG.bpl" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>TWSVG.bpl</RemoteName>
                         <Overwrite>true</Overwrite>

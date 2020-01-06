@@ -38,7 +38,6 @@ requires
   soaprtl;
 
 contains
-  Xml.VerySimple in '..\VerySimpleXML\Xml.VerySimple.pas',
   UTWSVG in '..\UTWSVG.pas',
   UTWSVGAnimation in '..\UTWSVGAnimation.pas',
   UTWSVGAnimationDescriptor in '..\UTWSVGAnimationDescriptor.pas',
@@ -63,6 +62,7 @@ contains
   UTWSVGRasterizer in '..\UTWSVGRasterizer.pas',
   UTWSVGStyle in '..\UTWSVGStyle.pas',
   UTWSVGTags in '..\UTWSVGTags.pas',
-  UTWSVGFilters in '..\UTWSVGFilters.pas';
+  UTWSVGFilters in '..\UTWSVGFilters.pas',
+  Xml.VerySimple in '..\VerySimpleXML\Source\Xml.VerySimple.pas';
 
 end.
