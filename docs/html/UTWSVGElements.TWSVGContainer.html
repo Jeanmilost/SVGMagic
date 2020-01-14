@@ -97,29 +97,33 @@ Scalable Vector Graphics (SVG) container, it's a SVG element that can contain ot
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#ReadItem">ReadItem</a></b>(const name: UnicodeString; const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>; var pElements: <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a>): Boolean; virtual;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#ReadFilter">ReadFilter</a></b>(const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>): Boolean; virtual;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#ReadItem">ReadItem</a></b>(const name: UnicodeString; const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>; var pElements: <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a>): Boolean; virtual;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#ReadLinearGradient">ReadLinearGradient</a></b>(const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#ReadRadialGradient">ReadRadialGradient</a></b>(const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGElements.TWSVGContainer.html#RegisterLink">RegisterLink</a></b>(pElement: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>; asRef: Boolean): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGElements.TWSVGContainer.html#Assign">Assign</a></b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGElements.TWSVGContainer.html#Clear">Clear</a></b>; override;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGElements.TWSVGContainer.html#Log">Log</a></b>(margin: Cardinal); override;</code></td>
 </tr>
@@ -334,6 +338,24 @@ Get element at key  </p>
 Get element count </p>
 <h6 class="description_section">Returns</h6>
 <p class="return">Element count</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ReadFilter"></span><code>function <b>ReadFilter</b>(const pNode: IXMLNode; var defs: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a>): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Read filter item and link it with defines table   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pNode</dt>
+<dd>Xml node containing the filter to read</dd>
+<dt>defs</dt>
+<dd><b>[out]</b> Definition list in which filter will be added</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if filter item was successfully read, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">

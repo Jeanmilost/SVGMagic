@@ -26,23 +26,41 @@ Helper class for message logging</p>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWLogHelper.html#GdiPlusMatrixToStr">GdiPlusMatrixToStr</a></b>(pMatrix: TGpMatrix): UnicodeString; static;</code></td>
+</tr>
+<tr class="list2">
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWLogHelper.html#GdiPlusStatusToStr">GdiPlusStatusToStr</a></b>(status: TStatus): UnicodeString; static;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWLogHelper.html#WinMsgToStr">WinMsgToStr</a></b>(pOwner: TComponent; const message: TMessage): UnicodeString; static;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWLogHelper.html#Dump">Dump</a></b>(const pStream: TStream; maxLimit: NativeUInt); static;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWLogHelper.html#LogBlockToCompiler">LogBlockToCompiler</a></b>(const title: UnicodeString); static;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>class procedure <b><a  href="UTWHelpers.TWLogHelper.html#LogToCompiler">LogToCompiler</a></b>(const msg: UnicodeString); static;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="GdiPlusMatrixToStr"></span><code>class function <b>GdiPlusMatrixToStr</b>(pMatrix: TGpMatrix): UnicodeString; static;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Convert GDI+ matrix content to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pMatrix</dt>
+<dd>Matrix to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Matrix as string</p></td></tr>
+</table>
 <table class="detail wide_list">
 <tr class="list">
 <td class="itemcode"><span id="GdiPlusStatusToStr"></span><code>class function <b>GdiPlusStatusToStr</b>(status: TStatus): UnicodeString; static;</code></td>

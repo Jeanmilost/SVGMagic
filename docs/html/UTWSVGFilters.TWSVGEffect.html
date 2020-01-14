@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGFilters: Class TWSVGEffect</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGEffect"></span><h1 class="cio">Class TWSVGEffect</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGFilters.html">UTWSVGFilters</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGEffect = class(<a class="normal" href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+SVG filter effect, may be a gaussian blur, a lighting, ...</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a></li>
+<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a></li>
+<li class="thisitem">TWSVGEffect</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGFilters.TWSVGEffect.html#IEType">IEType</a></b> = (...);</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGFilters.TWSVGEffect.html#Create">Create</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGFilters.TWSVGEffect.html#CreateType">CreateType</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; effectType: <a  href="UTWSVGFilters.TWSVGEffect.html#IEType">IEType</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGFilters.TWSVGEffect.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGFilters.TWSVGEffect.html#Read">Read</a></b>(const pNode: IXMLNode): Boolean; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFilters.TWSVGEffect.html#Assign">Assign</a></b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFilters.TWSVGEffect.html#Clear">Clear</a></b>; override;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEType"></span><code><b>IEType</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Filter effect type enumeration                    </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_ET_Unknown">IE_ET_Unknown</span>: Unknown effect</li>
+<li>
+<span id="IE_ET_Blend">IE_ET_Blend</span>: Filter for compose two objects together ruled by a certain blending mode</li>
+<li>
+<span id="IE_ET_ColorMatrix">IE_ET_ColorMatrix</span>: Filter for change colors based on a transformation matrix</li>
+<li>
+<span id="IE_ET_ComponentTransfer">IE_ET_ComponentTransfer</span>: Filter for perform color-component-wise remapping of data for each pixel</li>
+<li>
+<span id="IE_ET_Composite">IE_ET_Composite</span>: Filter for perform the combination of two input images pixel-wise in image space using one of the Porter-Duff compositing operations</li>
+<li>
+<span id="IE_ET_ConvolveMatrix">IE_ET_ConvolveMatrix</span>: Filter for apply a matrix convolution filter effect</li>
+<li>
+<span id="IE_ET_DiffuseLighting">IE_ET_DiffuseLighting</span>: Filter for light an image using the alpha channel as a bump map</li>
+<li>
+<span id="IE_ET_DisplacementMap">IE_ET_DisplacementMap</span>: Filter for use the pixel values from the image from in2 to spatially displace the image from in</li>
+<li>
+<span id="IE_ET_Flood">IE_ET_Flood</span>: Filter for fill the filter subregion with the color and opacity defined by flood-color and flood-opacity</li>
+<li>
+<span id="IE_ET_GaussianBlur">IE_ET_GaussianBlur</span>: Filter for blur the input image by the amount specified in stdDeviation, which defines the bell-curve</li>
+<li>
+<span id="IE_ET_Image">IE_ET_Image</span>: Filter for fetch image data from an external source and provides the pixel data as output (meaning if the external source is an SVG image, it is rasterized)</li>
+<li>
+<span id="IE_ET_Merge">IE_ET_Merge</span>: Filter for allow filter effects to be applied concurrently instead of sequentially</li>
+<li>
+<span id="IE_ET_Morphology">IE_ET_Morphology</span>: Filter for erode or dilate the input image</li>
+<li>
+<span id="IE_ET_Offset">IE_ET_Offset</span>: Filter for offset the input image</li>
+<li>
+<span id="IE_ET_SpecularLighting">IE_ET_SpecularLighting</span>: Filter for light a source graphic using the alpha channel as a bump map</li>
+<li>
+<span id="IE_ET_Tile">IE_ET_Tile</span>: Filter to fill a target rectangle with a repeated, tiled pattern of an input image</li>
+<li>
+<span id="IE_ET_Turbulence">IE_ET_Turbulence</span>: Filter to creates an image using the Perlin turbulence function</li>
+<li>
+<span id="IE_ET_DistantLight">IE_ET_DistantLight</span>: Filter to define a distant light source that can be used within a lighting filter primitive</li>
+<li>
+<span id="IE_ET_PointLight">IE_ET_PointLight</span>: Filter to define a light source which allows to create a point light effect</li>
+<li>
+<span id="IE_ET_SpotLight">IE_ET_SpotLight</span>: Filter to define a light source which allows to create a spotlight effect</li>
+</ul>
+</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pParent</dt>
+<dd>Parent item, orphan or root if <code>Nil</code></dd>
+<dt>pOptions</dt>
+<dd>SVG options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CreateType"></span><code>constructor <b>CreateType</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; effectType: <a  href="UTWSVGFilters.TWSVGEffect.html#IEType">IEType</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pParent</dt>
+<dd>Parent item, orphan or root if <code>Nil</code></dd>
+<dt>effectType</dt>
+<dd>Effect type</dd>
+<dt>pOptions</dt>
+<dd>SVG options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Read"></span><code>function <b>Read</b>(const pNode: IXMLNode): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Read SVG element from xml  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pNode</dt>
+<dd>Xml node containing SVG element to read</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) content from another item </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other item to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>
