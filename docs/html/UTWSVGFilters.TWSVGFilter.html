@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SVG Magic: UTWSVGFilters: Class TWSVGFilter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TWSVGFilter"></span><h1 class="cio">Class TWSVGFilter</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="UTWSVGFilters.html">UTWSVGFilters</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TWSVGFilter = class(<a class="normal" href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+SVG filter, describes a filter to apply to finalize a drawing</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a></li>
+<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a></li>
+<li class="thisitem">TWSVGFilter</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGFilters.TWSVGFilter.html#IEffects">IEffects</a></b> = TObjectList&lt;<a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>&gt;;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Fields"></span><h3 class="summary">Fields</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGFilters.TWSVGFilter.html#m_pEffects">m_pEffects</a></b>: <a  href="UTWSVGFilters.TWSVGFilter.html#IEffects">IEffects</a>;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="UTWSVGFilters.TWSVGFilter.html#Create">Create</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="UTWSVGFilters.TWSVGFilter.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGFilters.TWSVGFilter.html#CreateInstance">CreateInstance</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGFilters.TWSVGFilter.html#Print">Print</a></b>(margin: Cardinal): UnicodeString; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGFilters.TWSVGFilter.html#Read">Read</a></b>(const pNode: IXMLNode): Boolean; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGFilters.TWSVGFilter.html#ToXml">ToXml</a></b>: UnicodeString; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGFilters.TWSVGFilter.html#GetEffect">GetEffect</a></b>(index: Integer): <a  href="UTWSVGFilters.TWSVGEffect.html">TWSVGEffect</a>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGFilters.TWSVGFilter.html#GetEffectCount">GetEffectCount</a></b>: NativeUInt; virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFilters.TWSVGFilter.html#Assign">Assign</a></b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFilters.TWSVGFilter.html#Clear">Clear</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGFilters.TWSVGFilter.html#Log">Log</a></b>(margin: Cardinal); override;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGFilters.TWSVGFilter.html#EffectCount">EffectCount</a></b>: NativeUInt <a  href="UTWSVGFilters.TWSVGFilter.html#Read">read</a> <a  href="UTWSVGFilters.TWSVGFilter.html#GetEffectCount">GetEffectCount</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGFilters.TWSVGFilter.html#Effects">Effects</a></b>[index:Integer]: <a  href="UTWSVGFilters.TWSVGEffect.html">TWSVGEffect</a> <a  href="UTWSVGFilters.TWSVGFilter.html#Read">read</a> <a  href="UTWSVGFilters.TWSVGFilter.html#GetEffect">GetEffect</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Internal Types</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IEffects"></span><code><b>IEffects</b> = TObjectList&lt;<a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>&gt;;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Fields</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_pEffects"></span><code><b>m_pEffects</b>: <a  href="UTWSVGFilters.TWSVGFilter.html#IEffects">IEffects</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pParent</dt>
+<dd>Parent item, orphan or root if <code>Nil</code></dd>
+<dt>pOptions</dt>
+<dd>SVG options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CreateInstance"></span><code>function <b>CreateInstance</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Create new element instance  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pParent</dt>
+<dd>Parent item, orphan or root if <code>Nil</code></dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Element instance</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Print"></span><code>function <b>Print</b>(margin: Cardinal): UnicodeString; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Print content to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Content</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Read"></span><code>function <b>Read</b>(const pNode: IXMLNode): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Read SVG element from xml  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pNode</dt>
+<dd>Xml node containing SVG element to read</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToXml"></span><code>function <b>ToXml</b>: UnicodeString; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get xml formatted string </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">String</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetEffect"></span><code>function <b>GetEffect</b>(index: Integer): <a  href="UTWSVGFilters.TWSVGEffect.html">TWSVGEffect</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get effect at index   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>index</dt>
+<dd>Index at which effect should be get</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Effect</p><h6 class="description_section">Exceptions raised</h6>
+<dl class="exceptions_raised">
+<dt><code>Exception</code></dt>
+<dd>if index is out of bounds</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetEffectCount"></span><code>function <b>GetEffectCount</b>: NativeUInt; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get effect count </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">Effect count</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Assign (i.e. copy) content from another item </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pOther</dt>
+<dd>Other item to copy from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Clear</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Log"></span><code>procedure <b>Log</b>(margin: Cardinal); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Log content </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>margin</dt>
+<dd>Margin length in chars</dd>
+</dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="EffectCount"></span><code>property <b>EffectCount</b>: NativeUInt <a  href="UTWSVGFilters.TWSVGFilter.html#Read">read</a> <a  href="UTWSVGFilters.TWSVGFilter.html#GetEffectCount">GetEffectCount</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get gradient stop count</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Effects"></span><code>property <b>Effects</b>[index:Integer]: <a  href="UTWSVGFilters.TWSVGEffect.html">TWSVGEffect</a> <a  href="UTWSVGFilters.TWSVGFilter.html#Read">read</a> <a  href="UTWSVGFilters.TWSVGFilter.html#GetEffect">GetEffect</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get effect at index. Example: effect := Effects[0]; <br> <b>NOTE</b> An exception will be raised if index is out of bounds</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>
