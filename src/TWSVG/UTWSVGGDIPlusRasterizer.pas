@@ -89,6 +89,7 @@ type
              @param(antialiasing If @true, antialiasing will be used, if possible)
              @param(switchMode If @true, function will return after first element is drawn (because
                                reading switch statement))
+             @param(clippingMode If @true, a clip should be performed instead of a drawing)
              @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
              @param(pCanvas GDI Canvas to draw on)
              @param(pGraphics GDI+ graphics area to draw on)
@@ -97,9 +98,36 @@ type
             function DrawElements(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
                     const pParentProps: TWSVGGDIPlusRasterizer.IProperties;
                     const pElements: TWSVGContainer.IElements; const pos: TPoint;
-                    scaleW, scaleH: Single; antialiasing, switchMode: Boolean;
+                    scaleW, scaleH: Single; antialiasing, switchMode: Boolean; clippingMode: Boolean;
                     const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
                     pGraphics: TGpGraphics): Boolean; overload;
+
+            {**
+             Check if a clipping path should be applied and apply it if yes
+             @param(pHeader SVG header)
+             @param(viewBox View box as declared in SVG header)
+             @param(pParentProps Properties inherited from parent group, switch or root)
+             @param(pElements Elements to draw)
+             @param(pos SVG position)
+             @param(scaleW Scale factor to apply to width)
+             @param(scaleH Scale factor to apply to height)
+             @param(antialiasing If @true, antialiasing will be used, if possible)
+             @param(switchMode If @true, function will return after first element is drawn (because
+                               reading switch statement))
+             @param(clippingMode If @true, a clip should be performed instead of a drawing)
+             @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
+             @param(pCanvas GDI Canvas to draw on)
+             @param(pGraphics GDI+ graphics area to draw on)
+             @param(pElement The element for which the clip path should be get)
+             @param(prevRegion The previous region, if a new one was applied)
+             @returns(@true on success, otherwise @false)
+            }
+            function ApplyClipPath(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
+                    const pParentProps: TWSVGGDIPlusRasterizer.IProperties;
+                    const pElements: TWSVGContainer.IElements; const pos: TPoint;
+                    scaleW, scaleH: Single; antialiasing, switchMode: Boolean; clippingMode: Boolean;
+                    const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
+                    pGraphics: TGpGraphics; pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
 
             {**
              Get the closest square contained inside a rect
@@ -365,7 +393,7 @@ begin
                 pHeaderProps.Merge(pProperties);
 
                 Exit(DrawElements(pHeader, viewBox.ToGpRectF, pHeaderProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, animation, pCanvas, pGraphics));
+                        scaleH, antialiasing, switchMode, False, animation, pCanvas, pGraphics));
             finally
                 {$ifdef TRIAL_BUILD}
                     // apply trial timesamp
@@ -380,7 +408,7 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGGDIPlusRasterizer.DrawElements(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
         const pParentProps: TWSVGGDIPlusRasterizer.IProperties; const pElements: TWSVGContainer.IElements;
-        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode: Boolean;
+        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode: Boolean; clippingMode: Boolean;
         const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
         pGraphics: TGpGraphics): Boolean;
 var
@@ -414,6 +442,7 @@ var
     pTextFont:                                                                                                  IWSmartPointer<TFont>;
     pTextFormat:                                                                                                IWSmartPointer<TGpStringFormat>;
     pGradientFactory:                                                                                           IWSmartPointer<TWGDIPlusGradient>;
+    pRegion, pPrevRegion:                                                                                       IWSmartPointer<TGpRegion>;
     textMetrics:                                                                                                TEXTMETRIC;
     charRange:                                                                                                  TCharacterRange;
     charRegions:                                                                                                array of TGpRegion;
@@ -432,6 +461,7 @@ var
     fontFamily, fontFamilyLowerCase:                                                                            UnicodeString;
     anchor:                                                                                                     IETextAnchor;
     isXCoord:                                                                                                   Boolean;
+    isClipped:                                                                                                  Boolean;
 begin
     // svg header should always be declared, otherwise svg data is malformed (NOTE svg header
     // element should exist even if the svg tag contains nothing else)
@@ -457,6 +487,12 @@ begin
             // found it?
             if (Assigned(pGroup)) then
             begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
+                        pGroup, pPrevRegion);
+
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
                 pAnimationData.Position := animation.m_Position;
@@ -491,9 +527,19 @@ begin
 
                 // draw group subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pGroup.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, False, animation, pCanvas, pGraphics))
+                        scaleW, scaleH, antialiasing, False, False, animation, pCanvas, pGraphics))
                 then
+                begin
+                    // restore the previous clipping, if any
+                    if (isClipped) then
+                        pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+
                     Exit(False);
+                end;
+
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
 
                 continue;
             end;
@@ -508,6 +554,12 @@ begin
             // found it?
             if (Assigned(pSwitch)) then
             begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
+                        pSwitch, pPrevRegion);
+
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
                 pAnimationData.Position := animation.m_Position;
@@ -542,9 +594,19 @@ begin
 
                 // draw switch subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pSwitch.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, True, animation, pCanvas, pGraphics))
+                        scaleW, scaleH, antialiasing, True, False, animation, pCanvas, pGraphics))
                 then
+                begin
+                    // restore the previous clipping, if any
+                    if (isClipped) then
+                        pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+
                     Exit(False);
+                end;
+
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
 
                 continue;
             end;
@@ -559,6 +621,12 @@ begin
             // found it?
             if (Assigned(pAction)) then
             begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
+                        pAction, pPrevRegion);
+
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
                 pAnimationData.Position := animation.m_Position;
@@ -593,9 +661,19 @@ begin
 
                 // draw action subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pAction.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, False, animation, pCanvas, pGraphics))
+                        scaleW, scaleH, antialiasing, False, False, animation, pCanvas, pGraphics))
                 then
+                begin
+                    // restore the previous clipping, if any
+                    if (isClipped) then
+                        pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+
                     Exit(False);
+                end;
+
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
 
                 continue;
             end;
@@ -625,7 +703,7 @@ begin
 
                 // is element a reference to another element?
                 if (pLinkedElement is TWSVGReference) then
-                    // extract his reference
+                    // extract its reference
                     pSrcElement := TWSVGElement((pLinkedElement as TWSVGReference).Reference)
                 else
                     // if not a reference, use the element directly
@@ -654,7 +732,7 @@ begin
 
                 // draw the cloned element
                 if (not DrawElements(pHeader, viewBox, pProps, pClonedElements, pos, scaleW, scaleH,
-                        antialiasing, switchMode, animation, pCanvas, pGraphics))
+                        antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics))
                 then
                     Exit(False);
 
@@ -726,38 +804,49 @@ begin
 
                 pGraphicsPath.SetFillMode(GetFillMode(pParentProps, pProps));
 
-                // get the path bounding box
-                if ((pProps.Style.Fill.Brush.BrushType <> E_BT_Solid)
-                        or (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid))
-                then
+                // do apply a clipping path?
+                if (clippingMode) then
                 begin
-                    pFakePen := nil;
+                    pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
 
-                    // create a fake pen. The color is not important, but the width will be used to
-                    // measure the path bounds. Without a such pen, the stroke may be calculated
-                    // incorrectly around the path. NOTE don't worry if the pen is nil, in this case
-                    // the GetBounds() function will measure from the middle of the stroke
-                    if (pProps.Style.Stroke.Width.Value > 0.0) then
+                    // set the clipping region
+                    pGraphics.SetClip(pRegion);
+                end
+                else
+                begin
+                     // get the path bounding box
+                    if ((pProps.Style.Fill.Brush.BrushType <> E_BT_Solid)
+                            or (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid))
+                    then
                     begin
-                        color.SetColor(clBlack);
-                        pFakePen := pRenderer.GetPen(color, pProps.Style.Stroke.Width.Value);
+                        pFakePen := nil;
+
+                        // create a fake pen. The color is not important, but the width will be used to
+                        // measure the path bounds. Without a such pen, the stroke may be calculated
+                        // incorrectly around the path. NOTE don't worry if the pen is nil, in this case
+                        // the GetBounds() function will measure from the middle of the stroke
+                        if (pProps.Style.Stroke.Width.Value > 0.0) then
+                        begin
+                            color.SetColor(clBlack);
+                            pFakePen := pRenderer.GetPen(color, pProps.Style.Stroke.Width.Value);
+                        end;
+
+                        // measure the path bounding box
+                        pGraphicsPath.GetBounds(boundingBox, nil, pFakePen);
                     end;
 
-                    // measure the path bounding box
-                    pGraphicsPath.GetBounds(boundingBox, nil, pFakePen);
+                    pFill := TWSmartPointer<TWFill>.Create();
+
+                    // draw the path
+                    if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
+                        pRenderer.FillPath(pGraphicsPath, pFill, pGraphics, TWRectF.Create(boundingBox, False));
+
+                    pStroke := TWSmartPointer<TWStroke>.Create();
+
+                    // outline the path
+                    if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
+                        pRenderer.DrawPath(pGraphicsPath, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
-
-                pFill := TWSmartPointer<TWFill>.Create();
-
-                // draw the path
-                if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
-                    pRenderer.FillPath(pGraphicsPath, pFill, pGraphics, TWRectF.Create(boundingBox, False));
-
-                pStroke := TWSmartPointer<TWStroke>.Create();
-
-                // outline the path
-                if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
-                    pRenderer.DrawPath(pGraphicsPath, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -807,60 +896,71 @@ begin
                 then
                     Exit(False);
 
-                // the dash factor is a value used to take care of the difference between svg and GDI+.
-                // In fact, GDI+ multiplies each dash values by the stroke width
-                if (pProps.Style.Stroke.Width.Value > 0) then
-                    dashFactor := pProps.Style.Stroke.Width.Value
+                // do apply a clipping path?
+                if (clippingMode) then
+                begin
+                    pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(rect.ToGpRectF));
+
+                    // set the clipping region
+                    pGraphics.SetClip(pRegion);
+                end
                 else
-                    dashFactor := 1.0;
+                begin
+                    // the dash factor is a value used to take care of the difference between svg and GDI+.
+                    // In fact, GDI+ multiplies each dash values by the stroke width
+                    if (pProps.Style.Stroke.Width.Value > 0) then
+                        dashFactor := pProps.Style.Stroke.Width.Value
+                    else
+                        dashFactor := 1.0;
 
-                dashPatternCount := pProps.Style.Stroke.DashPattern.Value.Count;
+                    dashPatternCount := pProps.Style.Stroke.DashPattern.Value.Count;
 
-                // apply the dash factor on the dash pattern
-                for i := 0 to dashPatternCount - 1 do
-                    pRectOptions.Stroke.DashPattern.Add
-                            (pProps.Style.Stroke.DashPattern.Value[i] / dashFactor);
+                    // apply the dash factor on the dash pattern
+                    for i := 0 to dashPatternCount - 1 do
+                        pRectOptions.Stroke.DashPattern.Add
+                                (pProps.Style.Stroke.DashPattern.Value[i] / dashFactor);
 
-                // populate rect options with read values
-                pRectOptions.Stroke.Width         := pProps.Style.Stroke.Width.Value;
-                pRectOptions.Stroke.DashOffset    := pProps.Style.Stroke.DashOffset.Value / dashFactor;
-                pRectOptions.Radius.LeftTop.X     := Round(rx);
-                pRectOptions.Radius.LeftTop.Y     := Round(ry);
-                pRectOptions.Radius.LeftBottom.X  := pRectOptions.Radius.LeftTop.X;
-                pRectOptions.Radius.LeftBottom.Y  := pRectOptions.Radius.LeftTop.Y;
-                pRectOptions.Radius.RightTop.X    := pRectOptions.Radius.LeftTop.X;
-                pRectOptions.Radius.RightTop.Y    := pRectOptions.Radius.LeftTop.Y;
-                pRectOptions.Radius.RightBottom.X := pRectOptions.Radius.LeftTop.X;
-                pRectOptions.Radius.RightBottom.Y := pRectOptions.Radius.LeftTop.Y;
+                    // populate rect options with read values
+                    pRectOptions.Stroke.Width         := pProps.Style.Stroke.Width.Value;
+                    pRectOptions.Stroke.DashOffset    := pProps.Style.Stroke.DashOffset.Value / dashFactor;
+                    pRectOptions.Radius.LeftTop.X     := Round(rx);
+                    pRectOptions.Radius.LeftTop.Y     := Round(ry);
+                    pRectOptions.Radius.LeftBottom.X  := pRectOptions.Radius.LeftTop.X;
+                    pRectOptions.Radius.LeftBottom.Y  := pRectOptions.Radius.LeftTop.Y;
+                    pRectOptions.Radius.RightTop.X    := pRectOptions.Radius.LeftTop.X;
+                    pRectOptions.Radius.RightTop.Y    := pRectOptions.Radius.LeftTop.Y;
+                    pRectOptions.Radius.RightBottom.X := pRectOptions.Radius.LeftTop.X;
+                    pRectOptions.Radius.RightBottom.Y := pRectOptions.Radius.LeftTop.Y;
 
-                pMatrix := TWSmartPointer<TGpMatrix>.Create();
-                pProps.Matrix.Value.ToGpMatrix(pMatrix);
+                    pMatrix := TWSmartPointer<TGpMatrix>.Create();
+                    pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                pAnimMatrix := TWSmartPointer<TGpMatrix>.Create();
+                    pAnimMatrix := TWSmartPointer<TGpMatrix>.Create();
 
-                // get and apply matrix animation if needed
-                if (GetTransformAnimMatrix(pAnimationData, pAnimMatrix, animation.m_pCustomData)) then
-                    // combine matrix with animation matrix
-                    pMatrix.Multiply(pAnimMatrix);
+                    // get and apply matrix animation if needed
+                    if (GetTransformAnimMatrix(pAnimationData, pAnimMatrix, animation.m_pCustomData)) then
+                        // combine matrix with animation matrix
+                        pMatrix.Multiply(pAnimMatrix);
 
-                // set svg element to final size
-                pMatrix.Scale(scaleW, scaleH, MatrixOrderAppend);
+                    // set svg element to final size
+                    pMatrix.Scale(scaleW, scaleH, MatrixOrderAppend);
 
-                // calculate position at which svg element should be drawn
-                svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
+                    // calculate position at which svg element should be drawn
+                    svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
 
-                // set svg element to final location (applying user position and viewbox correction)
-                pMatrix.Translate(svgPos.X, svgPos.Y, MatrixOrderAppend);
+                    // set svg element to final location (applying user position and viewbox correction)
+                    pMatrix.Translate(svgPos.X, svgPos.Y, MatrixOrderAppend);
 
-                // apply transformation matrix to rectangle
-                outputMatrix := TWMatrix3x3.Create(pMatrix);
-                pRectOptions.TransformMatrix.Assign(outputMatrix);
+                    // apply transformation matrix to rectangle
+                    outputMatrix := TWMatrix3x3.Create(pMatrix);
+                    pRectOptions.TransformMatrix.Assign(outputMatrix);
 
-                GetBrush(pProps.Style, viewBox, rectToDraw, scaleW, scaleH, pRenderer, pRectOptions.Fill);
-                GetPen  (pProps.Style, viewBox, rectToDraw, scaleW, scaleH, pRenderer, pRectOptions.Stroke);
+                    GetBrush(pProps.Style, viewBox, rectToDraw, scaleW, scaleH, pRenderer, pRectOptions.Fill);
+                    GetPen  (pProps.Style, viewBox, rectToDraw, scaleW, scaleH, pRenderer, pRectOptions.Stroke);
 
-                // draw rectangle
-                pRenderer.DrawRect(TWRectF.Create(rectToDraw, False), pRectOptions, pCanvas.Handle, iRect);
+                    // draw rectangle
+                    pRenderer.DrawRect(TWRectF.Create(rectToDraw, False), pRectOptions, pCanvas.Handle, iRect);
+                end;
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -924,28 +1024,43 @@ begin
 
                 ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
 
-                // calculate the circle bounding box
-                if ((pProps.Style.Fill.Brush.BrushType <> E_BT_Solid)
-                        or (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid))
-                then
+                // do apply a clipping path?
+                if (clippingMode) then
                 begin
-                    boundingBox.X      := x             - r;
-                    boundingBox.Y      := y             - r;
-                    boundingBox.Width  := boundingBox.X + d;
-                    boundingBox.Height := boundingBox.Y + d;
+                    // create new GDI+ path
+                    pGraphicsPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
+                    pGraphicsPath.AddEllipse(x - r, y - r, d, d);
+
+                    pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
+
+                    // set the clipping region
+                    pGraphics.SetClip(pRegion);
+                end
+                else
+                begin
+                    // calculate the circle bounding box
+                    if ((pProps.Style.Fill.Brush.BrushType <> E_BT_Solid)
+                            or (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid))
+                    then
+                    begin
+                        boundingBox.X      := x             - r;
+                        boundingBox.Y      := y             - r;
+                        boundingBox.Width  := boundingBox.X + d;
+                        boundingBox.Height := boundingBox.Y + d;
+                    end;
+
+                    pFill := TWSmartPointer<TWFill>.Create();
+
+                    // draw the circle
+                    if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
+                        pRenderer.FillEllipse(x - r, y - r, d, d, pFill, pGraphics, TWRectF.Create(boundingBox, False));
+
+                    pStroke := TWSmartPointer<TWStroke>.Create();
+
+                    // outline the circle
+                    if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
+                        pRenderer.DrawEllipse(x - r, y - r, d, d, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
-
-                pFill := TWSmartPointer<TWFill>.Create();
-
-                // draw the circle
-                if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
-                    pRenderer.FillEllipse(x - r, y - r, d, d, pFill, pGraphics, TWRectF.Create(boundingBox, False));
-
-                pStroke := TWSmartPointer<TWStroke>.Create();
-
-                // outline the circle
-                if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
-                    pRenderer.DrawEllipse(x - r, y - r, d, d, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -1010,28 +1125,43 @@ begin
 
                 ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
 
-                // calculate the circle bounding box
-                if ((pProps.Style.Fill.Brush.BrushType <> E_BT_Solid)
-                        or (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid))
-                then
+                // do apply a clipping path?
+                if (clippingMode) then
                 begin
-                    boundingBox.X      := x             - rx;
-                    boundingBox.Y      := y             - ry;
-                    boundingBox.Width  := boundingBox.X + dx;
-                    boundingBox.Height := boundingBox.Y + dy;
+                    // create new GDI+ path
+                    pGraphicsPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
+                    pGraphicsPath.AddEllipse(x - rx, y - ry, dx, dy);
+
+                    pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
+
+                    // set the clipping region
+                    pGraphics.SetClip(pRegion);
+                end
+                else
+                begin
+                    // calculate the circle bounding box
+                    if ((pProps.Style.Fill.Brush.BrushType <> E_BT_Solid)
+                            or (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid))
+                    then
+                    begin
+                        boundingBox.X      := x             - rx;
+                        boundingBox.Y      := y             - ry;
+                        boundingBox.Width  := boundingBox.X + dx;
+                        boundingBox.Height := boundingBox.Y + dy;
+                    end;
+
+                    pFill := TWSmartPointer<TWFill>.Create();
+
+                    // draw the ellipse
+                    if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
+                        pRenderer.FillEllipse(x - rx, y - ry, dx, dy, pFill, pGraphics, TWRectF.Create(boundingBox, False));
+
+                    pStroke := TWSmartPointer<TWStroke>.Create();
+
+                    // outline the ellipse
+                    if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
+                        pRenderer.DrawEllipse(x - rx, y - ry, dx, dy, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
-
-                pFill := TWSmartPointer<TWFill>.Create();
-
-                // draw the ellipse
-                if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
-                    pRenderer.FillEllipse(x - rx, y - ry, dx, dy, pFill, pGraphics, TWRectF.Create(boundingBox, False));
-
-                pStroke := TWSmartPointer<TWStroke>.Create();
-
-                // outline the ellipse
-                if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
-                    pRenderer.DrawEllipse(x - rx, y - ry, dx, dy, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -1210,17 +1340,32 @@ begin
 
                 ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
 
-                pFill := TWSmartPointer<TWFill>.Create();
+                // do apply a clipping path?
+                if (clippingMode) then
+                begin
+                    // create new GDI+ path
+                    pGraphicsPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
+                    pGraphicsPath.AddPolygon(PGPPointF(points), Length(points));
 
-                // draw the polygon
-                if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
-                    pRenderer.FillPolygon(points, pFill, pGraphics, TWRectF.Create(boundingBox, False));
+                    pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
 
-                pStroke := TWSmartPointer<TWStroke>.Create();
+                    // set the clipping region
+                    pGraphics.SetClip(pRegion);
+                end
+                else
+                begin
+                    pFill := TWSmartPointer<TWFill>.Create();
 
-                // outline the polygon
-                if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
-                    pRenderer.DrawPolygon(points, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
+                    // draw the polygon
+                    if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
+                        pRenderer.FillPolygon(points, pFill, pGraphics, TWRectF.Create(boundingBox, False));
+
+                    pStroke := TWSmartPointer<TWStroke>.Create();
+
+                    // outline the polygon
+                    if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
+                        pRenderer.DrawPolygon(points, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
+                end;
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -1547,49 +1692,71 @@ begin
                 if (antialiasing) then
                     pGraphics.SetTextRenderingHint(TextRenderingHintAntiAlias);
 
-                pStroke := TWSmartPointer<TWStroke>.Create();
-
-                // outline the text (NOTE instead of shapes above, this should be done before drawing
-                // the text)
-                if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
+                // do apply a clipping path?
+                if (clippingMode) then
                 begin
-                    // todo FIXME -cFeature -oJean: add an OutlineText function in GDI+ renderer
-                    pGradientFactory := TWSmartPointer<TWGDIPlusGradient>.Create();
-
-                    // get outline pen
-                    pGpPen := pRenderer.GetPen(pStroke, pGradientFactory);
-
-                    // is cache used? If not keep pointer in a smart pointer to auto-delete object
-                    // on function ends
-                    if (not g_GDIPlusCacheController.m_Pens) then
-                        paPen := TWSmartPointer<TGpPen>.Create(pGpPen);
-
                     pFontFamily := TWSmartPointer<TGPFontFamily>.Create();
 
                     // get the font family
                     pFont.GetFamily(pFontFamily);
 
-                    // create new GDI+ path. NOTE create explicitly the graphics path before keep it
-                    // inside the smart pointer, because otherwise the incorrect constructor is
-                    // called while the smart pointer tries to auto-create the object, causing thus
-                    // that the path is never drawn
-                    pTextPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
-
-                    // create a path containing the text to outline. NOTE the size must be converted
-                    // from point size to "em" size
-                    pTextPath.AddString(pText.Text, Length(pText.Text), pFontFamily, pFont.GetStyle,
+                    // create a path containing the text to clip. NOTE the size must be converted from
+                    // point size to "em" size
+                    pGraphicsPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
+                    pGraphicsPath.AddString(pText.Text, Length(pText.Text), pFontFamily, pFont.GetStyle,
                             fontSize, textPos, pTextFormat);
 
-                    // outline the text
-                    pGraphics.DrawPath(pGpPen, pTextPath);
+                    pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
+
+                    // set the clipping region
+                    pGraphics.SetClip(pRegion);
+                end
+                else
+                begin
+                    pStroke := TWSmartPointer<TWStroke>.Create();
+
+                    // outline the text (NOTE instead of shapes above, this should be done before drawing
+                    // the text)
+                    if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
+                    begin
+                        // todo FIXME -cFeature -oJean: add an OutlineText function in GDI+ renderer
+                        pGradientFactory := TWSmartPointer<TWGDIPlusGradient>.Create();
+
+                        // get outline pen
+                        pGpPen := pRenderer.GetPen(pStroke, pGradientFactory);
+
+                        // is cache used? If not keep pointer in a smart pointer to auto-delete object
+                        // on function ends
+                        if (not g_GDIPlusCacheController.m_Pens) then
+                            paPen := TWSmartPointer<TGpPen>.Create(pGpPen);
+
+                        pFontFamily := TWSmartPointer<TGPFontFamily>.Create();
+
+                        // get the font family
+                        pFont.GetFamily(pFontFamily);
+
+                        // create new GDI+ path. NOTE create explicitly the graphics path before keep it
+                        // inside the smart pointer, because otherwise the incorrect constructor is
+                        // called while the smart pointer tries to auto-create the object, causing thus
+                        // that the path is never drawn
+                        pTextPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
+
+                        // create a path containing the text to outline. NOTE the size must be converted
+                        // from point size to "em" size
+                        pTextPath.AddString(pText.Text, Length(pText.Text), pFontFamily, pFont.GetStyle,
+                                fontSize, textPos, pTextFormat);
+
+                        // outline the text
+                        pGraphics.DrawPath(pGpPen, pTextPath);
+                    end;
+
+                    pFill := TWSmartPointer<TWFill>.Create();
+
+                    // draw the text
+                    if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
+                        pRenderer.DrawString(pText.Text, textPos, pFont, pFill, pGraphics,
+                                TWRectF.Create(boundingBox, True));
                 end;
-
-                pFill := TWSmartPointer<TWFill>.Create();
-
-                // draw the text
-                if (GetBrush(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pFill)) then
-                    pRenderer.DrawString(pText.Text, textPos, pFont, pFill, pGraphics,
-                            TWRectF.Create(boundingBox, True));
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -1601,6 +1768,63 @@ begin
     end;
 
     Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGGDIPlusRasterizer.ApplyClipPath(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
+        const pParentProps: TWSVGGDIPlusRasterizer.IProperties; const pElements: TWSVGContainer.IElements;
+        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode: Boolean; clippingMode: Boolean;
+        const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas; pGraphics: TGpGraphics;
+        pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
+var
+    pClipPath:           TWSVGClipPath;
+    pProps:              IWSmartPointer<IProperties>;
+    pAnimationData:      IWSmartPointer<IAnimationData>;
+    clipPathPos:         TPoint;
+    x, y, width, height: Single;
+begin
+    pClipPath := nil;
+
+    if (not GetClipPath(pElement, pClipPath)) then
+        Exit(False);
+
+    // configure animation
+    pAnimationData          := TWSmartPointer<IAnimationData>.Create();
+    pAnimationData.Position := animation.m_Position;
+
+    // get all animations linked to this container
+    GetAnimations(pClipPath, pAnimationData);
+
+    pProps := TWSmartPointer<IProperties>.Create();
+
+    // get draw properties from element
+    if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
+        Exit(False);
+
+    pProps.Merge(pParentProps);
+
+    // is element visible? (NOTE for now the only supported mode is "none". All other modes are
+    // considered as fully visible)
+    if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+        Exit(False);
+
+    // extract position and size properties
+    if (not GetPosAndSizeProps(pClipPath, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+        Exit(False);
+
+    // get the clip path position (in relation to the initial position)
+    clipPathPos := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
+
+    // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
+    //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
+    // combine the animation matrix with the clip path matrix
+    CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
+
+    // save the current clip
+    pGraphics.GetClip(prevRegion);
+
+    // draw action subelements
+    Result := DrawElements(pHeader, viewBox, pProps, pClipPath.ElementList, clipPathPos, scaleW,
+            scaleH, antialiasing, False, True, animation, pCanvas, pGraphics);
 end;
 //---------------------------------------------------------------------------
 function TWSVGGDIPlusRasterizer.GetClosestSquare(const rect: TRect): TRect;

@@ -1584,6 +1584,14 @@ type
             function MergeUseProperties(const pUse: TWSVGUse; pElement: TWSVGElement): Boolean; virtual;
 
             {**
+             Get the clip path linked to an element
+             @param(pElement Element for which the clip path should be found)
+             @param(pClipPath @bold([out]) The found clip path, @nil if not found or on error)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetClipPath(const pElement: TWSVGElement; out pClipPath: TWSVGClipPath): Boolean; virtual;
+
+            {**
              Get a filter from a link
             @param(pLink Filter object link to parse)
             @param(pFilter Filter to populate)
@@ -5324,7 +5332,7 @@ begin
     if (not Assigned(pUse)) then
         Exit(False);
 
-    // set default values (in case no matching value is found in circle)
+    // set default values (in case no linked element is found)
     pElement := nil;
 
     propCount := pUse.Count;
@@ -5388,13 +5396,76 @@ begin
 
         // search for next property to merge
         if ((pProperty.ItemName = C_SVG_Prop_HRef) or (pProperty.ItemName = C_SVG_Prop_XLink_HRef)) then
-            // skip the reference properties, these were already treated
+            // skip the reference properties, these were already processed
             continue
         else
             pElement.AddProperty(pProperty);
     end;
 
     Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetClipPath(const pElement: TWSVGElement; out pClipPath: TWSVGClipPath): Boolean;
+var
+    pProperty:      TWSVGProperty;
+    pLink:          TWSVGPropLink;
+    pLinkedElement: TWSVGElement;
+    pSrcElement:    TWSVGElement;
+    pReference:     TWSVGReference;
+    propCount, i:   NativeInt;
+begin
+    if (not Assigned(pElement)) then
+        Exit(False);
+
+    // set default values (in case no matching value is found in circle)
+    pClipPath := nil;
+
+    propCount := pElement.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pElement.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for clip path property to get
+        if (pProperty.ItemName =  C_SVG_Prop_ClipPath) then
+        begin
+            if (not(pProperty is TWSVGPropLink)) then
+                continue;
+
+            // get link
+            pLink := pProperty as TWSVGPropLink;
+
+            // found it?
+            if (not Assigned(pLink)) then
+                continue;
+
+            // get the linked element containing the clip path
+            pLinkedElement := GetLinkedElement(pLink);
+
+            // is element a reference to another element?
+            if (pLinkedElement is TWSVGReference) then
+            begin
+                // get the element as a reference
+                pReference := pLinkedElement as TWSVGReference;
+
+                // extract its reference
+                pSrcElement := pReference.Reference;
+            end
+            else
+                // if not a reference, use the element directly
+                pSrcElement := pLinkedElement;
+
+            // get the clip path
+            if (pSrcElement is TWSVGClipPath) then
+                pClipPath := pSrcElement as TWSVGClipPath;
+        end;
+    end;
+
+    Result := Assigned(pClipPath);
 end;
 //---------------------------------------------------------------------------
 function TWSVGRasterizer.GetFilterFromLink(const pLink: TWSVGPropLink; pFilter: IFilter): Boolean;

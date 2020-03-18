@@ -33,6 +33,7 @@ const
     C_SVG_Tag_Linear_Gradient:                         UnicodeString = 'linearGradient';
     C_SVG_Tag_Radial_Gradient:                         UnicodeString = 'radialGradient';
     C_SVG_Tag_Filter:                                  UnicodeString = 'filter';
+    C_SVG_Tag_ClipPath:                                UnicodeString = 'clipPath';
     C_SVG_Prop_ID:                                     UnicodeString = 'id';
     C_SVG_Prop_Version:                                UnicodeString = 'version';
     C_SVG_Prop_ViewBox:                                UnicodeString = 'viewBox';
@@ -78,6 +79,7 @@ const
     C_SVG_Prop_HRef:                                   UnicodeString = 'href';
     C_SVG_Prop_Display:                                UnicodeString = 'display';
     C_SVG_Prop_Filter:                                 UnicodeString = 'filter';
+    C_SVG_Prop_ClipPath:                               UnicodeString = 'clip-path';
     C_SVG_Value_New:                                   UnicodeString = 'new';
     C_SVG_Value_Accumulate:                            UnicodeString = 'accumulate';
     C_SVG_Value_CM:                                    UnicodeString = 'cm';

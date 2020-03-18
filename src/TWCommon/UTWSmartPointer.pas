@@ -66,7 +66,7 @@ type
         destructor Destroy; override;
 
         {**
-         Invoke the owned class (needed to be used by the IQRSmartPointer interface)
+         Invoke the owned class (needed to be used by the IWSmartPointer interface)
          @returns(Owned class)
         }
         function Invoke: T; virtual;

@@ -380,6 +380,44 @@ type
     end;
 
     {**
+     Scalable Vector Graphics (SVG) clip path, it's a special group owning a clipping path to apply
+    }
+    TWSVGClipPath = class(TWSVGContainer)
+        public
+            {**
+             Constructor
+             @param(pParent Parent item, orphan or root if @nil)
+             @param(pOptions SVG options)
+            }
+            constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+            {**
+             Destructor
+            }
+            destructor Destroy; override;
+
+            {**
+             Create new element instance
+             @param(pParent Parent item, orphan or root if @nil)
+             @returns(Element instance)
+            }
+            function CreateInstance(pParent: TWSVGItem): TWSVGElement; override;
+
+            {**
+             Log content
+             @param(margin Margin length in chars)
+            }
+            procedure Log(margin: Cardinal); override;
+
+            {**
+             Print content to string
+             @param(margin Margin length in chars)
+             @returns(Content)
+            }
+            function Print(margin: Cardinal): UnicodeString; override;
+    end;
+
+    {**
      Scalable Vector Graphics (SVG) rectangle
     }
     TWSVGRect = class(TWSVGShape)
@@ -1182,6 +1220,7 @@ var
     pGroup:    TWSVGGroup;
     pSwitch:   TWSVGSwitch;
     pAction:   TWSVGAction;
+    pClipPath: TWSVGClipPath;
     pRect:     TWSVGRect;
     pCircle:   TWSVGCircle;
     pEllipse:  TWSVGEllipse;
@@ -1240,7 +1279,7 @@ begin
         try
             // read action
             pAction := TWSVGAction.Create(Self, m_pOptions);
-            Result := pAction.Read(pNode) and Result;
+            Result  := pAction.Read(pNode) and Result;
             pElements.Add(pAction);
 
             // register the link
@@ -1249,6 +1288,25 @@ begin
             pAction := nil;
         finally
             pAction.Free;
+        end;
+    end
+    else
+    if (name = C_SVG_Tag_ClipPath) then
+    begin
+        pClipPath := nil;
+
+        try
+            // read clip path
+            pClipPath := TWSVGClipPath.Create(Self, m_pOptions);
+            result    := pClipPath.Read(pNode) and Result;
+            pElements.Add(pClipPath);
+
+            // register the link
+            RegisterLink(pClipPath, defs, True);
+
+            pClipPath := nil;
+        finally
+            pClipPath.Free;
         end;
     end
     else
@@ -1673,6 +1731,7 @@ var
     pID:                     TWSVGPropText;
     pX, pY, pWidth, pHeight: TWSVGMeasure<Single>;
     pMatrix:                 TWSVGPropMatrix;
+    pClipPath:               TWSVGPropLink;
     pAnimation:              TWSVGAnimation;
     count, i:                NativeInt;
     {$ifdef USE_VERYSIMPLEXML}
@@ -1788,6 +1847,21 @@ begin
         end;
     finally
         pMatrix.Free;
+    end;
+
+    pClipPath := nil;
+
+    try
+        pClipPath := TWSVGPropLink.Create(Self, m_pOptions);
+
+        // read clip path link (optional)
+        if (pClipPath.Read(C_SVG_Prop_ClipPath, pNode)) then
+        begin
+            m_pProperties.Add(pClipPath);
+            pClipPath := nil;
+        end;
+    finally
+        pClipPath.Free;
     end;
 
     count  := pNode.ChildNodes.Count;
@@ -2057,6 +2131,37 @@ end;
 function TWSVGAction.Print(margin: Cardinal): UnicodeString;
 begin
     Result := '<Action>' + #13 + #10 + inherited Print(margin);
+end;
+//---------------------------------------------------------------------------
+// TWSVGClipPath
+//---------------------------------------------------------------------------
+constructor TWSVGClipPath.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    ItemName := C_SVG_Tag_ClipPath;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGClipPath.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGClipPath.CreateInstance(pParent: TWSVGItem): TWSVGElement;
+begin
+    Result := TWSVGClipPath.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGClipPath.Log(margin: Cardinal);
+begin
+    TWLogHelper.LogBlockToCompiler(' Clip path ');
+
+    inherited Log(margin);
+end;
+//---------------------------------------------------------------------------
+function TWSVGClipPath.Print(margin: Cardinal): UnicodeString;
+begin
+    Result := '<clipPath>' + #13 + #10 + inherited Print(margin);
 end;
 //---------------------------------------------------------------------------
 // TWSVGRect
