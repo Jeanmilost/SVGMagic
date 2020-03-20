@@ -98,7 +98,7 @@ type
             function DrawElements(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
                     const pParentProps: TWSVGGDIPlusRasterizer.IProperties;
                     const pElements: TWSVGContainer.IElements; const pos: TPoint;
-                    scaleW, scaleH: Single; antialiasing, switchMode: Boolean; clippingMode: Boolean;
+                    scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, intersection: Boolean;
                     const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
                     pGraphics: TGpGraphics): Boolean; overload;
 
@@ -115,6 +115,7 @@ type
              @param(switchMode If @true, function will return after first element is drawn (because
                                reading switch statement))
              @param(clippingMode If @true, a clip should be performed instead of a drawing)
+             @param(intersection If @true, and if clipping mode is enabled, perform an intersection instead of an union)
              @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
              @param(pCanvas GDI Canvas to draw on)
              @param(pGraphics GDI+ graphics area to draw on)
@@ -125,7 +126,7 @@ type
             function ApplyClipPath(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
                     const pParentProps: TWSVGGDIPlusRasterizer.IProperties;
                     const pElements: TWSVGContainer.IElements; const pos: TPoint;
-                    scaleW, scaleH: Single; antialiasing, switchMode: Boolean; clippingMode: Boolean;
+                    scaleW, scaleH: Single; antialiasing, switchMode, clippingMode: Boolean;
                     const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
                     pGraphics: TGpGraphics; pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
 
@@ -393,7 +394,7 @@ begin
                 pHeaderProps.Merge(pProperties);
 
                 Exit(DrawElements(pHeader, viewBox.ToGpRectF, pHeaderProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, False, animation, pCanvas, pGraphics));
+                        scaleH, antialiasing, switchMode, False, False, animation, pCanvas, pGraphics));
             finally
                 {$ifdef TRIAL_BUILD}
                     // apply trial timesamp
@@ -408,7 +409,7 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGGDIPlusRasterizer.DrawElements(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
         const pParentProps: TWSVGGDIPlusRasterizer.IProperties; const pElements: TWSVGContainer.IElements;
-        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode: Boolean; clippingMode: Boolean;
+        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, intersection: Boolean;
         const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
         pGraphics: TGpGraphics): Boolean;
 var
@@ -442,7 +443,7 @@ var
     pTextFont:                                                                                                  IWSmartPointer<TFont>;
     pTextFormat:                                                                                                IWSmartPointer<TGpStringFormat>;
     pGradientFactory:                                                                                           IWSmartPointer<TWGDIPlusGradient>;
-    pRegion, pPrevRegion:                                                                                       IWSmartPointer<TGpRegion>;
+    pRegion, pPrevRegion, pCurRegion:                                                                           IWSmartPointer<TGpRegion>;
     textMetrics:                                                                                                TEXTMETRIC;
     charRange:                                                                                                  TCharacterRange;
     charRegions:                                                                                                array of TGpRegion;
@@ -527,7 +528,8 @@ begin
 
                 // draw group subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pGroup.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, False, False, animation, pCanvas, pGraphics))
+                        scaleW, scaleH, antialiasing, False, False, intersection, animation, pCanvas,
+                        pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -594,7 +596,8 @@ begin
 
                 // draw switch subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pSwitch.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, True, False, animation, pCanvas, pGraphics))
+                        scaleW, scaleH, antialiasing, True, False, intersection, animation, pCanvas,
+                        pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -661,7 +664,8 @@ begin
 
                 // draw action subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pAction.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, False, False, animation, pCanvas, pGraphics))
+                        scaleW, scaleH, antialiasing, False, False, intersection, animation, pCanvas,
+                        pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -732,7 +736,8 @@ begin
 
                 // draw the cloned element
                 if (not DrawElements(pHeader, viewBox, pProps, pClonedElements, pos, scaleW, scaleH,
-                        antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics))
+                        antialiasing, switchMode, clippingMode, intersection, animation, pCanvas,
+                        pGraphics))
                 then
                     Exit(False);
 
@@ -749,6 +754,12 @@ begin
             // found it?
             if (Assigned(pPath)) then
             begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
+                        pPath, pPrevRegion);
+
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
                 pAnimationData.Position := animation.m_Position;
@@ -802,18 +813,33 @@ begin
 
                 ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
 
-                pGraphicsPath.SetFillMode(GetFillMode(pParentProps, pProps));
-
                 // do apply a clipping path?
                 if (clippingMode) then
                 begin
+                    // get the current region
+                    pCurRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create);
+                    pGraphics.GetClip(pCurRegion);
+
+                    if (intersection) then
+                        pGraphicsPath.SetFillMode(FillModeWinding)
+                    else
+                        pGraphicsPath.SetFillMode(GetFillMode(pParentProps, pProps));
+
                     pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
 
-                    // set the clipping region
-                    pGraphics.SetClip(pRegion);
+                    // set the clipping region, unify to the existing one if any
+                    if (pCurRegion.IsInfinite(pGraphics)) then
+                        pGraphics.SetClip(pRegion)
+                    else
+                    if (intersection) then
+                        pGraphics.SetClip(pRegion, CombineModeIntersect)
+                    else
+                        pGraphics.SetClip(pRegion, CombineModeUnion);
                 end
                 else
                 begin
+                    pGraphicsPath.SetFillMode(GetFillMode(pParentProps, pProps));
+
                      // get the path bounding box
                     if ((pProps.Style.Fill.Brush.BrushType <> E_BT_Solid)
                             or (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid))
@@ -848,6 +874,10 @@ begin
                         pRenderer.DrawPath(pGraphicsPath, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
 
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+
                 // is switch mode enabled?
                 if (switchMode) then
                     Exit(True);
@@ -865,6 +895,12 @@ begin
             // found it?
             if (Assigned(pRect)) then
             begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
+                        pRect, pPrevRegion);
+
                 pRectOptions := TWSmartPointer<TWRenderer.IRectOptions>.Create();
 
                 // create and populate rect options
@@ -899,10 +935,42 @@ begin
                 // do apply a clipping path?
                 if (clippingMode) then
                 begin
-                    pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(rect.ToGpRectF));
+                    pMatrix := TWSmartPointer<TGpMatrix>.Create();
+                    pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                    // set the clipping region
-                    pGraphics.SetClip(pRegion);
+                    pAnimMatrix := TWSmartPointer<TGpMatrix>.Create();
+
+                    // get and apply matrix animation if needed
+                    if (GetTransformAnimMatrix(pAnimationData, pAnimMatrix, animation.m_pCustomData)) then
+                        // combine matrix with animation matrix
+                        pMatrix.Multiply(pAnimMatrix);
+
+                    // set svg element to final size
+                    pMatrix.Scale(scaleW, scaleH, MatrixOrderAppend);
+
+                    // calculate position at which svg element should be drawn
+                    svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
+
+                    // set svg element to final location (applying user position and viewbox correction)
+                    pMatrix.Translate(svgPos.X, svgPos.Y, MatrixOrderAppend);
+
+                    // apply transformation matrix to rectangle
+                    pGraphics.SetTransform(pMatrix);
+
+                    // get the current region
+                    pCurRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create);
+                    pGraphics.GetClip(pCurRegion);
+
+                    pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(rectToDraw));
+
+                    // set the clipping region, unify to the existing one if any
+                    if (pCurRegion.IsInfinite(pGraphics)) then
+                        pGraphics.SetClip(pRegion)
+                    else
+                    if (intersection) then
+                        pGraphics.SetClip(pRegion, CombineModeIntersect)
+                    else
+                        pGraphics.SetClip(pRegion, CombineModeUnion);
                 end
                 else
                 begin
@@ -959,8 +1027,12 @@ begin
                     GetPen  (pProps.Style, viewBox, rectToDraw, scaleW, scaleH, pRenderer, pRectOptions.Stroke);
 
                     // draw rectangle
-                    pRenderer.DrawRect(TWRectF.Create(rectToDraw, False), pRectOptions, pCanvas.Handle, iRect);
+                    pRenderer.DrawRect(TWRectF.Create(rectToDraw, False), pRectOptions, pGraphics, iRect);
                 end;
+
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -979,6 +1051,12 @@ begin
             // found it?
             if (Assigned(pCircle)) then
             begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
+                        pCircle, pPrevRegion);
+
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
                 pAnimationData.Position := animation.m_Position;
@@ -1029,12 +1107,26 @@ begin
                 begin
                     // create new GDI+ path
                     pGraphicsPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
+
+                    if (intersection) then
+                        pGraphicsPath.SetFillMode(FillModeWinding);
+
                     pGraphicsPath.AddEllipse(x - r, y - r, d, d);
+
+                    // get the current region
+                    pCurRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create);
+                    pGraphics.GetClip(pCurRegion);
 
                     pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
 
-                    // set the clipping region
-                    pGraphics.SetClip(pRegion);
+                    // set the clipping region, unify to the existing one if any
+                    if (pCurRegion.IsInfinite(pGraphics)) then
+                        pGraphics.SetClip(pRegion)
+                    else
+                    if (intersection) then
+                        pGraphics.SetClip(pRegion, CombineModeIntersect)
+                    else
+                        pGraphics.SetClip(pRegion, CombineModeUnion);
                 end
                 else
                 begin
@@ -1062,6 +1154,10 @@ begin
                         pRenderer.DrawEllipse(x - r, y - r, d, d, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
 
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+
                 // is switch mode enabled?
                 if (switchMode) then
                     Exit(True);
@@ -1079,6 +1175,12 @@ begin
             // found it?
             if (Assigned(pEllipse)) then
             begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
+                        pEllipse, pPrevRegion);
+
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
                 pAnimationData.Position := animation.m_Position;
@@ -1130,12 +1232,26 @@ begin
                 begin
                     // create new GDI+ path
                     pGraphicsPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
+
+                    if (intersection) then
+                        pGraphicsPath.SetFillMode(FillModeWinding);
+
                     pGraphicsPath.AddEllipse(x - rx, y - ry, dx, dy);
+
+                    // get the current region
+                    pCurRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create);
+                    pGraphics.GetClip(pCurRegion);
 
                     pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
 
-                    // set the clipping region
-                    pGraphics.SetClip(pRegion);
+                    // set the clipping region, unify to the existing one if any
+                    if (pCurRegion.IsInfinite(pGraphics)) then
+                        pGraphics.SetClip(pRegion)
+                    else
+                    if (intersection) then
+                        pGraphics.SetClip(pRegion, CombineModeIntersect)
+                    else
+                        pGraphics.SetClip(pRegion, CombineModeUnion);
                 end
                 else
                 begin
@@ -1162,6 +1278,10 @@ begin
                     if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
                         pRenderer.DrawEllipse(x - rx, y - ry, dx, dy, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
+
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -1271,6 +1391,12 @@ begin
             // found it?
             if (Assigned(pPolygon)) then
             begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
+                        pPolygon, pPrevRegion);
+
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
                 pAnimationData.Position := animation.m_Position;
@@ -1345,12 +1471,26 @@ begin
                 begin
                     // create new GDI+ path
                     pGraphicsPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
+
+                    if (intersection) then
+                        pGraphicsPath.SetFillMode(FillModeWinding);
+
                     pGraphicsPath.AddPolygon(PGPPointF(points), Length(points));
+
+                    // get the current region
+                    pCurRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create);
+                    pGraphics.GetClip(pCurRegion);
 
                     pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
 
-                    // set the clipping region
-                    pGraphics.SetClip(pRegion);
+                    // set the clipping region, unify to the existing one if any
+                    if (pCurRegion.IsInfinite(pGraphics)) then
+                        pGraphics.SetClip(pRegion)
+                    else
+                    if (intersection) then
+                        pGraphics.SetClip(pRegion, CombineModeIntersect)
+                    else
+                        pGraphics.SetClip(pRegion, CombineModeUnion);
                 end
                 else
                 begin
@@ -1366,6 +1506,10 @@ begin
                     if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
                         pRenderer.DrawPolygon(points, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
+
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -1499,6 +1643,12 @@ begin
             // found it?
             if (Assigned(pText)) then
             begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
+                        pText, pPrevRegion);
+
                 // no text to draw?
                 if (Length(pText.Text) = 0) then
                     continue;
@@ -1703,13 +1853,27 @@ begin
                     // create a path containing the text to clip. NOTE the size must be converted from
                     // point size to "em" size
                     pGraphicsPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
+
+                    if (intersection) then
+                        pGraphicsPath.SetFillMode(FillModeWinding);
+
                     pGraphicsPath.AddString(pText.Text, Length(pText.Text), pFontFamily, pFont.GetStyle,
                             fontSize, textPos, pTextFormat);
 
+                    // get the current region
+                    pCurRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create);
+                    pGraphics.GetClip(pCurRegion);
+
                     pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pGraphicsPath));
 
-                    // set the clipping region
-                    pGraphics.SetClip(pRegion);
+                    // set the clipping region, unify to the existing one if any
+                    if (pCurRegion.IsInfinite(pGraphics)) then
+                        pGraphics.SetClip(pRegion)
+                    else
+                    if (intersection) then
+                        pGraphics.SetClip(pRegion, CombineModeIntersect)
+                    else
+                        pGraphics.SetClip(pRegion, CombineModeUnion);
                 end
                 else
                 begin
@@ -1758,6 +1922,10 @@ begin
                                 TWRectF.Create(boundingBox, True));
                 end;
 
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+
                 // is switch mode enabled?
                 if (switchMode) then
                     Exit(True);
@@ -1772,20 +1940,74 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGGDIPlusRasterizer.ApplyClipPath(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
         const pParentProps: TWSVGGDIPlusRasterizer.IProperties; const pElements: TWSVGContainer.IElements;
-        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode: Boolean; clippingMode: Boolean;
+        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode, clippingMode: Boolean;
         const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas; pGraphics: TGpGraphics;
         pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
 var
-    pClipPath:           TWSVGClipPath;
-    pProps:              IWSmartPointer<IProperties>;
-    pAnimationData:      IWSmartPointer<IAnimationData>;
-    clipPathPos:         TPoint;
-    x, y, width, height: Single;
+    pClipPath:             TWSVGClipPath;
+    pProps:                IWSmartPointer<IProperties>;
+    pAnimationData:        IWSmartPointer<IAnimationData>;
+    clipPathPos:           TPoint;
+    x, y, width, height:   Single;
+    pIntersectionClipPath: TWSVGClipPath;
+    intersect, clipResult: Boolean;
 begin
     pClipPath := nil;
 
     if (not GetClipPath(pElement, pClipPath)) then
         Exit(False);
+
+    pIntersectionClipPath := nil;
+    intersect             := False;
+    clipResult            := True;
+
+    // is an intersection clip path defined?
+    if (GetClipPath(pClipPath, pIntersectionClipPath)) then
+    begin
+        // configure animation
+        pAnimationData          := TWSmartPointer<IAnimationData>.Create();
+        pAnimationData.Position := animation.m_Position;
+
+        // get all animations linked to this container
+        GetAnimations(pIntersectionClipPath, pAnimationData);
+
+        pProps := TWSmartPointer<IProperties>.Create();
+
+        // get draw properties from element
+        if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
+            Exit(False);
+
+        pProps.Merge(pParentProps);
+
+        // is element visible? (NOTE for now the only supported mode is "none". All other modes are
+        // considered as fully visible)
+        if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+            Exit(False);
+
+        // extract position and size properties
+        if (not GetPosAndSizeProps(pIntersectionClipPath, x, y, width, height, pAnimationData,
+                animation.m_pCustomData))
+        then
+            Exit(False);
+
+        // get the clip path position (in relation to the initial position)
+        clipPathPos := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
+
+        // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
+        //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
+        // combine the animation matrix with the clip path matrix
+        CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
+
+        // save the current clip
+        pGraphics.GetClip(prevRegion);
+
+        // apply clipping
+        clipResult := DrawElements(pHeader, viewBox, pProps, pIntersectionClipPath.ElementList,
+                clipPathPos, scaleW, scaleH, antialiasing, False, True, True, animation, pCanvas,
+                pGraphics);
+
+        intersect := clipResult;
+    end;
 
     // configure animation
     pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -1820,11 +2042,12 @@ begin
     CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
 
     // save the current clip
-    pGraphics.GetClip(prevRegion);
+    if (not intersect) then
+        pGraphics.GetClip(prevRegion);
 
-    // draw action subelements
+    // apply clipping
     Result := DrawElements(pHeader, viewBox, pProps, pClipPath.ElementList, clipPathPos, scaleW,
-            scaleH, antialiasing, False, True, animation, pCanvas, pGraphics);
+            scaleH, antialiasing, False, True, intersect, animation, pCanvas, pGraphics) and clipResult;
 end;
 //---------------------------------------------------------------------------
 function TWSVGGDIPlusRasterizer.GetClosestSquare(const rect: TRect): TRect;

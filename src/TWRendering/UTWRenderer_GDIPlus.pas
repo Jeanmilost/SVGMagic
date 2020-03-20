@@ -936,7 +936,19 @@ type
              @br @bold(NOTE) WARNING internal rectangle isn't transformed by matrix
             }
             function DrawRect(const rect: TWRectF; pOptions: TWRenderer.IRectOptions; hDC: THandle;
-                    out iRect: TRect): Boolean; override;
+                    out iRect: TRect): Boolean; overload; override;
+
+            {**
+             Draw rectangle
+             @param(rect Rectangle area to draw)
+             @param(pOptions Rectangle paint options)
+             @param(pGraphics Gdi+ graphics to draw to)
+             @param(iRect @bold([out]) Internal rectangle (inside outline))
+             @returns(@true on success, otherwise @false)
+             @br @bold(NOTE) WARNING internal rectangle isn't transformed by matrix
+            }
+            function DrawRect(const rect: TWRectF; pOptions: TWRenderer.IRectOptions; pGraphics: TGpGraphics;
+                    out iRect: TRect): Boolean; reintroduce; overload; virtual;
 
             {**
              Draw polygon
@@ -5483,6 +5495,94 @@ end;
 function TWRenderer_GDIPlus.DrawRect(const rect: TWRectF; pOptions: TWRenderer.IRectOptions; hDC: THandle;
         out iRect: TRect): Boolean;
 var
+    useGradientBrush,
+    useGradientPen,
+    drawOutline,
+    doTransformRect:    Boolean;
+    pFillSolidBrush,
+    pStrokeSolidBrush:  TWSolidBrush;
+    pFillLinearBrush,
+    pStrokeLinearBrush: TWLinearGradientBrush;
+    pFillRadialBrush,
+    pStrokeRadialBrush: TWRadialGradientBrush;
+    pGraphics:          TGpGraphics;
+    paGraphics:         IWSmartPointer<TGpGraphics>;
+    gdiOptions:         TWRenderer.IRectOptions;
+begin
+    // no device context?
+    if (hDC = 0) then
+    begin
+        iRect := Default(TRect);
+        Exit(False);
+    end;
+
+    if (Assigned(m_pRenderer_GDI)) then
+    begin
+        useGradientBrush := IsGradientVisible(pOptions.Fill);
+        useGradientPen   := IsGradientVisible(pOptions.Stroke);
+        drawOutline      := IsOutlineVisible(pOptions.Stroke, pOptions.Outline, False);
+        doTransformRect  := not pOptions.TransformMatrix.IsIdentity;
+
+        GetBrushes(pOptions.Fill,   pFillSolidBrush,   pFillLinearBrush,   pFillRadialBrush);
+        GetBrushes(pOptions.Stroke, pStrokeSolidBrush, pStrokeLinearBrush, pStrokeRadialBrush);
+
+        // can fill background using GDI?
+        if ((not pOptions.LayeredMode) and ((Assigned(pFillSolidBrush) and (pFillSolidBrush.Color.GetAlpha() = 255))
+                or  (Assigned(pFillLinearBrush) and (pFillLinearBrush.Stops.Count = 2)
+                and (pFillLinearBrush.Stops[0].Color.GetAlpha = 255)
+                and (pFillLinearBrush.Stops[1].Color.GetAlpha = 255)
+                and (((pFillLinearBrush.Stops[0].Position.X
+                        = pFillLinearBrush.Stops[1].Position.X)
+                and (pFillLinearBrush.Stops[0].Position.Y = rect.Top)
+                and (pFillLinearBrush.Stops[1].Position.Y = rect.Bottom))
+                or  ((pFillLinearBrush.Stops[0].Position.Y
+                        = pFillLinearBrush.Stops[1].Position.Y)
+                and (pFillLinearBrush.Stops[0].Position.X = rect.Left)
+                and (pFillLinearBrush.Stops[1].Position.X = rect.Right)))))
+                and not doTransformRect)
+        then
+            // use gdi to draw rect
+            Exit(m_pRenderer_GDI.DrawRect(rect, pOptions, hDC, iRect));
+
+        // can simply use GDI function to draw round rectangle?
+        if (not pOptions.LayeredMode and  not pOptions.AntiAliasing and not useGradientBrush
+                and not useGradientPen and IsRegular(pOptions.Radius)
+                and pOptions.Radius.IsSymmetric and (Assigned(pFillSolidBrush)
+                and (pFillSolidBrush.Color.GetAlpha = 255)) and (not drawOutline
+                or  (IsCompletelyVisible(pOptions.Outline) and (Assigned(pStrokeSolidBrush)
+                and (pStrokeSolidBrush.Color.GetAlpha = 255))))
+                and not doTransformRect)
+        then
+        begin
+            // populate gdi round rect options
+            gdiOptions := pOptions;
+            gdiOptions.Radius.SetLeftTop(pOptions.Radius.LeftTop^);
+            gdiOptions.Radius.SetLeftBottom(pOptions.Radius.LeftTop^);
+            gdiOptions.Radius.SetRightTop(pOptions.Radius.LeftTop^);
+            gdiOptions.Radius.SetRightBottom(pOptions.Radius.LeftTop^);
+
+            // use gdi to draw rect
+            Exit(m_pRenderer_GDI.DrawRect(rect, gdiOptions, hDC, iRect));
+        end;
+    end;
+
+    // do draw cartoon bubble rect?
+    if (IsTailVisible(pOptions)) then
+        Exit(DrawCartoonBubble(rect, pOptions, hDC, iRect));
+
+    // get GDI+ graphics from device context
+    pGraphics := m_pCache.m_pGraphics.GetGraphics(hDC);
+
+    // is cache used? If not keep pointer in a smart pointer to auto-delete object on function ends
+    if (not g_GDIPlusCacheController.m_Graphics) then
+        paGraphics := TWSmartPointer<TGpGraphics>.Create(pGraphics);
+
+    Result := DrawRect(rect, pOptions, pGraphics, iRect);
+end;
+//---------------------------------------------------------------------------
+function TWRenderer_GDIPlus.DrawRect(const rect: TWRectF; pOptions: TWRenderer.IRectOptions;
+        pGraphics: TGpGraphics; out iRect: TRect): Boolean;
+var
     maxSize:            TWSizeF;
     useGradientBrush,
     useGradientPen,
@@ -5492,12 +5592,9 @@ var
     fillWithOutline,
     doUseAntialiasing:  Boolean;
     drawRect:           TWRectF;
-    pGraphics:          TGpGraphics;
-    paGraphics:         IWSmartPointer<TGpGraphics>;
     pBrush:             TGpBrush;
     paBrush:            IWSmartPointer<TGpBrush>;
     pMatrix:            IWSmartPointer<TGpMatrix>;
-    gdiOptions:         TWRenderer.IRectOptions;
     pGraphicPath:       IWSmartPointer<TGpGraphicsPath>;
     oldPageUnit:        TUnit;
     oldMode:            CompositingMode;
@@ -5517,8 +5614,8 @@ begin
         Exit(False);
     end;
 
-    // no device context?
-    if (hDC = 0) then
+    // no gdi+ graphics?
+    if (not Assigned(pGraphics)) then
     begin
         iRect := Default(TRect);
         Exit(False);
@@ -5530,10 +5627,6 @@ begin
         iRect := rect.ToTRect(True);
         Exit(True);
     end;
-
-    // do draw cartoon bubble rect?
-    if (IsTailVisible(pOptions)) then
-        Exit(DrawCartoonBubble(rect, pOptions, hDC, iRect));
 
     maxSize := TWSizeF.Create(GetMaxSizeX(rect), GetMaxSizeY(rect));
 
@@ -5551,134 +5644,78 @@ begin
     GetBrushes(pOptions.Fill,   pFillSolidBrush,   pFillLinearBrush,   pFillRadialBrush);
     GetBrushes(pOptions.Stroke, pStrokeSolidBrush, pStrokeLinearBrush, pStrokeRadialBrush);
 
-    // do only draw background color?
-    if ((not drawOutline) and (not drawCorner)) then
-    begin
-        // can fill background using GDI?
-        if (Assigned(m_pRenderer_GDI) and (not pOptions.LayeredMode)
-                and ((Assigned(pFillSolidBrush) and (pFillSolidBrush.Color.GetAlpha() = 255))
-                        or  (Assigned(pFillLinearBrush) and (pFillLinearBrush.Stops.Count = 2)
-                        and (pFillLinearBrush.Stops[0].Color.GetAlpha = 255)
-                        and (pFillLinearBrush.Stops[1].Color.GetAlpha = 255)
-                        and (((pFillLinearBrush.Stops[0].Position.X
-                                = pFillLinearBrush.Stops[1].Position.X)
-                        and (pFillLinearBrush.Stops[0].Position.Y = rect.Top)
-                        and (pFillLinearBrush.Stops[1].Position.Y = rect.Bottom))
-                        or  ((pFillLinearBrush.Stops[0].Position.Y
-                                = pFillLinearBrush.Stops[1].Position.Y)
-                        and (pFillLinearBrush.Stops[0].Position.X = rect.Left)
-                        and (pFillLinearBrush.Stops[1].Position.X = rect.Right)))))
-                        and not doTransformRect)
-        then
-            // use gdi to draw rect
-            Exit(m_pRenderer_GDI.DrawRect(rect, pOptions, hDC, iRect));
-
-        // do draw gradient?
-        if (not useGradientBrush and (not fillWithOutline or not useGradientPen)) then
-        begin
-            if (fillWithOutline) then
-            begin
-                if (Assigned(pStrokeSolidBrush)) then
-                    fillColor := pStrokeSolidBrush.Color^
-                else
-                if (Assigned(pStrokeLinearBrush) and (pStrokeLinearBrush.Stops.Count > 0)) then
-                    fillColor := pStrokeLinearBrush.Stops[pStrokeLinearBrush.Stops.Count - 1].Color^
-                else
-                    // panic mode, nothing works as expected, try to create a brush with a default
-                    // solid color
-                    fillColor.SetColor(255, 255, 255, 255);
-            end
-            else
-            begin
-                if (Assigned(pFillSolidBrush)) then
-                    fillColor := pFillSolidBrush.Color^
-                else
-                if (Assigned(pFillLinearBrush) and (pFillLinearBrush.Stops.Count > 0)) then
-                    fillColor := pFillLinearBrush.Stops[pFillLinearBrush.Stops.Count - 1].Color^
-                else
-                    // panic mode, nothing works as expected, try to create a brush with a default
-                    // solid color
-                    fillColor.SetColor(255, 255, 255, 255);
-            end;
-
-            // is pen visible?
-            if (fillColor.GetAlpha = 0) then
-            begin
-                    // nothing to do
-                    iRect := Default(TRect);
-                    Exit(True);
-            end;
-
-            if (fillWithOutline) then
-                drawRect := CalculateDrawRect(rect, pOptions, False)
-            else
-                drawRect := rect;
-
-            // get GDI+ graphics from device context
-            pGraphics := m_pCache.m_pGraphics.GetGraphics(hDC);
-
-            // is cache used? If not keep pointer in a smart pointer to auto-delete object on function ends
-            if (not g_GDIPlusCacheController.m_Graphics) then
-                paGraphics := TWSmartPointer<TGpGraphics>.Create(pGraphics);
-
-            // enable antialiasing, if needed
-            if (pOptions.AntiAliasing) then
-                pGraphics.SetSmoothingMode(SmoothingModeAntiAlias);
-
-            // create brush to fill rect background
-            pBrush := GetBrush(fillColor);
-
-            // is cache used? If not keep pointer in a smart pointer to auto-delete object on function ends
-            if (not g_GDIPlusCacheController.m_Brushes) then
-                paBrush := TWSmartPointer<TGpBrush>.Create(pBrush);
-
-            // do apply transformation matrix?
-            if (doTransformRect) then
-            begin
-                pMatrix := TWSmartPointer<TGpMatrix>.Create();
-
-                // convert transform matrix to gdi+ matrix
-                pOptions.TransformMatrix.ToGpMatrix(pMatrix);
-
-                // apply transformation
-                pGraphics.SetTransform(pMatrix);
-            end;
-
-            // fill rectangle with GDI+ color
-            pGraphics.FillRectangle(pBrush, drawRect.ToGpRectF);
-
-            iRect := drawRect.ToTRect(True);
-            Exit(True);
-        end;
-    end;
-
-    // can simply use GDI function to draw round rectangle?
-    if (Assigned(m_pRenderer_GDI) and not pOptions.LayeredMode and  not pOptions.AntiAliasing
-            and not useGradientBrush and not useGradientPen and IsRegular(pOptions.Radius)
-            and pOptions.Radius.IsSymmetric and (Assigned(pFillSolidBrush)
-            and (pFillSolidBrush.Color.GetAlpha = 255)) and (not drawOutline
-            or  (IsCompletelyVisible(pOptions.Outline) and (Assigned(pStrokeSolidBrush)
-            and (pStrokeSolidBrush.Color.GetAlpha = 255))))
-            and not doTransformRect)
+    // do only draw a solid background color?
+    if ((not drawOutline) and (not drawCorner) and (not useGradientBrush)
+            and (not fillWithOutline or not useGradientPen))
     then
     begin
-        // populate gdi round rect options
-        gdiOptions := pOptions;
-        gdiOptions.Radius.SetLeftTop(pOptions.Radius.LeftTop^);
-        gdiOptions.Radius.SetLeftBottom(pOptions.Radius.LeftTop^);
-        gdiOptions.Radius.SetRightTop(pOptions.Radius.LeftTop^);
-        gdiOptions.Radius.SetRightBottom(pOptions.Radius.LeftTop^);
+        if (fillWithOutline) then
+        begin
+            if (Assigned(pStrokeSolidBrush)) then
+                fillColor := pStrokeSolidBrush.Color^
+            else
+            if (Assigned(pStrokeLinearBrush) and (pStrokeLinearBrush.Stops.Count > 0)) then
+                fillColor := pStrokeLinearBrush.Stops[pStrokeLinearBrush.Stops.Count - 1].Color^
+            else
+                // panic mode, nothing works as expected, try to create a brush with a default
+                // solid color
+                fillColor.SetColor(255, 255, 255, 255);
+        end
+        else
+        begin
+            if (Assigned(pFillSolidBrush)) then
+                fillColor := pFillSolidBrush.Color^
+            else
+            if (Assigned(pFillLinearBrush) and (pFillLinearBrush.Stops.Count > 0)) then
+                fillColor := pFillLinearBrush.Stops[pFillLinearBrush.Stops.Count - 1].Color^
+            else
+                // panic mode, nothing works as expected, try to create a brush with a default
+                // solid color
+                fillColor.SetColor(255, 255, 255, 255);
+        end;
 
-        // use gdi to draw rect
-        Exit(m_pRenderer_GDI.DrawRect(rect, gdiOptions, hDC, iRect));
+        // is pen visible?
+        if (fillColor.GetAlpha = 0) then
+        begin
+            // nothing to do
+            iRect := Default(TRect);
+            Exit(True);
+        end;
+
+        if (fillWithOutline) then
+            drawRect := CalculateDrawRect(rect, pOptions, False)
+        else
+            drawRect := rect;
+
+        // enable antialiasing, if needed
+        if (pOptions.AntiAliasing) then
+            pGraphics.SetSmoothingMode(SmoothingModeAntiAlias);
+
+        // create brush to fill rect background
+        pBrush := GetBrush(fillColor);
+
+        // is cache used? If not keep pointer in a smart pointer to auto-delete object on function ends
+        if (not g_GDIPlusCacheController.m_Brushes) then
+            paBrush := TWSmartPointer<TGpBrush>.Create(pBrush);
+
+        // do apply transformation matrix?
+        if (doTransformRect) then
+        begin
+            pMatrix := TWSmartPointer<TGpMatrix>.Create();
+
+            // convert transform matrix to gdi+ matrix
+            pOptions.TransformMatrix.ToGpMatrix(pMatrix);
+
+            // apply transformation
+            pGraphics.SetTransform(pMatrix);
+        end;
+
+        // fill rectangle with GDI+ color
+        pGraphics.FillRectangle(pBrush, drawRect.ToGpRectF);
+
+        iRect := drawRect.ToTRect(True);
+        Exit(True);
     end;
-
-    // get GDI+ graphics from device context
-    pGraphics := m_pCache.m_pGraphics.GetGraphics(hDC);
-
-    // is cache used? If not keep pointer in a smart pointer to auto-delete object on function ends
-    if (not g_GDIPlusCacheController.m_Graphics) then
-        paGraphics := TWSmartPointer<TGpGraphics>.Create(pGraphics);
 
     doUseAntialiasing := pOptions.AntiAliasing and (drawCorner or not IsCompletelyVisible(pOptions.Outline)
             or not doTransformRect);
@@ -5711,7 +5748,7 @@ begin
         if (not doUseAntialiasing and IsCompletelyVisible(pOptions.Outline)) then
         begin
             // draw outlined round rect without antialiasing correctly, as GDI+ is unable to do that
-            DrawNonAntialiasedSymmetricalRoundRect(hDC, rect, pOptions, iRect);
+            DrawNonAntialiasedSymmetricalRoundRect(pGraphics.GetHDC(), rect, pOptions, iRect);
             Exit(True);
         end;
 
@@ -5750,7 +5787,8 @@ begin
             // use antialiasing?
             if (not pOptions.AntiAliasing) then
                 // draw transparent round rect without outline correctly, as GDI+ is unable to do that
-                DrawTransparentRoundRectWithoutOutline(hDC, rect, pOptions, fillWithOutline, pGraphicPath)
+                DrawTransparentRoundRectWithoutOutline(pGraphics.GetHDC(), rect, pOptions, fillWithOutline,
+                        pGraphicPath)
             else
             begin
                 // do apply transformation matrix?

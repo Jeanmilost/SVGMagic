@@ -1424,6 +1424,14 @@ type
             }
             function GetLinkedElement(const pLink: TWSVGPropLink): TWSVGElement;
 
+            {**
+             Get linked child element
+             @param(pLink Link containing the element identifier to find)
+             @param(pRoot The root element to search from)
+             @returns(Linked child element, @nil if not found or on error)
+            }
+            function GetLinkedChildElement(const pLink: TWSVGPropLink; const pRoot: TWSVGContainer): TWSVGElement;
+
         protected
             m_Animate: Boolean;
 
@@ -3232,9 +3240,9 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGRasterizer.GetLinkedElement(const pLink: TWSVGPropLink): TWSVGElement;
 var
-    pParent:    TWSVGItem;
-    pContainer: TWSVGContainer;
-    pElement:   TWSVGElement;
+    pParent:                 TWSVGItem;
+    pContainer:              TWSVGContainer;
+    pElement, pChildElement: TWSVGElement;
 begin
     pParent := pLink;
 
@@ -3255,11 +3263,61 @@ begin
                 // found it?
                 if (Assigned(pElement)) then
                     Exit(pElement);
+
+                // search also the link in the linked element children
+                pChildElement := GetLinkedChildElement(pLink, pContainer);
+
+                if (Assigned(pChildElement)) then
+                begin
+                    Result := pChildElement;
+                    Exit;
+                end;
             end;
         end;
 
         // go to next parent
         pParent := pParent.Parent;
+    end;
+
+    // not found
+    Result := nil;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetLinkedChildElement(const pLink: TWSVGPropLink; const pRoot: TWSVGContainer): TWSVGElement;
+var
+    item:       TPair<UnicodeString, TWSVGElement>;
+    pContainer: TWSVGContainer;
+    pElement:   TWSVGElement;
+begin
+    if ((not Assigned(pRoot)) or (not Assigned(pLink))) then
+        Exit(nil);
+
+    // iterate through children references
+    for item in pRoot.DefsDict do
+    begin
+        if (item.Value is TWSVGContainer) then
+        begin
+            // get child as container
+            pContainer := item.Value as TWSVGContainer;
+
+            // found it?
+            if (Assigned(pContainer)) then
+            begin
+                // search for element in the child defs map
+                pElement := pContainer.Defs[pLink.Value];
+
+                // found it?
+                if (Assigned(pElement)) then
+                    Exit(pElement);
+
+                // continue to search in children's children
+                pElement := GetLinkedChildElement(pLink, pContainer);
+
+                // if a candidate was found, return it
+                if (Assigned(pElement)) then
+                    Exit(pElement);
+            end;
+        end;
     end;
 
     // not found

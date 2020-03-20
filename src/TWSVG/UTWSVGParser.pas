@@ -454,6 +454,7 @@ var
     pGroup:         TWSVGGroup;
     pSwitch:        TWSVGSwitch;
     pAction:        TWSVGAction;
+    pClipPath:      TWSVGClipPath;
     pRect:          TWSVGRect;
     pCircle:        TWSVGCircle;
     pEllipse:       TWSVGEllipse;
@@ -573,6 +574,34 @@ begin
                 pAction := nil;
             finally
                 pAction.Free;
+            end;
+        end
+        else
+        if (name = C_SVG_Tag_ClipPath) then
+        begin
+            pClipPath := nil;
+
+            try
+                // read clip path
+                pClipPath := TWSVGClipPath.Create(Self, m_pOptions);
+                Result    := pClipPath.Read(pChildNode) and Result;
+
+                // is item identifier empty?
+                if (not TWStringHelper.IsEmpty(pClipPath.ItemID)) then
+                begin
+                    // register the item
+                    if (not RegisterLink(pClipPath, m_pDefs, False)) then
+                        Exit(False);
+                end
+                else
+                begin
+                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pClipPath.ItemName);
+                    Exit(False);
+                end;
+
+                pClipPath := nil;
+            finally
+                pClipPath.Free;
             end;
         end
         else

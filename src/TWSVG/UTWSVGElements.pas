@@ -204,6 +204,11 @@ type
             property Defs[key: UnicodeString]: TWSVGElement read GetElementAtKey;
 
             {**
+             Get the defs dictionary
+            }
+            property DefsDict: IDefs read m_pDefs;
+
+            {**
              Get element at index. Example: element := Elements[0];
              @br @bold(NOTE) @nil will be returned if index is out of bounds
             }
