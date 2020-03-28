@@ -144,13 +144,17 @@ Scalable Vector Graphics (SVG) container, it's a SVG element that can contain ot
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#ElementCount">ElementCount</a></b>: NativeUInt <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetElementCount">GetElementCount</a>;</code></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#DefsDict">DefsDict</a></b>: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#m_pDefs">m_pDefs</a>;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#ElementList">ElementList</a></b>: <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#m_pElements">m_pElements</a>;</code></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#ElementCount">ElementCount</a></b>: NativeUInt <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetElementCount">GetElementCount</a>;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#ElementList">ElementList</a></b>: <a  href="UTWSVGItems.TWSVGElement.html#IElements">TWSVGElement.IElements</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#m_pElements">m_pElements</a>;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>property <b><a  href="UTWSVGElements.TWSVGContainer.html#Elements">Elements</a></b>[index:Integer]: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#GetElement">GetElement</a>;</code></td>
 </tr>
@@ -504,6 +508,16 @@ Get animation at index. Example: animation := Animations[0]; <br> <b>NOTE</b> <c
 <tr><td colspan="2">
 <p>
 Get element contained in the defs dictionary at the key. Example: element := Defs['key']; <br> <b>NOTE</b> <code>Nil</code> will be returned if the key doesn't exist</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DefsDict"></span><code>property <b>DefsDict</b>: <a  href="UTWSVGElements.TWSVGContainer.html#IDefs">IDefs</a> <a  href="UTWSVGElements.TWSVGContainer.html#Read">read</a> <a  href="UTWSVGElements.TWSVGContainer.html#m_pDefs">m_pDefs</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the defs dictionary</p>
 </td></tr>
 </table>
 <table class="detail wide_list">

@@ -109,63 +109,63 @@ GDI+ specialized renderer</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawPolygon">DrawPolygon</a></b>(const points: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#IGDIPlusPointList">IGDIPlusPointList</a>; const pStroke: <a  href="UTWFillAndStroke.TWStroke.html">TWStroke</a>; pGraphics: TGpGraphics; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>): Boolean; reintroduce; overload;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawPolygon">DrawPolygon</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pointList: <a  href="UTWRenderer.TWRenderer.html#IPointList">TWRenderer.IPointList</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IShapeOptions.html">TWRenderer.IShapeOptions</a>; hDC: THandle): Boolean; overload; override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawPolygon">DrawPolygon</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pointList: <a  href="UTWRenderer.TWRenderer.html#IPointList">TWRenderer.IPointList</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IShapeOptions.html">TWRenderer.IShapeOptions</a>; hDC: THandle): Boolean; overload; override;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawPolygon">DrawPolygon</a></b>(const points: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#IGDIPlusPointList">IGDIPlusPointList</a>; const pStroke: <a  href="UTWFillAndStroke.TWStroke.html">TWStroke</a>; pGraphics: TGpGraphics; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>): Boolean; reintroduce; overload;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawRect">DrawRect</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; hDC: THandle; out iRect: TRect): Boolean; override;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawRect">DrawRect</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; hDC: THandle; out iRect: TRect): Boolean; overload; override;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawRect">DrawRect</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; pGraphics: TGpGraphics; out iRect: TRect): Boolean; reintroduce; overload; virtual;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawRectangle">DrawRectangle</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pStroke: <a  href="UTWFillAndStroke.TWStroke.html">TWStroke</a>; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawString">DrawString</a></b>(const text: UnicodeString; const textPos: TGpPointF; pFont: TGpFont; const pFill: <a  href="UTWFillAndStroke.TWFill.html">TWFill</a>; pGraphics: TGpGraphics; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawText">DrawText</a></b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; hDC: THandle): Boolean; override;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#FillEllipse">FillEllipse</a></b>(x, y, width, height: Single; const pFill: <a  href="UTWFillAndStroke.TWFill.html">TWFill</a>; pGraphics: TGpGraphics; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#FillPath">FillPath</a></b>(pPath: TGpGraphicsPath; const pFill: <a  href="UTWFillAndStroke.TWFill.html">TWFill</a>; pGraphics: TGpGraphics; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#FillPolygon">FillPolygon</a></b>(const points: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#IGDIPlusPointList">IGDIPlusPointList</a>; const pFill: <a  href="UTWFillAndStroke.TWFill.html">TWFill</a>; pGraphics: TGpGraphics; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#FillRectangle">FillRectangle</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pFill: <a  href="UTWFillAndStroke.TWFill.html">TWFill</a>; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>class function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GdiplusStatusToStr">GdiplusStatusToStr</a></b>(status: GpStatus): UnicodeString; static;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GetBrush">GetBrush</a></b>(const color: <a  href="UTWColor.TWColor.html">TWColor</a>): TGpBrush; overload; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GetBrush">GetBrush</a></b>(const pFill: <a  href="UTWFillAndStroke.TWFill.html">TWFill</a>; const pGradientFactory: <a  href="UTWGDIPlusGradient.TWGDIPlusGradient.html">TWGDIPlusGradient</a>): TGpBrush; overload; virtual;</code></td>
 </tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GetCaps">GetCaps</a></b>: <a  href="UTWRenderer.TWRenderer.html#IDrawCaps">TWRenderer.IDrawCaps</a>; override;</code></td>
-</tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GetPen">GetPen</a></b>(const pStroke: <a  href="UTWFillAndStroke.TWStroke.html">TWStroke</a>; const pGradientFactory: <a  href="UTWGDIPlusGradient.TWGDIPlusGradient.html">TWGDIPlusGradient</a>): TGpPen; overload; virtual;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GetCaps">GetCaps</a></b>: <a  href="UTWRenderer.TWRenderer.html#IDrawCaps">TWRenderer.IDrawCaps</a>; override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -173,145 +173,149 @@ GDI+ specialized renderer</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GetTextSize">GetTextSize</a></b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; hDC: THandle; pCharacters: PInteger = nil; pLines: PInteger = nil): <a  href="UTWSize.html#TWSizeF">TWSizeF</a>; override;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GetPen">GetPen</a></b>(const pStroke: <a  href="UTWFillAndStroke.TWStroke.html">TWStroke</a>; const pGradientFactory: <a  href="UTWGDIPlusGradient.TWGDIPlusGradient.html">TWGDIPlusGradient</a>): TGpPen; overload; virtual;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GetTextSize">GetTextSize</a></b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; hDC: THandle; pCharacters: PInteger = nil; pLines: PInteger = nil): <a  href="UTWSize.html#TWSizeF">TWSizeF</a>; override;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#GetToken">GetToken</a></b>: ULONG_PTR; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#AddBottomTailToPath">AddBottomTailToPath</a></b>(const rect: TRect; const pTail: <a  href="UTWRenderer.TWRenderer.ITailOptions.html">TWRenderer.ITailOptions</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#AddLeftBottomCornerToPath">AddLeftBottomCornerToPath</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const radius: TPoint; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#AddLeftTailToPath">AddLeftTailToPath</a></b>(const rect: TRect; const pTail: <a  href="UTWRenderer.TWRenderer.ITailOptions.html">TWRenderer.ITailOptions</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#AddLeftTopCornerToPath">AddLeftTopCornerToPath</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const radius: TPoint; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#AddRightBottomCornerToPath">AddRightBottomCornerToPath</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const radius: TPoint; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#AddRightTailToPath">AddRightTailToPath</a></b>(const rect: TRect; const pTail: <a  href="UTWRenderer.TWRenderer.ITailOptions.html">TWRenderer.ITailOptions</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#AddRightTopCornerToPath">AddRightTopCornerToPath</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const radius: TPoint; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#AddTopTailToPath">AddTopTailToPath</a></b>(const rect: TRect; const pTail: <a  href="UTWRenderer.TWRenderer.ITailOptions.html">TWRenderer.ITailOptions</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#ConvertMaskToRGBA">ConvertMaskToRGBA</a></b>(const color: <a  href="UTWColor.TWColor.html">TWColor</a>; pMask, pResult: Vcl.Graphics.TBitmap): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#CreateCartoonBubble">CreateCartoonBubble</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pTail: <a  href="UTWRenderer.TWRenderer.ITailOptions.html">TWRenderer.ITailOptions</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pPath: TGpGraphicsPath; out clientRect: TRect): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#CreateRoundedRect">CreateRoundedRect</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#CreateRoundedRectDS">CreateRoundedRectDS</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; reset: Boolean; pPath: TGpGraphicsPath): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawBottomTail">DrawBottomTail</a></b>(pPen: TGpPen; const rect: TRect; const pTail: <a  href="UTWRenderer.TWRenderer.ITailOptions.html">TWRenderer.ITailOptions</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawCartoonBubble">DrawCartoonBubble</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; hDC: THandle; out iRect: TRect): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawLeftBottomCorner">DrawLeftBottomCorner</a></b>(pPen: TGpPen; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const radius: TPoint; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawLeftTail">DrawLeftTail</a></b>(pPen: TGpPen; const rect: TRect; const pTail: <a  href="UTWRenderer.TWRenderer.ITailOptions.html">TWRenderer.ITailOptions</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawLeftTopCorner">DrawLeftTopCorner</a></b>(pPen: TGpPen; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const radius: TPoint; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawRightBottomCorner">DrawRightBottomCorner</a></b>(pPen: TGpPen; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const radius: TPoint; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawRightTail">DrawRightTail</a></b>(pPen: TGpPen; const rect: TRect; const pTail: <a  href="UTWRenderer.TWRenderer.ITailOptions.html">TWRenderer.ITailOptions</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawRightTopCorner">DrawRightTopCorner</a></b>(pPen: TGpPen; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const radius: TPoint; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawRoundedRect">DrawRoundedRect</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; pPen: TGpPen; const pMatrix: TGpMatrix; pGraphics: TGpGraphics; out iRect: TRect): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawTopTail">DrawTopTail</a></b>(pPen: TGpPen; const rect: TRect; const pTail: <a  href="UTWRenderer.TWRenderer.ITailOptions.html">TWRenderer.ITailOptions</a>; const pRadius: <a  href="UTWRenderer.TWRenderer.IRadius.html">TWRenderer.IRadius</a>; pGraphics: TGpGraphics): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#FillRoundedRect">FillRoundedRect</a></b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; pBrush: TGpBrush; pPen: TGpPen; const pMatrix: TGpMatrix; pGraphics: TGpGraphics; out iRect: TRect): Boolean; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#MeasureTextPadding">MeasureTextPadding</a></b>(const text: UnicodeString; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; measureType: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#IEPaddingMeasureType">IEPaddingMeasureType</a>; pFont: TGpFont; pFormat: TGpStringFormat): <a  href="UTWPadding.html#TWPaddingI">TWPaddingI</a>; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#BeginScene">BeginScene</a></b>(hDC: THandle); override;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawImage">DrawImage</a></b>(const pGraphic: TGraphic; const srcRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; hDC: THandle; const destRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IImageOptions.html">TWRenderer.IImageOptions</a>); override;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#EndScene">EndScene</a></b>; override;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#LinkGDIRenderer">LinkGDIRenderer</a></b>(pRenderer: <a  href="UTWRenderer_GDI.TWRenderer_GDI.html">TWRenderer_GDI</a>); virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#ConfigTextDraw">ConfigTextDraw</a></b>(hDC: THandle; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; pGraphics: TGpGraphics; ppGdiPlusFont: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#PPGpFont">PPGpFont</a>; ppBrush: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#PPGpBrush">PPGpBrush</a>; ppFormat: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#PPGpStringFormat">PPGpStringFormat</a>); virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawNonAntialiasedSymmetricalRoundRect">DrawNonAntialiasedSymmetricalRoundRect</a></b>(hDC: THandle; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; out iRect: TRect); virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawTransparentRoundRectWithoutOutline">DrawTransparentRoundRectWithoutOutline</a></b>(hDC: THandle; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; fillWithOutline: Boolean; pPath: TGpGraphicsPath); virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#OutlineRect">OutlineRect</a></b>(pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; const drawRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const maxSize: <a  href="UTWSize.html#TWSizeF">TWSizeF</a>; pGraphics: TGpGraphics); overload; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#OutlineRect">OutlineRect</a></b>(pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; const drawRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const maxSize: <a  href="UTWSize.html#TWSizeF">TWSizeF</a>; pPen: TGpPen; pGraphics: TGpGraphics); overload; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#ToGDIPlusPointList">ToGDIPlusPointList</a></b>(const pointList: <a  href="UTWRenderer.TWRenderer.html#IPointList">TWRenderer.IPointList</a>; out gdiPlusPointList: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#IGDIPlusPointList">IGDIPlusPointList</a>; out boundingBox: <a  href="UTWRect.html#TWRectF">TWRectF</a>); virtual;</code></td>
 </tr>
@@ -631,28 +635,6 @@ Draw a path. It's a wrapper around the GDI+ DrawPath() that supports the radial 
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="DrawPolygon"></span><code>function <b>DrawPolygon</b>(const points: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#IGDIPlusPointList">IGDIPlusPointList</a>; const pStroke: <a  href="UTWFillAndStroke.TWStroke.html">TWStroke</a>; pGraphics: TGpGraphics; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>): Boolean; reintroduce; overload;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Draw a polygon. It's a wrapper around the GDI+ DrawPolygon() that supports the radial wrapping     </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>points</dt>
-<dd>Point list composing the polygon</dd>
-<dt>pStroke</dt>
-<dd>Stroke options</dd>
-<dt>pGraphics</dt>
-<dd>GDI+ graphics on which the polygon will be drawn</dd>
-<dt>rect</dt>
-<dd>Rect surrounding the polygon</dd>
-</dl>
-<h6 class="description_section">Returns</h6>
-<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><span id="DrawPolygon"></span><code>function <b>DrawPolygon</b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pointList: <a  href="UTWRenderer.TWRenderer.html#IPointList">TWRenderer.IPointList</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IShapeOptions.html">TWRenderer.IShapeOptions</a>; hDC: THandle): Boolean; overload; override;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -675,7 +657,29 @@ Draw polygon     </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="DrawRect"></span><code>function <b>DrawRect</b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; hDC: THandle; out iRect: TRect): Boolean; override;</code></td>
+<td class="itemcode"><span id="DrawPolygon"></span><code>function <b>DrawPolygon</b>(const points: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#IGDIPlusPointList">IGDIPlusPointList</a>; const pStroke: <a  href="UTWFillAndStroke.TWStroke.html">TWStroke</a>; pGraphics: TGpGraphics; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>): Boolean; reintroduce; overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw a polygon. It's a wrapper around the GDI+ DrawPolygon() that supports the radial wrapping     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>points</dt>
+<dd>Point list composing the polygon</dd>
+<dt>pStroke</dt>
+<dd>Stroke options</dd>
+<dt>pGraphics</dt>
+<dd>GDI+ graphics on which the polygon will be drawn</dd>
+<dt>rect</dt>
+<dd>Rect surrounding the polygon</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawRect"></span><code>function <b>DrawRect</b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; hDC: THandle; out iRect: TRect): Boolean; overload; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -688,6 +692,28 @@ Draw rectangle      <br> <b>NOTE</b> WARNING internal rectangle isn't transforme
 <dd>Rectangle paint options</dd>
 <dt>hDC</dt>
 <dd>Device context handle</dd>
+<dt>iRect</dt>
+<dd><b>[out]</b> Internal rectangle (inside outline)</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawRect"></span><code>function <b>DrawRect</b>(const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; pGraphics: TGpGraphics; out iRect: TRect): Boolean; reintroduce; overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw rectangle      <br> <b>NOTE</b> WARNING internal rectangle isn't transformed by matrix</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>rect</dt>
+<dd>Rectangle area to draw</dd>
+<dt>pOptions</dt>
+<dd>Rectangle paint options</dd>
+<dt>pGraphics</dt>
+<dd>Gdi+ graphics to draw to</dd>
 <dt>iRect</dt>
 <dd><b>[out]</b> Internal rectangle (inside outline)</dd>
 </dl>
@@ -918,24 +944,6 @@ Get supported draw capabilities </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="GetPen"></span><code>function <b>GetPen</b>(const pStroke: <a  href="UTWFillAndStroke.TWStroke.html">TWStroke</a>; const pGradientFactory: <a  href="UTWGDIPlusGradient.TWGDIPlusGradient.html">TWGDIPlusGradient</a>): TGpPen; overload; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get pen from cache, add it if not found   </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>pStroke</dt>
-<dd>Stroke matching with the pen to find</dd>
-<dt>gradientFactory</dt>
-<dd><b>[in, out]</b> The gradient factory used to generate the brush</dd>
-</dl>
-<h6 class="description_section">Returns</h6>
-<p class="return">GDI+ pen</p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><span id="GetPen"></span><code>function <b>GetPen</b>(const color: <a  href="UTWColor.TWColor.html">TWColor</a>; width: Single): TGpPen; overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -947,6 +955,24 @@ Get solid pen from cache, add it if not found   </p>
 <dd>Pen color</dd>
 <dt>width</dt>
 <dd>Pen width</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">GDI+ pen</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetPen"></span><code>function <b>GetPen</b>(const pStroke: <a  href="UTWFillAndStroke.TWStroke.html">TWStroke</a>; const pGradientFactory: <a  href="UTWGDIPlusGradient.TWGDIPlusGradient.html">TWGDIPlusGradient</a>): TGpPen; overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get pen from cache, add it if not found   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pStroke</dt>
+<dd>Stroke matching with the pen to find</dd>
+<dt>gradientFactory</dt>
+<dd><b>[in, out]</b> The gradient factory used to generate the brush</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return">GDI+ pen</p></td></tr>
