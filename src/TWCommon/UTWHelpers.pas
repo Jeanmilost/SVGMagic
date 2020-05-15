@@ -501,6 +501,16 @@ type
              @returns(Normalized number)
             }
             class function Normalize(number, limit: Integer; out loops: Integer): Integer; inline; static;
+
+            {**
+             Check if the multiplier of a product can be found and get it if yes
+             @param(multiplicand The multiplicand number)
+             @param(product The multiplication product)
+             @param(multiplier @bold([out]) the multiplier, if function success)
+             @returns(@True if a multiplier can be found, otherwise @False)
+            }
+            class function CheckAndGetMuliplier(multiplicand, product: NativeUInt;
+                    out multiplier: NativeUInt): Boolean; inline; static;
     end;
 
     {**
@@ -2725,6 +2735,25 @@ begin
         loops  := Result div limit;
         Result := Result mod limit;
     end;
+end;
+//---------------------------------------------------------------------------
+class function TWMathHelper.CheckAndGetMuliplier(multiplicand, product: NativeUInt;
+        out multiplier: NativeUInt): Boolean;
+begin
+    if (product = 0) then
+    begin
+        multiplier := 0;
+        Exit(True);
+    end;
+
+    if (multiplicand = 0) then
+        Exit(False);
+
+    if ((product mod multiplicand) <> 0) then
+        Exit(False);
+
+    multiplier := product div multiplicand;
+    Result     := True;
 end;
 //---------------------------------------------------------------------------
 // TWSystemHelper

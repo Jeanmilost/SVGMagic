@@ -27,14 +27,22 @@ type
             IValues = array of T;
 
         private
-            m_Values:          IValues;
-            m_MatrixSeparator: WideChar;
+            m_Values:           IValues;
+            m_MatrixSeparator:  WideChar;
+            m_GroupCount:       NativeUInt;
+            m_ValPerGroupCount: NativeUInt;
 
             {**
              Check if value list is a matrix animation value list
              @returns(@true if value list is a matrix animation value list, otherwise @false)
             }
             function IsMatrixAnimMode: Boolean;
+
+            {**
+             Count the number of groups and the number of values contained in a group
+             @param(data Data to parse)
+            }
+            procedure CountGroupsAndValues(const data: UnicodeString);
 
         protected
             {**
@@ -130,6 +138,16 @@ type
              Get the values count
             }
             property Count: Integer read GetValueCount;
+
+            {**
+             Get the group count
+            }
+            property GroupCount: NativeUInt read m_GroupCount;
+
+            {**
+             Get the values per groups count
+            }
+            property ValuePerGroupCount: NativeUInt read m_ValPerGroupCount;
     end;
 
 implementation
@@ -138,7 +156,9 @@ constructor TWSVGAttribute<T>.Create(pParent: TWSVGItem; pOptions: PWSVGOptions)
 begin
     inherited Create(pParent, pOptions);
 
-    m_MatrixSeparator := ' ';
+    m_MatrixSeparator  := ' ';
+    m_GroupCount       := 0;
+    m_ValPerGroupCount := 0;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGAttribute<T>.Destroy;
@@ -152,6 +172,35 @@ begin
         Exit(False);
 
     Result := (Length(m_Values) = 6);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGAttribute<T>.CountGroupsAndValues;
+var
+    i: NativeUInt;
+begin
+    m_GroupCount := 1;
+
+    // ';' separators are normally used to delimit groups, so count them (may be important later
+    // for some animations)
+    for i := 1 to Length(data) do
+        if (data[i] = ';') then
+            Inc(m_GroupCount);
+
+    // certify that the last separator isn't a ';', otherwise this may bias the group count
+    for i := Length(data) downto 1 do
+    begin
+        if ((data[i] >= '0') and (data[i] <= '9')) then
+            break;
+
+        if (data[i] = ';') then
+            Dec(m_GroupCount);
+    end;
+
+    // calculate the number of values per groups
+    if (m_GroupCount > 1) then
+        m_ValPerGroupCount := NativeUInt(Length(m_Values)) div m_GroupCount
+    else
+        m_ValPerGroupCount := Length(m_Values);
 end;
 //---------------------------------------------------------------------------
 function TWSVGAttribute<T>.GetValue(index: Integer): T;
@@ -185,6 +234,10 @@ begin
     // get source object
     pSource := pOther as TWSVGAttribute<T>;
 
+    // copy the values
+    m_GroupCount       := pSource.m_GroupCount;
+    m_ValPerGroupCount := pSource.m_ValPerGroupCount;
+
     // resize the value list
     SetLength(m_Values, Length(pSource.m_Values));
 
@@ -202,6 +255,10 @@ procedure TWSVGAttribute<T>.Clear;
 begin
     inherited Clear;
 
+    // clear the values
+    m_GroupCount       := 0;
+    m_ValPerGroupCount := 0;
+
     SetLength(m_Values, 0);
 end;
 //---------------------------------------------------------------------------
@@ -211,6 +268,8 @@ begin
 end;
 //---------------------------------------------------------------------------
 function TWSVGAttribute<T>.Parse(const data: UnicodeString): Boolean;
+var
+    i: NativeUInt;
 begin
     // no value? (none is sometimes used to indicate that a particular attribute is not used, e.g.
     // stroke-dasharray="none" means that stroke not use dash array at all)
@@ -225,6 +284,8 @@ begin
     {$else}
         Result := TWSVGCommon.ExtractValues<T>(data, m_Values);
     {$ifend}
+
+    CountGroupsAndValues(data);
 end;
 //---------------------------------------------------------------------------
 function TWSVGAttribute<T>.Parse_Unoptimized(const data: UnicodeString): Boolean;
@@ -301,6 +362,8 @@ begin
         SetLength(m_Values, Length(m_Values) + 1);
         m_Values[Length(m_Values) - 1] := valToConvert.AsType<T>;
     end;
+
+    CountGroupsAndValues(data);
 
     Result := True;
 end;

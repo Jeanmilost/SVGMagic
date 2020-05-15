@@ -3223,7 +3223,7 @@ begin
     finalPos := clearingVal + localPos;
 
     // animation was looped? (NOTE rounded to 4 digits after the dot because rounding errors could
-    // bias the claculation, and thus create jerks during the animation)
+    // bias the calculation, and thus create jerks during the animation)
     if (RoundTo(finalPos, -4) < RoundTo(lastPos, -4)) then
     begin
         // recalculate new clearing value and final position
@@ -7041,6 +7041,10 @@ begin
                         // iterate through all values
                         for j := 0 to valueCount - 1 do
                             pValueDesc.AddValue(pValues.Values[j]);
+
+                        // copy the group count and values per group count
+                        pValueDesc.GroupCount         := pValues.GroupCount;
+                        pValueDesc.ValuePerGroupCount := pValues.ValuePerGroupCount;
                     end
                 end;
 
@@ -7072,6 +7076,10 @@ begin
                         // iterate through all values
                         for j := 0 to valueCount - 1 do
                             pMatrixDesc.AddValue(pValues.Values[j]);
+
+                        // copy the group count and values per group count
+                        pMatrixDesc.GroupCount         := pValues.GroupCount;
+                        pMatrixDesc.ValuePerGroupCount := pValues.ValuePerGroupCount;
                     end
                 end;
 

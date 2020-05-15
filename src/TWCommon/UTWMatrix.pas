@@ -187,6 +187,13 @@ type
             function Scale(const s: TWVector2): TWMatrix3x3; inline;
 
             {**
+             Shear matrix
+             @param(s Shear vector)
+             @returns(Copy of sheared matrix)
+            }
+            function Shear(const s: TWVector2): TWMatrix3x3; inline;
+
+            {**
              Transform a vector using matrix
              @param(vector Vector to transform)
              @returns(transformed vector)
@@ -385,6 +392,22 @@ begin
     m_Table[0][0] := m_Table[0][0] * s.X; m_Table[1][0] := m_Table[1][0] * s.Y;
     m_Table[0][1] := m_Table[0][1] * s.X; m_Table[1][1] := m_Table[1][1] * s.Y;
     m_Table[0][2] := m_Table[0][2] * s.X; m_Table[1][2] := m_Table[1][2] * s.Y;
+
+    Result.Assign(Self);
+end;
+//------------------------------------------------------------------------------
+function TWMatrix3x3.Shear(const s: TWVector2): TWMatrix3x3;
+var
+    matrix: TWMatrix3x3;
+begin
+    // create rotation matrix
+    matrix.SetIdentity;
+
+    matrix.m_Table[0][0] := 1.0; matrix.m_Table[1][0] := s.X;
+    matrix.m_Table[0][1] := s.Y; matrix.m_Table[1][1] := 1.0;
+
+    // combine current matrix with shear matrix
+    Assign(matrix.Multiply(Self));
 
     Result.Assign(Self);
 end;

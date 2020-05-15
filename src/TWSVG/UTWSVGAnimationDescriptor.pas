@@ -32,6 +32,8 @@ type
             m_pDuration:        TWSimpleTime;
             m_KeySplines:       IKeyList;
             m_KeyTimes:         IKeyList;
+            m_GroupCount:       NativeUInt;
+            m_ValPerGroupCount: NativeUInt;
             m_RepeatCount:      NativeUInt;
             m_PartialCount:     NativeUInt;
             m_DoLoop:           Boolean;
@@ -40,7 +42,6 @@ type
             m_NegativeDuration: Boolean;
             m_CalcMode:         TWSVGAnimation.IPropCalcMode.IECalcModeType;
             m_AdditiveMode:     TWSVGAnimation.IPropAdditiveMode.IEType;
-
 
         protected
             {**
@@ -116,6 +117,16 @@ type
             property KeyTimes: IKeyList read m_KeyTimes;
 
             {**
+             Get or set the group count
+            }
+            property GroupCount: NativeUInt read m_GroupCount write m_GroupCount;
+
+            {**
+             Get or set the values per groups count
+            }
+            property ValuePerGroupCount: NativeUInt read m_ValPerGroupCount write m_ValPerGroupCount;
+
+            {**
              Get or set the repeat count
             }
             property RepeatCount: NativeUInt read m_RepeatCount write m_RepeatCount;
@@ -169,15 +180,6 @@ type
             m_By:     IValues;
             m_Values: IValues;
 
-        protected
-            {**
-             Get animation length (in case from and to represent a distance)
-             @param(position Animation position in percent (between 0.0 and 1.0))
-             @returns(Animation length)
-             @raises(Exception on error)
-            }
-            function GetLength(position: Double): Double; virtual;
-
         public
             {**
              Constructor
@@ -195,7 +197,19 @@ type
              @returns(Animated value at position, the unit is dependent of animation type)
              @raises(Exception on error)
             }
-            function GetValueAt(position: Double): Double; virtual;
+            function GetValueAt(position: Double): Double; overload; virtual;
+
+            {**
+             Get animated values at position
+             @param(position Animation position in percent (between 0.0 and 1.0))
+             @param(values Value array to get from)
+             @param(frameCount - the number of values the frame should contain, in case the animation contains no key list)
+             @returns(Animated values at position, the unit is dependent of animation type)
+             @raises(Exception on error)
+             @br @bold(NOTE) If animation uses key times, value array length may be equal to
+                             or a multiple of key time array length
+            }
+            function GetValuesAt(position: Double; values: IValues; frameCount: NativeUInt): IValues; overload; virtual;
 
             {**
              Add "from" animation value to list
@@ -457,6 +471,8 @@ begin
     m_pBegin           := TWSimpleTime.Create;
     m_pEnd             := TWSimpleTime.Create;
     m_pDuration        := TWSimpleTime.Create;
+    m_GroupCount       := 0;
+    m_ValPerGroupCount := 0;
     m_RepeatCount      := 0;
     m_PartialCount     := 0;
     m_DoLoop           := False;
@@ -532,220 +548,202 @@ begin
     inherited Destroy;
 end;
 //---------------------------------------------------------------------------
-function TWSVGValueAnimDesc.GetLength(position: Double): Double;
-var
-    keyTimeCount, valueCount, i, startIndex, endIndex, fromCount, toCount: NativeUInt;
-    curPos:                                                                Double;
-begin
-    keyTimeCount := Length(m_KeyTimes);
-    valueCount   := Length(m_Values);
-
-    // key time are used?
-    if (keyTimeCount > 0) then
-    begin
-        // value list defined? (value list take precedence over from/to/by values, see:
-        // https://www.w3.org/TR/2001/REC-smil-animation-20010904/#ValuesAttribute)
-        if (valueCount > 0) then
-        begin
-            // key time count must always be the same as value count
-            Assert(keyTimeCount = valueCount);
-
-            // value list contains only one value
-            if (valueCount = 1) then
-                Exit(m_Values[0]);
-
-            curPos := Min(position, 1.0);
-
-            // iterate through animation keys
-            for i := 0 to keyTimeCount - 2 do
-                // found current key?
-                if ((curPos >= m_KeyTimes[i]) and (curPos <= m_KeyTimes[i + 1])) then
-                begin
-                    // calculate start and end indexes for which distance should be found
-                    startIndex := i;
-                    endIndex   := i + 1;
-
-                    // calculate length between values
-                    Exit(m_Values[endIndex] - m_Values[startIndex]);
-                end;
-
-            // should never happen because current position should always be found between key times
-            raise Exception.Create('Could not calculate animation length from keytimes');
-        end;
-
-        // not sure exactly how this particular animation works, need to wait for a concrete example
-        raise Exception.Create('NOT IMPLEMENTED');
-        {
-        // if from/to values are used, key times must always contain 2 values, see:
-        // https://www.w3.org/TR/SVG/animate.html#KeyTimesAttribute
-        Assert(keyTimeCount = 2);
-
-        fromCount := Length(m_From);
-        toCount   := Length(m_To);
-        }
-    end;
-
-    // value list defined? (value list take precedence over from/to/by values, see:
-    // https://www.w3.org/TR/2001/REC-smil-animation-20010904/#ValuesAttribute)
-    if (valueCount > 0) then
-    begin
-        // only one value?
-        if (valueCount = 1) then
-            Exit(m_Values[0]);
-
-        // calculate value start index to use
-        startIndex := Floor((valueCount - 1) * position);
-
-        // calculate value end index to use
-        if (startIndex + 1 >= valueCount) then
-            endIndex := 0
-        else
-            endIndex := startIndex + 1;
-
-        // calculate length between values
-        Exit(m_Values[endIndex] - m_Values[startIndex]);
-    end;
-
-    fromCount := Length(m_From);
-    toCount   := Length(m_To);
-
-    // animation from and to properties should always contain the same number of values
-    Assert(fromCount = toCount);
-
-    // no animation available if from/to list are also empty
-    if (fromCount = 0) then
-        Exit(0.0);
-
-    // calculate animation length (should always be the first element of the both from and to list)
-    Result := (m_To[0] - m_From[0]);
-end;
-//---------------------------------------------------------------------------
 function TWSVGValueAnimDesc.GetValueAt(position: Double): Double;
 var
-    keyTimeCount, valueCount, i, index, startIndex, endIndex {, fromCount, toCount}: NativeUInt;
-    curPos, progression, relativePos, animLength, deltaTime, posBetween:             Double;
+    valueCount:     NativeUInt;
+    fromPos, toPos: Double;
+    values:         IValues;
 begin
-    keyTimeCount := Length(m_KeyTimes);
-    valueCount   := Length(m_Values);
-
-    // key time are used?
-    if (keyTimeCount > 0) then
-    begin
-        // value list defined? (value list take precedence over from/to/by values, see:
-        // https://www.w3.org/TR/2001/REC-smil-animation-20010904/#ValuesAttribute)
-        if (valueCount > 0) then
-        begin
-            // key time count should be the same as value count
-            Assert(keyTimeCount = valueCount);
-
-            // value list contains only one value
-            if (valueCount = 1) then
-                Exit(m_Values[0]);
-
-            curPos := Min(position, 1.0);
-
-            // iterate through animation keys
-            for i := 0 to keyTimeCount - 2 do
-                // found current key?
-                if ((curPos >= m_KeyTimes[i]) and (curPos <= m_KeyTimes[i + 1])) then
-                begin
-                    // calculate start and end indexes to interpolate
-                    startIndex := i;
-                    endIndex   := i + 1;
-
-                    // animations governed by time keys are in fact divided into several segments.
-                    // Each values in the key time list represent the time where the animation
-                    // should start and end. These values are paired with the values list, that
-                    // represent the start and end positions the animated segment should reach. As
-                    // the received position is relative to the whole animation, it must be
-                    // converted to indicate which percent of the segment is currently processed.
-                    // For example, a segment beginning on 22% of the total time and ending on 44%
-                    // is 50% processed if the received position is equal to 33%
-                    //
-                    // --------------------------------------¦------------------------------------------------------------------
-                    // |                                     ¦    Total time = 100%                                            |
-                    // |-------------------------------------¦-----------------------------------------------------------------|
-                    // | Seg. 1 from 0% to 22% | Seg. 2 from 22% to 44% | Seg. 3 from 44% to 100%                              |
-                    // |                       |             ¦          |                                                      |
-                    // |-----------------------|-------------¦----------|------------------------------------------------------|
-                    //                                       ¦
-                    //                                       ¦ position = 33%, pos in segment2 = 50%
-                    //
-                    deltaTime  := (m_KeyTimes[endIndex] - m_KeyTimes[startIndex]);
-                    posBetween := (curPos - m_KeyTimes[startIndex]) / deltaTime;
-
-                    // search for calculation mode
-                    case (m_CalcMode) of
-                        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear: progression := posBetween;
-                        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline: progression := GetBezierProgression(startIndex, posBetween);
-                    else
-                        raise Exception.CreateFmt('Unknown calculation mode - %d', [Integer(m_CalcMode)]);
-                    end;
-
-                    // calculate relative animation position (i.e. animation between key frames)
-                    relativePos := (m_Values[endIndex] - m_Values[startIndex]) * progression;
-
-                    // calculate animation length between keys
-                    Exit(m_Values[startIndex] + relativePos);
-                end;
-
-            // should never happen because current position should always be found between key times
-            raise Exception.Create('Malformed animation key');
-        end;
-
-        // not sure exactly how this particular animation works, need to wait for a concrete example
-        raise Exception.Create('NOT IMPLEMENTED');
-
-        {
-        // if from/to values are used, key times must always contain 2 values, see:
-        // https://www.w3.org/TR/SVG/animate.html#KeyTimesAttribute
-        Assert(keyTimeCount = 2);
-
-        fromCount := Length(m_From);
-        toCount   := Length(m_To);
-        }
-    end;
+    valueCount := Length(m_Values);
 
     // value list defined? (value list take precedence over from/to/by values, see:
     // https://www.w3.org/TR/2001/REC-smil-animation-20010904/#ValuesAttribute)
     if (valueCount > 0) then
     begin
-        // only one value?
-        if (valueCount = 1) then
-            Exit(m_Values[0]);
+        values := GetValuesAt(position, m_Values, 1);
 
-        // calculate value index to use and position in % between 2 indexes
-        index      := Floor((valueCount - 1) * position);
-        animLength := 1.0 / (valueCount - 1);
+        // for single values, the result should contain only one item
+        if (Length(values) <> 1) then
+            raise Exception.CreateFmt('Incorrect value count - %d', [Integer(Length(values))]);
 
-        if (animLength > 0.0) then
-            posBetween := TWMathHelper.ExtMod(position, animLength) / animLength
-        else
-            posBetween := 0.0;
-
-        Assert(index < valueCount);
-
-        // search for calculation mode
-        case (m_CalcMode) of
-            TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear: progression := posBetween;
-            TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline: progression := GetBezierProgression(index, posBetween);
-        else
-            raise Exception.CreateFmt('Unknown calculation mode - %d', [Integer(m_CalcMode)]);
-        end;
-
-        // calculate relative animation position
-        relativePos := (GetLength(position) * progression);
-
-        // calculate animation length from start point to middle point
-        Exit(m_Values[index] + relativePos);
+        Exit(values[0]);
     end;
 
-    // no animation available if from list is also empty
-    if (Length(m_From) = 0) then
-        Exit(0.0);
+    // in case this happen:
+    // https://www.w3.org/TR/2001/REC-smil-animation-20010904/#ByAttribute
+    if (Length(m_By) > 0) then
+        raise Exception.Create('Unsupported by animation');
+
+    values := GetValuesAt(position, m_From, 1);
+
+    // for single values, the result should contain only one item
+    if (Length(values) <> 1) then
+        raise Exception.CreateFmt('Incorrect from value count - %d', [Integer(Length(values))]);
+
+    fromPos := values[0];
+    values  := GetValuesAt(position, m_To, 1);
+
+    // for single values, the result should contain only one item
+    if (Length(values) <> 1) then
+        raise Exception.CreateFmt('Incorrect to value count - %d', [Integer(Length(values))]);
+
+    toPos := values[0];
 
     // calculate animation position
-    Result := m_From[0] + (position * GetLength(position));
+    Result := fromPos + (position * (toPos - fromPos));
+end;
+//---------------------------------------------------------------------------
+function TWSVGValueAnimDesc.GetValuesAt(position: Double; values: IValues; frameCount: NativeUInt): IValues;
+var
+    keyTimeCount,
+    valueCount,
+    resultCount,
+    i,
+    j,
+    index,
+    startIndex,
+    endIndex,
+    frameIndex,
+    curStart,
+    curEnd:       NativeUInt;
+    curPos,
+    indexCount,
+    progression,
+    relativePos,
+    deltaTime,
+    posBetween,
+    timePerFrame: Double;
+begin
+    valueCount := Length(values);
+
+    // value list contains no values, or only one value?
+    if (valueCount = 0) then
+        Exit
+    else
+    if (valueCount = 1) then
+    begin
+        SetLength(Result, 1);
+        Result[0] := values[0];
+        Exit;
+    end;
+
+    keyTimeCount := Length(m_KeyTimes);
+
+    // key time are used?
+    if (keyTimeCount > 0) then
+    begin
+        // check if the key time count is a multiplier of the value count and find
+        // how many values should be get by key time
+        if (not TWMathHelper.CheckAndGetMuliplier(keyTimeCount, valueCount, resultCount)) then
+        begin
+            TWLogHelper.LogToCompiler('Malformed animation - the value count does not match with the key time count - value count - '
+                    + IntToStr(valueCount) + ' - key time count - ' + IntToStr(keyTimeCount));
+            Exit;
+        end;
+
+        curPos := Min(position, 1.0);
+
+        // iterate through animation keys
+        for i := 0 to keyTimeCount - 2 do
+            // found current key?
+            if ((curPos >= m_KeyTimes[i]) and (curPos <= m_KeyTimes[i + 1])) then
+            begin
+                // calculate start and end indexes to interpolate
+                startIndex := i;
+                endIndex   := i + 1;
+
+                // animations governed by time keys are in fact divided into several segments.
+                // Each values in the key time list represent the time where the animation
+                // should start and end. These values are paired with the values list, that
+                // represent the start and end positions the animated segment should reach. As
+                // the received position is relative to the whole animation, it must be
+                // converted to indicate which percent of the segment is currently processed.
+                // For example, a segment beginning on 22% of the total time and ending on 44%
+                // is 50% processed if the received position is equal to 33%
+                //
+                // --------------------------------------¦------------------------------------------------------------------
+                // |                                     ¦    Total time = 100%                                            |
+                // |-------------------------------------¦-----------------------------------------------------------------|
+                // | Seg. 1 from 0% to 22% | Seg. 2 from 22% to 44% | Seg. 3 from 44% to 100%                              |
+                // |                       |             ¦          |                                                      |
+                // |-----------------------|-------------¦----------|------------------------------------------------------|
+                //                                       ¦
+                //                                       ¦ position = 33%, pos in segment2 = 50%
+                //
+                deltaTime  := (m_KeyTimes[endIndex] - m_KeyTimes[startIndex]);
+                posBetween := (curPos - m_KeyTimes[startIndex]) / deltaTime;
+
+                // search for calculation mode
+                case (m_CalcMode) of
+                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear: progression := posBetween;
+                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline: progression := GetBezierProgression(startIndex, posBetween);
+                else
+                    raise Exception.CreateFmt('Unknown calculation mode - %d', [Integer(m_CalcMode)]);
+                end;
+
+                SetLength(Result, resultCount);
+
+                for j := 0 to resultCount - 1 do
+                begin
+                    curStart := (startIndex * resultCount) + j;
+                    curEnd   := (endIndex   * resultCount) + j;
+
+                    // calculate relative animation position (i.e. animation between key times)
+                    relativePos := (values[curEnd] - values[curStart]) * progression;
+
+                    // calculate animation length between keys
+                    Result[j] := (values[curStart] + relativePos);
+                end;
+
+                Exit;
+            end;
+
+        // should never happen because current position should always be found between key times
+        TWLogHelper.LogToCompiler('Malformed animation - the key time could not be found - position - '
+                + FloatToStr(position) + ' - key time count - ' + IntToStr(keyTimeCount));
+        Exit;
+    end;
+
+    // check if value count matches the frame count
+    if ((valueCount = 0) or ((valueCount mod frameCount) <> 0)) then
+    begin
+        TWLogHelper.LogToCompiler('malformed animation - the number of values must match the number of frame values - '
+                + IntToStr(valueCount) + ' - ' + IntToStr(frameCount));
+        Exit;
+    end;
+
+    SetLength(Result, frameCount);
+
+    // calculate the index count and the current index
+    indexCount := (valueCount - 1) div frameCount;
+    index      := Floor(position * indexCount);
+    frameIndex := (index * frameCount);
+
+    // calculate the animation position inside the frame
+    timePerFrame := 1.0 / indexCount;
+
+    if (timePerFrame > 0.0) then
+        posBetween := TWMathHelper.ExtMod(position, timePerFrame) / timePerFrame
+    else
+        posBetween := 0.0;
+
+    // search for calculation mode
+    case (m_CalcMode) of
+        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear: progression := posBetween;
+        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline: progression := GetBezierProgression(frameIndex, posBetween);
+    else
+        raise Exception.CreateFmt('Unknown calculation mode - %d', [Integer(m_CalcMode)]);
+    end;
+
+    for i := 0 to frameCount - 1 do
+    begin
+        // calculate the from and to indexes for each x and y values
+        startIndex := (frameIndex + i)          mod valueCount;
+        endIndex   := (startIndex + frameCount) mod valueCount;
+
+        // calculate frame value
+        Result[i] := values[startIndex] + (progression * (values[endIndex] - values[startIndex]));
+    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGValueAnimDesc.AddFrom(value: Double);
@@ -845,210 +843,111 @@ end;
 //---------------------------------------------------------------------------
 procedure TWSVGMatrixAnimDesc.Combine(position: Double; var matrix: TWMatrix3x3);
 var
-    xMat,
-    yMat,
-    xLength,
-    yLength,
-    animLength,
-    indexCount,
-    timePerFrame,
-    frameStart,
-    framePos,
-    fIndex:         Double;
-    fromCount,
-    toCount,
-    valueCount,
-    index,
-    fromXIndex,
-    fromYIndex,
-    toXIndex,
-    toYIndex:       NativeUInt;
-    rotationCenter: TWVector2;
+    xMat, yMat:            Double;
+    i, fromCount, toCount: NativeUInt;
+    rotationCenter, skew:  TWVector2;
+    frameValues:           IValues;
 begin
+    if (Length(m_Values) > 0) then
+        frameValues := GetValuesAt(position, m_Values, m_ValPerGroupCount)
+    else
+    begin
+        // in case this happen:
+        // https://www.w3.org/TR/2001/REC-smil-animation-20010904/#ByAttribute
+        if (Length(m_By) > 0) then
+            raise Exception.Create('Unsupported by animation');
+
+        fromCount := Length(m_From);
+        toCount   := Length(m_To);
+
+        // animation from and to properties should always contain the same number of values
+        if (fromCount <> toCount) then
+            raise Exception.CreateFmt('Malformed animation - from count - %d - to count - %d',
+                    [fromCount, toCount]);
+
+        SetLength(frameValues, fromCount);
+
+        for i := 0 to fromCount - 1 do
+            frameValues[i] := m_From[i] + ((m_To[i] - m_From[i]) * position);
+    end;
+
     // search for transformation type
     case (m_TransformType) of
         TWSVGAnimation.IPropAnimTransformType.IETransformType.IE_TT_Translate:
         begin
-            // 6 values means from x:y, by x:y, to x:y
-            if (Length(m_Values) = 6) then
-            begin
-                // first half animation?
-                if (position < 0.5) then
+            case (Length(frameValues)) of
+                1:
                 begin
-                    // calculate animation length
-                    xLength := (m_Values[2] - m_Values[0]);
-                    yLength := (m_Values[3] - m_Values[1]);
-
-                    // calculate matrix values
-                    xMat := m_Values[0] + (position * xLength);
-                    yMat := m_Values[1] + (position * yLength);
-                end
-                else
-                begin
-                    // calculate animation length
-                    xLength := (m_Values[4] - m_Values[2]);
-                    yLength := (m_Values[5] - m_Values[3]);
-
-                    // calculate matrix values
-                    xMat := m_Values[2] + (position * xLength);
-                    yMat := m_Values[3] + (position * yLength);
+                    xMat := frameValues[0];
+                    yMat := 0.0;
                 end;
 
-                // set translation matrix
-                matrix.Translate(TWVector2.Create(xMat, yMat));
-
-                Exit;
+                2:
+                begin
+                    xMat := frameValues[0];
+                    yMat := frameValues[1];
+                end;
+            else
+                raise Exception.CreateFmt('Unsupported value count - %d',
+                        [Integer(Length(frameValues))]);
             end;
 
-            // 4 values means from x:y, to x:y
-            if (Length(m_Values) = 4) then
-            begin
-                // calculate animation length
-                xLength := (m_Values[2] - m_Values[0]);
-                yLength := (m_Values[3] - m_Values[1]);
-
-                // calculate matrix values
-                xMat := m_Values[0] + (position * xLength);
-                yMat := m_Values[1] + (position * yLength);
-
-                // set translation matrix
-                matrix.Translate(TWVector2.Create(xMat, yMat));
-
-                Exit;
-            end;
-
-            valueCount := Length(m_Values);
-
-            // x values mean an array of from x:y, to x:y values. The value count should always be even
-            if ((valueCount = 0) or ((valueCount mod 2) <> 0)) then
-            begin
-                TWLogHelper.LogToCompiler('malformed animation - the number of values must be even - '
-                        + IntToStr(valueCount));
-                Exit;
-            end;
-
-            // calculate the index count and the current index
-            indexCount := valueCount div 2;
-            index      := Floor(position * indexCount);
-
-            // calculate the from and to indexes for each x and y values
-            fromXIndex := (index * 2)      mod valueCount;
-            fromYIndex := (fromXIndex + 1) mod valueCount;
-            toXIndex   := (fromXIndex + 2) mod valueCount;
-            toYIndex   := (fromXIndex + 3) mod valueCount;
-
-            fIndex := index;
-
-            // calculate the animation position inside the frame
-            timePerFrame := 1.0 / indexCount;
-            frameStart   := timePerFrame * fIndex;
-            framePos     := (position - frameStart) / timePerFrame;
-
-            // calculate animation length
-            xLength := (m_Values[toXIndex] - m_Values[fromXIndex]);
-            yLength := (m_Values[toYIndex] - m_Values[fromYIndex]);
-
-            // calculate matrix values
-            xMat := m_Values[fromXIndex] + (framePos * xLength);
-            yMat := m_Values[fromYIndex] + (framePos * yLength);
-
-            // set translation matrix
             matrix.Translate(TWVector2.Create(xMat, yMat));
-
-            Exit;
         end;
 
         TWSVGAnimation.IPropAnimTransformType.IETransformType.IE_TT_Rotate:
         begin
-            fromCount := Length(m_From);
-            toCount   := Length(m_To);
+            case (Length(frameValues)) of
+                1: rotationCenter := TWVector2.Create(0.0, 0.0);
+                2: rotationCenter := TWVector2.Create(frameValues[1], 0.0);
+                3: rotationCenter := TWVector2.Create(frameValues[1], frameValues[2]);
+            else
+                raise Exception.CreateFmt('Unsupported value count - %d',
+                        [Integer(Length(frameValues))]);
+            end;
 
-            // animation from and to properties should always contain the same number of values
-            if (fromCount <> toCount) then
-                raise Exception.CreateFmt('Malformed animation - from count - %d - to count - %d',
-                        [fromCount, toCount]);
-
-            // animation containing matrix should at least contain 3 values in from and to list
-            if (fromCount < 3) then
-                raise Exception.CreateFmt('Malformed animation - too few count - %d', [fromCount]);
-
-            xLength := (m_To[1] - m_From[1]);
-            yLength := (m_To[2] - m_From[2]);
-
-            // get rotation center
-            rotationCenter := TWVector2.Create(m_From[1] + (position * xLength),
-                    m_From[2] + (position * yLength));
-
-            // set rotation matrix
-            matrix.RotateCenter(TWGeometryTools.DegToRad(GetValueAt(position)), rotationCenter);
-
-            Exit;
+            matrix.RotateCenter(TWGeometryTools.DegToRad(frameValues[0]), rotationCenter);
         end;
 
         TWSVGAnimation.IPropAnimTransformType.IETransformType.IE_TT_Scale:
         begin
-            // 2 values means from x=y, to x=y
-            if ((Length(m_From) = 1) and (Length(m_To) = 1)) then
-            begin
-                // calculate animation length
-                animLength := (m_To[0] - m_From[0]);
-
-                // set scale matrix
-                matrix.Scale(TWVector2.Create(m_From[0] + (position * animLength),
-                        m_From[0] + (position * animLength)));
-
-                Exit;
-            end;
-
-            // 4 values means from x:y, to x:y
-            if ((Length(m_From) = 2) and (Length(m_To) = 2)) then
-            begin
-                // calculate animation length
-                xLength := (m_To[0] - m_From[0]);
-                yLength := (m_To[1] - m_From[1]);
-
-                // set scale matrix
-                matrix.Scale(TWVector2.Create(m_From[0] + (position * xLength),
-                        m_From[1] + (position * yLength)));
-
-                Exit;
-            end;
-
-            // 6 values means from x:y, by x:y, to x:y
-            if (Length(m_Values) = 6) then
-            begin
-                // first half animation?
-                if (position < 0.5) then
+            case (Length(frameValues)) of
+                1:
                 begin
-                    // calculate animation length
-                    xLength := (m_Values[2] - m_Values[0]);
-                    yLength := (m_Values[3] - m_Values[1]);
-
-                    // set scale matrix
-                    matrix.Scale(TWVector2.Create(m_Values[0] + (position * xLength),
-                            m_Values[1] + (position * yLength)));
+                    xMat := frameValues[0];
+                    yMat := 0.0;
                 end;
 
+                2:
                 begin
-                    // calculate animation length
-                    xLength := (m_Values[4] - m_Values[2]);
-                    yLength := (m_Values[5] - m_Values[3]);
-
-                    // set scale matrix
-                    matrix.Scale(TWVector2.Create(m_Values[2] + (position * xLength),
-                            m_Values[3] + (position * yLength)));
+                    xMat := frameValues[0];
+                    yMat := frameValues[1];
                 end;
-
-                Exit;
+            else
+                raise Exception.CreateFmt('Unsupported value count - %d',
+                        [Integer(Length(frameValues))]);
             end;
 
-            raise Exception.CreateFmt('Malformed animation transform - scaling - %d',
-                    [Integer(m_TransformType)]);
+            matrix.Scale(TWVector2.Create(xMat, yMat));
         end;
 
-        TWSVGAnimation.IPropAnimTransformType.IETransformType.IE_TT_SkewX,
+        TWSVGAnimation.IPropAnimTransformType.IETransformType.IE_TT_SkewX:
+        begin
+            if (Length(frameValues) = 0) then
+                raise Exception.CreateFmt('Unsupported value count - %d', [Integer(Length(frameValues))]);
+
+            skew := TWVector2.Create(Tan(TWGeometryTools.DegToRad(frameValues[0])), 0.0);
+            matrix.Shear(skew);
+        end;
+
         TWSVGAnimation.IPropAnimTransformType.IETransformType.IE_TT_SkewY:
-            raise Exception.CreateFmt('NOT IMPLEMENTED - %d', [Integer(m_TransformType)]);
+        begin
+            if (Length(frameValues) = 0) then
+                raise Exception.CreateFmt('Unsupported value count - %d', [Integer(Length(frameValues))]);
+
+            skew := TWVector2.Create(0.0, Tan(TWGeometryTools.DegToRad(frameValues[0])));
+            matrix.Shear(skew);
+        end;
     else
         raise Exception.CreateFmt('Unknown animation transform type - %d',
                 [Integer(m_TransformType)]);
