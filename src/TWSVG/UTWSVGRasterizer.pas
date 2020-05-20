@@ -1623,6 +1623,15 @@ type
             procedure GetGradientStops(const pGradient: TWSVGGradient; pGradientStops: IGradientStops); virtual;
 
             {**
+             Get transform matrix from shape animation
+             @param(pAnimationData Shape animation data)
+             @param(pMatrix Matrix item)
+             @param(pCustomData Custom data)
+            }
+            procedure GetTransformAnimMatrix(const pAnimationData: IAnimationData; pMatrixItem: IPropMatrixItem;
+                    pCustomData: Pointer);
+
+            {**
              Get animations from container
              @param(pContainer Container to extract from)
              @param(pAnimationData Animation data)
@@ -6416,6 +6425,69 @@ begin
             pGradientStop.Free;
         end;
     end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.GetTransformAnimMatrix(const pAnimationData: IAnimationData;
+        pMatrixItem: IPropMatrixItem; pCustomData: Pointer);
+var
+    pAnimation: TWSVGAnimation;
+    pAnimDesc:  IWSmartPointer<TWSVGMatrixAnimDesc>;
+    animMatrix: TWMatrix3x3;
+    attribName: UnicodeString;
+    position:   Double;
+begin
+    if (not Assigned(pMatrixItem)) then
+        Exit;
+
+    // do animate shape?
+    if (not m_Animate) then
+        Exit;
+
+    // matrix animations?
+    if (pAnimationData.MatrixAnims.Count = 0) then
+        Exit;
+
+    // iterate through matrix animations
+    for pAnimation in pAnimationData.MatrixAnims do
+    begin
+        // not a matrix animation type?
+        if (pAnimation.ValueType <> TWSVGCommon.IEValueType.IE_VT_Matrix) then
+            continue;
+
+        // configure animation description
+        pAnimDesc           := TWSmartPointer<TWSVGMatrixAnimDesc>.Create();
+        pAnimDesc.Animation := pAnimation;
+
+        // populate animation description, and check if animation is allowed to continue
+        if (not PopulateAnimation(pAnimation, attribName, pAnimDesc, True, pCustomData)) then
+            continue;
+
+        // check if the property to modify is the transform one. NOTE do not confuse, transform
+        // refers to the property name, which contains the matrix to apply, and NOT to the matrix
+        // type (translate, rotate, ...)
+        if (attribName <> C_SVG_Animation_Transform) then
+            continue;
+
+        // is animation running? (i.e between his start and end position)
+        if (not GetAnimPos(pAnimationData, pAnimDesc, position)) then
+            continue;
+
+        animMatrix.SetIdentity;
+
+        // get animation transformation matrix to apply
+        pAnimDesc.Combine(position, animMatrix);
+
+        // combine the animation matrix with the root matrix
+        case (pAnimDesc.AdditiveMode) of
+            IE_AT_Replace: pMatrixItem.m_Value.Assign(animMatrix);
+            IE_AT_Sum:     pMatrixItem.m_Value.Assign(animMatrix.Multiply(pMatrixItem.m_Value));
+        else
+            raise Exception.CreateFmt('Unknown additive mode - %d', [Integer(pAnimDesc.AdditiveMode)]);
+        end;
+    end;
+
+    // from now the local matrix should be combined with its parent
+    pMatrixItem.Rule := IE_PR_Combine;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGRasterizer.GetAnimations(const pContainer: TWSVGContainer; pAnimationData: IAnimationData);

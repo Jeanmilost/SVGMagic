@@ -200,16 +200,6 @@ type
                     scaleW, scaleH: Single; pRenderer: TWRenderer_GDIPlus; pStroke: TWStroke): Boolean;
 
             {**
-             Get transform matrix from shape animation
-             @param(pAnimationData Shape animation data)
-             @param(pMatrix Animation matrix)
-             @param(pCustomData Custom data)
-             @returns(@true on success, otherwise @false)
-            }
-            function GetTransformAnimMatrix(const pAnimationData: TWSVGRasterizer.IAnimationData;
-                    pMatrix: TGpMatrix; pCustomData: Pointer): Boolean;
-
-            {**
              Calculate linear gradient vector
              @param(pGradient Linear gradient)
              @param(viewBox SVG view box)
@@ -235,26 +225,12 @@ type
              Apply transformation matrix to GDI+ graphics
              @param(pMatrix Global matrix to apply)
              @param(pos SVG position)
-             @param(pAnimationData Shape animation data)
              @param(scaleW Scale factor to apply to width)
              @param(scaleH Scale factor to apply to height)
-             @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
              @param(pGraphics GDI+ graphics on which matrix should be applied)
             }
-            procedure ApplyMatrix(const pMatrix: TGpMatrix; const pos: TPoint;
-                    const pAnimationData: TWSVGRasterizer.IAnimationData; scaleW, scaleH: Single;
-                    const animation: TWSVGRasterizer.IAnimation; pGraphics: TGpGraphics);
-
-            {**
-             Combine a matrix with its animation matrix
-             @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
-             @param(animationData Shape animation data)
-             @param(matrix Matrix to combine, combined matrix on function ends)
-             @param(doOverride If @true, the animation matrix will override the transform one instead of combining with it)
-            }
-            procedure CombineMatrix(const animation: TWSVGRasterizer.IAnimation;
-                    const pAnimationData: TWSVGRasterizer.IAnimationData; pMatrix: PWMatrix3x3;
-                    doOverride: Boolean);
+            procedure ApplyMatrix(const pMatrix: TGpMatrix; const pos: TPoint; scaleW, scaleH: Single;
+                    pGraphics: TGpGraphics);
 
             {**
              Update a bounding box
@@ -507,6 +483,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -520,11 +500,6 @@ begin
 
                 // get the group position (in relation to the initial position)
                 posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
-
-                // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
-                //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
-                // combine the animation matrix with the group matrix
-                CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
 
                 // draw group subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pGroup.ElementList, posFromProps,
@@ -575,6 +550,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -588,11 +567,6 @@ begin
 
                 // get the switch position (in relation to the initial position)
                 posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
-
-                // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
-                //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
-                // combine the animation matrix with the switch matrix
-                CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
 
                 // draw switch subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pSwitch.ElementList, posFromProps,
@@ -643,6 +617,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -656,11 +634,6 @@ begin
 
                 // get the action position (in relation to the initial position)
                 posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
-
-                // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
-                //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
-                // combine the animation matrix with the group matrix
-                CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
 
                 // draw action subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pAction.ElementList, posFromProps,
@@ -773,6 +746,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -811,7 +788,7 @@ begin
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
 
                 // do apply a clipping path?
                 if (clippingMode) then
@@ -919,6 +896,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -937,13 +918,6 @@ begin
                 begin
                     pMatrix := TWSmartPointer<TGpMatrix>.Create();
                     pProps.Matrix.Value.ToGpMatrix(pMatrix);
-
-                    pAnimMatrix := TWSmartPointer<TGpMatrix>.Create();
-
-                    // get and apply matrix animation if needed
-                    if (GetTransformAnimMatrix(pAnimationData, pAnimMatrix, animation.m_pCustomData)) then
-                        // combine matrix with animation matrix
-                        pMatrix.Multiply(pAnimMatrix);
 
                     // set svg element to final size
                     pMatrix.Scale(scaleW, scaleH, MatrixOrderAppend);
@@ -1002,13 +976,6 @@ begin
 
                     pMatrix := TWSmartPointer<TGpMatrix>.Create();
                     pProps.Matrix.Value.ToGpMatrix(pMatrix);
-
-                    pAnimMatrix := TWSmartPointer<TGpMatrix>.Create();
-
-                    // get and apply matrix animation if needed
-                    if (GetTransformAnimMatrix(pAnimationData, pAnimMatrix, animation.m_pCustomData)) then
-                        // combine matrix with animation matrix
-                        pMatrix.Multiply(pAnimMatrix);
 
                     // set svg element to final size
                     pMatrix.Scale(scaleW, scaleH, MatrixOrderAppend);
@@ -1070,6 +1037,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -1100,7 +1071,7 @@ begin
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
 
                 // do apply a clipping path?
                 if (clippingMode) then
@@ -1194,6 +1165,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -1225,7 +1200,7 @@ begin
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
 
                 // do apply a clipping path?
                 if (clippingMode) then
@@ -1313,6 +1288,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -1340,7 +1319,7 @@ begin
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
 
                 // calculate the circle bounding box
                 if (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid) then
@@ -1410,6 +1389,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -1464,7 +1447,7 @@ begin
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
 
                 // do apply a clipping path?
                 if (clippingMode) then
@@ -1541,6 +1524,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -1596,7 +1583,7 @@ begin
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
 
                 pFill := TWSmartPointer<TWFill>.Create();
 
@@ -1666,6 +1653,10 @@ begin
                 if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
                     Exit(False);
 
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
                 pProps.Merge(pParentProps);
 
                 // is element visible? (NOTE for now the only supported mode is "none". All other
@@ -1685,7 +1676,7 @@ begin
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
 
                 // configure the font to use. NOTE be careful, the SVG font size matches with the
                 // GDI font HEIGHT property, and not with the font SIZE
@@ -1977,6 +1968,10 @@ begin
         if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
             Exit(False);
 
+        // the transform animations should absolutely be applied to the local matrix BEFORE
+        // combining it with its parents
+        GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
         pProps.Merge(pParentProps);
 
         // is element visible? (NOTE for now the only supported mode is "none". All other modes are
@@ -1992,11 +1987,6 @@ begin
 
         // get the clip path position (in relation to the initial position)
         clipPathPos := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
-
-        // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
-        //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
-        // combine the animation matrix with the clip path matrix
-        CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
 
         // save the current clip
         pGraphics.GetClip(prevRegion);
@@ -2022,6 +2012,10 @@ begin
     if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
         Exit(False);
 
+    // the transform animations should absolutely be applied to the local matrix BEFORE
+    // combining it with its parents
+    GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
     pProps.Merge(pParentProps);
 
     // is element visible? (NOTE for now the only supported mode is "none". All other modes are
@@ -2035,11 +2029,6 @@ begin
 
     // get the clip path position (in relation to the initial position)
     clipPathPos := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
-
-    // todo -cFeature -oJean: the additive property should be considered while matrices are combined. See:
-    //                        https://www.w3.org/TR/SVG11/animate.html#AdditionAttributes
-    // combine the animation matrix with the clip path matrix
-    CombineMatrix(animation, pAnimationData, pProps.Matrix.Value, False);
 
     // save the current clip
     if (not intersect) then
@@ -2424,55 +2413,6 @@ begin
     Result := True;
 end;
 //---------------------------------------------------------------------------
-function TWSVGGDIPlusRasterizer.GetTransformAnimMatrix(const pAnimationData: TWSVGGDIPlusRasterizer.IAnimationData;
-        pMatrix: TGpMatrix; pCustomData: Pointer): Boolean;
-var
-    pAnimation: TWSVGAnimation;
-    pAnimDesc:  IWSmartPointer<TWSVGMatrixAnimDesc>;
-    animMatrix: TWMatrix3x3;
-    attribName: UnicodeString;
-    position:   Double;
-begin
-    // do animate shape?
-    if (not m_Animate) then
-        Exit(False);
-
-    // matrix animations?
-    if (pAnimationData.MatrixAnims.Count = 0) then
-        Exit(False);
-
-    // iterate through matrix animations
-    for pAnimation in pAnimationData.MatrixAnims do
-    begin
-        // not a matrix animation type?
-        if (pAnimation.ValueType <> TWSVGCommon.IEValueType.IE_VT_Matrix) then
-            continue;
-
-        // configure animation description
-        pAnimDesc           := TWSmartPointer<TWSVGMatrixAnimDesc>.Create();
-        pAnimDesc.Animation := pAnimation;
-
-        // populate animation description, and check if animation is allowed to continue
-        if (not PopulateAnimation(pAnimation, attribName, pAnimDesc, True, pCustomData)) then
-            continue;
-
-        // search for attribute to modify
-        if (attribName <> C_SVG_Animation_Transform) then
-            continue;
-
-        // is animation running (i.e. between his start and end position)
-        if (not GetAnimPos(pAnimationData, pAnimDesc, position)) then
-            continue;
-
-        // apply animation transformations to matrix
-        animMatrix.Create(pMatrix);
-        pAnimDesc.Combine(position, animMatrix);
-        animMatrix.ToGpMatrix(pMatrix);
-    end;
-
-    Result := True;
-end;
-//---------------------------------------------------------------------------
 procedure TWSVGGDIPlusRasterizer.CalculateLinearGradientVector(const pGradient: TWSVGGDIPlusRasterizer.ILinearGradient;
         const viewBox, boundingBox: TGpRectF; out vector: TWSVGGDIPlusRasterizer.ILinearGradientVector);
 var
@@ -2549,10 +2489,9 @@ begin
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGGDIPlusRasterizer.ApplyMatrix(const pMatrix: TGpMatrix; const pos: TPoint;
-        const pAnimationData: TWSVGGDIPlusRasterizer.IAnimationData; scaleW, scaleH: Single;
-        const animation: TWSVGGDIPlusRasterizer.IAnimation; pGraphics: TGpGraphics);
+        scaleW, scaleH: Single; pGraphics: TGpGraphics);
 var
-    pTransformMatrix, pAnimMatrix: IWSmartPointer<TGpMatrix>;
+    pTransformMatrix: IWSmartPointer<TGpMatrix>;
 begin
     if (not Assigned(pGraphics)) then
         Exit;
@@ -2560,12 +2499,6 @@ begin
     // clone global matrix to apply (global matrix should not be modified because it may be applied
     // again to children elements)
     pTransformMatrix := TWSmartPointer<TGpMatrix>.Create(pMatrix.Clone);
-    pAnimMatrix      := TWSmartPointer<TGpMatrix>.Create();
-
-    // get and apply matrix animation if needed
-    if (GetTransformAnimMatrix(pAnimationData, pAnimMatrix, animation.m_pCustomData)) then
-        // combine matrix with animation matrix
-        pTransformMatrix.Multiply(pAnimMatrix);
 
     // set svg element to final size
     pTransformMatrix.Scale(scaleW, scaleH, MatrixOrderAppend);
@@ -2575,34 +2508,6 @@ begin
 
     // apply transformation matrix to path
     pGraphics.SetTransform(pTransformMatrix);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGGDIPlusRasterizer.CombineMatrix(const animation: TWSVGGDIPlusRasterizer.IAnimation;
-        const pAnimationData: TWSVGGDIPlusRasterizer.IAnimationData; pMatrix: PWMatrix3x3;
-        doOverride: Boolean);
-var
-    pAnimMatrix, pResultMatrix: IWSmartPointer<TGpMatrix>;
-begin
-    pAnimMatrix := TWSmartPointer<TGpMatrix>.Create();
-
-    // get matrix animation
-    if (not GetTransformAnimMatrix(pAnimationData, pAnimMatrix, animation.m_pCustomData)) then
-        Exit;
-
-    // do override the existing matrix by the animated one?
-    if (doOverride) then
-    begin
-        pMatrix.Assign(TWMatrix3x3.Create(pAnimMatrix));
-        Exit;
-    end;
-
-    pResultMatrix := TWSmartPointer<TGpMatrix>.Create();
-    pMatrix.ToGpMatrix(pResultMatrix);
-
-    // combine matrix with animation matrix
-    pResultMatrix.Multiply(pAnimMatrix);
-
-    pMatrix.Assign(TWMatrix3x3.Create(pResultMatrix));
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGGDIPlusRasterizer.UpdateBoundingBox(const point: TGpPointF; var boundingBox: TGpRectF);
@@ -2635,8 +2540,6 @@ end;
             scaleW, scaleH: Single; pCanvas: TCanvas; pGraphics: TGpGraphics);
     var
         pRenderer:             TWRenderer_GDIPlus;
-        animation:             TWSVGRasterizer.IAnimation;
-        pAnimationData:        IWSmartPointer<IAnimationData>;
         pTextFormat:           IWSmartPointer<TGpStringFormat>;
         pTextFont:             IWSmartPointer<TFont>;
         pFont:                 IWSmartPointer<TGpFont>;
@@ -2675,11 +2578,9 @@ end;
         {$endif}
             begin
                 // if tampered, paint a full white rect to kill the SVG painting
-                animation      := Default(TWSVGRasterizer.IAnimation);
-                pAnimationData := TWSmartPointer<IAnimationData>.Create();
-                svgPos         := CalculateFinalPos(pos, drawRect, scaleW, scaleH);
-                pMatrix        := TWSmartPointer<TGpMatrix>.Create();
-                ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+                svgPos  := CalculateFinalPos(pos, drawRect, scaleW, scaleH);
+                pMatrix := TWSmartPointer<TGpMatrix>.Create();
+                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
 
                 bgColor  := TWColor.Create(255, 255, 255, 255);
                 pBgBrush := TWSmartPointer<TGpBrush>.Create(bgColor.GetGDIPlusSolidBrush);
@@ -2719,11 +2620,9 @@ end;
         textPos.Y := Round(rect.Bottom - ((rect.Height / 6.0) * 2.0));
 
         // calculate and apply the final transformations to put the watermark in the SVG space
-        animation      := Default(TWSVGRasterizer.IAnimation);
-        pAnimationData := TWSmartPointer<IAnimationData>.Create();
-        svgPos         := CalculateFinalPos(pos, drawRect, scaleW, scaleH);
-        pMatrix        := TWSmartPointer<TGpMatrix>.Create();
-        ApplyMatrix(pMatrix, svgPos, pAnimationData, scaleW, scaleH, animation, pGraphics);
+        svgPos  := CalculateFinalPos(pos, drawRect, scaleW, scaleH);
+        pMatrix := TWSmartPointer<TGpMatrix>.Create();
+        ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
 
         // configure the text format
         pTextFormat := TWSmartPointer<TGpStringFormat>.Create(TGpStringFormat.Create());

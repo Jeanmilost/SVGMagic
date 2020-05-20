@@ -151,6 +151,11 @@ type
              Multiply a matrix by another matrix
              @param(other Other matrix to multiply with)
              @returns(multiplied resulting matrix)
+             @br @bold(NOTE) The other matrix is prepended to the current one, this means that, to
+                             obtain the following result:
+                             Mc = Ma * Mb
+                             the Multiply function should be used as follow:
+                             Mc := Mb.Multiply(Ma);
             }
             function Multiply(const other: TWMatrix3x3): TWMatrix3x3;
 
