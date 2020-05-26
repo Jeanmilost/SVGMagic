@@ -280,6 +280,12 @@ type
             procedure Assign(pOther: TPersistent); override;
 
             {**
+             Load SVG from string
+             @param(str String to load from)
+            }
+            procedure LoadFromStr(str: UnicodeString); virtual;
+
+            {**
              Load svg from stream
              @param(pStream Stream to load from)
             }
@@ -936,6 +942,23 @@ begin
 
     // notify that content has changed
     Changed(Self);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGGraphic.LoadFromStr(str: UnicodeString);
+var
+    pStrStream: TStringStream;
+begin
+    pStrStream := TStringStream.Create;
+
+    try
+        // load SVG data in a string stream
+        pStrStream.WriteString(str);
+        pStrStream.Position := 0;
+
+        LoadFromStream(pStrStream);
+    finally
+        pStrStream.Free;
+    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGGraphic.LoadFromStream(pStream: TStream);
