@@ -454,6 +454,7 @@ var
     pGroup:         TWSVGGroup;
     pSwitch:        TWSVGSwitch;
     pAction:        TWSVGAction;
+    pSymbol:        TWSVGSymbol;
     pClipPath:      TWSVGClipPath;
     pRect:          TWSVGRect;
     pCircle:        TWSVGCircle;
@@ -574,6 +575,34 @@ begin
                 pAction := nil;
             finally
                 pAction.Free;
+            end;
+        end
+        else
+        if (name = C_SVG_Tag_Symbol) then
+        begin
+            pSymbol := nil;
+
+            try
+                // read symbol
+                pSymbol := TWSVGSymbol.Create(Self, m_pOptions);
+                Result  := pSymbol.Read(pChildNode) and Result;
+
+                // is item identifier empty?
+                if (not TWStringHelper.IsEmpty(pSymbol.ItemID)) then
+                begin
+                    // register the item
+                    if (not RegisterLink(pSymbol, m_pDefs, False)) then
+                        Exit(False);
+                end
+                else
+                begin
+                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pSymbol.ItemName);
+                    Exit(False);
+                end;
+
+                pSymbol := nil;
+            finally
+                pSymbol.Free;
             end;
         end
         else

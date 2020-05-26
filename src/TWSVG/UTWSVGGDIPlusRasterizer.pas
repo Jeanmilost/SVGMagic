@@ -90,6 +90,7 @@ type
              @param(switchMode If @true, function will return after first element is drawn (because
                                reading switch statement))
              @param(clippingMode If @true, a clip should be performed instead of a drawing)
+             @param(useMode If @true, the current element to read is owned by an use link)
              @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
              @param(pCanvas GDI Canvas to draw on)
              @param(pGraphics GDI+ graphics area to draw on)
@@ -98,7 +99,7 @@ type
             function DrawElements(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
                     const pParentProps: TWSVGGDIPlusRasterizer.IProperties;
                     const pElements: TWSVGContainer.IElements; const pos: TPoint;
-                    scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, intersection: Boolean;
+                    scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, useMode, intersection: Boolean;
                     const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
                     pGraphics: TGpGraphics): Boolean; overload;
 
@@ -115,6 +116,7 @@ type
              @param(switchMode If @true, function will return after first element is drawn (because
                                reading switch statement))
              @param(clippingMode If @true, a clip should be performed instead of a drawing)
+             @param(useMode If @true, the current element to read is owned by an use link)
              @param(intersection If @true, and if clipping mode is enabled, perform an intersection instead of an union)
              @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
              @param(pCanvas GDI Canvas to draw on)
@@ -126,7 +128,7 @@ type
             function ApplyClipPath(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
                     const pParentProps: TWSVGGDIPlusRasterizer.IProperties;
                     const pElements: TWSVGContainer.IElements; const pos: TPoint;
-                    scaleW, scaleH: Single; antialiasing, switchMode, clippingMode: Boolean;
+                    scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, useMode: Boolean;
                     const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
                     pGraphics: TGpGraphics; pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
 
@@ -370,7 +372,8 @@ begin
                 pHeaderProps.Merge(pProperties);
 
                 Exit(DrawElements(pHeader, viewBox.ToGpRectF, pHeaderProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, False, False, animation, pCanvas, pGraphics));
+                        scaleH, antialiasing, switchMode, False, False, False, animation, pCanvas,
+                        pGraphics));
             finally
                 {$ifdef TRIAL_BUILD}
                     // apply trial timesamp
@@ -385,7 +388,7 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGGDIPlusRasterizer.DrawElements(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
         const pParentProps: TWSVGGDIPlusRasterizer.IProperties; const pElements: TWSVGContainer.IElements;
-        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, intersection: Boolean;
+        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, useMode, intersection: Boolean;
         const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
         pGraphics: TGpGraphics): Boolean;
 var
@@ -397,6 +400,7 @@ var
     pGroup:                                                                                                     TWSVGGroup;
     pAction:                                                                                                    TWSVGAction;
     pUse:                                                                                                       TWSVGUse;
+    pSymbol:                                                                                                    TWSVGSymbol;
     pPath:                                                                                                      TWSVGPath;
     pRect:                                                                                                      TWSVGRect;
     pCircle:                                                                                                    TWSVGCircle;
@@ -467,8 +471,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
-                        pGroup, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pGroup, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -503,7 +507,7 @@ begin
 
                 // draw group subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pGroup.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, False, False, intersection, animation, pCanvas,
+                        scaleW, scaleH, antialiasing, False, False, useMode, intersection, animation, pCanvas,
                         pGraphics))
                 then
                 begin
@@ -534,8 +538,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
-                        pSwitch, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pSwitch, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -570,8 +574,8 @@ begin
 
                 // draw switch subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pSwitch.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, True, False, intersection, animation, pCanvas,
-                        pGraphics))
+                        scaleW, scaleH, antialiasing, True, False, useMode, intersection, animation,
+                        pCanvas, pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -601,8 +605,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
-                        pAction, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pAction, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -637,8 +641,8 @@ begin
 
                 // draw action subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pAction.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, False, False, intersection, animation, pCanvas,
-                        pGraphics))
+                        scaleW, scaleH, antialiasing, False, False, useMode, intersection, animation,
+                        pCanvas, pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -678,6 +682,30 @@ begin
                 // get all animations linked to this container
                 GetAnimations(pUse, pAnimationData);
 
+                pProps := TWSmartPointer<IProperties>.Create();
+
+                // get draw properties from element
+                if (not GetElementProps(pUse, pProps, pAnimationData, animation.m_pCustomData)) then
+                    Exit(False);
+
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
+                pProps.Merge(pParentProps);
+
+                // is element visible? (NOTE for now the only supported mode is "none". All other
+                // modes are considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                    continue;
+
+                // extract position and size properties
+                if (not GetPosAndSizeProps(pUse, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                    Exit(False);
+
+                // get the group position (in relation to the initial position)
+                posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
+
                 // is element a reference to another element?
                 if (pLinkedElement is TWSVGReference) then
                     // extract its reference
@@ -691,28 +719,93 @@ begin
                 pClone := TWSmartPointer<TWSVGElement>.Create(pSrcElement.CreateInstance(pSrcElement.Parent));
                 pClone.Assign(pSrcElement);
 
-                pProps := TWSmartPointer<IProperties>.Create();
-
-                // get draw properties from element
-                if (not GetElementProps(pClone, pProps, pAnimationData, animation.m_pCustomData)) then
-                    Exit(False);
-
-                pProps.Merge(pParentProps);
-
-                // merge the use properties to add with the element to reuse
-                if (not MergeUseProperties(pUse, pClone)) then
-                    Exit(False);
+                // enable the lines below to log the use and clone elements properties
+                {$ifdef DEBUG}
+                    //LogProps(pUse);
+                    //LogProps(pClone);
+                {$endif}
 
                 // create a pseudo element container, and add the cloned element to draw
                 pClonedElements := TWSmartPointer<TWSVGContainer.IElements>.Create();
                 pClonedElements.Add(pClone);
 
                 // draw the cloned element
-                if (not DrawElements(pHeader, viewBox, pProps, pClonedElements, pos, scaleW, scaleH,
-                        antialiasing, switchMode, clippingMode, intersection, animation, pCanvas,
-                        pGraphics))
+                if (not DrawElements(pHeader, viewBox, pProps, pClonedElements, posFromProps, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, True, intersection, animation,
+                        pCanvas, pGraphics))
                 then
                     Exit(False);
+
+                continue;
+            end;
+        end;
+
+        // is a symbol?
+        if (pElement is TWSVGSymbol) then
+        begin
+            // not allowed to be drawn if not called from an use instruction
+            if (not useMode) then
+                continue;
+
+            // get group
+            pSymbol := pElement as TWSVGSymbol;
+
+            // found it?
+            if (Assigned(pSymbol)) then
+            begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pSymbol, pPrevRegion);
+
+                // configure animation
+                pAnimationData          := TWSmartPointer<IAnimationData>.Create();
+                pAnimationData.Position := animation.m_Position;
+
+                // get all animations linked to this container
+                GetAnimations(pSymbol, pAnimationData);
+
+                pProps := TWSmartPointer<IProperties>.Create();
+
+                // get draw properties from element
+                if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
+                    Exit(False);
+
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
+                pProps.Merge(pParentProps);
+
+                // is element visible? (NOTE for now the only supported mode is "none". All other
+                // modes are considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                    continue;
+
+                // extract position and size properties
+                if (not GetPosAndSizeProps(pSymbol, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                    Exit(False);
+
+                // get the symbol position (in relation to the initial position)
+                posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
+
+                // draw symbol subelements
+                if (not DrawElements(pHeader, viewBox, pProps, pSymbol.ElementList, posFromProps,
+                        scaleW, scaleH, antialiasing, switchMode, clippingMode, useMode, intersection,
+                        animation, pCanvas, pGraphics))
+                then
+                begin
+                    // restore the previous clipping, if any
+                    if (isClipped) then
+                        pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+
+                    Exit(False);
+                end;
+
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
 
                 continue;
             end;
@@ -730,8 +823,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
-                        pPath, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pPath, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -875,8 +968,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
-                        pRect, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pRect, pPrevRegion);
 
                 pRectOptions := TWSmartPointer<TWRenderer.IRectOptions>.Create();
 
@@ -1021,8 +1114,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
-                        pCircle, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pCircle, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -1149,8 +1242,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
-                        pEllipse, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pEllipse, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -1373,8 +1466,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
-                        pPolygon, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pPolygon, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -1633,8 +1726,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, animation, pCanvas, pGraphics,
-                        pText, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pText, pPrevRegion);
 
                 // no text to draw?
                 if (Length(pText.Text) = 0) then
@@ -1931,7 +2024,7 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGGDIPlusRasterizer.ApplyClipPath(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
         const pParentProps: TWSVGGDIPlusRasterizer.IProperties; const pElements: TWSVGContainer.IElements;
-        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode, clippingMode: Boolean;
+        const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, useMode: Boolean;
         const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas; pGraphics: TGpGraphics;
         pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
 var
@@ -1993,8 +2086,8 @@ begin
 
         // apply clipping
         clipResult := DrawElements(pHeader, viewBox, pProps, pIntersectionClipPath.ElementList,
-                clipPathPos, scaleW, scaleH, antialiasing, False, True, True, animation, pCanvas,
-                pGraphics);
+                clipPathPos, scaleW, scaleH, antialiasing, False, True, useMode, True, animation,
+                pCanvas, pGraphics);
 
         intersect := clipResult;
     end;
@@ -2036,7 +2129,7 @@ begin
 
     // apply clipping
     Result := DrawElements(pHeader, viewBox, pProps, pClipPath.ElementList, clipPathPos, scaleW,
-            scaleH, antialiasing, False, True, intersect, animation, pCanvas, pGraphics) and clipResult;
+            scaleH, antialiasing, False, True, useMode, intersect, animation, pCanvas, pGraphics) and clipResult;
 end;
 //---------------------------------------------------------------------------
 function TWSVGGDIPlusRasterizer.GetClosestSquare(const rect: TRect): TRect;

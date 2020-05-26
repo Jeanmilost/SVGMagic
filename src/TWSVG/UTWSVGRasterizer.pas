@@ -1584,14 +1584,6 @@ type
             function GetLinkedElementToUse(const pUse: TWSVGUse; out pElement: TWSVGElement): Boolean; virtual;
 
             {**
-             Merge the properties contained in the use instruction in the destination element
-             @param(pUse Use instruction containing the properties to merge)
-             @param(pElement Element in which the properties should be merged)
-             @returns(@true on success, otherwise @false)
-            }
-            function MergeUseProperties(const pUse: TWSVGUse; pElement: TWSVGElement): Boolean; virtual;
-
-            {**
              Get the clip path linked to an element
              @param(pElement Element for which the clip path should be found)
              @param(pClipPath @bold([out]) The found clip path, @nil if not found or on error)
@@ -1656,10 +1648,11 @@ type
              @param(pHeader SVG header to populate, populated header when function ends)
              @param(pElements Elements to search duration in)
              @param(switchMode If @true, function will return after first element is drawn (because reading switch statement))
+             @param(useMode If @true, the current element to read is owned by an use link)
              @param(durationMax @bold([out]) Highest duration found in svg in milliseconds, 0 if duration is indefinite)
             }
             procedure GetAnimationDuration(pHeader: TWSVGParser.IHeader;
-                    const pElements: TWSVGContainer.IElements; switchMode: Boolean;
+                    const pElements: TWSVGContainer.IElements; switchMode, useMode: Boolean;
                     out durationMax: NativeUInt); overload; virtual;
 
             {**
@@ -1711,6 +1704,14 @@ type
             }
             function GetAnimPos(const pAnimationData: IAnimationData;
                     const pAnimDesc: TWSVGAnimationDescriptor; var position: Double): Boolean; virtual;
+
+            {**
+             Log the properties contained in an element
+             @param(pElement The element for which the properties should be logged)
+            }
+            {$ifdef DEBUG}
+                procedure LogProps(pElement: TWSVGElement); virtual;
+            {$endif}
 
         public
             {**
@@ -5443,35 +5444,6 @@ begin
     Result := Assigned(pElement);
 end;
 //---------------------------------------------------------------------------
-function TWSVGRasterizer.MergeUseProperties(const pUse: TWSVGUse; pElement: TWSVGElement): Boolean;
-var
-    pProperty:    TWSVGProperty;
-    propCount, i: NativeInt;
-begin
-    if ((not Assigned(pUse)) or (not Assigned(pElement))) then
-        Exit(False);
-
-    propCount := pUse.Count;
-
-    // iterate through element properties
-    for i := 0 to propCount - 1 do
-    begin
-        pProperty := pUse.Properties[i];
-
-        if (not Assigned(pProperty)) then
-            continue;
-
-        // search for next property to merge
-        if ((pProperty.ItemName = C_SVG_Prop_HRef) or (pProperty.ItemName = C_SVG_Prop_XLink_HRef)) then
-            // skip the reference properties, these were already processed
-            continue
-        else
-            pElement.AddProperty(pProperty);
-    end;
-
-    Result := True;
-end;
-//---------------------------------------------------------------------------
 function TWSVGRasterizer.GetClipPath(const pElement: TWSVGElement; out pClipPath: TWSVGClipPath): Boolean;
 var
     pProperty:      TWSVGProperty;
@@ -7291,22 +7263,26 @@ begin
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGRasterizer.GetAnimationDuration(pHeader: TWSVGParser.IHeader;
-        const pElements: TWSVGContainer.IElements; switchMode: Boolean;
+        const pElements: TWSVGContainer.IElements; switchMode, useMode: Boolean;
         out durationMax: NativeUInt);
 var
-    pElement:       TWSVGElement;
-    pSwitch:        TWSVGSwitch;
-    pGroup:         TWSVGGroup;
-    pAction:        TWSVGAction;
-    pPath:          TWSVGPath;
-    pRect:          TWSVGRect;
-    pCircle:        TWSVGCircle;
-    pEllipse:       TWSVGEllipse;
-    pLine:          TWSVGLine;
-    pPolygon:       TWSVGPolygon;
-    pPolyline:      TWSVGPolyline;
-    pText:          TWSVGText;
-    pAnimationData: IWSmartPointer<IAnimationData>;
+    pClonedElements:                       IWSmartPointer<TWSVGContainer.IElements>;
+    pElement, pSrcElement, pLinkedElement: TWSVGElement;
+    pClone:                                IWSmartPointer<TWSVGElement>;
+    pGroup:                                TWSVGGroup;
+    pSwitch:                               TWSVGSwitch;
+    pAction:                               TWSVGAction;
+    pUse:                                  TWSVGUse;
+    pSymbol:                               TWSVGSymbol;
+    pPath:                                 TWSVGPath;
+    pRect:                                 TWSVGRect;
+    pCircle:                               TWSVGCircle;
+    pEllipse:                              TWSVGEllipse;
+    pLine:                                 TWSVGLine;
+    pPolygon:                              TWSVGPolygon;
+    pPolyline:                             TWSVGPolyline;
+    pText:                                 TWSVGText;
+    pAnimationData:                        IWSmartPointer<IAnimationData>;
 begin
     // iterate through SVG elements
     for pElement in pElements do
@@ -7327,32 +7303,6 @@ begin
         // element should exist even if svg tag contains nothing else than declaration)
         if (not Assigned(pHeader)) then
             raise Exception.Create('SVG is malformed');
-
-        // is a switch?
-        if (pElement is TWSVGSwitch) then
-        begin
-            // get switch
-            pSwitch := pElement as TWSVGSwitch;
-
-            // found it?
-            if (Assigned(pSwitch)) then
-            begin
-                pAnimationData := TWSmartPointer<IAnimationData>.Create();
-
-                // configure animation
-                pAnimationData.m_Position := 0.0;
-
-                // get all animations linked to this container
-                GetAnimations(pSwitch, pAnimationData);
-
-                // keep highest animation duration
-                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
-
-                // get animation duration in switch subelements
-                GetAnimationDuration(pHeader, pSwitch.ElementList, True, durationMax);
-                continue;
-            end;
-        end;
 
         // is a group?
         if (pElement is TWSVGGroup) then
@@ -7375,7 +7325,33 @@ begin
                 durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
 
                 // get animation duration in group subelements
-                GetAnimationDuration(pHeader, pGroup.ElementList, False, durationMax);
+                GetAnimationDuration(pHeader, pGroup.ElementList, False, useMode, durationMax);
+                continue;
+            end;
+        end;
+
+        // is a switch?
+        if (pElement is TWSVGSwitch) then
+        begin
+            // get switch
+            pSwitch := pElement as TWSVGSwitch;
+
+            // found it?
+            if (Assigned(pSwitch)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this container
+                GetAnimations(pSwitch, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // get animation duration in switch subelements
+                GetAnimationDuration(pHeader, pSwitch.ElementList, True, useMode, durationMax);
                 continue;
             end;
         end;
@@ -7401,7 +7377,87 @@ begin
                 durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
 
                 // get animation duration in action subelements
-                GetAnimationDuration(pHeader, pAction.ElementList, False, durationMax);
+                GetAnimationDuration(pHeader, pAction.ElementList, False, useMode, durationMax);
+                continue;
+            end;
+        end;
+
+        // is an use instruction?
+        if (pElement is TWSVGUse) then
+        begin
+            // get use instruction
+            pUse := pElement as TWSVGUse;
+
+            // found it?
+            if (Assigned(pUse)) then
+            begin
+                // get the linked element to use
+                if (not GetLinkedElementToUse(pUse, pLinkedElement)) then
+                    // don't care if link was not found, just continue with next element. It's not
+                    // unusual that a SVG contains links pointing to nothing
+                    continue;
+
+                // configure animation
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this container
+                GetAnimations(pUse, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // is element a reference to another element?
+                if (pLinkedElement is TWSVGReference) then
+                    // extract its reference
+                    pSrcElement := TWSVGElement((pLinkedElement as TWSVGReference).Reference)
+                else
+                    // if not a reference, use the element directly
+                    pSrcElement := pLinkedElement;
+
+                // clone the source element. This is required because several additional properties
+                // will be merged from the use instruction
+                pClone := TWSmartPointer<TWSVGElement>.Create(pSrcElement.CreateInstance(pSrcElement.Parent));
+                pClone.Assign(pSrcElement);
+
+                // create a pseudo element container, and add the cloned element to draw
+                pClonedElements := TWSmartPointer<TWSVGContainer.IElements>.Create();
+                pClonedElements.Add(pClone);
+
+                // get animation duration in cloned subelements
+                GetAnimationDuration(pHeader, pClonedElements, False, True, durationMax);
+                continue;
+            end;
+        end;
+
+        // is a symbol?
+        if (pElement is TWSVGSymbol) then
+        begin
+            // not allowed to be drawn if not called from an use instruction
+            if (not useMode) then
+                continue;
+
+            // get symbol
+            pSymbol := pElement as TWSVGSymbol;
+
+            // found it?
+            if (Assigned(pSymbol)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this container
+                GetAnimations(pSymbol, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // get animation duration in symbol subelements
+                GetAnimationDuration(pHeader, pSymbol.ElementList, False, useMode, durationMax);
                 continue;
             end;
         end;
@@ -7858,6 +7914,33 @@ begin
     Result   := True;
 end;
 //---------------------------------------------------------------------------
+{$ifdef DEBUG}
+    procedure TWSVGRasterizer.LogProps(pElement: TWSVGElement);
+    var
+        pProperty:    TWSVGProperty;
+        propCount, i: NativeInt;
+    begin
+        if (not Assigned(pElement)) then
+            Exit;
+
+        TWLogHelper.LogToCompiler('Element - name - ' + pElement.ItemName + ' - id - ' + pElement.ItemID);
+
+        propCount := pElement.Count;
+
+        // iterate through element properties
+        for i := 0 to propCount - 1 do
+        begin
+            pProperty := pElement.Properties[i];
+
+            if (not Assigned(pProperty)) then
+                continue;
+
+            TWLogHelper.LogToCompiler('Property nb. ' + IntToStr(i) + ' - name - ' + pProperty.ItemName
+                    + ' - id - ' + pProperty.ItemID);
+        end;
+    end;
+{$endif}
+//---------------------------------------------------------------------------
 function TWSVGRasterizer.GetSize(const pSVG: TWSVG): TSize;
 var
     pHeader:         TWSVGParser.IHeader;
@@ -7991,14 +8074,15 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGRasterizer.GetAnimationDuration(const pSVG: TWSVG): NativeUInt;
 var
-    pHeader:    TWSVGParser.IHeader;
-    switchMode: Boolean;
+    pHeader:             TWSVGParser.IHeader;
+    switchMode, useMode: Boolean;
 begin
     pHeader    := nil;
     switchMode := False;
+    useMode    := False;
     Result     := 0;
 
-    GetAnimationDuration(pHeader, pSVG.Parser.ElementList, switchMode, Result);
+    GetAnimationDuration(pHeader, pSVG.Parser.ElementList, switchMode, useMode, Result);
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGRasterizer.EnableAnimation(value: Boolean);

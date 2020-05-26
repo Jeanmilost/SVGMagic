@@ -385,6 +385,44 @@ type
     end;
 
     {**
+     Scalable Vector Graphics (SVG) symbol, it's a group only shown if referenced by an use element
+    }
+    TWSVGSymbol = class(TWSVGContainer)
+        public
+            {**
+             Constructor
+             @param(pParent Parent item, orphan or root if @nil)
+             @param(pOptions SVG options)
+            }
+            constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+            {**
+             Destructor
+            }
+            destructor Destroy; override;
+
+            {**
+             Create new element instance
+             @param(pParent Parent item, orphan or root if @nil)
+             @returns(Element instance)
+            }
+            function CreateInstance(pParent: TWSVGItem): TWSVGElement; override;
+
+            {**
+             Log content
+             @param(margin Margin length in chars)
+            }
+            procedure Log(margin: Cardinal); override;
+
+            {**
+             Print content to string
+             @param(margin Margin length in chars)
+             @returns(Content)
+            }
+            function Print(margin: Cardinal): UnicodeString; override;
+    end;
+
+    {**
      Scalable Vector Graphics (SVG) clip path, it's a special group owning a clipping path to apply
     }
     TWSVGClipPath = class(TWSVGContainer)
@@ -1225,6 +1263,7 @@ var
     pGroup:    TWSVGGroup;
     pSwitch:   TWSVGSwitch;
     pAction:   TWSVGAction;
+    pSymbol:   TWSVGSymbol;
     pClipPath: TWSVGClipPath;
     pRect:     TWSVGRect;
     pCircle:   TWSVGCircle;
@@ -1293,6 +1332,25 @@ begin
             pAction := nil;
         finally
             pAction.Free;
+        end;
+    end
+    else
+    if (name = C_SVG_Tag_Symbol) then
+    begin
+        pSymbol := nil;
+
+        try
+            // read symbol
+            pSymbol := TWSVGSymbol.Create(Self, m_pOptions);
+            Result  := pSymbol.Read(pNode) and Result;
+            pElements.Add(pSymbol);
+
+            // register the link
+            RegisterLink(pSymbol, defs, True);
+
+            pSymbol := nil;
+        finally
+            pSymbol.Free;
         end;
     end
     else
@@ -2136,6 +2194,37 @@ end;
 function TWSVGAction.Print(margin: Cardinal): UnicodeString;
 begin
     Result := '<Action>' + #13 + #10 + inherited Print(margin);
+end;
+//---------------------------------------------------------------------------
+// TWSVGSymbol
+//---------------------------------------------------------------------------
+constructor TWSVGSymbol.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    ItemName := C_SVG_Tag_Symbol;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGSymbol.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGSymbol.CreateInstance(pParent: TWSVGItem): TWSVGElement;
+begin
+    Result := TWSVGSymbol.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGSymbol.Log(margin: Cardinal);
+begin
+    TWLogHelper.LogBlockToCompiler(' Symbol ');
+
+    inherited Log(margin);
+end;
+//---------------------------------------------------------------------------
+function TWSVGSymbol.Print(margin: Cardinal): UnicodeString;
+begin
+    Result := '<Symbol>' + #13 + #10 + inherited Print(margin);
 end;
 //---------------------------------------------------------------------------
 // TWSVGClipPath

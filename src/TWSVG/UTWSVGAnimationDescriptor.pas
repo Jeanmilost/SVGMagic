@@ -675,8 +675,9 @@ begin
 
                 // search for calculation mode
                 case (m_CalcMode) of
-                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear: progression := posBetween;
-                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline: progression := GetBezierProgression(startIndex, posBetween);
+                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Discrete: progression := 1.0;
+                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear:   progression := posBetween;
+                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline:   progression := GetBezierProgression(startIndex, posBetween);
                 else
                     raise Exception.CreateFmt('Unknown calculation mode - %d', [Integer(m_CalcMode)]);
                 end;
@@ -729,8 +730,9 @@ begin
 
     // search for calculation mode
     case (m_CalcMode) of
-        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear: progression := posBetween;
-        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline: progression := GetBezierProgression(frameIndex, posBetween);
+        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Discrete: progression := 1.0;
+        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear:   progression := posBetween;
+        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline:   progression := GetBezierProgression(frameIndex, posBetween);
     else
         raise Exception.CreateFmt('Unknown calculation mode - %d', [Integer(m_CalcMode)]);
     end;
@@ -967,11 +969,32 @@ begin
 end;
 //---------------------------------------------------------------------------
 function TWSVGEnumAnimDesc.GetValueAt(position: Double): Integer;
+var
+    keyTimeCount, i: NativeUInt;
+    curPos:          Double;
 begin
+    keyTimeCount := Length(m_KeyTimes);
+
+    // key time are used?
+    if (keyTimeCount > 0) then
+    begin
+        curPos := Min(position, 1.0);
+
+        // iterate through animation keys
+        for i := 0 to keyTimeCount - 2 do
+            // found current key?
+            if ((curPos >= m_KeyTimes[i]) and (curPos <= m_KeyTimes[i + 1])) then
+                Exit(m_Values[i]);
+
+        // should never happen because current position should always be found between key times
+        TWLogHelper.LogToCompiler('Malformed animation - the key time could not be found - position - '
+                + FloatToStr(position) + ' - key time count - ' + IntToStr(keyTimeCount));
+    end;
+
     // list of values?
     if (Length(m_Values) > 0) then
         // calculate the index to get relatively to the animation position
-        Exit (m_Values[Trunc(position * (Length(m_Values) - 1))]);
+        Exit(m_Values[Trunc(position * (Length(m_Values) - 1))]);
 
     raise Exception.Create('NOT IMPLEMENTED');
 end;
