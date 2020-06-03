@@ -24,6 +24,7 @@ const
     C_SVG_Tag_Polygon:                                 UnicodeString = 'polygon';
     C_SVG_Tag_Polyline:                                UnicodeString = 'polyline';
     C_SVG_Tag_Text:                                    UnicodeString = 'text';
+    C_SVG_Tag_Image:                                   UnicodeString = 'image';
     C_SVG_Tag_Use:                                     UnicodeString = 'use';
     C_SVG_Tag_Symbol:                                  UnicodeString = 'symbol';
     C_SVG_Tag_Set:                                     UnicodeString = 'set';
@@ -72,6 +73,7 @@ const
     C_SVG_Prop_RY:                                     UnicodeString = 'ry';
     C_SVG_Prop_FX:                                     UnicodeString = 'fx';
     C_SVG_Prop_FY:                                     UnicodeString = 'fy';
+    C_SVG_Prop_Image_PreserveAspectRatio:              UnicodeString = 'preserveAspectRatio';
     C_SVG_Prop_Font_Family:                            UnicodeString = 'font-family';
     C_SVG_Prop_Font_Size:                              UnicodeString = 'font-size';
     C_SVG_Prop_Text_Anchor:                            UnicodeString = 'text-anchor';
@@ -120,6 +122,17 @@ const
     C_SVG_Value_Start:                                 UnicodeString = 'start';
     C_SVG_Value_Middle:                                UnicodeString = 'middle';
     C_SVG_Value_End:                                   UnicodeString = 'end';
+    C_SVG_Value_XMinYMin:                              UnicodeString = 'xMinYMin';
+    C_SVG_Value_XMidYMin:                              UnicodeString = 'xMidYMin';
+    C_SVG_Value_XMaxYMin:                              UnicodeString = 'xMaxYMin';
+    C_SVG_Value_XMinYMid:                              UnicodeString = 'xMinYMid';
+    C_SVG_Value_XMidYMid:                              UnicodeString = 'xMidYMid';
+    C_SVG_Value_XMaxYMid:                              UnicodeString = 'xMaxYMid';
+    C_SVG_Value_XMinYMax:                              UnicodeString = 'xMinYMax';
+    C_SVG_Value_XMidYMax:                              UnicodeString = 'xMidYMax';
+    C_SVG_Value_XMaxYMax:                              UnicodeString = 'xMaxYMax';
+    C_SVG_Value_Meet:                                  UnicodeString = 'meet';
+    C_SVG_Value_Slice:                                 UnicodeString = 'slice';
     C_SVG_Link_URL:                                    UnicodeString = 'url';
     C_SVG_Path_MoveTo_Absolute                                       = 'M';
     C_SVG_Path_MoveTo_Relative                                       = 'm';
@@ -205,6 +218,7 @@ const
     C_SVG_Unit_Object_Bounding_Box:                    UnicodeString = 'objectBoundingBox';
     C_SVG_Unit_User_Space_On_Use:                      UnicodeString = 'userSpaceOnUse';
     C_SVG_Blank_Text_Attribute:                        UnicodeString = '#text';
+    C_SVG_Global_Data:                                 UnicodeString = 'data';
     C_SVG_Global_Error:                                UnicodeString = '#ERROR';
     //---------------------------------------------------------------------------
 

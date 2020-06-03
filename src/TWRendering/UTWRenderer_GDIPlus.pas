@@ -1020,7 +1020,19 @@ type
              @br @bold(NOTE) WARNING Not tested with transparent images
             }
             procedure DrawImage(const pGraphic: TGraphic; const srcRect: TWRectF; hDC: THandle;
-                    const destRect: TWRectF; const pOptions: TWRenderer.IImageOptions); override;
+                    const destRect: TWRectF; const pOptions: TWRenderer.IImageOptions); overload; override;
+
+            {**
+             Draw image
+             @param(pGraphic Image to draw)
+             @param(srcRect Source image rect to draw)
+             @param(pGraphics Destination GDI+ graphics to draw to)
+             @param(destRect Rect where image will be drawn on dest, stretched if not equal to source)
+             @param(pOptions Options)
+             @br @bold(NOTE) WARNING Not tested with transparent images
+            }
+            procedure DrawImage(const pGraphic: TGraphic; const srcRect: TWRectF; pGraphics: TGpGraphics;
+                    const destRect: TWRectF; const pOptions: TWRenderer.IImageOptions); reintroduce; overload; virtual;
 
             {**
              Get supported draw capabilities
@@ -6398,12 +6410,35 @@ end;
 procedure TWRenderer_GDIPlus.DrawImage(const pGraphic: TGraphic; const srcRect: TWRectF; hDC: THandle;
         const destRect: TWRectF; const pOptions: TWRenderer.IImageOptions);
 var
+    pGraphics:  TGpGraphics;
+    paGraphics: IWSmartPointer<TGpGraphics>;
+begin
+    // get GDI+ graphics from device context
+    pGraphics := m_pCache.m_pGraphics.GetGraphics(hDC);
+
+    // is cache used? If not keep pointer in a smart pointer to auto-delete object on function ends
+    if (not g_GDIPlusCacheController.m_Graphics) then
+        paGraphics := TWSmartPointer<TGpGraphics>.Create(pGraphics);
+
+    DrawImage(pGraphic, srcRect, pGraphics, destRect, pOptions);
+end;
+//---------------------------------------------------------------------------
+procedure TWRenderer_GDIPlus.DrawImage(const pGraphic: TGraphic; const srcRect: TWRectF; pGraphics: TGpGraphics;
+        const destRect: TWRectF; const pOptions: TWRenderer.IImageOptions);
+var
     iMode:       InterpolationMode;
-    pGraphics:   TGpGraphics;
-    paGraphics:  IWSmartPointer<TGpGraphics>;
     pBitmap:     IWSmartPointer<Vcl.Graphics.TBitmap>;
     pGDIPBitmap: IWSmartPointer<TGpBitmap>;
 begin
+    if (not Assigned(pGraphic)) then
+        Exit;
+
+    if (not Assigned(pGraphics)) then
+        Exit;
+
+    if (not Assigned(pOptions)) then
+        Exit;
+
     case (pOptions.ResizeMode) of
         E_RzMode_Auto:
             // for vector based images, use native draw, otherwise default
@@ -6449,19 +6484,12 @@ begin
     // create GDI Image from bitmap
     pGDIPBitmap := TWSmartPointer<TGpBitmap>.Create(TWGDIPlusHelper.ToGDIPlusBitmap(pBitmap));
 
-    // get GDI+ graphics from device context
-    pGraphics := m_pCache.m_pGraphics.GetGraphics(hDC);
-
-    // is cache used? If not keep pointer in a smart pointer to auto-delete object on function ends
-    if (not g_GDIPlusCacheController.m_Graphics) then
-        paGraphics := TWSmartPointer<TGpGraphics>.Create(pGraphics);
-
     // set interpolation mode
     pGraphics.SetInterpolationMode(iMode);
 
     // draw image to canvas
-    pGraphics.DrawImage(pGDIPBitmap, destRect.ToGpRectF, srcRect.Left, srcRect.Top,
-            srcRect.Width, srcRect.Height, UnitPixel);
+    pGraphics.DrawImage(pGDIPBitmap, destRect.ToGpRectF, srcRect.Left, srcRect.Top, srcRect.Width,
+            srcRect.Height, UnitPixel);
 end;
 //---------------------------------------------------------------------------
 function TWRenderer_GDIPlus.GetCaps: TWRenderer.IDrawCaps;

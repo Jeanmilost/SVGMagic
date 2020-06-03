@@ -5405,13 +5405,9 @@ end;
 //---------------------------------------------------------------------------
 class function TWGDIPlusHelper.ToGDIPlusBitmap(const pBitmap: Vcl.Graphics.TBitmap): TGpBitmap;
 var
-    bmpInfo:           TBitmap;
-    bmData:            BitmapData;
-    rect:              TGpRect;
-    pGDIBmpInstance:   IWSmartPointer<TGpBitmap>;
-    w, h, lineSize, y: NativeUInt;
-    pDest, pSource:    PDWORD;
-    success:           Boolean;
+    bmpInfo:         TBitmap;
+    pGDIBmpInstance: IWSmartPointer<TGpBitmap>;
+    success:         Boolean;
 begin
     if (not Assigned(pBitmap)) then
         Exit(nil);
@@ -5430,34 +5426,10 @@ begin
     Result  := nil;
 
     try
-        // create gdi+ bitmap
-        Result := TGpBitmap.Create(bmpInfo.bmWidth, bmpInfo.bmHeight, PixelFormat32bppARGB);
-
-        rect.X      := 0;
-        rect.Y      := 0;
-        rect.Width  := bmpInfo.bmWidth;
-        rect.Height := bmpInfo.bmHeight;
-
-        // lock it
-        Result.LockBits(rect, ImageLockModeWrite, PixelFormat32bppARGB, bmData);
-
-        try
-            // copy pixels
-            w        := bmpInfo.bmWidth;
-            h        := bmpInfo.bmHeight;
-            lineSize := w * 4;
-
-            pDest   := PDWORD(bmData.Scan0);
-            pSource := PDWORD(bmpInfo.bmBits);
-
-            if (h > 0) then
-                for y := 0 to h - 1 do
-                    // pixels in bmpInfo.bmBits are vertically flipped, copy and reverse them
-                    CopyMemory(Pointer(NativeUInt(pDest) + (y * w)),
-                            Pointer(NativeUInt(pSource) + ((h - 1 - y) * w)), lineSize);
-        finally
-            Result.UnlockBits(bmData);
-        end;
+        // create gdi+ bitmap and flip it vertically
+        Result := TGpBitmap.Create(bmpInfo.bmWidth, bmpInfo.bmHeight, bmpInfo.bmWidth * 4,
+                PixelFormat32bppARGB, bmpInfo.bmBits);
+        Result.RotateFlip(RotateNoneFlipY);
 
         success := True;
     finally

@@ -463,6 +463,7 @@ var
     pPolygon:       TWSVGPolygon;
     pPolyline:      TWSVGPolyline;
     pPath:          TWSVGPath;
+    pImage:         TWSVGImage;
     pText:          TWSVGText;
     pUse:           TWSVGUse;
 begin
@@ -827,6 +828,34 @@ begin
                 pPath := nil;
             finally
                 pPath.Free;
+            end;
+        end
+        else
+        if (name = C_SVG_Tag_Image) then
+        begin
+            pImage := nil;
+
+            try
+                // read image
+                pImage := TWSVGImage.Create(Self, m_pOptions);
+                Result := pImage.Read(pChildNode) and Result;
+
+                // is item identifier empty?
+                if (not TWStringHelper.IsEmpty(pImage.ItemID)) then
+                begin
+                    // register the item
+                    if (not RegisterLink(pImage, m_pDefs, False)) then
+                        Exit(False);
+                end
+                else
+                begin
+                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pImage.ItemName);
+                    Exit(False);
+                end;
+
+                pImage := nil;
+            finally
+                pImage.Free;
             end;
         end
         else

@@ -14,6 +14,7 @@ uses System.Classes,
      System.StrUtils,
      System.Math,
      Vcl.Graphics,
+     Vcl.Imaging.jpeg,
      Vcl.Imaging.PngImage,
      Vcl.Clipbrd,
      Winapi.Windows,
@@ -229,6 +230,17 @@ type
              @returns(@true if animation can continue, otherwise @false)
             }
             function DoAnimate(pAnimDesc: TWSVGAnimationDescriptor; pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Called while animation is running
+             @param(pSender Event sender)
+             @param(pStream Stream containing the image to read)
+             @param(imageType The image type)
+             @param(pGraphic The read image graphic)
+             @returns(@true on success, otherwise @false)
+            }
+            function DoGetImage(pSender: TObject; pStream: TMemoryStream; imageType: TWSVGRasterizer.IEImageType;
+                    var pGraphic: TGraphic): Boolean; virtual;
 
             {**
              Define properties to load or save to DFM
@@ -541,7 +553,8 @@ begin
     m_pFrameCalculator := TWSVGFrameCalculator.Create;
 
     // link internal callbacks
-    m_pSVGRasterizer.OnAnimate := DoAnimate;
+    m_pSVGRasterizer.OnAnimate  := DoAnimate;
+    m_pSVGRasterizer.OnGetImage := DoGetImage;
 
     // set background transparent by default
     Transparent := True;
@@ -750,6 +763,40 @@ begin
 
     // notify that animation is allowed to continue
     Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGGraphic.DoGetImage(pSender: TObject; pStream: TMemoryStream; imageType: TWSVGRasterizer.IEImageType;
+        var pGraphic: TGraphic): Boolean;
+begin
+    if ((not Assigned(pStream)) or (pStream.Size = 0)) then
+        Exit(False);
+
+    pStream.Position := 0;
+
+    case (imageType) of
+        TWSVGRasterizer.IEImageType.IE_IT_JPG:
+        begin
+            pGraphic := TJpegImage.Create;
+            pGraphic.LoadFromStream(pStream);
+            Exit(True);
+        end;
+
+        TWSVGRasterizer.IEImageType.IE_IT_PNG:
+        begin
+            pGraphic := TPngImage.Create;
+            pGraphic.LoadFromStream(pStream);
+            Exit(True);
+        end;
+
+        TWSVGRasterizer.IEImageType.IE_IT_SVG:
+        begin
+            pGraphic := TWSVGGraphic.Create;
+            pGraphic.LoadFromStream(pStream);
+            Exit(True);
+        end;
+    else
+        Exit(False);
+    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGGraphic.DefineProperties(pFiler: TFiler);

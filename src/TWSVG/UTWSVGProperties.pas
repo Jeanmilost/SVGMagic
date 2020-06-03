@@ -287,9 +287,42 @@ type
      Scalable Vector Graphics (SVG) link property
     }
     TWSVGPropLink = class(TWSVGProperty)
+        public type
+            {**
+             Data type
+             @value(IE_DT_URL The value contains a classic URL or link)
+             @value(IE_DT_PNG The value contains a PNG image data)
+             @value(IE_DT_JPG The value contains a JPG image data)
+             @value(IE_DT_SVG The value contains a SVG image data)
+             @value(IE_DT_Unknown The value is unknown)
+            }
+            IEDataType =
+            (
+                IE_DT_URL,
+                IE_DT_PNG,
+                IE_DT_JPG,
+                IE_DT_SVG,
+                IE_DT_Unknown
+            );
+
+            {**
+             Encoding type
+             @value(IE_E_None The value isn't encoded)
+             @value(IE_E_Base64 The value is base64 encoded)
+             @value(IE_E_Unknown The value encoding is unknown)
+            }
+            IEEncoding =
+            (
+                IE_E_None,
+                IE_E_Base64,
+                IE_E_Unknown
+            );
+
         private
-            m_Value: UnicodeString;
-            m_Local: Boolean;
+            m_Value:    UnicodeString;
+            m_DataType: IEDataType;
+            m_Encoding: IEEncoding;
+            m_Local:    Boolean;
 
             {**
              Parse the link
@@ -360,6 +393,16 @@ type
              Get or set the link value
             }
             property Value: UnicodeString read m_Value write m_Value;
+
+            {**
+             Get or set the data type value
+            }
+            property DataType: IEDataType read m_DataType write m_DataType;
+
+            {**
+             Get or set the encoding value
+            }
+            property Encoding: IEEncoding read m_Encoding write m_Encoding;
 
             {**
              Get or set if the link is local
@@ -1333,7 +1376,9 @@ constructor TWSVGPropLink.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
 begin
     inherited Create(pParent, pOptions);
 
-    m_Local := False;
+    m_DataType := IE_DT_Unknown;
+    m_Encoding := IE_E_Unknown;
+    m_Local    := False;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGPropLink.Destroy;
@@ -1378,16 +1423,20 @@ begin
     pSource := pOther as TWSVGPropLink;
 
     // copy data from source
-    m_Value := pSource.m_Value;
-    m_Local := pSource.m_Local;
+    m_Value    := pSource.m_Value;
+    m_DataType := pSource.m_DataType;
+    m_Encoding := pSource.m_Encoding;
+    m_Local    := pSource.m_Local;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGPropLink.Clear;
 begin
     inherited Clear;
 
-    m_Value := '';
-    m_Local := False;
+    m_Value    := '';
+    m_DataType := IE_DT_Unknown;
+    m_Encoding := IE_E_Unknown;
+    m_Local    := False;
 end;
 //---------------------------------------------------------------------------
 function TWSVGPropLink.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
@@ -1397,11 +1446,84 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGPropLink.Parse(const data: UnicodeString): Boolean;
 var
-    tagPos:               Integer;
-    url:                  UnicodeString;
-    dataLength, i, index: NativeUInt;
+    tagPos, typePos, encPos: Integer;
+    url, dataType, encoding: UnicodeString;
+    dataLength, i, index:    NativeUInt;
 begin
-    // search for tag in data
+    // search for data tag in data
+    tagPos := System.Pos(C_SVG_Global_Data + ':', data);
+
+    // check if data begins with data attribute and contains at least the "data" chars
+    if ((tagPos = 1) and (Length(data) > 4)) then
+    begin
+        // search for the data type separator
+        typePos  := System.Pos(';', data);
+
+        // found it?
+        if (typePos >= Length(data)) then
+        begin
+            TWLogHelper.LogToCompiler('Link - found unknown data - ' + data);
+            m_DataType := IE_DT_Unknown;
+            m_Encoding := IE_E_Unknown;
+            m_Value    := data;
+            Exit(True);
+        end;
+
+        // get the data type
+        dataType := TWStringHelper.Substr(data, 5, typePos - 6);
+
+        // found a valid data type?
+        if (dataType = 'image/png') then
+            m_DataType := IE_DT_PNG
+        else
+        if (dataType = 'image/jpeg') then
+            m_DataType := IE_DT_SVG
+        else
+        if (dataType = 'image/svg+xml') then
+            m_DataType := IE_DT_SVG
+        else
+        begin
+            TWLogHelper.LogToCompiler('Link - found unknown data type - ' + dataType + ' - data - ' + data);
+            m_DataType := IE_DT_Unknown;
+            m_Encoding := IE_E_Unknown;
+            m_Value    := data;
+            Exit(True);
+        end;
+
+        // search for the encoding separator and extract the data type
+        encPos := System.Pos(',', data);
+
+        // found it?
+        if (encPos < Length(data)) then
+        begin
+            // get the encoding
+            encoding := TWStringHelper.Substr(data, typePos, encPos - typePos - 1);
+
+            // found a valid encoding?
+            if (encoding = 'base64') then
+                m_Encoding := IE_E_Base64
+            else
+            begin
+                TWLogHelper.LogToCompiler('Link - found unknown data encoding - ' + encoding + ' - data - ' + data);
+                m_DataType := IE_DT_Unknown;
+                m_Encoding := IE_E_Unknown;
+                m_Value    := data;
+                Exit(True);
+            end;
+        end
+        else
+            encPos := typePos;
+
+        // extract the data itself
+        m_Value := TWStringHelper.Substr(data, encPos, Length(data) - encPos);
+        Exit(True);
+    end;
+
+    // standard url
+    m_DataType := IE_DT_URL;
+    m_Encoding := IE_E_None;
+
+    // search for url tag in data
     tagPos := System.Pos(C_SVG_Link_URL, data);
 
     // check if data begins with url attribute and contains at least the "url()" chars

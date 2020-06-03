@@ -8,8 +8,10 @@ unit UTWSVGRasterizer;
 interface
 
 uses System.SysUtils,
+     System.Classes,
      System.Math,
      System.Generics.Collections,
+     Soap.EncdDecd,
      Vcl.Graphics,
      Winapi.Windows,
      UTWHelpers,
@@ -65,6 +67,98 @@ type
             );
 
             {**
+             Image aspect ratio
+             @value(IE_AR_None Do not force uniform scaling. Scale the graphic content of the given
+                               element non-uniformly if necessary such that the element's bounding
+                               box exactly matches the viewport rectangle. Note that if <align> is
+                               none, then the optional <meetOrSlice> value is ignored)
+             @value(IE_AR_XMinYMin Force uniform scaling. Align the <min-x> of the element's viewBox
+                                   with the smallest X value of the viewport. Align the <min-y> of
+                                   the element's viewBox with the smallest Y value of the viewport)
+             @value(IE_AR_XMidYMin Force uniform scaling. Align the midpoint X value of the element's
+                                   viewBox with the midpoint X value of the viewport. Align the
+                                   <min-y> of the element's viewBox with the smallest Y value of the
+                                   viewport)
+             @value(IE_AR_XMaxYMin Force uniform scaling. Align the <min-x>+<width> of the element's
+                                   viewBox with the maximum X value of the viewport. Align the <min-y>
+                                   of the element's viewBox with the smallest Y value of the viewport)
+             @value(IE_AR_XMinYMid Force uniform scaling. Align the <min-x> of the element's viewBox
+                                   with the smallest X value of the viewport. Align the midpoint Y
+                                   value of the element's viewBox with the midpoint Y value of the
+                                   viewport)
+             @value(IE_AR_XMidYMid Force uniform scaling. Align the midpoint X value of the element's
+                                   viewBox with the midpoint X value of the viewport. Align the midpoint
+                                   Y value of the element's viewBox with the midpoint Y value of the
+                                   viewport
+             @value(IE_AR_XMaxYMid Force uniform scaling. Align the <min-x>+<width> of the element's
+                                   viewBox with the maximum X value of the viewport. Align the midpoint
+                                   Y value of the element's viewBox with the midpoint Y value of the
+                                   viewport)
+             @value(IE_AR_XMinYMax Force uniform scaling. Align the <min-x> of the element's viewBox
+                                   with the smallest X value of the viewport. Align the <min-y>+<height>
+                                   of the element's viewBox with the maximum Y value of the viewport)
+             @value(IE_AR_XMidYMax Force uniform scaling. Align the midpoint X value of the element's
+                                   viewBox with the midpoint X value of the viewport. Align the
+                                   <min-y>+<height> of the element's viewBox with the maximum Y value
+                                   of the viewport)
+             @value(IE_AR_XMaxYMax Force uniform scaling. Align the <min-x>+<width> of the element's
+                                   viewBox with the maximum X value of the viewport. Align the
+                                   <min-y>+<height> of the element's viewBox with the maximum Y value
+                                   of the viewport)
+            }
+            IEImageAspectRatio =
+            (
+                IE_AR_None,
+                IE_AR_XMinYMin,
+                IE_AR_XMidYMin,
+                IE_AR_XMaxYMin,
+                IE_AR_XMinYMid,
+                IE_AR_XMidYMid,
+                IE_AR_XMaxYMid,
+                IE_AR_XMinYMax,
+                IE_AR_XMidYMax,
+                IE_AR_XMaxYMax
+            );
+
+            {**
+             Image aspect ratio reference
+             @value(IE_R_Meet Scale the graphic such that:
+                              - aspect ratio is preserved
+                              - the entire viewBox is visible within the viewport
+                              - the viewBox is scaled up as much as possible, while still meeting
+                                the other criteria
+                              In this case, if the aspect ratio of the graphic does not match the
+                              viewport, some of the viewport will extend beyond the bounds of the
+                              viewBox (i.e., the area into which the viewBox will draw will be
+                              smaller than the viewport))
+             @value(IE_R_Slice Scale the graphic such that:
+                               - aspect ratio is preserved
+                               - the entire viewport is covered by the viewBox
+                               - the viewBox is scaled down as much as possible, while still meeting
+                                 the other criteria)
+            }
+            IEImageAspectRatioRef =
+            (
+                IE_IR_Meet,
+                IE_IR_Slice
+            );
+
+            {**
+             Image type
+             @value(IE_IT_Unknown image type is unknown)
+             @value(IE_IT_PNG The image is a PNG image)
+             @value(IE_IT_JPG The image is a JPG image)
+             @value(IE_IT_SVG The image is a SVG image)
+            }
+            IEImageType =
+            (
+                IE_IT_Unknown,
+                IE_IT_PNG,
+                IE_IT_JPG,
+                IE_IT_SVG
+            );
+
+            {**
              Text anchoring
              @value(IE_TA_Start Text is anchored on the left or top)
              @value(IE_TA_Middle Text is anchored on the center)
@@ -91,7 +185,18 @@ type
              @param(pCustomData Custom data)
              @returns(@true if animation can continue, otherwise @false)
             }
-            ITfOnAnimate = function (pAnimDesc: TWSVGAnimationDescriptor; pCustomData: Pointer): Boolean of object;
+            ITfAnimateEvent = function (pAnimDesc: TWSVGAnimationDescriptor; pCustomData: Pointer): Boolean of object;
+
+            {**
+             Called while animation is running
+             @param(pSender Event sender)
+             @param(pStream Stream containing the image to read)
+             @param(imageType The image type)
+             @param(pGraphic The read image graphic)
+             @returns(@true on success, otherwise @false)
+            }
+            ITfGetImageEvent = function (pSender: TObject; pStream: TMemoryStream; imageType: IEImageType;
+                    var pGraphic: TGraphic): Boolean of object;
 
         protected type
             IValuesF = TWSVGAttribute<Single>.IValues;
@@ -1402,9 +1507,10 @@ type
             ICache = TObjectDictionary<UnicodeString, ICacheItem>;
 
         private
-            m_UUID:       UnicodeString;
-            m_pCache:     ICache;
-            m_fOnAnimate: ITfOnAnimate;
+            m_UUID:           UnicodeString;
+            m_pCache:         ICache;
+            m_fOnAnimate:     ITfAnimateEvent;
+            m_fGetImageEvent: ITfGetImageEvent;
 
             {**
              Convert global animation position to sub-animation position
@@ -1536,6 +1642,26 @@ type
             function GetLineProps(const pLine: TWSVGLine; out x1: Single; out y1: Single; out x2: Single;
                     out y2: Single; pAnimationData: IAnimationData;
                     pCustomData: Pointer): Boolean; virtual;
+
+            {**
+             Get image properties
+             @param(pImage SVG image to extract from)
+             @param(x @bold([out]) Image start x position)
+             @param(y @bold([out]) Image start y position)
+             @param(width @bold([out]) Image width)
+             @param(height @bold([out]) Image height)
+             @param(preserveAspectRatio @bold([out]) Image aspect ratio)
+             @param(aspectRatioRef @bold([out]) Image aspect ratio reference)
+             @param(imageType @bold([out]) Image type)
+             @param(pImageData The stream which will contain the image data)
+             @param(pAnimationData Animation data)
+             @param(pCustomData Custom data)
+             @returns(@true on success, otherwise @false)
+            }
+            function GetImageProps(const pImage: TWSVGImage; out x: Single; out y: Single;
+                    out width: Single; out height: Single; out preserveAspectRatio: IEImageAspectRatio;
+                    out aspectRatioRef: IEImageAspectRatioRef; out imageType: IEImageType;
+                    pImageData: TMemoryStream; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
 
             {**
              Get text properties
@@ -1791,7 +1917,12 @@ type
             {**
              Get or set the OnAnimate event
             }
-            property OnAnimate: ITfOnAnimate read m_fOnAnimate write m_fOnAnimate;
+            property OnAnimate: ITfAnimateEvent read m_fOnAnimate write m_fOnAnimate;
+
+            {**
+             Get or set the OnGetImage event
+            }
+            property OnGetImage: ITfGetImageEvent read m_fGetImageEvent write m_fGetImageEvent;
     end;
 
 implementation
@@ -3184,9 +3315,10 @@ constructor TWSVGRasterizer.Create;
 begin
     inherited Create;
 
-    m_pCache     := ICache.Create([doOwnsValues]);
-    m_Animate    := True;
-    m_fOnAnimate := nil;
+    m_pCache         := ICache.Create([doOwnsValues]);
+    m_Animate        := True;
+    m_fOnAnimate     := nil;
+    m_fGetImageEvent := nil;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGRasterizer.Destroy;
@@ -4435,6 +4567,269 @@ begin
                 if (attribName = C_SVG_Prop_Y2) then
                     // do modify the line y2 position
                     y2 := animPos;
+            end;
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.GetImageProps(const pImage: TWSVGImage; out x: Single; out y: Single;
+        out width: Single; out height: Single; out preserveAspectRatio: IEImageAspectRatio;
+        out aspectRatioRef: IEImageAspectRatioRef; out imageType: IEImageType;
+        pImageData: TMemoryStream; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+var
+    pProperty:               TWSVGProperty;
+    pX, pY, pWidth, pHeight: TWSVGMeasure<Single>;
+    pAspectRatio:            TWSVGImage.IAspectRatio;
+    pLink:                   TWSVGPropLink;
+    pAnimation:              TWSVGAnimation;
+    pValueAnimDesc:          IWSmartPointer<TWSVGValueAnimDesc>;
+    attribName:              UnicodeString;
+    propCount, i:            NativeInt;
+    position, animPos:       Double;
+    pBytes:                  TBytes;
+begin
+    if (not Assigned(pImage)) then
+        Exit(False);
+
+    if (not Assigned(pImageData)) then
+        Exit(False);
+
+    // set default values (in case no matching value is found in text)
+    x                   := 0.0;
+    y                   := 0.0;
+    width               := 0.0;
+    height              := 0.0;
+    preserveAspectRatio := IE_AR_XMidYMid;
+    aspectRatioRef      := IE_IR_Meet;
+    imageType           := IE_IT_Unknown;
+
+    propCount := pImage.Count;
+
+    // iterate through element properties
+    for i := 0 to propCount - 1 do
+    begin
+        pProperty := pImage.Properties[i];
+
+        if (not Assigned(pProperty)) then
+            continue;
+
+        // search for text property to get
+        if ((pProperty.ItemName = C_SVG_Prop_X) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get x position
+            pX := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pX)) then
+                continue;
+
+            // set x position
+            x := pX.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Y) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get y position
+            pY := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pY)) then
+                continue;
+
+            // set y position
+            y := pY.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Width) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get image width
+            pWidth := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pWidth)) then
+                continue;
+
+            // set image width
+            width := pWidth.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Height) and (pProperty is TWSVGMeasure<Single>)) then
+        begin
+            // get image height
+            pHeight := pProperty as TWSVGMeasure<Single>;
+
+            // found it?
+            if (not Assigned(pHeight)) then
+                continue;
+
+            // set image height
+            height := pHeight.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Image_PreserveAspectRatio) and (pProperty is TWSVGImage.IAspectRatio)) then
+        begin
+            // get image aspect ratio
+            pAspectRatio := pProperty as TWSVGImage.IAspectRatio;
+
+            // found it?
+            if (not Assigned(pAspectRatio)) then
+                continue;
+
+            // set image aspect ratio
+            case (pAspectRatio.AspectRatio) of
+                TWSVGImage.IEAspectRatio.IE_AR_None:     preserveAspectRatio := IE_AR_None;
+                TWSVGImage.IEAspectRatio.IE_AR_XMinYMin: preserveAspectRatio := IE_AR_XMinYMin;
+                TWSVGImage.IEAspectRatio.IE_AR_XMidYMin: preserveAspectRatio := IE_AR_XMidYMin;
+                TWSVGImage.IEAspectRatio.IE_AR_XMaxYMin: preserveAspectRatio := IE_AR_XMaxYMin;
+                TWSVGImage.IEAspectRatio.IE_AR_XMinYMid: preserveAspectRatio := IE_AR_XMinYMid;
+                TWSVGImage.IEAspectRatio.IE_AR_XMidYMid: preserveAspectRatio := IE_AR_XMidYMid;
+                TWSVGImage.IEAspectRatio.IE_AR_XMaxYMid: preserveAspectRatio := IE_AR_XMaxYMid;
+                TWSVGImage.IEAspectRatio.IE_AR_XMinYMax: preserveAspectRatio := IE_AR_XMinYMax;
+                TWSVGImage.IEAspectRatio.IE_AR_XMidYMax: preserveAspectRatio := IE_AR_XMidYMax;
+                TWSVGImage.IEAspectRatio.IE_AR_XMaxYMax: preserveAspectRatio := IE_AR_XMaxYMax;
+            else
+                raise Exception.CreateFmt('Unknown aspect ratio value - %d', [Integer(pAspectRatio.AspectRatio)]);
+            end;
+
+            // set image aspect ratio reference
+            case (pAspectRatio.Reference) of
+                TWSVGImage.IEReference.IE_R_Meet:  aspectRatioRef := IE_IR_Meet;
+                TWSVGImage.IEReference.IE_R_Slice: aspectRatioRef := IE_IR_Slice;
+            else
+                raise Exception.CreateFmt('Unknown aspect ratio reference value - %d', [Integer(pAspectRatio.Reference)]);
+            end;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_XLink_HRef) and (pProperty is TWSVGPropLink)) then
+        begin
+            // get link
+            pLink := pProperty as TWSVGPropLink;
+
+            // found it?
+            if (not Assigned(pLink)) then
+                continue;
+
+            // empty value?
+            if (Length(pLink.Value) = 0) then
+                continue;
+
+            // search for encoding
+            case pLink.Encoding of
+                TWSVGPropLink.IEEncoding.IE_E_Base64:
+                begin
+                    pBytes := DecodeBase64(AnsiString(pLink.Value));
+
+                    if (Assigned(pBytes)) then
+                    begin
+                        pImageData.Write(pBytes[0], Length(pBytes));
+                        pImageData.Position := 0;
+                    end;
+                end;
+            else
+                TWLogHelper.LogToCompiler('Get image - unknown or unsupported encoding - ' +
+                        IntToStr(Integer(pLink.Encoding)));
+                continue;
+            end;
+
+            // search for encoding
+            case pLink.DataType of
+                TWSVGPropLink.IEDataType.IE_DT_PNG: imageType := IE_IT_PNG;
+                TWSVGPropLink.IEDataType.IE_DT_JPG: imageType := IE_IT_JPG;
+                TWSVGPropLink.IEDataType.IE_DT_SVG: imageType := IE_IT_SVG;
+            else
+                TWLogHelper.LogToCompiler('Get image - unknown image encodingtype - ' +
+                        IntToStr(Integer(pLink.DataType)));
+            end;
+        end;
+    end;
+
+    // do animate shape?
+    if (not m_Animate) then
+        Exit(True);
+
+    // iterate through set animations (i.e. set a particular shape attribute at elapsed time)
+    for pAnimation in pAnimationData.m_pSetAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimation.ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // do apply animation?
+                if (pAnimationData.m_Position <> 1.0) then
+                    continue;
+
+                // is to value defined?
+                if (Length(pValueAnimDesc.ToList) = 0) then
+                    continue;
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X) then
+                    // do modify the image x position
+                    x := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Y) then
+                    // do modify the image y position
+                    y := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Width) then
+                    // do modify the image width
+                    width := pValueAnimDesc.ToList[0]
+                else
+                if (attribName = C_SVG_Prop_Height) then
+                    // do modify the image height
+                    height := pValueAnimDesc.ToList[0];
+            end;
+        end;
+    end;
+
+    // iterate through attribute animations (i.e. animations linked to a particular shape attribute)
+    for pAnimation in pAnimationData.m_pAttribAnims do
+    begin
+        // search for animation type to apply
+        case (pAnimation.ValueType) of
+            TWSVGCommon.IEValueType.IE_VT_Value:
+            begin
+                // configure animation description
+                pValueAnimDesc           := TWSmartPointer<TWSVGValueAnimDesc>.Create();
+                pValueAnimDesc.Animation := pAnimation;
+
+                // populate animation description, and check if animation is allowed to continue
+                if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
+                    continue;
+
+                // is animation running (i.e. between his start and end position)
+                if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
+                    continue;
+
+                // calculate animation position
+                animPos := pValueAnimDesc.GetValueAt(position);
+
+                // search for attribute to modify
+                if (attribName = C_SVG_Prop_X) then
+                    // do modify the image x position
+                    x := animPos
+                else
+                if (attribName = C_SVG_Prop_Y) then
+                    // do modify the image y position
+                    y := animPos
+                else
+                if (attribName = C_SVG_Prop_Width) then
+                    // do modify the image width
+                    width := animPos
+                else
+                if (attribName = C_SVG_Prop_Height) then
+                    // do modify the image height
+                    height := animPos;
             end;
         end;
     end;

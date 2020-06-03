@@ -577,7 +577,7 @@ type
                     {**
                      Get or set if image is vectorial
                     }
-                    property Vectorial: Boolean read m_Vectorial   write m_Vectorial;
+                    property Vectorial: Boolean read m_Vectorial write m_Vectorial;
             end;
 
         private

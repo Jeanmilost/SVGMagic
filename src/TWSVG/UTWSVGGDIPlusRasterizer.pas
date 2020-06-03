@@ -11,6 +11,7 @@ interface
     (*$NOINCLUDE Winapi.GdipObj *)
 
 uses System.SysUtils,
+     System.Classes,
      System.Types,
      System.Math,
      {$if CompilerVersion > 23}
@@ -408,6 +409,7 @@ var
     pLine:                                                                                                      TWSVGLine;
     pPolygon:                                                                                                   TWSVGPolygon;
     pPolyline:                                                                                                  TWSVGPolyline;
+    pImage:                                                                                                     TWSVGImage;
     pText:                                                                                                      TWSVGText;
     pProps:                                                                                                     IWSmartPointer<IProperties>;
     pAnimationData:                                                                                             IWSmartPointer<IAnimationData>;
@@ -424,6 +426,8 @@ var
     pTextFormat:                                                                                                IWSmartPointer<TGpStringFormat>;
     pGradientFactory:                                                                                           IWSmartPointer<TWGDIPlusGradient>;
     pRegion, pPrevRegion, pCurRegion:                                                                           IWSmartPointer<TGpRegion>;
+    pImageData:                                                                                                 IWSmartPointer<TMemoryStream>;
+    pGraphic:                                                                                                   TGraphic;
     textMetrics:                                                                                                TEXTMETRIC;
     charRange:                                                                                                  TCharacterRange;
     charRegions:                                                                                                array of TGpRegion;
@@ -431,7 +435,7 @@ var
     pGpPen, pFakePen:                                                                                           TGpPen;
     point, textPos:                                                                                             TGpPointF;
     boundingBox, rectToDraw, charRect:                                                                          TGpRectF;
-    rect:                                                                                                       TWRectF;
+    rect, imageRect:                                                                                            TWRectF;
     iRect:                                                                                                      TRect;
     svgPos, posFromProps:                                                                                       TPoint;
     color:                                                                                                      TWColor;
@@ -441,6 +445,10 @@ var
     x, y, initialX, initialY, x1, y1, x2, y2, r, rx, ry, d, dx, dy, width, height, dashFactor, coord, fontSize: Single;
     fontFamily, fontFamilyLowerCase:                                                                            UnicodeString;
     anchor:                                                                                                     IETextAnchor;
+    preserveAspectRatio:                                                                                        IEImageAspectRatio;
+    aspectRatioRef:                                                                                             IEImageAspectRatioRef;
+    imageType:                                                                                                  IEImageType;
+    pImageOptions:                                                                                              TWRenderer.IImageOptions;
     isXCoord:                                                                                                   Boolean;
     isClipped:                                                                                                  Boolean;
 begin
@@ -1714,24 +1722,140 @@ begin
             end;
         end;
 
-        // is a text?
-        if (pElement is TWSVGText) then
+        // is an image?
+        if (pElement is TWSVGImage) then
         begin
-            // get line
-            pText := pElement as TWSVGText;
+            // get image element
+            pImage := pElement as TWSVGImage;
 
             // found it?
-            if (Assigned(pText)) then
+            if (Assigned(pImage)) then
             begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
                         scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pText, pPrevRegion);
+                        pGraphics, pImage, pPrevRegion);
 
+                // configure animation
+                pAnimationData          := TWSmartPointer<IAnimationData>.Create();
+                pAnimationData.Position := animation.m_Position;
+
+                // get all animations linked to this shape
+                GetAnimations(pImage, pAnimationData);
+
+                pProps := TWSmartPointer<IProperties>.Create();
+
+                // get draw properties from element
+                if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
+                    Exit(False);
+
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
+                pProps.Merge(pParentProps);
+
+                // is element visible? (NOTE for now the only supported mode is "none". All other
+                // modes are considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                    continue;
+
+                pImageData := TWSmartPointer<TMemoryStream>.Create();
+
+                // extract properties from image
+                if (not GetImageProps(pImage, x, y, width, height, preserveAspectRatio, aspectRatioRef,
+                        imageType, pImageData, pAnimationData, animation.m_pCustomData))
+                then
+                    Exit(False);
+
+                // get the image position (in relation to the initial position)
+                posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
+
+                // calculate position at which svg element should be drawn
+                svgPos := CalculateFinalPos(posFromProps, viewBox, scaleW, scaleH);
+
+                pMatrix := TWSmartPointer<TGpMatrix>.Create();
+                pProps.Matrix.Value.ToGpMatrix(pMatrix);
+
+                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+
+                pGraphic      := nil;
+                pImageOptions := nil;
+
+                try
+                    // get the image to draw
+                    if ((not Assigned(OnGetImage)) or (not OnGetImage(Self, pImageData,
+                            imageType, pGraphic)))
+                    then
+                        continue;
+
+                    // if no width defined, use the image width instead
+                    if (width = 0) then
+                        width := pGraphic.Width;
+
+                    // if no height defined, use the image height instead
+                    if (height = 0) then
+                        height := pGraphic.Width;
+
+                    // set the image rect
+                    imageRect        := Default(TWRectF);
+                    imageRect.Right  := width;
+                    imageRect.Bottom := height;
+
+                    // set the draw rect
+                    rect.Left   := 0;
+                    rect.Top    := 0;
+                    rect.Right  := width;
+                    rect.Bottom := height;
+
+                    // set the image options
+                    pImageOptions             := TWRenderer.IImageOptions.Create;
+                    pImageOptions.ResizeMode  := E_RzMode_BicubicHQ;
+                    pImageOptions.Opacity     := 1.0;
+                    pImageOptions.Transparent := (imageType = IE_IT_PNG) or (imageType = IE_IT_SVG);
+                    pImageOptions.Vectorial   := (imageType = IE_IT_SVG);
+
+                    // draw the image
+                    pRenderer.DrawImage(pGraphic, imageRect, pGraphics, rect, pImageOptions);
+                finally
+                    if (Assigned(pImageOptions)) then
+                        pImageOptions.Free;
+
+                    if (Assigned(pGraphic)) then
+                        pGraphic.Free;
+
+                    // restore the previous clipping, if any
+                    if (isClipped) then
+                        pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+                end;
+
+                // is switch mode enabled?
+                if (switchMode) then
+                    Exit(True);
+
+                continue;
+            end;
+        end;
+
+        // is a text?
+        if (pElement is TWSVGText) then
+        begin
+            // get text element
+            pText := pElement as TWSVGText;
+
+            // found it?
+            if (Assigned(pText)) then
+            begin
                 // no text to draw?
                 if (Length(pText.Text) = 0) then
                     continue;
+
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pText, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
