@@ -25,6 +25,7 @@ const
     C_SVG_Tag_Polyline:                                UnicodeString = 'polyline';
     C_SVG_Tag_Text:                                    UnicodeString = 'text';
     C_SVG_Tag_Image:                                   UnicodeString = 'image';
+    C_SVG_Tag_SVG:                                     UnicodeString = 'svg';
     C_SVG_Tag_Use:                                     UnicodeString = 'use';
     C_SVG_Tag_Symbol:                                  UnicodeString = 'symbol';
     C_SVG_Tag_Set:                                     UnicodeString = 'set';

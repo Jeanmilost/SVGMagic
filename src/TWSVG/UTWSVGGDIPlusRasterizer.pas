@@ -402,6 +402,7 @@ var
     pAction:                                                                                                    TWSVGAction;
     pUse:                                                                                                       TWSVGUse;
     pSymbol:                                                                                                    TWSVGSymbol;
+    pEmbeddedSVG:                                                                                               TWSVGSVG;
     pPath:                                                                                                      TWSVGPath;
     pRect:                                                                                                      TWSVGRect;
     pCircle:                                                                                                    TWSVGCircle;
@@ -802,6 +803,75 @@ begin
                 if (not DrawElements(pHeader, viewBox, pProps, pSymbol.ElementList, posFromProps,
                         scaleW, scaleH, antialiasing, switchMode, clippingMode, useMode, intersection,
                         animation, pCanvas, pGraphics))
+                then
+                begin
+                    // restore the previous clipping, if any
+                    if (isClipped) then
+                        pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+
+                    Exit(False);
+                end;
+
+                // restore the previous clipping, if any
+                if (isClipped) then
+                    pGraphics.SetClip(pPrevRegion, CombineModeReplace);
+
+                continue;
+            end;
+        end;
+
+        // is an embedded SVG?
+        if (pElement is TWSVGSVG) then
+        begin
+            // get embedded SVG
+            pEmbeddedSVG := pElement as TWSVGSVG;
+
+            // found it?
+            if (Assigned(pEmbeddedSVG)) then
+            begin
+                pPrevRegion := TWSmartPointer<TGpRegion>.Create();
+
+                isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
+                        pGraphics, pEmbeddedSVG, pPrevRegion);
+
+                // configure animation
+                pAnimationData          := TWSmartPointer<IAnimationData>.Create();
+                pAnimationData.Position := animation.m_Position;
+
+                // get all animations linked to this container
+                GetAnimations(pEmbeddedSVG, pAnimationData);
+
+                pProps := TWSmartPointer<IProperties>.Create();
+
+                // get draw properties from element
+                if (not GetElementProps(pElement, pProps, pAnimationData, animation.m_pCustomData)) then
+                    Exit(False);
+
+                // the transform animations should absolutely be applied to the local matrix BEFORE
+                // combining it with its parents
+                GetTransformAnimMatrix(pAnimationData, pProps.Matrix, animation.m_pCustomData);
+
+                pProps.Merge(pParentProps);
+
+                // is element visible? (NOTE for now the only supported mode is "none". All other
+                // modes are considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                    continue;
+
+                // extract position and size properties
+                if (not GetPosAndSizeProps(pEmbeddedSVG, x, y, width, height, pAnimationData,
+                        animation.m_pCustomData))
+                then
+                    Exit(False);
+
+                // get the embedded SVG position (in relation to the initial position)
+                posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
+
+                // draw embedded SVG subelements
+                if (not DrawElements(pHeader, viewBox, pProps, pEmbeddedSVG.ElementList, posFromProps,
+                        scaleW, scaleH, antialiasing, False, False, useMode, intersection, animation,
+                        pCanvas, pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any

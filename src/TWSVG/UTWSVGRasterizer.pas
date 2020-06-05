@@ -7669,6 +7669,7 @@ var
     pAction:                               TWSVGAction;
     pUse:                                  TWSVGUse;
     pSymbol:                               TWSVGSymbol;
+    pEmbeddedSVG:                          TWSVGSVG;
     pPath:                                 TWSVGPath;
     pRect:                                 TWSVGRect;
     pCircle:                               TWSVGCircle;
@@ -7683,8 +7684,9 @@ begin
     for pElement in pElements do
     begin
         // get svg header (should always be the first element, because header is contained inside
-        // svg tag itself, that is the root tag)
-        if (pElement.ItemName = C_SVG_Tag_Name) then
+        // svg tag itself, that is the root tag). NOTE ignore the embedded SVG, because the header
+        // was already defined in this case
+        if ((pElement.ItemName = C_SVG_Tag_Name) and (not(pElement is TWSVGSVG))) then
         begin
             if (pElement is TWSVGParser.IHeader) then
                 pHeader := pElement as TWSVGParser.IHeader
@@ -7853,6 +7855,32 @@ begin
 
                 // get animation duration in symbol subelements
                 GetAnimationDuration(pHeader, pSymbol.ElementList, False, useMode, durationMax);
+                continue;
+            end;
+        end;
+
+        // is an embedded SVG?
+        if (pElement is TWSVGSVG) then
+        begin
+            // get embedded SVG
+            pEmbeddedSVG := pElement as TWSVGSVG;
+
+            // found it?
+            if (Assigned(pEmbeddedSVG)) then
+            begin
+                pAnimationData := TWSmartPointer<IAnimationData>.Create();
+
+                // configure animation
+                pAnimationData.m_Position := 0.0;
+
+                // get all animations linked to this container
+                GetAnimations(pEmbeddedSVG, pAnimationData);
+
+                // keep highest animation duration
+                durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
+
+                // get animation duration in embedded SVG subelements
+                GetAnimationDuration(pHeader, pEmbeddedSVG.ElementList, False, useMode, durationMax);
                 continue;
             end;
         end;

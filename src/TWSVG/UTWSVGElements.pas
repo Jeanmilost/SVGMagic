@@ -461,6 +461,44 @@ type
     end;
 
     {**
+     Scalable Vector Graphics (SVG) embedded svg image
+    }
+    TWSVGSVG = class(TWSVGContainer)
+        public
+            {**
+             Constructor
+             @param(pParent Parent item, orphan or root if @nil)
+             @param(pOptions SVG options)
+            }
+            constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+            {**
+             Destructor
+            }
+            destructor Destroy; override;
+
+            {**
+             Create new element instance
+             @param(pParent Parent item, orphan or root if @nil)
+             @returns(Element instance)
+            }
+            function CreateInstance(pParent: TWSVGItem): TWSVGElement; override;
+
+            {**
+             Log content
+             @param(margin Margin length in chars)
+            }
+            procedure Log(margin: Cardinal); override;
+
+            {**
+             Print content to string
+             @param(margin Margin length in chars)
+             @returns(Content)
+            }
+            function Print(margin: Cardinal): UnicodeString; override;
+    end;
+
+    {**
      Scalable Vector Graphics (SVG) rectangle
     }
     TWSVGRect = class(TWSVGShape)
@@ -1489,21 +1527,22 @@ end;
             var pElements: TWSVGElement.IElements): Boolean;
 {$endif}
 var
-    pGroup:    TWSVGGroup;
-    pSwitch:   TWSVGSwitch;
-    pAction:   TWSVGAction;
-    pSymbol:   TWSVGSymbol;
-    pClipPath: TWSVGClipPath;
-    pRect:     TWSVGRect;
-    pCircle:   TWSVGCircle;
-    pEllipse:  TWSVGEllipse;
-    pLine:     TWSVGLine;
-    pPolygon:  TWSVGPolygon;
-    pPolyline: TWSVGPolyline;
-    pPath:     TWSVGPath;
-    pImage:    TWSVGImage;
-    pText:     TWSVGText;
-    pUse:      TWSVGUse;
+    pGroup:       TWSVGGroup;
+    pSwitch:      TWSVGSwitch;
+    pAction:      TWSVGAction;
+    pSymbol:      TWSVGSymbol;
+    pClipPath:    TWSVGClipPath;
+    pEmbeddedSVG: TWSVGSVG;
+    pRect:        TWSVGRect;
+    pCircle:      TWSVGCircle;
+    pEllipse:     TWSVGEllipse;
+    pLine:        TWSVGLine;
+    pPolygon:     TWSVGPolygon;
+    pPolyline:    TWSVGPolyline;
+    pPath:        TWSVGPath;
+    pImage:       TWSVGImage;
+    pText:        TWSVGText;
+    pUse:         TWSVGUse;
 begin
     Result := True;
 
@@ -1600,6 +1639,25 @@ begin
             pClipPath := nil;
         finally
             pClipPath.Free;
+        end;
+    end
+    else
+    if (name = C_SVG_Tag_SVG) then
+    begin
+        pEmbeddedSVG := nil;
+
+        try
+            // read embedded SVG
+            pEmbeddedSVG := TWSVGSVG.Create(Self, m_pOptions);
+            Result := pEmbeddedSVG.Read(pNode) and Result;
+            pElements.Add(pEmbeddedSVG);
+
+            // register the link
+            RegisterLink(pEmbeddedSVG, defs, True);
+
+            pEmbeddedSVG := nil;
+        finally
+            pEmbeddedSVG.Free;
         end;
     end
     else
@@ -2505,6 +2563,37 @@ end;
 function TWSVGClipPath.Print(margin: Cardinal): UnicodeString;
 begin
     Result := '<clipPath>' + #13 + #10 + inherited Print(margin);
+end;
+//---------------------------------------------------------------------------
+// TWSVGSVG
+//---------------------------------------------------------------------------
+constructor TWSVGSVG.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    ItemName := C_SVG_Tag_SVG;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGSVG.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGSVG.CreateInstance(pParent: TWSVGItem): TWSVGElement;
+begin
+    Result := TWSVGSVG.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGSVG.Log(margin: Cardinal);
+begin
+    TWLogHelper.LogBlockToCompiler(' SVG ');
+
+    inherited Log(margin);
+end;
+//---------------------------------------------------------------------------
+function TWSVGSVG.Print(margin: Cardinal): UnicodeString;
+begin
+    Result := '<SVG>' + #13 + #10 + inherited Print(margin);
 end;
 //---------------------------------------------------------------------------
 // TWSVGRect
