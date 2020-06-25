@@ -306,7 +306,6 @@ type
             {**
              Save svg to stream
              @param(pStream Stream to save to)
-             @br @bold(NOTE) Not implemented
             }
             procedure SaveToStream(pStream: TStream); override;
 

@@ -735,7 +735,7 @@ begin
                 {$endif}
 
                 // create a pseudo element container, and add the cloned element to draw
-                pClonedElements := TWSmartPointer<TWSVGContainer.IElements>.Create();
+                pClonedElements := TWSmartPointer<TWSVGContainer.IElements>.Create(TWSVGContainer.IElements.Create(False));
                 pClonedElements.Add(pClone);
 
                 // draw the cloned element

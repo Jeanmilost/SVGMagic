@@ -7820,7 +7820,7 @@ begin
                 pClone.Assign(pSrcElement);
 
                 // create a pseudo element container, and add the cloned element to draw
-                pClonedElements := TWSmartPointer<TWSVGContainer.IElements>.Create();
+                pClonedElements := TWSmartPointer<TWSVGContainer.IElements>.Create(TWSVGContainer.IElements.Create(False));
                 pClonedElements.Add(pClone);
 
                 // get animation duration in cloned subelements

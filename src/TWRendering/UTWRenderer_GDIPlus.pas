@@ -482,7 +482,7 @@ type
             IGDIPlusPointList = array of TGpPointF;
 
         private
-            m_GDIPlusToken:       Cardinal;
+            m_GDIPlusToken:       ULONG_PTR;
             m_GDIPlusInitialized: Boolean;
             m_pRenderer_GDI:      TWRenderer_GDI;
             m_pCache:             ICache;
