@@ -415,7 +415,7 @@ var
     pProps:                                                                                                     IWSmartPointer<IProperties>;
     pAnimationData:                                                                                             IWSmartPointer<IAnimationData>;
     pGraphicsPath, pPolylinePath, pTextPath:                                                                    IWSmartPointer<TGpGraphicsPath>;
-    pMatrix, pAnimMatrix:                                                                                       IWSmartPointer<TGpMatrix>;
+    pMatrix:                                                                                                    IWSmartPointer<TGpMatrix>;
     pPathConverter:                                                                                             IWSmartPointer<TWGraphicPathConverter_GDIPlus>;
     pRectOptions:                                                                                               IWSmartPointer<TWRenderer.IRectOptions>;
     pFill:                                                                                                      IWSmartPointer<TWFill>;

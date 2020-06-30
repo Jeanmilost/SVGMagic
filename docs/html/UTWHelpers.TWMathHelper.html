@@ -26,7 +26,7 @@ Helper for math</p>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#Clamp">Clamp</a></b>(value, minVal, maxVal: Single): Single; overload; inline; static;</code></td>
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#CheckAndGetMuliplier">CheckAndGetMuliplier</a></b>(multiplicand, product: NativeUInt; out multiplier: NativeUInt): Boolean; inline; static;</code></td>
 </tr>
 <tr class="list2">
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#Clamp">Clamp</a></b>(value, minVal, maxVal: Double): Double; overload; inline; static;</code></td>
@@ -35,21 +35,24 @@ Helper for math</p>
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#Clamp">Clamp</a></b>(value, minVal, maxVal: Extended): Extended; overload; inline; static;</code></td>
 </tr>
 <tr class="list2">
+<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#Clamp">Clamp</a></b>(value, minVal, maxVal: Single): Single; overload; inline; static;</code></td>
+</tr>
+<tr class="list">
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#Clamp">Clamp</a></b>(value, minVal, maxVal: Integer): Integer; overload; inline; static;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#Clamp">Clamp</a></b>(value, minVal, maxVal: Int64): Int64; overload; inline; static;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#Clamp">Clamp</a></b>(value, minVal, maxVal: UInt64): UInt64; overload; inline; static;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#ExtMod">ExtMod</a></b>(const num, by: Extended): Extended; inline; static;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#IntMod">IntMod</a></b>(const num, by: Integer): Integer; static;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWMathHelper.html#Normalize">Normalize</a></b>(number, limit: Integer; out loops: Integer): Integer; inline; static;</code></td>
 </tr>
 </table>
@@ -57,10 +60,22 @@ Helper for math</p>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Clamp"></span><code>class function <b>Clamp</b>(value, minVal, maxVal: Single): Single; overload; inline; static;</code></td>
+<td class="itemcode"><span id="CheckAndGetMuliplier"></span><code>class function <b>CheckAndGetMuliplier</b>(multiplicand, product: NativeUInt; out multiplier: NativeUInt): Boolean; inline; static;</code></td>
 </tr>
 <tr><td colspan="1">
-&nbsp;</td></tr>
+<p>
+Check if the multiplier of a product can be found and get it if yes    </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>multiplicand</dt>
+<dd>The multiplicand number</dd>
+<dt>product</dt>
+<dd>The multiplication product</dd>
+<dt>multiplier</dt>
+<dd><b>[out]</b> the multiplier, if function success</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> if a multiplier can be found, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -72,6 +87,13 @@ Helper for math</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="itemcode"><span id="Clamp"></span><code>class function <b>Clamp</b>(value, minVal, maxVal: Extended): Extended; overload; inline; static;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Clamp"></span><code>class function <b>Clamp</b>(value, minVal, maxVal: Single): Single; overload; inline; static;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>

@@ -285,37 +285,41 @@ GDI+ specialized renderer</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawImage">DrawImage</a></b>(const pGraphic: TGraphic; const srcRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; hDC: THandle; const destRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IImageOptions.html">TWRenderer.IImageOptions</a>); override;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawImage">DrawImage</a></b>(const pGraphic: TGraphic; const srcRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; hDC: THandle; const destRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IImageOptions.html">TWRenderer.IImageOptions</a>); overload; override;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawImage">DrawImage</a></b>(const pGraphic: TGraphic; const srcRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pGraphics: TGpGraphics; const destRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IImageOptions.html">TWRenderer.IImageOptions</a>); reintroduce; overload; virtual;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#EndScene">EndScene</a></b>; override;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#LinkGDIRenderer">LinkGDIRenderer</a></b>(pRenderer: <a  href="UTWRenderer_GDI.TWRenderer_GDI.html">TWRenderer_GDI</a>); virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#ConfigTextDraw">ConfigTextDraw</a></b>(hDC: THandle; const pOptions: <a  href="UTWRenderer.TWRenderer.ITextOptions.html">TWRenderer.ITextOptions</a>; pGraphics: TGpGraphics; ppGdiPlusFont: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#PPGpFont">PPGpFont</a>; ppBrush: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#PPGpBrush">PPGpBrush</a>; ppFormat: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#PPGpStringFormat">PPGpStringFormat</a>); virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawNonAntialiasedSymmetricalRoundRect">DrawNonAntialiasedSymmetricalRoundRect</a></b>(hDC: THandle; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; out iRect: TRect); virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#DrawTransparentRoundRectWithoutOutline">DrawTransparentRoundRectWithoutOutline</a></b>(hDC: THandle; const rect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; fillWithOutline: Boolean; pPath: TGpGraphicsPath); virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#OutlineRect">OutlineRect</a></b>(pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; const drawRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const maxSize: <a  href="UTWSize.html#TWSizeF">TWSizeF</a>; pGraphics: TGpGraphics); overload; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#OutlineRect">OutlineRect</a></b>(pOptions: <a  href="UTWRenderer.TWRenderer.IRectOptions.html">TWRenderer.IRectOptions</a>; const drawRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const maxSize: <a  href="UTWSize.html#TWSizeF">TWSizeF</a>; pPen: TGpPen; pGraphics: TGpGraphics); overload; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#ToGDIPlusPointList">ToGDIPlusPointList</a></b>(const pointList: <a  href="UTWRenderer.TWRenderer.html#IPointList">TWRenderer.IPointList</a>; out gdiPlusPointList: <a  href="UTWRenderer_GDIPlus.TWRenderer_GDIPlus.html#IGDIPlusPointList">IGDIPlusPointList</a>; out boundingBox: <a  href="UTWRect.html#TWRectF">TWRectF</a>); virtual;</code></td>
 </tr>
@@ -1572,7 +1576,7 @@ Begin a scene </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="DrawImage"></span><code>procedure <b>DrawImage</b>(const pGraphic: TGraphic; const srcRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; hDC: THandle; const destRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IImageOptions.html">TWRenderer.IImageOptions</a>); override;</code></td>
+<td class="itemcode"><span id="DrawImage"></span><code>procedure <b>DrawImage</b>(const pGraphic: TGraphic; const srcRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; hDC: THandle; const destRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IImageOptions.html">TWRenderer.IImageOptions</a>); overload; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -1585,6 +1589,29 @@ Draw image      <br> <b>NOTE</b> WARNING Not tested with transparent images</p>
 <dd>Source image rect to draw</dd>
 <dt>hDC</dt>
 <dd>Destination device context handle</dd>
+<dt>destRect</dt>
+<dd>Rect where image will be drawn on dest, stretched if not equal to source</dd>
+<dt>pOptions</dt>
+<dd>Options</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DrawImage"></span><code>procedure <b>DrawImage</b>(const pGraphic: TGraphic; const srcRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; pGraphics: TGpGraphics; const destRect: <a  href="UTWRect.html#TWRectF">TWRectF</a>; const pOptions: <a  href="UTWRenderer.TWRenderer.IImageOptions.html">TWRenderer.IImageOptions</a>); reintroduce; overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Draw image      <br> <b>NOTE</b> WARNING Not tested with transparent images</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pGraphic</dt>
+<dd>Image to draw</dd>
+<dt>srcRect</dt>
+<dd>Source image rect to draw</dd>
+<dt>pGraphics</dt>
+<dd>Destination GDI+ graphics to draw to</dd>
 <dt>destRect</dt>
 <dd>Rect where image will be drawn on dest, stretched if not equal to source</dd>
 <dt>pOptions</dt>

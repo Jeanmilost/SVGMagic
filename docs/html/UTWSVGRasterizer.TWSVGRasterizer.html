@@ -136,23 +136,39 @@ Scalable Vector Graphics (SVG) rasterizer <br> <b>NOTE</b> See <a  href="http://
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEPropRule">IEPropRule</a></b> = (...);</code></td>
+<td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageAspectRatio">IEImageAspectRatio</a></b> = (...);</code></td>
 </tr>
 <tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageAspectRatioRef">IEImageAspectRatioRef</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageType">IEImageType</a></b> = (...);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEPropRule">IEPropRule</a></b> = (...);</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IETextAnchor">IETextAnchor</a></b> = (...);</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IGradientStops">IGradientStops</a></b> = TObjectList&lt;<a  href="UTWSVGRasterizer.TWSVGRasterizer.IGradientStop.html">IGradientStop</a>&gt;;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IPLinearGradientVector">IPLinearGradientVector</a></b> = &circ;<a  href="UTWSVGRasterizer.TWSVGRasterizer.ILinearGradientVector.html">ILinearGradientVector</a>;</code></td>
 </tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#ITfAnimateEvent">ITfAnimateEvent</a></b> = function (pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
+</tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#ITfOnAnimate">ITfOnAnimate</a></b> = function (pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
+<td class="itemcode"><code><b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#ITfGetImageEvent">ITfGetImageEvent</a></b> = function (pSender: TObject; pStream: TMemoryStream; imageType: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageType">IEImageType</a>; var pGraphic: TGraphic): Boolean of object;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
@@ -242,39 +258,39 @@ Scalable Vector Graphics (SVG) rasterizer <br> <b>NOTE</b> See <a  href="http://
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetLineProps">GetLineProps</a></b>(const pLine: <a  href="UTWSVGElements.TWSVGLine.html">TWSVGLine</a>; out x1: Single; out y1: Single; out x2: Single; out y2: Single; pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetImageProps">GetImageProps</a></b>(const pImage: <a  href="UTWSVGElements.TWSVGImage.html">TWSVGImage</a>; out x: Single; out y: Single; out width: Single; out height: Single; out preserveAspectRatio: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageAspectRatio">IEImageAspectRatio</a>; out aspectRatioRef: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageAspectRatioRef">IEImageAspectRatioRef</a>; out imageType: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageType">IEImageType</a>; pImageData: TMemoryStream; pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pCustomData: Pointer): Boolean;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetLineProps">GetLineProps</a></b>(const pLine: <a  href="UTWSVGElements.TWSVGLine.html">TWSVGLine</a>; out x1: Single; out y1: Single; out x2: Single; out y2: Single; pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetLinkedElementToUse">GetLinkedElementToUse</a></b>(const pUse: <a  href="UTWSVGElements.TWSVGUse.html">TWSVGUse</a>; out pElement: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetPosAndSizeProps">GetPosAndSizeProps</a></b>(const pElement: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; out x: Single; out y: Single; out width: Single; out height:Single; pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pCustomData: Pointer): Boolean;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetRectProps">GetRectProps</a></b>(const pRect: <a  href="UTWSVGElements.TWSVGRect.html">TWSVGRect</a>; out x: Single; out y: Single; out width: Single; out height: Single; out rx: Single; out ry: Single; pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetSize">GetSize</a></b>(const pHeader: <a  href="UTWSVGParser.TWSVGParser.IHeader.html">TWSVGParser.IHeader</a>): TSize; overload; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetStyleProps">GetStyleProps</a></b>(const pStyle: <a  href="UTWSVGStyle.TWSVGStyle.html">TWSVGStyle</a>; pProperties: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IProperties.html">IProperties</a>; pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetTextProps">GetTextProps</a></b>(const pText: <a  href="UTWSVGElements.TWSVGText.html">TWSVGText</a>; out x: Single; out y: Single; out fontFamily: UnicodeString; out fontSize: Single; out anchor: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IETextAnchor">IETextAnchor</a>; pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pCustomData: Pointer): Boolean;</code></td>
 </tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetViewBox">GetViewBox</a></b>(const pHeader: <a  href="UTWSVGParser.TWSVGParser.IHeader.html">TWSVGParser.IHeader</a>): <a  href="UTWRect.html#TWRectF">TWRectF</a>; virtual;</code></td>
-</tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#MergeUseProperties">MergeUseProperties</a></b>(const pUse: <a  href="UTWSVGElements.TWSVGUse.html">TWSVGUse</a>; pElement: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>): Boolean; virtual;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetViewBox">GetViewBox</a></b>(const pHeader: <a  href="UTWSVGParser.TWSVGParser.IHeader.html">TWSVGParser.IHeader</a>): <a  href="UTWRect.html#TWRectF">TWRectF</a>; virtual;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
@@ -290,7 +306,7 @@ Scalable Vector Graphics (SVG) rasterizer <br> <b>NOTE</b> See <a  href="http://
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetAnimationDuration">GetAnimationDuration</a></b>(pHeader: <a  href="UTWSVGParser.TWSVGParser.IHeader.html">TWSVGParser.IHeader</a>; const pElements: TWSVGContainer.IElements; switchMode: Boolean; out durationMax: NativeUInt); overload; virtual;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetAnimationDuration">GetAnimationDuration</a></b>(pHeader: <a  href="UTWSVGParser.TWSVGParser.IHeader.html">TWSVGParser.IHeader</a>; const pElements: TWSVGContainer.IElements; switchMode, useMode: Boolean; out durationMax: NativeUInt); overload; virtual;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
@@ -302,17 +318,21 @@ Scalable Vector Graphics (SVG) rasterizer <br> <b>NOTE</b> See <a  href="http://
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#Initialize">Initialize</a></b>(const pSVG: <a  href="UTWSVG.TWSVG.html">TWSVG</a>); virtual;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#GetTransformAnimMatrix">GetTransformAnimMatrix</a></b>(const pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pMatrixItem: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IPropMatrixItem.html">IPropMatrixItem</a>; pCustomData: Pointer);</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#MeasureDuration">MeasureDuration</a></b>(pAnimation: <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>; var duration: NativeUInt); overload; virtual;</code></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#Initialize">Initialize</a></b>(const pSVG: <a  href="UTWSVG.TWSVG.html">TWSVG</a>); virtual;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#MeasureDuration">MeasureDuration</a></b>(const pAnimation: <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; var duration: NativeUInt); overload; virtual;</code></td>
 </tr>
 <tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#MeasureDuration">MeasureDuration</a></b>(pAnimation: <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>; var duration: NativeUInt); overload; virtual;</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#SetAnimatedOpacityCombineMode">SetAnimatedOpacityCombineMode</a></b>(pColorItem: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IPropColorItem.html">IPropColorItem</a>); virtual;</code></td>
 </tr>
@@ -321,7 +341,11 @@ Scalable Vector Graphics (SVG) rasterizer <br> <b>NOTE</b> See <a  href="http://
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#OnAnimate">OnAnimate</a></b>: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#ITfOnAnimate">ITfOnAnimate</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#OnAnimate">OnAnimate</a></b>: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#ITfAnimateEvent">ITfAnimateEvent</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGRasterizer.TWSVGRasterizer.html#OnGetImage">OnGetImage</a></b>: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#ITfGetImageEvent">ITfGetImageEvent</a> read m_fGetImageEvent write m_fGetImageEvent;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -333,6 +357,77 @@ Scalable Vector Graphics (SVG) rasterizer <br> <b>NOTE</b> See <a  href="http://
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEImageAspectRatio"></span><code><b>IEImageAspectRatio</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Image aspect ratio      (IE_AR_XMidYMid Force uniform scaling. Align the midpoint X value of the element's viewBox with the midpoint X value of the viewport. Align the midpoint Y value of the element's viewBox with the midpoint Y value of the viewport    </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_AR_None">IE_AR_None</span>: Do not force uniform scaling. Scale the graphic content of the given element non-uniformly if necessary such that the element's bounding box exactly matches the viewport rectangle. Note that if &lt;align&gt; is none, then the optional &lt;meetOrSlice&gt; value is ignored</li>
+<li>
+<span id="IE_AR_XMinYMin">IE_AR_XMinYMin</span>: Force uniform scaling. Align the &lt;min-x&gt; of the element's viewBox with the smallest X value of the viewport. Align the &lt;min-y&gt; of the element's viewBox with the smallest Y value of the viewport</li>
+<li>
+<span id="IE_AR_XMidYMin">IE_AR_XMidYMin</span>: Force uniform scaling. Align the midpoint X value of the element's viewBox with the midpoint X value of the viewport. Align the &lt;min-y&gt; of the element's viewBox with the smallest Y value of the viewport</li>
+<li>
+<span id="IE_AR_XMaxYMin">IE_AR_XMaxYMin</span>: Force uniform scaling. Align the &lt;min-x&gt;+&lt;width&gt; of the element's viewBox with the maximum X value of the viewport. Align the &lt;min-y&gt; of the element's viewBox with the smallest Y value of the viewport</li>
+<li>
+<span id="IE_AR_XMinYMid">IE_AR_XMinYMid</span>: Force uniform scaling. Align the &lt;min-x&gt; of the element's viewBox with the smallest X value of the viewport. Align the midpoint Y value of the element's viewBox with the midpoint Y value of the viewport</li>
+<li>
+<span id="IE_AR_XMidYMid">IE_AR_XMidYMid</span></li>
+<li>
+<span id="IE_AR_XMaxYMid">IE_AR_XMaxYMid</span>: Force uniform scaling. Align the &lt;min-x&gt;+&lt;width&gt; of the element's viewBox with the maximum X value of the viewport. Align the midpoint Y value of the element's viewBox with the midpoint Y value of the viewport</li>
+<li>
+<span id="IE_AR_XMinYMax">IE_AR_XMinYMax</span>: Force uniform scaling. Align the &lt;min-x&gt; of the element's viewBox with the smallest X value of the viewport. Align the &lt;min-y&gt;+&lt;height&gt; of the element's viewBox with the maximum Y value of the viewport</li>
+<li>
+<span id="IE_AR_XMidYMax">IE_AR_XMidYMax</span>: Force uniform scaling. Align the midpoint X value of the element's viewBox with the midpoint X value of the viewport. Align the &lt;min-y&gt;+&lt;height&gt; of the element's viewBox with the maximum Y value of the viewport</li>
+<li>
+<span id="IE_AR_XMaxYMax">IE_AR_XMaxYMax</span>: Force uniform scaling. Align the &lt;min-x&gt;+&lt;width&gt; of the element's viewBox with the maximum X value of the viewport. Align the &lt;min-y&gt;+&lt;height&gt; of the element's viewBox with the maximum Y value of the viewport</li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEImageAspectRatioRef"></span><code><b>IEImageAspectRatioRef</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Image aspect ratio reference  </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_IR_Meet">IE_IR_Meet</span></li>
+<li>
+<span id="IE_IR_Slice">IE_IR_Slice</span></li>
+</ul>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEImageType"></span><code><b>IEImageType</b> = (...);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Image type    </p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_IT_Unknown">IE_IT_Unknown</span>: image type is unknown</li>
+<li>
+<span id="IE_IT_PNG">IE_IT_PNG</span>: The image is a PNG image</li>
+<li>
+<span id="IE_IT_JPG">IE_IT_JPG</span>: The image is a JPG image</li>
+<li>
+<span id="IE_IT_SVG">IE_IT_SVG</span>: The image is a SVG image</li>
+</ul>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -391,7 +486,7 @@ Text anchoring   </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="ITfOnAnimate"></span><code><b>ITfOnAnimate</b> = function (pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
+<td class="itemcode"><span id="ITfAnimateEvent"></span><code><b>ITfAnimateEvent</b> = function (pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -405,6 +500,28 @@ Called while animation is running   </p>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return"><code>True</code> if animation can continue, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="ITfGetImageEvent"></span><code><b>ITfGetImageEvent</b> = function (pSender: TObject; pStream: TMemoryStream; imageType: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageType">IEImageType</a>; var pGraphic: TGraphic): Boolean of object;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called while animation is running     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Event sender</dd>
+<dt>pStream</dt>
+<dd>Stream containing the image to read</dd>
+<dt>imageType</dt>
+<dd>The image type</dd>
+<dt>pGraphic</dt>
+<dd>The read image graphic</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -762,6 +879,42 @@ Get a filter from a link   </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetImageProps"></span><code>function <b>GetImageProps</b>(const pImage: <a  href="UTWSVGElements.TWSVGImage.html">TWSVGImage</a>; out x: Single; out y: Single; out width: Single; out height: Single; out preserveAspectRatio: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageAspectRatio">IEImageAspectRatio</a>; out aspectRatioRef: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageAspectRatioRef">IEImageAspectRatioRef</a>; out imageType: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageType">IEImageType</a>; pImageData: TMemoryStream; pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pCustomData: Pointer): Boolean;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get image properties            </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pImage</dt>
+<dd>SVG image to extract from</dd>
+<dt>x</dt>
+<dd><b>[out]</b> Image start x position</dd>
+<dt>y</dt>
+<dd><b>[out]</b> Image start y position</dd>
+<dt>width</dt>
+<dd><b>[out]</b> Image width</dd>
+<dt>height</dt>
+<dd><b>[out]</b> Image height</dd>
+<dt>preserveAspectRatio</dt>
+<dd><b>[out]</b> Image aspect ratio</dd>
+<dt>aspectRatioRef</dt>
+<dd><b>[out]</b> Image aspect ratio reference</dd>
+<dt>imageType</dt>
+<dd><b>[out]</b> Image type</dd>
+<dt>pImageData</dt>
+<dd>The stream which will contain the image data</dd>
+<dt>pAnimationData</dt>
+<dd>Animation data</dd>
+<dt>pCustomData</dt>
+<dd>Custom data</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="GetLineProps"></span><code>function <b>GetLineProps</b>(const pLine: <a  href="UTWSVGElements.TWSVGLine.html">TWSVGLine</a>; out x1: Single; out y1: Single; out x2: Single; out y2: Single; pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -952,24 +1105,6 @@ Get view box from header  </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="MergeUseProperties"></span><code>function <b>MergeUseProperties</b>(const pUse: <a  href="UTWSVGElements.TWSVGUse.html">TWSVGUse</a>; pElement: <a  href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>): Boolean; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Merge the properties contained in the use instruction in the destination element   </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>pUse</dt>
-<dd>Use instruction containing the properties to merge</dd>
-<dt>pElement</dt>
-<dd>Element in which the properties should be merged</dd>
-</dl>
-<h6 class="description_section">Returns</h6>
-<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="PopulateAnimation"></span><code>function <b>PopulateAnimation</b>(const pAnimation: <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>; out attribName: UnicodeString; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; callOnAnimate: Boolean; pCustomData: Pointer): Boolean; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -1027,11 +1162,11 @@ Enable or disable animation </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="GetAnimationDuration"></span><code>procedure <b>GetAnimationDuration</b>(pHeader: <a  href="UTWSVGParser.TWSVGParser.IHeader.html">TWSVGParser.IHeader</a>; const pElements: TWSVGContainer.IElements; switchMode: Boolean; out durationMax: NativeUInt); overload; virtual;</code></td>
+<td class="itemcode"><span id="GetAnimationDuration"></span><code>procedure <b>GetAnimationDuration</b>(pHeader: <a  href="UTWSVGParser.TWSVGParser.IHeader.html">TWSVGParser.IHeader</a>; const pElements: TWSVGContainer.IElements; switchMode, useMode: Boolean; out durationMax: NativeUInt); overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Get animation duration    </p>
+Get animation duration     </p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>pHeader</dt>
@@ -1040,6 +1175,8 @@ Get animation duration    </p>
 <dd>Elements to search duration in</dd>
 <dt>switchMode</dt>
 <dd>If <code>True</code>, function will return after first element is drawn (because reading switch statement)</dd>
+<dt>useMode</dt>
+<dd>If <code>True</code>, the current element to read is owned by an use link</dd>
 <dt>durationMax</dt>
 <dd><b>[out]</b> Highest duration found in svg in milliseconds, 0 if duration is indefinite</dd>
 </dl>
@@ -1082,6 +1219,25 @@ Get the gradient stops  </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetTransformAnimMatrix"></span><code>procedure <b>GetTransformAnimMatrix</b>(const pAnimationData: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">IAnimationData</a>; pMatrixItem: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IPropMatrixItem.html">IPropMatrixItem</a>; pCustomData: Pointer);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get transform matrix from shape animation   </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pAnimationData</dt>
+<dd>Shape animation data</dd>
+<dt>pMatrix</dt>
+<dd>Matrix item</dd>
+<dt>pCustomData</dt>
+<dd>Custom data</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="Initialize"></span><code>procedure <b>Initialize</b>(const pSVG: <a  href="UTWSVG.TWSVG.html">TWSVG</a>); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -1093,6 +1249,14 @@ Initialize SVG to rasterize </p>
 <dd>SVG</dd>
 </dl>
 </td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="MeasureDuration"></span><code>procedure <b>MeasureDuration</b>(const pAnimation: <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; var duration: NativeUInt); overload; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -1116,14 +1280,6 @@ Measure the animation duration   </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="MeasureDuration"></span><code>procedure <b>MeasureDuration</b>(const pAnimation: <a  href="UTWSVGAnimation.TWSVGAnimation.html">TWSVGAnimation</a>; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; var duration: NativeUInt); overload; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="SetAnimatedOpacityCombineMode"></span><code>procedure <b>SetAnimatedOpacityCombineMode</b>(pColorItem: <a  href="UTWSVGRasterizer.TWSVGRasterizer.IPropColorItem.html">IPropColorItem</a>); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -1140,11 +1296,21 @@ Set the combine mode to use for a color with animated opacity </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="OnAnimate"></span><code>property <b>OnAnimate</b>: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#ITfOnAnimate">ITfOnAnimate</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
+<td class="itemcode"><span id="OnAnimate"></span><code>property <b>OnAnimate</b>: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#ITfAnimateEvent">ITfAnimateEvent</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
 Get or set the OnAnimate event</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="OnGetImage"></span><code>property <b>OnGetImage</b>: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#ITfGetImageEvent">ITfGetImageEvent</a> read m_fGetImageEvent write m_fGetImageEvent;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the OnGetImage event</p>
 </td></tr>
 </table>
 <hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>

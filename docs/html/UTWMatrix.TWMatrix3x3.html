@@ -59,21 +59,24 @@
 <td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Scale">Scale</a></b>(const s: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
 <tr class="list2">
+<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Shear">Shear</a></b>(const s: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+</tr>
+<tr class="list">
 <td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Transform">Transform</a></b>(const vector: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Translate">Translate</a></b>(const t: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>procedure <b><a  href="UTWMatrix.TWMatrix3x3.html#Assign">Assign</a></b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>); inline;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>procedure <b><a  href="UTWMatrix.TWMatrix3x3.html#SetIdentity">SetIdentity</a></b>; inline;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code>class operator <b><a  href="UTWMatrix.TWMatrix3x3.html#Equal">Equal</a></b>(a, b: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code>class operator <b><a  href="UTWMatrix.TWMatrix3x3.html#NotEqual">NotEqual</a></b>(a, b: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
 </tr>
 </table>
@@ -200,7 +203,7 @@ Check if matrix is the identity matrix (meaning thus this matrix is &quot;empty&
 </tr>
 <tr><td colspan="1">
 <p>
-Multiply a matrix by another matrix  </p>
+Multiply a matrix by another matrix   <br> <b>NOTE</b> The other matrix is prepended to the current one, this means that, to obtain the following result: Mc = Ma * Mb the Multiply function should be used as follow: Mc := Mb.Multiply(Ma);</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>other</dt>
@@ -257,6 +260,21 @@ Scale matrix  </p>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return">Copy of scaled matrix</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="Shear"></span><code>function <b>Shear</b>(const s: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+Shear matrix  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>s</dt>
+<dd>Shear vector</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Copy of sheared matrix</p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">

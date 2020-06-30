@@ -91,31 +91,39 @@ SVG animation descriptor, keeps the animation data and provides functions to pro
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#KeySplines">KeySplines</a></b>: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#IKeyList">IKeyList</a> read m_KeySplines;</code></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#GroupCount">GroupCount</a></b>: NativeUInt read m_GroupCount write m_GroupCount;</code></td>
 </tr>
 <tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#KeySplines">KeySplines</a></b>: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#IKeyList">IKeyList</a> read m_KeySplines;</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#KeyTimes">KeyTimes</a></b>: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#IKeyList">IKeyList</a> read m_KeyTimes;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#NegativeBegin">NegativeBegin</a></b>: Boolean read m_NegativeBegin write m_NegativeBegin;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#NegativeDuration">NegativeDuration</a></b>: Boolean read m_NegativeDuration write m_NegativeDuration;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#NegativeEnd">NegativeEnd</a></b>: Boolean read m_NegativeEnd write m_NegativeEnd;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#PartialCount">PartialCount</a></b>: NativeUInt read m_PartialCount write m_PartialCount;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#RepeatCount">RepeatCount</a></b>: NativeUInt read m_RepeatCount write m_RepeatCount;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#ValuePerGroupCount">ValuePerGroupCount</a></b>: NativeUInt read m_ValPerGroupCount write m_ValPerGroupCount;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -295,6 +303,16 @@ Get end time</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GroupCount"></span><code>property <b>GroupCount</b>: NativeUInt read m_GroupCount write m_GroupCount;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the group count</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><span id="KeySplines"></span><code>property <b>KeySplines</b>: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html#IKeyList">IKeyList</a> read m_KeySplines;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -360,6 +378,16 @@ Get or set the partial count</p>
 <tr><td colspan="2">
 <p>
 Get or set the repeat count</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ValuePerGroupCount"></span><code>property <b>ValuePerGroupCount</b>: NativeUInt read m_ValPerGroupCount write m_ValPerGroupCount;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the values per groups count</p>
 </td></tr>
 </table>
 <hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>

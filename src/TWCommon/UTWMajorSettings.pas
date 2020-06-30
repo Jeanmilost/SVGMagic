@@ -21,7 +21,7 @@ implementation
 //---------------------------------------------------------------------------
 initialization
 begin
-    TWLibraryVersion := TWVersion.Create(1, 0, 0, 7);
+    TWLibraryVersion := TWVersion.Create(1, 0, 0, 8);
 
     // create a global format settings to use to convert standardized float values in like SVG or SMIL
     FillChar(g_InternationalFormatSettings, SizeOf(g_InternationalFormatSettings), 0);

@@ -1114,7 +1114,7 @@ begin
 
         // reset the zoom control
         edBrowserZoom.Text     := '100';
-        udBrowserZoom.Position := 100;
+        udBrowserZoom.Position :=  100;
 
         // set SVG size
         pSvg.Width  := svgSize.Width;

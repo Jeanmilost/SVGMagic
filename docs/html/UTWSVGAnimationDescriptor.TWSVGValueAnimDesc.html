@@ -45,11 +45,11 @@ SVG animation descriptor to use when the animation must be applied to values</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGAnimationDescriptor.TWSVGValueAnimDesc.html#GetValueAt">GetValueAt</a></b>(position: Double): Double; virtual;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGAnimationDescriptor.TWSVGValueAnimDesc.html#GetValueAt">GetValueAt</a></b>(position: Double): Double; overload; virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGAnimationDescriptor.TWSVGValueAnimDesc.html#GetLength">GetLength</a></b>(position: Double): Double; virtual;</code></td>
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGAnimationDescriptor.TWSVGValueAnimDesc.html#GetValuesAt">GetValuesAt</a></b>(position: Double; values: <a  href="UTWSVGAnimationDescriptor.TWSVGValueAnimDesc.html#IValues">IValues</a>; frameCount: NativeUInt): <a  href="UTWSVGAnimationDescriptor.TWSVGValueAnimDesc.html#IValues">IValues</a>; overload; virtual;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -121,7 +121,7 @@ Destructor</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="GetValueAt"></span><code>function <b>GetValueAt</b>(position: Double): Double; virtual;</code></td>
+<td class="itemcode"><span id="GetValueAt"></span><code>function <b>GetValueAt</b>(position: Double): Double; overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -141,19 +141,23 @@ Get animated value at position   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="GetLength"></span><code>function <b>GetLength</b>(position: Double): Double; virtual;</code></td>
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetValuesAt"></span><code>function <b>GetValuesAt</b>(position: Double; values: <a  href="UTWSVGAnimationDescriptor.TWSVGValueAnimDesc.html#IValues">IValues</a>; frameCount: NativeUInt): <a  href="UTWSVGAnimationDescriptor.TWSVGValueAnimDesc.html#IValues">IValues</a>; overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Get animation length (in case from and to represent a distance)   </p>
+Get animated values at position      <br> <b>NOTE</b> If animation uses key times, value array length may be equal to or a multiple of key time array length</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>position</dt>
 <dd>Animation position in percent (between 0.0 and 1.0)</dd>
+<dt>values</dt>
+<dd>Value array to get from</dd>
+<dt>frameCount</dt>
+<dd>- the number of values the frame should contain, in case the animation contains no key list</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
-<p class="return">Animation length</p><h6 class="description_section">Exceptions raised</h6>
+<p class="return">Animated values at position, the unit is dependent of animation type</p><h6 class="description_section">Exceptions raised</h6>
 <dl class="exceptions_raised">
 <dt><code>Exception</code></dt>
 <dd>on error</dd>

@@ -56,43 +56,51 @@ Graphic based on SVG standard</p>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#GetAnimDuration">GetAnimDuration</a></b>: NativeUInt; virtual;</code></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#DoGetImage">DoGetImage</a></b>(pSender: TObject; pStream: TMemoryStream; imageType: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageType">TWSVGRasterizer.IEImageType</a>; var pGraphic: TGraphic): Boolean; virtual;</code></td>
 </tr>
 <tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#GetAnimDuration">GetAnimDuration</a></b>: NativeUInt; virtual;</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#GetEmpty">GetEmpty</a></b>: Boolean; override;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#GetFrameCount">GetFrameCount</a></b>: Cardinal; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#GetHeight">GetHeight</a></b>: Integer; override;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#GetRasterizer">GetRasterizer</a></b>: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html">TWSVGRasterizer</a>; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><code>function <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#GetWidth">GetWidth</a></b>: Integer; override;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#Assign">Assign</a></b>(pOther: TPersistent); override;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#Clear">Clear</a></b>; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#CopyToClipboard">CopyToClipboard</a></b>; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#LoadFromClipboardFormat">LoadFromClipboardFormat</a></b>(format: Word; data: THandle; hPalette: HPALETTE); override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="UTWSVGGraphic.TWSVGGraphic.html#LoadFromStr">LoadFromStr</a></b>(str: UnicodeString); virtual;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -336,6 +344,28 @@ Called while animation is running   </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoGetImage"></span><code>function <b>DoGetImage</b>(pSender: TObject; pStream: TMemoryStream; imageType: <a  href="UTWSVGRasterizer.TWSVGRasterizer.html#IEImageType">TWSVGRasterizer.IEImageType</a>; var pGraphic: TGraphic): Boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Called while animation is running     </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>pSender</dt>
+<dd>Event sender</dd>
+<dt>pStream</dt>
+<dd>Stream containing the image to read</dd>
+<dt>imageType</dt>
+<dd>The image type</dd>
+<dt>pGraphic</dt>
+<dd>The read image graphic</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
 <td class="itemcode"><span id="GetAnimDuration"></span><code>function <b>GetAnimDuration</b>: NativeUInt; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -456,6 +486,21 @@ Load svg from clipboard   </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="LoadFromStr"></span><code>procedure <b>LoadFromStr</b>(str: UnicodeString); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Load SVG from string </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>str</dt>
+<dd>String to load from</dd>
+</dl>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><span id="LoadFromStream"></span><code>procedure <b>LoadFromStream</b>(pStream: TStream); override;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -504,7 +549,7 @@ Prepare SVG to be saved to clipboard   </p>
 </tr>
 <tr><td colspan="2">
 <p>
-Save svg to stream  <br> <b>NOTE</b> Not implemented</p>
+Save svg to stream </p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>pStream</dt>
