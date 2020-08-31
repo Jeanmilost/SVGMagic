@@ -482,7 +482,11 @@ type
             IGDIPlusPointList = array of TGpPointF;
 
         private
-            m_GDIPlusToken:       ULONG_PTR;
+            {$if CompilerVersion >= 34}
+                m_GDIPlusToken:   ULONG_PTR;
+            {$else}
+                m_GDIPlusToken:   Cardinal;
+            {$ifend}
             m_GDIPlusInitialized: Boolean;
             m_pRenderer_GDI:      TWRenderer_GDI;
             m_pCache:             ICache;
