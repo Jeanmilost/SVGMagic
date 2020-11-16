@@ -1477,7 +1477,7 @@ begin
             m_DataType := IE_DT_PNG
         else
         if (dataType = 'image/jpeg') then
-            m_DataType := IE_DT_SVG
+            m_DataType := IE_DT_JPG
         else
         if (dataType = 'image/svg+xml') then
             m_DataType := IE_DT_SVG
