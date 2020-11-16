@@ -841,8 +841,9 @@ type
             end;
 
         private
-            m_Type:      IEAnimType;
-            m_ValueType: TWSVGCommon.IEValueType;
+            m_Type:              IEAnimType;
+            m_ValueType:         TWSVGCommon.IEValueType;
+            m_ForcedToAnimColor: Boolean;
 
         public
             {**
@@ -1700,8 +1701,9 @@ constructor TWSVGAnimation.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
 begin
     inherited Create(pParent, pOptions);
 
-    m_Type      := IE_AT_Unknown;
-    m_ValueType := TWSVGCommon.IEValueType.IE_VT_Unknown;
+    m_Type              := IE_AT_Unknown;
+    m_ValueType         := TWSVGCommon.IEValueType.IE_VT_Unknown;
+    m_ForcedToAnimColor := False;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGAnimation.Destroy;
@@ -1864,6 +1866,18 @@ begin
 
         TWSVGCommon.IEValueType.IE_VT_Color:
         begin
+            // check if the animation type is well defined to animate color. On the older standard
+            // version, a colored animation was supposed to be declared with the animateColor tag,
+            // but in newer version this tag was marked as obsolete and discarded since the 2.0 
+            // standards version. So force the type to be an animate color if the animation contains
+            // color values but the type isn't defined to animate color
+            if (m_Type <> IE_AT_Animate_Color) then
+            begin
+                ItemName            := C_SVG_Tag_Animate_Color;
+                m_Type              := IE_AT_Animate_Color;
+                m_ForcedToAnimColor := True;
+            end;
+
             useValues    := False;
             pColorValues := nil;
 
