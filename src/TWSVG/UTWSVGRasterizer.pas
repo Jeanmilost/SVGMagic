@@ -1023,6 +1023,12 @@ type
                     }
                     procedure Merge(const pOther: IBrush); virtual;
 
+                    {**
+                     Check if brush is empty
+                     @returns(@true if brush is empty, otherwise @false)
+                    }
+                    function IsEmpty: Boolean; inline;
+
                 public
                     {**
                      Get the color property
@@ -1081,6 +1087,12 @@ type
                     }
                     procedure Merge(const pOther: IFill); virtual;
 
+                    {**
+                     Check if fill is empty
+                     @returns(@true if fill is empty, otherwise @false)
+                    }
+                    function IsEmpty: Boolean; inline;
+
                 public
                     {**
                      Get the brush property
@@ -1133,6 +1145,12 @@ type
                      @param(pOther Other property to merge with)
                     }
                     procedure Merge(const pOther: IStroke); virtual;
+
+                    {**
+                     Check if stroke is empty
+                     @returns(@true if stroke is empty, otherwise @false)
+                    }
+                    function IsEmpty: Boolean; inline;
 
                 public
                     {**
@@ -2899,6 +2917,37 @@ begin
     end;
 end;
 //---------------------------------------------------------------------------
+function TWSVGRasterizer.IBrush.IsEmpty: Boolean;
+var
+    pStop: IGradientStop;
+begin
+    case m_Type of
+        E_BT_Solid: Exit(m_pColor.m_Value.A = 0.0);
+
+        E_BT_Linear:
+        begin
+            // check if at least one color is set
+            for pStop in m_pLinearGradient.m_pGradientStops do
+                if (pStop.m_Color.A > 0.0) then
+                    Exit(False);
+
+            Exit(True);
+        end;
+
+        E_BT_Radial:
+        begin
+            // check if at least one color is set
+            for pStop in m_pRadialGradient.m_pGradientStops do
+                if (pStop.m_Color.A > 0.0) then
+                    Exit(False);
+
+            Exit(True);
+        end;
+    else
+        Result := True;
+    end;
+end;
+//---------------------------------------------------------------------------
 // TWSVGRasterizer.IFill
 //---------------------------------------------------------------------------
 constructor TWSVGRasterizer.IFill.Create;
@@ -2936,6 +2985,11 @@ begin
     m_pBrush.Merge(pOther.m_pBrush);
     m_pRule.Merge(pOther.m_pRule);
     m_pNoFill.Merge(pOther.m_pNoFill);
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.IFill.IsEmpty: Boolean;
+begin
+    Result := m_pBrush.IsEmpty;
 end;
 //---------------------------------------------------------------------------
 // TWSVGRasterizer.IStroke
@@ -3001,6 +3055,11 @@ begin
     m_pLineCap.Merge(pOther.m_pLineCap);
     m_pLineJoin.Merge(pOther.m_pLineJoin);
     m_pNoStroke.Merge(pOther.m_pNoStroke);
+end;
+//---------------------------------------------------------------------------
+function TWSVGRasterizer.IStroke.IsEmpty: Boolean;
+begin
+    Result := m_pBrush.IsEmpty or (m_pWidth.m_Value = 0);
 end;
 //---------------------------------------------------------------------------
 // TWSVGRasterizer.IEffect
@@ -5631,6 +5690,18 @@ begin
                         // do modify the fill color
                         pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.Assign(pColorAnimDesc.ToList[0]);
 
+                        // was the fill previously hidden?
+                        if (pProperties.m_pStyle.m_pFill.m_pNoFill.m_Value
+                                and not pProperties.m_pStyle.m_pFill.IsEmpty)
+                        then
+                        begin
+                            // turn it visible
+                            pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create(IPropBoolItem.Create(False,
+                                    IE_PR_Default));
+                            pProperties.m_pStyle.m_pFill.m_pNoFill.Assign(pPropBoolItem);
+                            pProperties.m_pStyle.m_pFill.m_pBrush.m_Type := E_BT_Solid;
+                        end;
+
                         // if inherited, change the rule to default, because the animated color will be used
                         if (pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
                             pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
@@ -5640,6 +5711,18 @@ begin
                     begin
                         // do modify the stroke color
                         pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.Assign(pColorAnimDesc.ToList[0]);
+
+                        // was the stroke previously hidden?
+                        if (pProperties.m_pStyle.m_pStroke.m_pNoStroke.m_Value
+                                and not pProperties.m_pStyle.m_pStroke.IsEmpty)
+                        then
+                        begin
+                            // turn it visible
+                            pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create(IPropBoolItem.Create(False,
+                                    IE_PR_Default));
+                            pProperties.m_pStyle.m_pStroke.m_pNoStroke.Assign(pPropBoolItem);
+                            pProperties.m_pStyle.m_pStroke.m_pBrush.m_Type := E_BT_Solid;
+                        end;
 
                         // if inherited, change the rule to default, because the animated color will be used
                         if (pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
@@ -5766,6 +5849,18 @@ begin
                     // do modify the fill color
                     pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Value.Assign(color);
 
+                    // was the fill previously hidden?
+                    if (pProperties.m_pStyle.m_pFill.m_pNoFill.m_Value
+                            and not pProperties.m_pStyle.m_pFill.IsEmpty)
+                    then
+                    begin
+                        // turn it visible
+                        pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create(IPropBoolItem.Create(False,
+                                IE_PR_Default));
+                        pProperties.m_pStyle.m_pFill.m_pNoFill.Assign(pPropBoolItem);
+                        pProperties.m_pStyle.m_pFill.m_pBrush.m_Type := E_BT_Solid;
+                    end;
+
                     // if inherited, change the rule to default, because the animated color will be used
                     if (pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then
                         pProperties.m_pStyle.m_pFill.m_pBrush.m_pColor.m_Rule := IE_PR_Default;
@@ -5775,6 +5870,18 @@ begin
                 begin
                     // do modify the fill color
                     pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Value.Assign(color);
+
+                    // was the stroke previously hidden?
+                    if (pProperties.m_pStyle.m_pStroke.m_pNoStroke.m_Value
+                            and not pProperties.m_pStyle.m_pStroke.IsEmpty)
+                    then
+                    begin
+                        // turn it visible
+                        pPropBoolItem := TWSmartPointer<IPropBoolItem>.Create(IPropBoolItem.Create(False,
+                                IE_PR_Default));
+                        pProperties.m_pStyle.m_pStroke.m_pNoStroke.Assign(pPropBoolItem);
+                        pProperties.m_pStyle.m_pStroke.m_pBrush.m_Type := E_BT_Solid;
+                    end;
 
                     // if inherited, change the rule to default, because the animated color will be used
                     if (pProperties.m_pStyle.m_pStroke.m_pBrush.m_pColor.m_Rule = IE_PR_Inherit) then

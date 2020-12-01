@@ -290,6 +290,18 @@ type
             function GetValueAt(position: Double): TWColor; virtual;
 
             {**
+             Get animated values at position
+             @param(position Animation position in percent (between 0.0 and 1.0))
+             @param(values Value array to get from)
+             @param(frameCount - the number of values the frame should contain, in case the animation contains no key list)
+             @returns(Animated values at position, the unit is dependent of animation type)
+             @raises(Exception on error)
+             @br @bold(NOTE) If animation uses key times, value array length may be equal to
+                             or a multiple of key time array length
+            }
+            function GetValuesAt(position: Double; values: IValues; frameCount: NativeUInt): IValues; overload; virtual;
+
+            {**
              Add "from" animation value to list
              @param(pValue Value to add)
             }
@@ -785,12 +797,199 @@ begin
 end;
 //---------------------------------------------------------------------------
 function TWSVGColorAnimDesc.GetValueAt(position: Double): TWColor;
+var
+    valueCount:         NativeUInt;
+    fromColor, toColor: TWColor;
+    values:             IValues;
 begin
-    // from and to color are defined and contain only one color?
-    if ((Length(m_From) = 1) and (Length(m_To) = 1)) then
-        Exit(m_From[0].Blend(m_To[0], position));
+    valueCount := Length(m_Values);
 
-    raise Exception.Create('NOT IMPLEMENTED');
+    // value list defined? (value list take precedence over from/to/by values, see:
+    // https://www.w3.org/TR/2001/REC-smil-animation-20010904/#ValuesAttribute)
+    if (valueCount > 0) then
+    begin
+        values := GetValuesAt(position, m_Values, 1);
+
+        // for single values, the result should contain only one item
+        if (Length(values) <> 1) then
+            raise Exception.CreateFmt('Incorrect value count - %d', [Integer(Length(values))]);
+
+        Exit(values[0]);
+    end;
+
+    // in case this happen:
+    // https://www.w3.org/TR/2001/REC-smil-animation-20010904/#ByAttribute
+    if (Length(m_By) > 0) then
+        raise Exception.Create('Unsupported by animation');
+
+    values := GetValuesAt(position, m_From, 1);
+
+    // for single values, the result should contain only one item
+    if (Length(values) <> 1) then
+        raise Exception.CreateFmt('Incorrect from value count - %d', [Integer(Length(values))]);
+
+    fromColor := values[0];
+    values  := GetValuesAt(position, m_To, 1);
+
+    // for single values, the result should contain only one item
+    if (Length(values) <> 1) then
+        raise Exception.CreateFmt('Incorrect to value count - %d', [Integer(Length(values))]);
+
+    toColor := values[0];
+
+    // calculate animation position
+    Result := fromColor.Blend(toColor, position)
+end;
+//---------------------------------------------------------------------------
+function TWSVGColorAnimDesc.GetValuesAt(position: Double; values: IValues; frameCount: NativeUInt): IValues;
+var
+    keyTimeCount,
+    valueCount,
+    resultCount,
+    i,
+    j,
+    index,
+    startIndex,
+    endIndex,
+    frameIndex,
+    curStart,
+    curEnd:       NativeUInt;
+    curPos,
+    indexCount,
+    progression,
+    deltaTime,
+    posBetween,
+    timePerFrame: Double;
+begin
+    valueCount := Length(values);
+
+    // value list contains no values, or only one value?
+    if (valueCount = 0) then
+        Exit
+    else
+    if (valueCount = 1) then
+    begin
+        SetLength(Result, 1);
+        Result[0] := values[0];
+        Exit;
+    end;
+
+    keyTimeCount := Length(m_KeyTimes);
+
+    // key time are used?
+    if (keyTimeCount > 0) then
+    begin
+        // check if the key time count is a multiplier of the value count and find
+        // how many values should be get by key time
+        if (not TWMathHelper.CheckAndGetMuliplier(keyTimeCount, valueCount, resultCount)) then
+        begin
+            TWLogHelper.LogToCompiler('Malformed animation - the value count does not match with the key time count - value count - '
+                    + IntToStr(valueCount) + ' - key time count - ' + IntToStr(keyTimeCount));
+            Exit;
+        end;
+
+        curPos := Min(position, 1.0);
+
+        // iterate through animation keys
+        for i := 0 to keyTimeCount - 2 do
+            // found current key?
+            if ((curPos >= m_KeyTimes[i]) and (curPos <= m_KeyTimes[i + 1])) then
+            begin
+                // calculate start and end indexes to interpolate
+                startIndex := i;
+                endIndex   := i + 1;
+
+                // animations governed by time keys are in fact divided into several segments.
+                // Each values in the key time list represent the time where the animation
+                // should start and end. These values are paired with the values list, that
+                // represent the start and end positions the animated segment should reach. As
+                // the received position is relative to the whole animation, it must be
+                // converted to indicate which percent of the segment is currently processed.
+                // For example, a segment beginning on 22% of the total time and ending on 44%
+                // is 50% processed if the received position is equal to 33%
+                //
+                // --------------------------------------¦------------------------------------------------------------------
+                // |                                     ¦    Total time = 100%                                            |
+                // |-------------------------------------¦-----------------------------------------------------------------|
+                // | Seg. 1 from 0% to 22% | Seg. 2 from 22% to 44% | Seg. 3 from 44% to 100%                              |
+                // |                       |             ¦          |                                                      |
+                // |-----------------------|-------------¦----------|------------------------------------------------------|
+                //                                       ¦
+                //                                       ¦ position = 33%, pos in segment2 = 50%
+                //
+                deltaTime  := (m_KeyTimes[endIndex] - m_KeyTimes[startIndex]);
+                posBetween := (curPos - m_KeyTimes[startIndex]) / deltaTime;
+
+                // search for calculation mode
+                case (m_CalcMode) of
+                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Discrete: progression := 1.0;
+                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear:   progression := posBetween;
+                    TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline:   progression := GetBezierProgression(startIndex, posBetween);
+                else
+                    raise Exception.CreateFmt('Unknown calculation mode - %d', [Integer(m_CalcMode)]);
+                end;
+
+                SetLength(Result, resultCount);
+
+                for j := 0 to resultCount - 1 do
+                begin
+                    curStart := (startIndex * resultCount) + j;
+                    curEnd   := (endIndex   * resultCount) + j;
+
+                    // calculate relative animation color (i.e. between key times)
+                    Result[j] := values[curStart].Blend(values[curEnd], progression);
+                end;
+
+                Exit;
+            end;
+
+        // should never happen because current position should always be found between key times
+        TWLogHelper.LogToCompiler('Malformed animation - the key time could not be found - position - '
+                + FloatToStr(position) + ' - key time count - ' + IntToStr(keyTimeCount));
+        Exit;
+    end;
+
+    // check if value count matches the frame count
+    if ((valueCount = 0) or ((valueCount mod frameCount) <> 0)) then
+    begin
+        TWLogHelper.LogToCompiler('malformed animation - the number of values must match the number of frame values - '
+                + IntToStr(valueCount) + ' - ' + IntToStr(frameCount));
+        Exit;
+    end;
+
+    SetLength(Result, frameCount);
+
+    // calculate the index count and the current index
+    indexCount := (valueCount - 1) div frameCount;
+    index      := Floor(position * indexCount);
+    frameIndex := (index * frameCount);
+
+    // calculate the animation position inside the frame
+    timePerFrame := 1.0 / indexCount;
+
+    if (timePerFrame > 0.0) then
+        posBetween := TWMathHelper.ExtMod(position, timePerFrame) / timePerFrame
+    else
+        posBetween := 0.0;
+
+    // search for calculation mode
+    case (m_CalcMode) of
+        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Discrete: progression := 1.0;
+        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Linear:   progression := posBetween;
+        TWSVGAnimation.IPropCalcMode.IECalcModeType.IE_CT_Spline:   progression := GetBezierProgression(frameIndex, posBetween);
+    else
+        raise Exception.CreateFmt('Unknown calculation mode - %d', [Integer(m_CalcMode)]);
+    end;
+
+    for i := 0 to frameCount - 1 do
+    begin
+        // calculate the from and to indexes for each x and y values
+        startIndex := (frameIndex + i)          mod valueCount;
+        endIndex   := (startIndex + frameCount) mod valueCount;
+
+        // calculate final color value
+        Result[i] := values[startIndex].Blend(values[endIndex], progression)
+    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGColorAnimDesc.AddFrom(const pValue: PWColor);

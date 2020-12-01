@@ -2132,7 +2132,7 @@ begin
         pLink := nil;
 
         try
-        // create link property and populate with effect link
+            // create link property and populate with effect link
             pLink          := TWSVGPropLink.Create(Self, m_pOptions);
             pLink.ItemName := name;
             pLink.Parse(pData^);

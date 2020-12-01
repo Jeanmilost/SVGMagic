@@ -239,7 +239,7 @@ type
 
             {**
              Check if color is empty
-             @returns(@true if color is emply, otherwise @false)
+             @returns(@true if color is empty, otherwise @false)
             }
             function IsEmpty: Boolean; inline;
 
