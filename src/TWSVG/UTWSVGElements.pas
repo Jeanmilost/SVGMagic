@@ -3676,7 +3676,7 @@ begin
 
         if (not pFontSize.Read(C_SVG_Prop_Font_Size, pNode)) then
         begin
-            fontSize.Value     := 8.0;
+            fontSize.Value     := 16.0;
             pFontSize.ItemName := C_SVG_Prop_Font_Size;
             pFontSize.Value    := fontSize;
         end;
