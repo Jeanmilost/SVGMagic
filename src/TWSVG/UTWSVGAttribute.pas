@@ -2,7 +2,7 @@
  @abstract(@name provides a generic class to parse the Scalable Vector Graphics (SVG) attributes. A
            SVG attribute may ontain one value (e.g. to='30') or a value list (e.g. to='360 20 20'))
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWSVGAttribute;
 

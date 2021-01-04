@@ -3,7 +3,7 @@
            platforms and librairies, like e.g. Windows, VCL, GDI, GDI+, ... @name provides also
            several useful functions to work with the color, like blender or grayscale functions)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWColor;
 

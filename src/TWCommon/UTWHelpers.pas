@@ -2,7 +2,7 @@
  @abstract(@name provides several helper classes to set up generic tasks for mathematics, file
            management, ..., that the VCL/RTL does not support.)
  @author(JMR)
- @created(2016-2019, by Ursa Minor)
+ @created(2016-2021, by Ursa Minor)
 }
 unit UTWHelpers;
 

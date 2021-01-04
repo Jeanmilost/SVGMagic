@@ -2,7 +2,7 @@
  @abstract(@name contains the Scalable Vector Graphics (SVG) animations. An animation describes how
            the SVG content should evolve in the time.)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWSVGAnimation;
 

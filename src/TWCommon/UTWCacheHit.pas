@@ -2,7 +2,7 @@
  @abstract(@name provides an utility class to count the number of times a cache was hit and to log
            the stats in an human readable style.)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWCacheHit;
 

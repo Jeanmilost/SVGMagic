@@ -2,7 +2,7 @@
  @abstract(@name provides the common properties that can be found in a SVG, like e.g. fill and
            strokes, matrices, ...)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWSVGProperties;
 

@@ -1,7 +1,7 @@
 {**
  @abstract(@name is the main parser for the Scalable Vector Graphics (SVG) files.)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWSVGParser;
 

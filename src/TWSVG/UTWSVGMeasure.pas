@@ -2,7 +2,7 @@
  @abstract(@name provides a generic class to read the Scalable Vector Graphics (SVG) value with unit,
                  as e.g. x="0px")
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWSVGMeasure;
 

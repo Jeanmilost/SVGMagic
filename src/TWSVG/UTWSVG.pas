@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides a class to open a Scalable Vector Graphics (SVG) file.)
  @author(JMR)
- @created(2016-2019, by Ursa Minor)
+ @created(2016-2021, by Ursa Minor)
 }
 unit UTWSVG;
 

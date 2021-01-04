@@ -2,7 +2,7 @@
  @abstract(@name provides a rasterizer that uses GDI+ to perform the painting of a Scalable Vector
            Graphics (SVG) image.)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWSVGGDIPlusRasterizer;
 

@@ -2,7 +2,7 @@
  @abstract(@name provides a standard color dictionary that allows to get a known color by naming it,
            e.g. Get('yellow') will return a TWColor set to yellow.)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWStandardColor;
 

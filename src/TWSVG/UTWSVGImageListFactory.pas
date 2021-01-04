@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides a factory to populate a TImageList from SVG graphics.)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWSVGImageListFactory;
 

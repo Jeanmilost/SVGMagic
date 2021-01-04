@@ -2,7 +2,7 @@
  @abstract(@name contains the Scalable Vector Graphics (SVG) effects. An effect is a kind of
                  filter that can be applied while the image is rasterized.)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWSVGFilters;
 

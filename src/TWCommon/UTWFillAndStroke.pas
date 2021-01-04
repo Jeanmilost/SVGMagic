@@ -2,7 +2,7 @@
  @abstract(@name provides generic brush and pen classes, that can be used for fill and stroke
            operations in a generic way between several libraries, as e.g. GDI, GDI+, Direct2D, ...)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWFillAndStroke;
 

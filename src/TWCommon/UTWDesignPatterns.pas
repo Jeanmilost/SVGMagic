@@ -1,7 +1,7 @@
 {**
  @abstract(@name provides some classic ready-to-use design patterns classes)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWDesignPatterns;
 

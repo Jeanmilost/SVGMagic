@@ -2,7 +2,7 @@
  @abstract(@name provides the classes and functions to add new custom fonts to the Windows session,
            or remove previously added custom fonts.)
  @author(JMR)
- @created(2016-2019 by Ursa Minor)
+ @created(2016-2021 by Ursa Minor)
 }
 unit UTWControlFont;
 
