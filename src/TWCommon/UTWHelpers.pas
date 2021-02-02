@@ -234,7 +234,7 @@ type
         {**
          Check if a digit contains only chars that can be converted to number
          @param(digit Digit to check)
-         @param(strict If @true, only chars from '0' to '9' will be accepted, see note)
+         @param(isStrict If @true, only chars from '0' to '9' will be accepted, see note)
          @returns(@true if digit contains only chars that can be converted to number, otherwise @false)
          @br @bold(NOTE) If strict mode is set to @false, math symbols as e.g. '.' or '-' will also
                          be accepted as valid numeric chars. This may be useful when IsNumeric() is
@@ -245,7 +245,7 @@ type
         {**
          Check if a digit contains only chars that can be converted to number
          @param(digit Digit to check)
-         @param(strict If @true, only chars from '0' to '9' will be accepted, see note)
+         @param(isStrict If @true, only chars from '0' to '9' will be accepted, see note)
          @returns(@true if digit contains only chars that can be converted to number, otherwise @false)
          @br @bold(NOTE) If strict mode is set to @false, math symbols as e.g. '.' or '-' will also
                          be accepted as valid numeric chars. This may be useful when IsNumeric() is

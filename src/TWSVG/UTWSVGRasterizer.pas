@@ -6056,12 +6056,15 @@ begin
                 // set x position
                 if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
                 begin
-                    pFilter.m_pX       := IPropFloatItem.Create(pMeasure.Value.Value * 0.01, IE_PR_Default);
-                    pFilter.m_pPercent := IPropBoolItem.Create (True,                        IE_PR_Default);
+                    pFilter.m_pX.Value       := pMeasure.Value.Value * 0.01;
+                    pFilter.m_pX.Rule        := IE_PR_Default;
+                    pFilter.m_pPercent.Value := True;
+                    pFilter.m_pPercent.Rule  := IE_PR_Default;
                 end
                 else
                 begin
-                    pFilter.m_pX := IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default);
+                    pFilter.m_pX.Value := pMeasure.Value.Value;
+                    pFilter.m_pX.Rule  := IE_PR_Default;
 
                     if (pFilter.m_pPercent.Value) then
                         TWLogHelper.LogToCompiler('Get filter - mixed percent and pixel values - ' + pSVGFilter.ItemID);
@@ -6080,12 +6083,15 @@ begin
                 // set y position
                 if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
                 begin
-                    pFilter.m_pY       := IPropFloatItem.Create(pMeasure.Value.Value * 0.01, IE_PR_Default);
-                    pFilter.m_pPercent := IPropBoolItem.Create (True,                        IE_PR_Default);
+                    pFilter.m_pY.Value       := pMeasure.Value.Value * 0.01;
+                    pFilter.m_pY.Rule        := IE_PR_Default;
+                    pFilter.m_pPercent.Value := True;
+                    pFilter.m_pPercent.Rule  := IE_PR_Default;
                 end
                 else
                 begin
-                    pFilter.m_pY := IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default);
+                    pFilter.m_pY.Value := pMeasure.Value.Value;
+                    pFilter.m_pY.Rule  := IE_PR_Default;
 
                     if (pFilter.m_pPercent.Value) then
                         TWLogHelper.LogToCompiler('Get filter - mixed percent and pixel values - ' + pSVGFilter.ItemID);
@@ -6104,12 +6110,15 @@ begin
                 // set width
                 if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
                 begin
-                    pFilter.m_pWidth   := IPropFloatItem.Create(pMeasure.Value.Value * 0.01, IE_PR_Default);
-                    pFilter.m_pPercent := IPropBoolItem.Create (True,                        IE_PR_Default);
+                    pFilter.m_pWidth.Value   := pMeasure.Value.Value * 0.01;
+                    pFilter.m_pWidth.Rule    := IE_PR_Default;
+                    pFilter.m_pPercent.Value := True;
+                    pFilter.m_pPercent.Rule  := IE_PR_Default;
                 end
                 else
                 begin
-                    pFilter.m_pWidth := IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default);
+                    pFilter.m_pWidth.Value := pMeasure.Value.Value;
+                    pFilter.m_pWidth.Rule  := IE_PR_Default;
 
                     if (pFilter.m_pPercent.Value) then
                         TWLogHelper.LogToCompiler('Get filter - mixed percent and pixel values - ' + pSVGFilter.ItemID);
@@ -6128,12 +6137,15 @@ begin
                 // set height
                 if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
                 begin
-                    pFilter.m_pHeight  := IPropFloatItem.Create(pMeasure.Value.Value * 0.01, IE_PR_Default);
-                    pFilter.m_pPercent := IPropBoolItem.Create (True,                        IE_PR_Default);
+                    pFilter.m_pHeight.Value  := pMeasure.Value.Value * 0.01;
+                    pFilter.m_pHeight.Rule   := IE_PR_Default;
+                    pFilter.m_pPercent.Value := True;
+                    pFilter.m_pPercent.Rule  := IE_PR_Default;
                 end
                 else
                 begin
-                    pFilter.m_pHeight := IPropFloatItem.Create(pMeasure.Value.Value, IE_PR_Default);
+                    pFilter.m_pHeight.Value := pMeasure.Value.Value;
+                    pFilter.m_pHeight.Rule  := IE_PR_Default;
 
                     if (pFilter.m_pPercent.Value) then
                         TWLogHelper.LogToCompiler('Get filter - mixed percent and pixel values - ' + pSVGFilter.ItemID);
