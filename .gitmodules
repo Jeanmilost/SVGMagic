@@ -1,3 +1,6 @@
 [submodule "src/TWSVG/VerySimpleXML"]
 	path = src/TWSVG/VerySimpleXML
 	url = https://github.com/Dennis1000/VerySimpleXML
+[submodule "Samples/Common/Virtual-TreeView"]
+	path = Samples/Common/Virtual-TreeView
+	url = https://github.com/JAM-Software/Virtual-TreeView.git
