@@ -2,7 +2,7 @@
 
 This demo shows how to combine the SVGMagic SVG graphic component with a VirtualTree view to create a basic thumbnail view. In particular, it demonstrates how a SVG image may be painted from a SVG image list component onto a destination canvas belonging to another component.
 
-![Thumbnail view](Screenshots\GridView.png)
+![Thumbnail view](Screenshots/GridView.png)
 
 ## Building
 
