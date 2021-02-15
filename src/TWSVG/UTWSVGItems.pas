@@ -20,6 +20,14 @@ type
     // enable the line below if you want to log and print the reference content
     //{$define ENABLE_REFERENCE_LOGS}
 
+    // SVG item class prototype
+    TWSVGItem = class;
+
+    {**
+     SVG defines table
+    }
+    TWSVGDefsTable = TObjectDictionary<UnicodeString, TWSVGItem>;
+
     {**
      Scalable Vector Graphics (SVG) options
     }
@@ -40,6 +48,12 @@ type
 
         protected
             m_pOptions: PWSVGOptions;
+
+            {**
+             Get the global defines table linked with this item
+             @returns(the global defines table linked with this item, @nil if not found or on error)
+            }
+            function GetDefsTable: TWSVGDefsTable; virtual;
 
         public
             {**
@@ -99,6 +113,11 @@ type
              Get the parent item
             }
             property Parent: TWSVGItem read m_pParent;
+
+            {**
+             Get the global defines table linked with this item
+            }
+            property DefsTable: TWSVGDefsTable read GetDefsTable;
 
             {**
              Get the options
@@ -267,90 +286,6 @@ type
             property Count: Integer read GetPropertyCount;
     end;
 
-    {**
-     A Scalable Vector Graphics (SVG) reference is a special element referring to another element
-     @br @bold(NOTE) Although this class mentionates that it contains a reference, it is not really
-                     the case, as this class contains a clone instead. The reference naming for this
-                     class comes from the c++ mirror project, where it was possible to keep a reference
-                     to an outside pointer. Here a such relationship isn't possible, because the
-                     pointers change everytime an Assign() function is called, for that reason a
-                     clone of the referenced object is kept, and (unfortunately) not a pointer
-    }
-    TWSVGReference = class(TWSVGElement)
-        private
-            m_pElement: TWSVGElement; // it's a clone and not a reference, unfortunately, see comments above
-
-        protected
-            procedure SetElement(pElement: TWSVGElement); virtual;
-
-        public
-            {**
-             Constructor
-             @param(pParent Parent item, orphan or root if @nil)
-             @param(pOptions SVG options)
-            }
-            constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
-
-            {**
-             Destructor
-            }
-            destructor Destroy; override;
-
-            {**
-             Assign (i.e. copy) content from another item
-             @param(pOther Other item to copy from)
-            }
-            procedure Assign(const pOther: TWSVGItem); override;
-
-            {**
-             Clear
-            }
-            procedure Clear; override;
-
-            {**
-             Create new element instance
-             @param(pParent Parent item, orphan or root if @nil)
-             @returns(Element instance)
-            }
-            function CreateInstance(pParent: TWSVGItem): TWSVGElement; override;
-
-            {**
-             Read SVG element from xml
-             @param(pNode Xml node containing SVG element to read)
-             @returns(@true on success, otherwise @false)
-            }
-            {$ifdef USE_VERYSIMPLEXML}
-                function Read(const pNode: TXMLNode): Boolean; override;
-            {$else}
-                function Read(const pNode: IXMLNode): Boolean; override;
-            {$endif}
-
-            {**
-             Log content
-             @param(margin Margin length in chars)
-            }
-            procedure Log(margin: Cardinal); override;
-
-            {**
-             Print content to string
-             @param(margin Margin length in chars)
-             @returns(Content)
-            }
-            function Print(margin: Cardinal): UnicodeString; override;
-
-            {**
-             Get xml formatted string
-             @returns(String)
-            }
-            function ToXml: UnicodeString; override;
-
-        public
-            {**
-             Get or set the reference
-            }
-            property Reference: TWSVGElement read m_pElement write SetElement;
-    end;
-
 implementation
 //---------------------------------------------------------------------------
 // TWSVGItem
@@ -366,6 +301,14 @@ end;
 destructor TWSVGItem.Destroy;
 begin
     inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGItem.GetDefsTable: TWSVGDefsTable;
+begin
+    if (Assigned(m_pParent)) then
+        Exit (m_pParent.GetDefsTable);
+
+    Result := nil;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGItem.Assign(const pOther: TWSVGItem);
@@ -555,115 +498,6 @@ begin
     finally
         pClone.Free;
     end;
-end;
-//---------------------------------------------------------------------------
-// TWSVGReference
-//---------------------------------------------------------------------------
-constructor TWSVGReference.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
-begin
-    inherited Create(pParent, pOptions);
-
-    m_Name     := 'reference';
-    m_pElement := nil;
-end;
-//---------------------------------------------------------------------------
-destructor TWSVGReference.Destroy;
-begin
-    if (Assigned(m_pElement)) then
-        m_pElement.Free;
-
-    inherited Destroy;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGReference.SetElement(pElement: TWSVGElement);
-begin
-    if (Assigned(m_pElement)) then
-        m_pElement.Free;
-
-    if (not Assigned(pElement)) then
-    begin
-        m_pElement := nil;
-        Exit;
-    end;
-
-    m_pElement := pElement.CreateInstance(Self);
-    m_pElement.Assign(pElement);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGReference.Assign(const pOther: TWSVGItem);
-var
-    pSource: TWSVGReference;
-begin
-    inherited Assign(pOther);
-
-    // invalid item?
-    if (not(pOther is TWSVGReference)) then
-    begin
-        Clear;
-        Exit;
-    end;
-
-    // get source object
-    pSource := pOther as TWSVGReference;
-
-    // copy the values
-    SetElement(pSource.m_pElement);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGReference.Clear;
-begin
-    inherited Clear;
-
-    m_pElement := nil;
-end;
-//---------------------------------------------------------------------------
-function TWSVGReference.CreateInstance(pParent: TWSVGItem): TWSVGElement;
-begin
-    Result := TWSVGReference.Create(pParent, m_pOptions);
-end;
-//---------------------------------------------------------------------------
-{$ifdef USE_VERYSIMPLEXML}
-    function TWSVGReference.Read(const pNode: TXMLNode): Boolean;
-{$else}
-    function TWSVGReference.Read(const pNode: IXMLNode): Boolean;
-{$endif}
-begin
-    // this element cannot be read
-    Result := False;
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGReference.Log(margin: Cardinal);
-begin
-    {$ifdef ENABLE_REFERENCE_LOGS}
-        if (not Assigned(m_pElement)) then
-            Exit;
-
-        TWSVGElement(m_pElement).Log(margin);
-    {$endif}
-end;
-//---------------------------------------------------------------------------
-function TWSVGReference.Print(margin: Cardinal): UnicodeString;
-begin
-    {$ifdef ENABLE_REFERENCE_LOGS}
-        if (not Assigned(m_pElement)) then
-            Exit('');
-
-        Result := TWSVGElement(m_pElement).Print(margin);
-    {$else}
-        Result := '';
-    {$endif}
-end;
-//---------------------------------------------------------------------------
-function TWSVGReference.ToXml: UnicodeString;
-begin
-    {$ifdef ENABLE_REFERENCE_LOGS}
-        if (not Assigned(m_pElement)) then
-            Exit('');
-
-        Result := TWSVGElement(m_pElement).ToXml;
-    {$else}
-        Result := '';
-    {$endif}
 end;
 //---------------------------------------------------------------------------
 

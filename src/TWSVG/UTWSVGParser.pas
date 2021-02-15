@@ -82,6 +82,8 @@ type
             end;
 
         private
+            m_pDefsTable: TWSVGDefsTable;
+
             {**
              Read the SVG define section
              @param(pNode Defs root xml node)
@@ -104,6 +106,21 @@ type
              @param(svgContent @bold([in, out]) SVG content string to print to)
             }
             procedure PrintDefs(margin: Cardinal; var svgContent: UnicodeString);
+
+        protected
+            {**
+             Get the global defines table linked with this item
+             @returns(the global defines table linked with this item, @nil if not found or on error)
+             @br @bold(NOTE) BE CAREFUL, the global defines table should never be changed from outside
+            }
+            function GetDefsTable: TWSVGDefsTable; override;
+
+            {**
+             Get element from global defines table at key
+             @param(key Key of element to get)
+             @returns(Element, @nil if not found or on error)
+            }
+            function GetDefAtKey(key: UnicodeString): TWSVGElement; virtual;
 
         public
             {**
@@ -170,6 +187,13 @@ type
              @returns(String)
             }
             function ToXml: UnicodeString; override;
+
+        public
+            {**
+             Get element contained in the defs dictionary at the key. Example: element := Defs['key'];
+             @br @bold(NOTE) @nil will be returned if the key doesn't exist
+            }
+            property Defs[key: UnicodeString]: TWSVGElement read GetDefAtKey;
     end;
 
 implementation
@@ -431,11 +455,32 @@ end;
 constructor TWSVGParser.Create(pOptions: PWSVGOptions);
 begin
     inherited Create(nil, pOptions);
+
+    m_pDefsTable := TWSVGDefsTable.Create;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGParser.Destroy;
 begin
+    m_pDefsTable.Clear;
+    FreeAndNil(m_pDefsTable);
+
     inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGParser.GetDefsTable: TWSVGDefsTable;
+begin
+    Result := m_pDefsTable;
+end;
+//---------------------------------------------------------------------------
+function TWSVGParser.GetDefAtKey(key: UnicodeString): TWSVGElement;
+var
+    pItem: TWSVGItem;
+begin
+    if (m_pDefsTable.TryGetValue(key, pItem)) then
+        if (pItem is TWSVGElement) then
+            Exit(pItem as TWSVGElement);
+
+    Result := nil;
 end;
 //---------------------------------------------------------------------------
 {$ifdef USE_VERYSIMPLEXML}
@@ -504,19 +549,10 @@ begin
                 // read group
                 pGroup := TWSVGGroup.Create(Self, m_pOptions);
                 Result := pGroup.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pGroup);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pGroup.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pGroup, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pGroup.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pGroup);
 
                 pGroup := nil;
             finally
@@ -532,19 +568,10 @@ begin
                 // read switch
                 pSwitch := TWSVGSwitch.Create(Self, m_pOptions);
                 Result  := pSwitch.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pSwitch);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pSwitch.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pSwitch, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pSwitch.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pSwitch);
 
                 pSwitch := nil;
             finally
@@ -560,19 +587,10 @@ begin
                 // read action
                 pAction := TWSVGAction.Create(Self, m_pOptions);
                 Result  := pAction.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pAction);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pAction.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pAction, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pAction.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pAction);
 
                 pAction := nil;
             finally
@@ -588,19 +606,10 @@ begin
                 // read symbol
                 pSymbol := TWSVGSymbol.Create(Self, m_pOptions);
                 Result  := pSymbol.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pSymbol);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pSymbol.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pSymbol, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pSymbol.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pSymbol);
 
                 pSymbol := nil;
             finally
@@ -616,19 +625,10 @@ begin
                 // read clip path
                 pClipPath := TWSVGClipPath.Create(Self, m_pOptions);
                 Result    := pClipPath.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pClipPath);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pClipPath.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pClipPath, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pClipPath.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pClipPath);
 
                 pClipPath := nil;
             finally
@@ -644,19 +644,10 @@ begin
                 // read embedded SVG
                 pEmbeddedSVG := TWSVGSVG.Create(Self, m_pOptions);
                 Result       := pEmbeddedSVG.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pEmbeddedSVG);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pEmbeddedSVG.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pEmbeddedSVG, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pEmbeddedSVG.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pEmbeddedSVG);
 
                 pEmbeddedSVG := nil;
             finally
@@ -672,19 +663,10 @@ begin
                 // read rectangle
                 pRect  := TWSVGRect.Create(Self, m_pOptions);
                 Result := pRect.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pRect);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pRect.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pRect, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pRect.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pRect);
 
                 pRect := nil;
             finally
@@ -700,19 +682,10 @@ begin
                 // read circle
                 pCircle := TWSVGCircle.Create(Self, m_pOptions);
                 Result  := pCircle.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pCircle);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pCircle.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pCircle, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pCircle.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pCircle);
 
                 pCircle := nil;
             finally
@@ -728,19 +701,10 @@ begin
                 // read ellipse
                 pEllipse := TWSVGEllipse.Create(Self, m_pOptions);
                 Result   := pEllipse.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pEllipse);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pEllipse.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pEllipse, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pEllipse.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pEllipse);
 
                 pEllipse := nil;
             finally
@@ -756,19 +720,10 @@ begin
                 // read line
                 pLine  := TWSVGLine.Create(Self, m_pOptions);
                 Result := pLine.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pLine);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pLine.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pLine, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pLine.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pLine);
 
                 pLine := nil;
             finally
@@ -784,19 +739,10 @@ begin
                 // read polygon
                 pPolygon := TWSVGPolygon.Create(Self, m_pOptions);
                 Result   := pPolygon.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pPolygon);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pPolygon.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pPolygon, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pPolygon.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pPolygon);
 
                 pPolygon := nil;
             finally
@@ -812,19 +758,10 @@ begin
                 // read polyline
                 pPolyline := TWSVGPolyline.Create(Self, m_pOptions);
                 Result    := pPolyline.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pPolyline);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pPolyline.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pPolyline, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pPolyline.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pPolyline);
 
                 pPolyline := nil;
             finally
@@ -840,19 +777,10 @@ begin
                 // read path
                 pPath  := TWSVGPath.Create(Self, m_pOptions);
                 Result := pPath.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pPath);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pPath.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pPath, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pPath.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pPath);
 
                 pPath := nil;
             finally
@@ -868,19 +796,10 @@ begin
                 // read image
                 pImage := TWSVGImage.Create(Self, m_pOptions);
                 Result := pImage.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pImage);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pImage.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pImage, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pImage.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pImage);
 
                 pImage := nil;
             finally
@@ -896,19 +815,10 @@ begin
                 // read text
                 pText  := TWSVGText.Create(Self, m_pOptions);
                 Result := pText.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pText);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pText.ItemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pText, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pText.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pText);
 
                 pText := nil;
             finally
@@ -924,19 +834,10 @@ begin
                 // read use instruction, which allows to reuse a geometry
                 pUse   := TWSVGUse.Create(Self, m_pOptions);
                 Result := pUse.Read(pChildNode) and Result;
+                m_pDefsElements.Add(pUse);
 
-                // is item identifier empty?
-                if (not TWStringHelper.IsEmpty(pUse.ITemID)) then
-                begin
-                    // register the item
-                    if (not RegisterLink(pUse, m_pDefs, False)) then
-                        Exit(False);
-                end
-                else
-                begin
-                    TWLogHelper.LogToCompiler('Read defs - FAILED - item ID is empty - ' + pUse.ItemName);
-                    Exit(False);
-                end;
+                // register the item
+                RegisterLink(pUse);
 
                 pUse := nil;
             finally
@@ -945,41 +846,41 @@ begin
         end
         else
         if (name = C_SVG_Tag_Linear_Gradient) then
-            Result := inherited ReadLinearGradient(pChildNode, m_pDefs) and Result
+            Result := inherited ReadLinearGradient(pChildNode) and Result
         else
         if (name = C_SVG_Tag_Radial_Gradient) then
-            Result := inherited ReadRadialGradient(pChildNode, m_pDefs) and Result
+            Result := inherited ReadRadialGradient(pChildNode) and Result
         else
         if (name = C_SVG_Tag_Filter) then
-            Result := inherited ReadFilter(pChildNode, m_pDefs) and Result;
+            Result := inherited ReadFilter(pChildNode) and Result;
     end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGParser.LogDefs(margin: Cardinal);
 var
-    item: TPair<UnicodeString, TWSVGElement>;
+    item: TPair<UnicodeString, TWSVGItem>;
 begin
-    if (m_pDefs.Count = 0) then
+    if (m_pDefsTable.Count = 0) then
         Exit;
 
     //TWLogHelper.LogBlockToCompiler(' Defs ');
 
     // iterate through defines to log
-    for item in m_pDefs do
+    for item in m_pDefsTable do
         item.Value.Log(margin);
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGParser.PrintDefs(margin: Cardinal; var svgContent: UnicodeString);
 var
-    item: TPair<UnicodeString, TWSVGElement>;
+    item: TPair<UnicodeString, TWSVGItem>;
 begin
-    if (m_pDefs.Count = 0) then
+    if (m_pDefsTable.Count = 0) then
         Exit;
 
     svgContent := '<Defs>' + #13 + #10;
 
     // iterate through defines to print
-    for item in m_pDefs do
+    for item in m_pDefsTable do
         svgContent := svgContent + item.Value.Print(margin);
 
     svgContent := svgContent + '</Defs>' + #13 + #10;
@@ -1071,7 +972,7 @@ begin
             Result := ReadDefs(pChildNode) and Result
         else
             // read next item
-            Result := inherited ReadItem(name, pChildNode, m_pDefs, m_pElements) and Result;
+            Result := inherited ReadItem(name, pChildNode, m_pElements) and Result;
     end;
 end;
 //---------------------------------------------------------------------------

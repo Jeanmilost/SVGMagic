@@ -77,6 +77,7 @@ const
     C_SVG_Prop_Image_PreserveAspectRatio:              UnicodeString = 'preserveAspectRatio';
     C_SVG_Prop_Font_Family:                            UnicodeString = 'font-family';
     C_SVG_Prop_Font_Size:                              UnicodeString = 'font-size';
+    C_SVG_Prop_Font_Weight:                            UnicodeString = 'font-weight';
     C_SVG_Prop_Text_Anchor:                            UnicodeString = 'text-anchor';
     C_SVG_Prop_Transform:                              UnicodeString = 'transform';
     C_SVG_Prop_XLink_HRef:                             UnicodeString = 'xlink:href';
@@ -134,6 +135,10 @@ const
     C_SVG_Value_XMaxYMax:                              UnicodeString = 'xMaxYMax';
     C_SVG_Value_Meet:                                  UnicodeString = 'meet';
     C_SVG_Value_Slice:                                 UnicodeString = 'slice';
+    C_SVG_Value_Text_Weight_Normal:                    UnicodeString = 'normal';
+    C_SVG_Value_Text_Weight_Bold:                      UnicodeString = 'bold';
+    C_SVG_Value_Text_Weight_Bolder:                    UnicodeString = 'bolder';
+    C_SVG_Value_Text_Weight_Lighter:                   UnicodeString = 'lighter';
     C_SVG_Link_URL:                                    UnicodeString = 'url';
     C_SVG_Path_MoveTo_Absolute                                       = 'M';
     C_SVG_Path_MoveTo_Relative                                       = 'm';

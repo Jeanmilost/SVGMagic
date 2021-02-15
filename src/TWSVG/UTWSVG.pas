@@ -61,8 +61,9 @@ type
         public
             {**
              Constructor
+             @param(trustSVGSyntax If @true, the SVG syntax may be trusted)
             }
-            constructor Create; virtual;
+            constructor Create(trustSVGSyntax: Boolean = False); virtual;
 
             {**
              Destructor
@@ -160,12 +161,15 @@ implementation
 //---------------------------------------------------------------------------
 // TWSVG
 //---------------------------------------------------------------------------
-constructor TWSVG.Create;
+constructor TWSVG.Create(trustSVGSyntax: Boolean);
 begin
     inherited Create;
 
     m_Options := Default(TWSVGOptions);
     m_pParser := TWSVGParser.Create(@m_Options);
+
+    // configure the options
+    m_Options.m_TrustSVGSyntax := trustSVGSyntax;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVG.Destroy;
@@ -265,6 +269,9 @@ begin
 
     m_pParser.Assign(pOther.m_pParser);
     m_UUID := pOther.m_UUID;
+
+    // update the options
+    m_Options.m_TrustSVGSyntax := pOther.m_Options.m_TrustSVGSyntax;
 end;
 //---------------------------------------------------------------------------
 function TWSVG.IsEmpty: Boolean;

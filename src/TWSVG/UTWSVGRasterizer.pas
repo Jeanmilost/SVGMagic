@@ -1548,14 +1548,6 @@ type
             }
             function GetLinkedElement(const pLink: TWSVGPropLink): TWSVGElement;
 
-            {**
-             Get linked child element
-             @param(pLink Link containing the element identifier to find)
-             @param(pRoot The root element to search from)
-             @returns(Linked child element, @nil if not found or on error)
-            }
-            function GetLinkedChildElement(const pLink: TWSVGPropLink; const pRoot: TWSVGContainer): TWSVGElement;
-
         protected
             m_Animate: Boolean;
 
@@ -1688,13 +1680,17 @@ type
              @param(y @bold([out]) Text start y position)
              @param(fontFamily @bold([out]) Text font family name to use)
              @param(fontSize @bold([out]) Text font size)
+             @param(fontWeight @bold([out]) Text font weight)
+             @param(bolder @bold([out]) If true, text font weight is bolder than current value)
+             @param(lighter @bold([out]) If true, text font weight is lighter than current value)
              @param(anchor @bold([out]) Text anchor)
              @param(pAnimationData Animation data)
              @param(pCustomData Custom data)
              @returns(@true on success, otherwise @false)
             }
             function GetTextProps(const pText: TWSVGText; out x: Single; out y: Single;
-                    out fontFamily: UnicodeString; out fontSize: Single; out anchor: IETextAnchor;
+                    out fontFamily: UnicodeString; out fontSize: Single; out fontWeight: Cardinal;
+                    out bolder: Boolean; out Lighter: Boolean; out anchor: IETextAnchor;
                     pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
 
             {**
@@ -3441,88 +3437,31 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGRasterizer.GetLinkedElement(const pLink: TWSVGPropLink): TWSVGElement;
 var
-    pParent:                 TWSVGItem;
-    pContainer:              TWSVGContainer;
-    pElement, pChildElement: TWSVGElement;
+    pDefsTable: TWSVGDefsTable;
+    pItem:      TWSVGItem;
 begin
-    pParent := pLink;
-
-    // iterate through link parents
-    while (Assigned(pParent)) do
-    begin
-        if (pParent is TWSVGContainer) then
-        begin
-            // get parent as container
-            pContainer := pParent as TWSVGContainer;
-
-            // found it?
-            if (Assigned(pContainer)) then
-            begin
-                // search for element in the parent defs map
-                pElement := pContainer.Defs[pLink.Value];
-
-                // found it?
-                if (Assigned(pElement)) then
-                    Exit(pElement);
-
-                // search also the link in the linked element children
-                pChildElement := GetLinkedChildElement(pLink, pContainer);
-
-                if (Assigned(pChildElement)) then
-                begin
-                    Result := pChildElement;
-                    Exit;
-                end;
-            end;
-        end;
-
-        // go to next parent
-        pParent := pParent.Parent;
-    end;
-
-    // not found
-    Result := nil;
-end;
-//---------------------------------------------------------------------------
-function TWSVGRasterizer.GetLinkedChildElement(const pLink: TWSVGPropLink; const pRoot: TWSVGContainer): TWSVGElement;
-var
-    item:       TPair<UnicodeString, TWSVGElement>;
-    pContainer: TWSVGContainer;
-    pElement:   TWSVGElement;
-begin
-    if ((not Assigned(pRoot)) or (not Assigned(pLink))) then
+    if (not Assigned(pLink)) then
         Exit(nil);
 
-    // iterate through children references
-    for item in pRoot.DefsDict do
+    pDefsTable := pLink.DefsTable;
+
+    if (not Assigned(pDefsTable)) then
+        Exit(nil);
+
+    // each define should be unique in the map
+    if (not pDefsTable.TryGetValue(pLink.Value, pItem)) then
     begin
-        if (item.Value is TWSVGContainer) then
-        begin
-            // get child as container
-            pContainer := item.Value as TWSVGContainer;
-
-            // found it?
-            if (Assigned(pContainer)) then
-            begin
-                // search for element in the child defs map
-                pElement := pContainer.Defs[pLink.Value];
-
-                // found it?
-                if (Assigned(pElement)) then
-                    Exit(pElement);
-
-                // continue to search in children's children
-                pElement := GetLinkedChildElement(pLink, pContainer);
-
-                // if a candidate was found, return it
-                if (Assigned(pElement)) then
-                    Exit(pElement);
-            end;
-        end;
+        TWLogHelper.LogToCompiler('Get linked element - FAILED - not found - ' + pLink.Value);
+        Exit(nil);
     end;
 
-    // not found
-    Result := nil;
+    if (not(pItem is TWSVGElement)) then
+    begin
+        TWLogHelper.LogToCompiler('Get linked element - FAILED - item is not an element - ' + pItem.ItemID);
+        Exit(nil);
+    end;
+
+    Result := pItem as TWSVGElement
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGRasterizer.Initialize(const pSVG: TWSVG);
@@ -4897,12 +4836,14 @@ begin
 end;
 //---------------------------------------------------------------------------
 function TWSVGRasterizer.GetTextProps(const pText: TWSVGText; out x: Single; out y: Single;
-        out fontFamily: UnicodeString; out fontSize: Single; out anchor: IETextAnchor;
+        out fontFamily: UnicodeString; out fontSize: Single; out fontWeight: Cardinal;
+        out bolder: Boolean; out Lighter: Boolean; out anchor: IETextAnchor;
         pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
 var
     pProperty:         TWSVGProperty;
     pX, pY, pFontSize: TWSVGMeasure<Single>;
     pFontFamily:       TWSVGPropText;
+    pFontWeight:       TWSVGText.IFontWeight;
     pAnchor:           TWSVGText.IAnchor;
     pAnimation:        TWSVGAnimation;
     pValueAnimDesc:    IWSmartPointer<TWSVGValueAnimDesc>;
@@ -4981,6 +4922,21 @@ begin
 
             // set font size
             fontSize := pFontSize.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Font_Weight) and (pProperty is TWSVGText.IFontWeight)) then
+        begin
+            // get font weight
+            pFontWeight := pProperty as TWSVGText.IFontWeight;
+
+            // found it?
+            if (not Assigned(pFontWeight)) then
+                continue;
+
+            // set font weight properties
+            fontWeight := pFontWeight.Value;
+            bolder     := pFontWeight.Bolder;
+            lighter    := pFontWeight.Lighter;
         end
         else
         if ((pProperty.ItemName = C_SVG_Prop_Text_Anchor) and (pProperty is TWSVGText.IAnchor)) then
@@ -5951,8 +5907,6 @@ var
     pProperty:      TWSVGProperty;
     pLink:          TWSVGPropLink;
     pLinkedElement: TWSVGElement;
-    pSrcElement:    TWSVGElement;
-    pReference:     TWSVGReference;
     propCount, i:   NativeInt;
 begin
     if (not Assigned(pElement)) then
@@ -5987,22 +5941,9 @@ begin
             // get the linked element containing the clip path
             pLinkedElement := GetLinkedElement(pLink);
 
-            // is element a reference to another element?
-            if (pLinkedElement is TWSVGReference) then
-            begin
-                // get the element as a reference
-                pReference := pLinkedElement as TWSVGReference;
-
-                // extract its reference
-                pSrcElement := pReference.Reference;
-            end
-            else
-                // if not a reference, use the element directly
-                pSrcElement := pLinkedElement;
-
             // get the clip path
-            if (pSrcElement is TWSVGClipPath) then
-                pClipPath := pSrcElement as TWSVGClipPath;
+            if (pLinkedElement is TWSVGClipPath) then
+                pClipPath := pLinkedElement as TWSVGClipPath;
         end;
     end;
 
@@ -7780,24 +7721,24 @@ procedure TWSVGRasterizer.GetAnimationDuration(pHeader: TWSVGParser.IHeader;
         const pElements: TWSVGContainer.IElements; switchMode, useMode: Boolean;
         out durationMax: NativeUInt);
 var
-    pClonedElements:                       IWSmartPointer<TWSVGContainer.IElements>;
-    pElement, pSrcElement, pLinkedElement: TWSVGElement;
-    pClone:                                IWSmartPointer<TWSVGElement>;
-    pGroup:                                TWSVGGroup;
-    pSwitch:                               TWSVGSwitch;
-    pAction:                               TWSVGAction;
-    pUse:                                  TWSVGUse;
-    pSymbol:                               TWSVGSymbol;
-    pEmbeddedSVG:                          TWSVGSVG;
-    pPath:                                 TWSVGPath;
-    pRect:                                 TWSVGRect;
-    pCircle:                               TWSVGCircle;
-    pEllipse:                              TWSVGEllipse;
-    pLine:                                 TWSVGLine;
-    pPolygon:                              TWSVGPolygon;
-    pPolyline:                             TWSVGPolyline;
-    pText:                                 TWSVGText;
-    pAnimationData:                        IWSmartPointer<IAnimationData>;
+    pClonedElements:          IWSmartPointer<TWSVGContainer.IElements>;
+    pElement, pLinkedElement: TWSVGElement;
+    pClone:                   IWSmartPointer<TWSVGElement>;
+    pGroup:                   TWSVGGroup;
+    pSwitch:                  TWSVGSwitch;
+    pAction:                  TWSVGAction;
+    pUse:                     TWSVGUse;
+    pSymbol:                  TWSVGSymbol;
+    pEmbeddedSVG:             TWSVGSVG;
+    pPath:                    TWSVGPath;
+    pRect:                    TWSVGRect;
+    pCircle:                  TWSVGCircle;
+    pEllipse:                 TWSVGEllipse;
+    pLine:                    TWSVGLine;
+    pPolygon:                 TWSVGPolygon;
+    pPolyline:                TWSVGPolyline;
+    pText:                    TWSVGText;
+    pAnimationData:           IWSmartPointer<IAnimationData>;
 begin
     // iterate through SVG elements
     for pElement in pElements do
@@ -7913,6 +7854,9 @@ begin
                     // unusual that a SVG contains links pointing to nothing
                     continue;
 
+                if (not(pLinkedElement is TWSVGContainer)) then
+                    continue;
+
                 // configure animation
                 pAnimationData := TWSmartPointer<IAnimationData>.Create();
 
@@ -7925,18 +7869,10 @@ begin
                 // keep highest animation duration
                 durationMax := Max(GetAnimationDuration(pAnimationData), durationMax);
 
-                // is element a reference to another element?
-                if (pLinkedElement is TWSVGReference) then
-                    // extract its reference
-                    pSrcElement := TWSVGElement((pLinkedElement as TWSVGReference).Reference)
-                else
-                    // if not a reference, use the element directly
-                    pSrcElement := pLinkedElement;
-
                 // clone the source element. This is required because several additional properties
                 // will be merged from the use instruction
-                pClone := TWSmartPointer<TWSVGElement>.Create(pSrcElement.CreateInstance(pSrcElement.Parent));
-                pClone.Assign(pSrcElement);
+                pClone := TWSmartPointer<TWSVGElement>.Create(pLinkedElement.CreateInstance(pLinkedElement.Parent));
+                pClone.Assign(pLinkedElement);
 
                 // create a pseudo element container, and add the cloned element to draw
                 pClonedElements := TWSmartPointer<TWSVGContainer.IElements>.Create(TWSVGContainer.IElements.Create(False));

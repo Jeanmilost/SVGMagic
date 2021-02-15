@@ -34,26 +34,19 @@ type
     }
     TWSVGContainer = class(TWSVGElement)
         public type
-            IDefs       = TObjectDictionary<UnicodeString, TWSVGElement>;
             IAnimations = TObjectList<TWSVGAnimation>;
 
         private
             {**
              Delete and clear all data
+             @param(destroying If @True, the data are deleted in a destroying context)
             }
-            procedure DelAndClear;
+            procedure DelAndClear(destroying: Boolean);
 
         protected
-            m_pDefs:       IDefs;
-            m_pElements:   TWSVGElement.IElements;
-            m_pAnimations: IAnimations;
-
-            {**
-             Get element at key
-             @param(key Key of element to get)
-             @returns(Element, @nil if not found or on error)
-            }
-            function GetElementAtKey(key: UnicodeString): TWSVGElement; virtual;
+            m_pElements:     TWSVGElement.IElements;
+            m_pDefsElements: TWSVGElement.IElements;
+            m_pAnimations:   IAnimations;
 
             {**
              Get element at index
@@ -85,62 +78,56 @@ type
              Read item
              @param(name Item name)
              @param(pNode Xml node containing item to read)
-             @param(defs @bold([out]) Definition list in which item will be added (if item is a definition))
-             @param(pElements @bold([out]) Elements list in which item will be added (if item is an element))
+             @param(pElements @bold([out]) Elements list in which item will be added)
              @returns(@true if item was successfully read, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
-                function ReadItem(const name: UnicodeString; const pNode: TXMLNode; var defs: IDefs;
+                function ReadItem(const name: UnicodeString; const pNode: TXMLNode;
                         var pElements: TWSVGElement.IElements): Boolean; virtual;
             {$else}
-                function ReadItem(const name: UnicodeString; const pNode: IXMLNode; var defs: IDefs;
+                function ReadItem(const name: UnicodeString; const pNode: IXMLNode;
                         var pElements: TWSVGElement.IElements): Boolean; virtual;
             {$endif}
 
             {**
              Read linear gradient item and link it with defines table
              @param(pNode Xml node containing the linear gradient to read)
-             @param(defs @bold([out]) Definition list in which linear gradient will be added)
              @returns(@true if linear gradient item was successfully read, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
-                function ReadLinearGradient(const pNode: TXMLNode; var defs: IDefs): Boolean; virtual;
+                function ReadLinearGradient(const pNode: TXMLNode): Boolean; virtual;
             {$else}
-                function ReadLinearGradient(const pNode: IXMLNode; var defs: IDefs): Boolean; virtual;
+                function ReadLinearGradient(const pNode: IXMLNode): Boolean; virtual;
             {$endif}
 
             {**
              Read radial gradient item and link it with defines table
              @param(pNode Xml node containing the radial gradient to read)
-             @param(defs @bold([out]) Definition list in which radial gradient will be added)
              @returns(@true if radial gradient item was successfully read, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
-                function ReadRadialGradient(const pNode: TXMLNode; var defs: IDefs): Boolean; virtual;
+                function ReadRadialGradient(const pNode: TXMLNode): Boolean; virtual;
             {$else}
-                function ReadRadialGradient(const pNode: IXMLNode; var defs: IDefs): Boolean; virtual;
+                function ReadRadialGradient(const pNode: IXMLNode): Boolean; virtual;
             {$endif}
 
             {**
              Read filter item and link it with defines table
              @param(pNode Xml node containing the filter to read)
-             @param(defs @bold([out]) Definition list in which filter will be added)
              @returns(@true if filter item was successfully read, otherwise @false)
             }
             {$ifdef USE_VERYSIMPLEXML}
-                function ReadFilter(const pNode: TXMLNode; var defs: IDefs): Boolean; virtual;
+                function ReadFilter(const pNode: TXMLNode): Boolean; virtual;
             {$else}
-                function ReadFilter(const pNode: IXMLNode; var defs: IDefs): Boolean; virtual;
+                function ReadFilter(const pNode: IXMLNode): Boolean; virtual;
             {$endif}
 
             {**
              Register a link to an element in the defines table
              @param(pElement Element to register)
-             @param(defs @bold([in, out]) Definition list in which element will be added)
-             @param(asRef If @true, the element will be registered indirectly, by using a reference)
              @returns(@true if element was successfully registered, otherwise @false)
             }
-            function RegisterLink(pElement: TWSVGElement; var defs: IDefs; asRef: Boolean): Boolean; virtual;
+            function RegisterLink(pElement: TWSVGElement): Boolean; virtual;
 
         public
             {**
@@ -197,17 +184,6 @@ type
             function ToXml: UnicodeString; override;
 
         public
-            {**
-             Get element contained in the defs dictionary at the key. Example: element := Defs['key'];
-             @br @bold(NOTE) @nil will be returned if the key doesn't exist
-            }
-            property Defs[key: UnicodeString]: TWSVGElement read GetElementAtKey;
-
-            {**
-             Get the defs dictionary
-            }
-            property DefsDict: IDefs read m_pDefs;
-
             {**
              Get element at index. Example: element := Elements[0];
              @br @bold(NOTE) @nil will be returned if index is out of bounds
@@ -1157,6 +1133,96 @@ type
                     property Anchor: IEAnchor read m_Anchor write m_Anchor;
             end;
 
+            {**
+             Text font weight property
+            }
+            IFontWeight = class(TWSVGProperty)
+                private
+                    m_Value:   Cardinal;
+                    m_Bolder:  Boolean;
+                    m_Lighter: Boolean;
+
+                protected
+                    {**
+                     Set value
+                     @param(value Weight value, between 0 and 1000)
+                    }
+                    procedure SetValue(value: Cardinal); virtual;
+
+                public
+                    {**
+                     Constructor
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @param(pOptions SVG options)
+                    }
+                    constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: TWSVGItem); override;
+
+                    {**
+                     Clear
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Create new property instance
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @returns(Property instance)
+                    }
+                    function CreateInstance(pParent: TWSVGItem): TWSVGProperty; override;
+
+                    {**
+                     Parse data
+                     @param(data Data to parse)
+                     @returns(@true on success, otherwise @false)
+                    }
+                    function Parse(const data: UnicodeString): Boolean; override;
+
+                    {**
+                     Log content
+                     @param(margin Margin length in chars)
+                    }
+                    procedure Log(margin: Cardinal); override;
+
+                    {**
+                     Print content to string
+                     @param(margin Margin length in chars)
+                     @returns(Content)
+                    }
+                    function Print(margin: Cardinal): UnicodeString; override;
+
+                    {**
+                     Get xml formatted string
+                     @returns(String)
+                    }
+                    function ToXml: UnicodeString; override;
+
+                public
+                    {**
+                     Get or set the text weight value
+                    }
+                    property Value: Cardinal read m_Value write SetValue;
+
+                    {**
+                     Get or set if the text weight should be bolder than the current value
+                    }
+                    property Bolder: Boolean read m_Bolder write m_Bolder;
+
+                    {**
+                     Get or set if the text weight should be lighter than the current value
+                    }
+                    property Lighter: Boolean read m_Lighter write m_Lighter;
+            end;
+
         private
             m_Text: UnicodeString;
 
@@ -1458,39 +1524,57 @@ constructor TWSVGContainer.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
 begin
     inherited Create(pParent, pOptions);
 
-    m_pDefs       := IDefs.Create([doOwnsValues]);
-    m_pElements   := IElements.Create;
-    m_pAnimations := IAnimations.Create;
+    m_pElements     := IElements.Create;
+    m_pDefsElements := IElements.Create;
+    m_pAnimations   := IAnimations.Create;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGContainer.Destroy;
 begin
-    DelAndClear;
+    DelAndClear(True);
 
-    m_pDefs.Free;
     m_pElements.Free;
+    m_pDefsElements.Free;
     m_pAnimations.Free;
 
     inherited Destroy;
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGContainer.DelAndClear;
-begin
-    // clear all properties and definitions. NOTE as TObjectList are used, the lists will take care
-    // of freeing all objects they contain, for that an explicit Free() on each item isn't required
-    m_pDefs.Clear;
-    m_pElements.Clear;
-    m_pAnimations.Clear;
-end;
-//---------------------------------------------------------------------------
-function TWSVGContainer.GetElementAtKey(key: UnicodeString): TWSVGElement;
+procedure TWSVGContainer.DelAndClear(destroying: Boolean);
 var
-    pElement: TWSVGElement;
+    pDefsTable: TWSVGDefsTable;
+    pElement:   TWSVGElement;
 begin
-    if (m_pDefs.TryGetValue(key, pElement)) then
-        Exit(pElement);
+    // unregister the links if performed in a non destroying context
+    if (not destroying) then
+    begin
+        pDefsTable := GetDefsTable;
 
-    Result := nil;
+        if (Assigned(pDefsTable)) then
+        begin
+            // iterate through elements
+            for pElement in m_pElements do
+            begin
+                // if element contains an identifier, removes it from the define table
+                if (Assigned(pElement) and (not TWStringHelper.IsEmpty(pElement.ItemID))) then
+                    pDefsTable.Remove(pElement.ItemID);
+            end;
+
+            // iterate through defines elements
+            for pElement in m_pDefsElements do
+            begin
+                // if element contains an identifier, removes it from the define table
+                if (Assigned(pElement) and (not TWStringHelper.IsEmpty(pElement.ItemID))) then
+                    pDefsTable.Remove(pElement.ItemID);
+            end;
+        end;
+    end;
+
+    // clear all properties and defines. NOTE as TObjectList are used, the lists will take care
+    // of freeing all objects they contain, for that an explicit Free() on each item isn't required
+    m_pElements.Clear;
+    m_pDefsElements.Clear;
+    m_pAnimations.Clear;
 end;
 //---------------------------------------------------------------------------
 function TWSVGContainer.GetElement(index: Integer): TWSVGElement;
@@ -1520,10 +1604,10 @@ begin
 end;
 //---------------------------------------------------------------------------
 {$ifdef USE_VERYSIMPLEXML}
-    function TWSVGContainer.ReadItem(const name: UnicodeString; const pNode: TXMLNode; var defs: IDefs;
+    function TWSVGContainer.ReadItem(const name: UnicodeString; const pNode: TXMLNode;
             var pElements: TWSVGElement.IElements): Boolean;
 {$else}
-    function TWSVGContainer.ReadItem(const name: UnicodeString; const pNode: IXMLNode; var defs: IDefs;
+    function TWSVGContainer.ReadItem(const name: UnicodeString; const pNode: IXMLNode;
             var pElements: TWSVGElement.IElements): Boolean;
 {$endif}
 var
@@ -1558,7 +1642,7 @@ begin
             pElements.Add(pGroup);
 
             // register the link
-            RegisterLink(pGroup, defs, True);
+            RegisterLink(pGroup);
 
             pGroup := nil;
         finally
@@ -1577,7 +1661,7 @@ begin
             pElements.Add(pSwitch);
 
             // register the link
-            RegisterLink(pSwitch, defs, True);
+            RegisterLink(pSwitch);
 
             pSwitch := nil;
         finally
@@ -1596,7 +1680,7 @@ begin
             pElements.Add(pAction);
 
             // register the link
-            RegisterLink(pAction, defs, True);
+            RegisterLink(pAction);
 
             pAction := nil;
         finally
@@ -1615,7 +1699,7 @@ begin
             pElements.Add(pSymbol);
 
             // register the link
-            RegisterLink(pSymbol, defs, True);
+            RegisterLink(pSymbol);
 
             pSymbol := nil;
         finally
@@ -1634,7 +1718,7 @@ begin
             pElements.Add(pClipPath);
 
             // register the link
-            RegisterLink(pClipPath, defs, True);
+            RegisterLink(pClipPath);
 
             pClipPath := nil;
         finally
@@ -1653,7 +1737,7 @@ begin
             pElements.Add(pEmbeddedSVG);
 
             // register the link
-            RegisterLink(pEmbeddedSVG, defs, True);
+            RegisterLink(pEmbeddedSVG);
 
             pEmbeddedSVG := nil;
         finally
@@ -1672,7 +1756,7 @@ begin
             pElements.Add(pRect);
 
             // register the link
-            RegisterLink(pRect, defs, True);
+            RegisterLink(pRect);
 
             pRect := nil;
         finally
@@ -1691,7 +1775,7 @@ begin
             pElements.Add(pCircle);
 
             // register the link
-            RegisterLink(pCircle, defs, True);
+            RegisterLink(pCircle);
 
             pCircle := nil;
         finally
@@ -1710,7 +1794,7 @@ begin
             pElements.Add(pEllipse);
 
             // register the link
-            RegisterLink(pEllipse, defs, True);
+            RegisterLink(pEllipse);
 
             pEllipse := nil;
         finally
@@ -1729,7 +1813,7 @@ begin
             pElements.Add(pLine);
 
             // register the link
-            RegisterLink(pLine, defs, True);
+            RegisterLink(pLine);
 
             pLine := nil;
         finally
@@ -1748,7 +1832,7 @@ begin
             pElements.Add(pPolygon);
 
             // register the link
-            RegisterLink(pPolygon, defs, True);
+            RegisterLink(pPolygon);
 
             pPolygon := nil;
         finally
@@ -1767,7 +1851,7 @@ begin
             pElements.Add(pPolyline);
 
             // register the link
-            RegisterLink(pPolyline, defs, True);
+            RegisterLink(pPolyline);
 
             pPolyline := nil;
         finally
@@ -1786,7 +1870,7 @@ begin
             pElements.Add(pPath);
 
             // register the link
-            RegisterLink(pPath, defs, True);
+            RegisterLink(pPath);
 
             pPath := nil;
         finally
@@ -1805,7 +1889,7 @@ begin
             pElements.Add(pImage);
 
             // register the link
-            RegisterLink(pImage, defs, True);
+            RegisterLink(pImage);
 
             pImage := nil;
         finally
@@ -1824,7 +1908,7 @@ begin
             pElements.Add(pText);
 
             // register the link
-            RegisterLink(pText, defs, True);
+            RegisterLink(pText);
 
             pText := nil;
         finally
@@ -1843,7 +1927,7 @@ begin
             pElements.Add(pUse);
 
             // register the link
-            RegisterLink(pUse, defs, True);
+            RegisterLink(pUse);
 
             pUse := nil;
         finally
@@ -1852,19 +1936,19 @@ begin
     end
     else
     if (name = C_SVG_Tag_Linear_Gradient) then
-        Result := ReadLinearGradient(pNode, defs) and Result
+        Result := ReadLinearGradient(pNode) and Result
     else
     if (name = C_SVG_Tag_Radial_Gradient) then
-        Result := ReadRadialGradient(pNode, defs) and Result
+        Result := ReadRadialGradient(pNode) and Result
     else
     if (name = C_SVG_Tag_Filter) then
-        result := ReadFilter(pNode, defs) and Result;
+        result := ReadFilter(pNode) and Result;
 end;
 //---------------------------------------------------------------------------
 {$ifdef USE_VERYSIMPLEXML}
-    function TWSVGContainer.ReadLinearGradient(const pNode: TXMLNode; var defs: IDefs): Boolean;
+    function TWSVGContainer.ReadLinearGradient(const pNode: TXMLNode): Boolean;
 {$else}
-    function TWSVGContainer.ReadLinearGradient(const pNode: IXMLNode; var defs: IDefs): Boolean;
+    function TWSVGContainer.ReadLinearGradient(const pNode: IXMLNode): Boolean;
 {$endif}
 var
     pLinearGradient: TWSVGLinearGradient;
@@ -1876,19 +1960,10 @@ begin
         // read linear gradient
         pLinearGradient := TWSVGLinearGradient.Create(Self, m_pOptions);
         Result          := pLinearGradient.Read(pNode) and Result;
+        m_pDefsElements.Add(pLinearGradient);
 
-        // is gradient identifier empty?
-        if (not TWStringHelper.IsEmpty(pLinearGradient.ItemID)) then
-        begin
-            // register the gradient link
-            if (not RegisterLink(pLinearGradient, defs, False)) then
-                Exit(False);
-        end
-        else
-        begin
-            TWLogHelper.LogToCompiler('Read linear gradient - FAILED - gradient ID is empty');
-            Exit(False);
-        end;
+        // register the gradient link
+        RegisterLink(pLinearGradient);
 
         pLinearGradient := nil;
     finally
@@ -1897,9 +1972,9 @@ begin
 end;
 //---------------------------------------------------------------------------
 {$ifdef USE_VERYSIMPLEXML}
-    function TWSVGContainer.ReadRadialGradient(const pNode: TXMLNode; var defs: IDefs): Boolean;
+    function TWSVGContainer.ReadRadialGradient(const pNode: TXMLNode): Boolean;
 {$else}
-    function TWSVGContainer.ReadRadialGradient(const pNode: IXMLNode; var defs: IDefs): Boolean;
+    function TWSVGContainer.ReadRadialGradient(const pNode: IXMLNode): Boolean;
 {$endif}
 var
     pRadialGradient: TWSVGRadialGradient;
@@ -1911,19 +1986,10 @@ begin
         // read radial gradient
         pRadialGradient := TWSVGRadialGradient.Create(Self, m_pOptions);
         Result          := pRadialGradient.Read(pNode) and Result;
+        m_pDefsElements.Add(pRadialGradient);
 
-        // is gradient identifier empty?
-        if (not TWStringHelper.IsEmpty(pRadialGradient.ItemID)) then
-        begin
-            // register the gradient link
-            if (not RegisterLink(pRadialGradient, defs, False)) then
-                Exit(False);
-        end
-        else
-        begin
-            TWLogHelper.LogToCompiler('Read radial gradient - FAILED - gradient ID is empty');
-            Exit(False);
-        end;
+        // register the gradient link
+        RegisterLink(pRadialGradient);
 
         pRadialGradient := nil;
     finally
@@ -1932,9 +1998,9 @@ begin
 end;
 //---------------------------------------------------------------------------
 {$ifdef USE_VERYSIMPLEXML}
-    function TWSVGContainer.ReadFilter(const pNode: TXMLNode; var defs: IDefs): Boolean;
+    function TWSVGContainer.ReadFilter(const pNode: TXMLNode): Boolean;
 {$else}
-    function TWSVGContainer.ReadFilter(const pNode: IXMLNode; var defs: IDefs): Boolean;
+    function TWSVGContainer.ReadFilter(const pNode: IXMLNode): Boolean;
 {$endif}
 var
     pFilter: TWSVGFilter;
@@ -1946,19 +2012,10 @@ begin
         // read radial gradient
         pFilter := TWSVGFilter.Create(Self, m_pOptions);
         Result  := pFilter.Read(pNode) and Result;
+        m_pDefsElements.Add(pFilter);
 
-        // is filter identifier empty?
-        if (not TWStringHelper.IsEmpty(pFilter.ItemID)) then
-        begin
-            // register the filter link
-            if (not RegisterLink(pFilter, defs, False)) then
-                Exit(False);
-        end
-        else
-        begin
-            TWLogHelper.LogToCompiler('Read filter - FAILED - filter ID is empty');
-            Exit(False);
-        end;
+        // register the filter link
+        RegisterLink(pFilter);
 
         pFilter := nil;
     finally
@@ -1966,9 +2023,10 @@ begin
     end;
 end;
 //---------------------------------------------------------------------------
-function TWSVGContainer.RegisterLink(pElement: TWSVGElement; var defs: IDefs; asRef: Boolean): Boolean;
+function TWSVGContainer.RegisterLink(pElement: TWSVGElement): Boolean;
 var
-    pReference: TWSVGReference;
+    pDefsTable: TWSVGDefsTable;
+    pItem:      TWSVGItem;
 begin
     if (not Assigned(pElement)) then
         Exit(False);
@@ -1976,44 +2034,31 @@ begin
     if (TWStringHelper.IsEmpty(pElement.ItemID)) then
         Exit(False);
 
+    pDefsTable := pElement.DefsTable;
+
+    if (not Assigned(pDefsTable)) then
+        Exit(False);
+
     // each define should be unique in the map
-    if (defs.ContainsKey(pElement.ItemID)) then
+    if (pDefsTable.TryGetValue(pElement.ItemID, pItem)) then
     begin
         TWLogHelper.LogToCompiler('Register link - FAILED - another item with same ID already exists - '
                 + pElement.ItemID);
         Exit(False);
     end;
 
-    // do add the element indirectly, by using a reference?
-    if (asRef) then
-    begin
-        pReference := nil;
-
-        try
-            // create and configure the reference container
-            pReference           := TWSVGReference.Create(Self, m_pOptions);
-            pReference.ItemID    := pElement.ItemID;
-            pReference.Reference := pElement;
-
-            // add the reference to the defines
-            defs.Add(pReference.ItemID, pReference);
-            pReference := nil;
-        finally
-            pReference.Free;
-        end;
-    end
-    else
-        defs.Add(pElement.ItemID, pElement);
+    // add the reference to the defines
+    pDefsTable.Add(pElement.ItemID, pElement);
 
     Result := True;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGContainer.Assign(const pOther: TWSVGItem);
 var
-    pSource:                     TWSVGContainer;
-    item:                        TPair<UnicodeString, TWSVGElement>;
-    pAnim, pNewAnim:             TWSVGAnimation;
-    pDef, pElement, pNewElement: TWSVGElement;
+    pSource:               TWSVGContainer;
+    pAnim, pNewAnim:       TWSVGAnimation;
+    pElement, pNewElement: TWSVGElement;
+    shareDefsTable:        Boolean;
 begin
     inherited Assign(pOther);
 
@@ -2024,28 +2069,13 @@ begin
         Exit;
     end;
 
+    // check if the both source and target items share the same parent. If yes, the target shouldn't
+    // try to register its links, because they were already registered by the source item, and register
+    // the same links from the target may generate conflicts
+    shareDefsTable := (pOther.DefsTable = DefsTable);
+
     // get source object
     pSource := pOther as TWSVGContainer;
-
-    // iterate through source definitions
-    for item in pSource.m_pDefs do
-    begin
-        pDef := nil;
-
-        try
-            // create new definition
-            pDef := item.Value.CreateInstance(Self);
-
-            // copy definition
-            pDef.Assign(item.Value);
-
-            // add copied definition to list
-            m_pDefs.Add(item.Key, pDef);
-            pDef := nil;
-        finally
-            pDef.Free;
-        end;
-    end;
 
     // iterate through source elements
     for pElement in pSource.m_pElements do
@@ -2061,6 +2091,36 @@ begin
 
             // add copied element to list
             m_pElements.Add(pNewElement);
+
+            // register its link, if required
+            if (not shareDefsTable) then
+                RegisterLink(pNewElement);
+
+            pNewElement := nil;
+        finally
+            pNewElement.Free;
+        end;
+    end;
+
+    // iterate through source defines elements
+    for pElement in pSource.m_pDefsElements do
+    begin
+        pNewElement := nil;
+
+        try
+            // create new element
+            pNewElement := pElement.CreateInstance(Self);
+
+            // copy element
+            pNewElement.Assign(pElement);
+
+            // add copied element to list
+            m_pDefsElements.Add(pNewElement);
+
+            // register its link, if required
+            if (not shareDefsTable) then
+                RegisterLink(pNewElement);
+
             pNewElement := nil;
         finally
             pNewElement.Free;
@@ -2088,7 +2148,7 @@ procedure TWSVGContainer.Clear;
 begin
     inherited Clear;
 
-    DelAndClear;
+    DelAndClear(False);
 end;
 //---------------------------------------------------------------------------
 {$ifdef USE_VERYSIMPLEXML}
@@ -2286,21 +2346,21 @@ begin
         end;
 
         // read next item
-        Result := ReadItem(name, pChildNode, m_pDefs, m_pElements) and Result;
+        Result := ReadItem(name, pChildNode, m_pElements) and Result;
     end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGContainer.Log(margin: Cardinal);
 var
-    item:     TPair<UnicodeString, TWSVGElement>;
     pElement: TWSVGElement;
     pAnim:    TWSVGAnimation;
 begin
     inherited Log(margin);
 
-    // iterate through defines to log
-    for item in m_pDefs do
-        item.Value.Log(margin);
+    // iterate through defines elements to log
+    for pElement in m_pDefsElements do
+        // log child element
+        pElement.Log(margin);
 
     // iterate through elements to log
     for pElement in m_pElements do
@@ -2314,15 +2374,15 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGContainer.Print(margin: Cardinal): UnicodeString;
 var
-    item:     TPair<UnicodeString, TWSVGElement>;
     pElement: TWSVGElement;
     pAnim:    TWSVGAnimation;
 begin
     Result := inherited Print(margin);
 
-    // iterate through defines to print
-    for item in m_pDefs do
-        Result := Result + item.Value.Print(margin);
+    // iterate through defines elements to print
+    for pElement in m_pDefsElements do
+        // print child element
+        Result := Result + pElement.Print(margin);
 
     // iterate through elements to print
     for pElement in m_pElements do
@@ -2336,15 +2396,15 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGContainer.ToXml: UnicodeString;
 var
-    item:     TPair<UnicodeString, TWSVGElement>;
     pElement: TWSVGElement;
     pAnim:    TWSVGAnimation;
 begin
     Result := inherited ToXml;
 
-    // iterate through defines to print
-    for item in m_pDefs do
-        Result := Result + item.Value.ToXml;
+    // iterate through defines elements to print
+    for pElement in m_pDefsElements do
+        // print child element
+        Result := Result + pElement.ToXml;
 
     // iterate through elements to print
     for pElement in m_pElements do
@@ -3604,6 +3664,138 @@ begin
     end;
 end;
 //---------------------------------------------------------------------------
+// TWSVGText.IFontWeight
+//---------------------------------------------------------------------------
+constructor TWSVGText.IFontWeight.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    ItemName  := C_SVG_Prop_Font_Weight;
+    m_Value   := 400;
+    m_Bolder  := False;
+    m_Lighter := False;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGText.IFontWeight.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IFontWeight.SetValue(value: Cardinal);
+begin
+    if (value > 1000) then
+    begin
+        m_Value := 1000;
+        Exit();
+    end;
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IFontWeight.Assign(const pOther: TWSVGItem);
+var
+    pSource: IFontWeight;
+begin
+    inherited Assign(pOther);
+
+    // invalid item?
+    if (not(pOther is IFontWeight)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    // get source object
+    pSource := pOther as IFontWeight;
+
+    // copy data from source
+    m_Value   := pSource.m_Value;
+    m_Bolder  := pSource.m_Bolder;
+    m_Lighter := pSource.m_Lighter;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IFontWeight.Clear;
+begin
+    inherited Clear;
+
+    m_Value   := 400;
+    m_Bolder  := False;
+    m_Lighter := False;
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IFontWeight.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
+begin
+    Result := IFontWeight.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IFontWeight.Parse(const data: UnicodeString): Boolean;
+var
+    c:         WideChar;
+    isNumeric: Boolean;
+begin
+    if (data = C_SVG_Value_Text_Weight_Normal) then
+        m_Value := 400
+    else
+    if (data = C_SVG_Value_Text_Weight_Bold) then
+        m_Value := 700
+    else
+    if (data = C_SVG_Value_Text_Weight_Bolder) then
+        m_Bolder := True
+    else
+    if (data = C_SVG_Value_Text_Weight_Lighter) then
+        m_Lighter := True
+    else
+    begin
+        isNumeric := True;
+
+        // iterate through data to read and check if each value is a numeric one
+        for c in data do
+            if (not TWStringHelper.IsNumeric(c, True)) then
+            begin
+                isNumeric := False;
+                break;
+            end;
+
+        // if value is numeric, convert it, otherwise log an error and reset the content
+        if (isNumeric) then
+            m_Value := StrToInt(data)
+        else
+        begin
+            TWLogHelper.LogToCompiler('Parse text weight - invalid value - ' + data);
+            m_Value   := 400;
+            m_Bolder  := False;
+            m_Lighter := False;
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IFontWeight.Log(margin: Cardinal);
+begin
+    TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - '
+            + IntToStr(m_Value) + ' - bolder - ' + TWStringHelper.BoolToStr(m_Bolder, True)
+            + ' - lighter - ' + TWStringHelper.BoolToStr(m_Lighter, True));
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IFontWeight.Print(margin: Cardinal): UnicodeString;
+begin
+    Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + IntToStr(m_Value)
+            + ' - bolder - ' + TWStringHelper.BoolToStr(m_Bolder, True)
+            + ' - lighter - ' + TWStringHelper.BoolToStr(m_Lighter, True) + #13 + #10;
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IFontWeight.ToXml: UnicodeString;
+begin
+    if (m_Bolder) then
+        Result := ItemName + '=\"' + C_SVG_Value_Text_Weight_Bolder + '\"'
+    else
+    if (m_Lighter) then
+        Result := ItemName + '=\"' + C_SVG_Value_Text_Weight_Lighter + '\"'
+    else
+        Result := ItemName + '=\"' + IntToStr(m_Value) + '\"';
+end;
+//---------------------------------------------------------------------------
 // TWSVGText
 //---------------------------------------------------------------------------
 constructor TWSVGText.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
@@ -3658,6 +3850,7 @@ end;
 var
     pFontSize:   TWSVGMeasure<Single>;
     pFontFamily: TWSVGPropText;
+    pFontWeight: IFontWeight;
     pAnchor:     IAnchor;
     fontSize:    TWGenericNumber<Single>;
 begin
@@ -3703,6 +3896,24 @@ begin
         pFontFamily := nil;
     finally
         pFontFamily.Free;
+    end;
+
+    pFontWeight := nil;
+
+    try
+        // read the font weight (optional)
+        pFontWeight := IFontWeight.Create(Self, m_pOptions);
+
+        if (not pFontWeight.Read(C_SVG_Prop_Font_Weight, pNode)) then
+        begin
+            pFontWeight.ItemName := C_SVG_Prop_Font_Weight;
+            pFontWeight.Value    := 400;
+        end;
+
+        m_pProperties.Add(pFontWeight);
+        pFontWeight := nil;
+    finally
+        pFontWeight.Free;
     end;
 
     pAnchor := nil;

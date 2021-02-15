@@ -444,14 +444,14 @@ var
     dashPatternCount, i:                                                                                        NativeInt;
     count:                                                                                                      NativeUInt;
     x, y, initialX, initialY, x1, y1, x2, y2, r, rx, ry, d, dx, dy, width, height, dashFactor, coord, fontSize: Single;
+    fontWeight:                                                                                                 Cardinal;
     fontFamily, fontFamilyLowerCase:                                                                            UnicodeString;
     anchor:                                                                                                     IETextAnchor;
     preserveAspectRatio:                                                                                        IEImageAspectRatio;
     aspectRatioRef:                                                                                             IEImageAspectRatioRef;
     imageType:                                                                                                  IEImageType;
     pImageOptions:                                                                                              TWRenderer.IImageOptions;
-    isXCoord:                                                                                                   Boolean;
-    isClipped:                                                                                                  Boolean;
+    isXCoord, isClipped, bolder, lighter:                                                                       Boolean;
 begin
     // svg header should always be declared, otherwise svg data is malformed (NOTE svg header
     // element should exist even if the svg tag contains nothing else)
@@ -715,18 +715,10 @@ begin
                 // get the group position (in relation to the initial position)
                 posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
 
-                // is element a reference to another element?
-                if (pLinkedElement is TWSVGReference) then
-                    // extract its reference
-                    pSrcElement := TWSVGElement((pLinkedElement as TWSVGReference).Reference)
-                else
-                    // if not a reference, use the element directly
-                    pSrcElement := pLinkedElement;
-
                 // clone the source element. This is required because several additional properties
                 // will be merged from the use instruction
-                pClone := TWSmartPointer<TWSVGElement>.Create(pSrcElement.CreateInstance(pSrcElement.Parent));
-                pClone.Assign(pSrcElement);
+                pClone := TWSmartPointer<TWSVGElement>.Create(pLinkedElement.CreateInstance(pLinkedElement.Parent));
+                pClone.Assign(pLinkedElement);
 
                 // enable the lines below to log the use and clone elements properties
                 {$ifdef DEBUG}
@@ -1952,8 +1944,8 @@ begin
                     continue;
 
                 // extract properties from text
-                if (not GetTextProps(pText, x, y, fontFamily, fontSize, anchor, pAnimationData,
-                        animation.m_pCustomData))
+                if (not GetTextProps(pText, x, y, fontFamily, fontSize, fontWeight, bolder, lighter,
+                        anchor, pAnimationData, animation.m_pCustomData))
                 then
                     Exit(False);
 
