@@ -41,9 +41,10 @@ type
     }
     TWSVG = class
         private
-            m_UUID:    UnicodeString;
-            m_pParser: TWSVGParser;
-            m_Options: TWSVGOptions;
+            m_UUID:     UnicodeString;
+            m_Encoding: string;
+            m_pParser:  TWSVGParser;
+            m_Options:  TWSVGOptions;
 
             {**
              Log all node content and hierarchy in the debugger output
@@ -136,6 +137,11 @@ type
              Get the SVG unique identifier
             }
             property UUID: UnicodeString read GetUUID;
+
+            {**
+             Get the SVG encoding
+            }
+            property Encoding: string read m_Encoding;
     end;
 
 implementation
@@ -256,7 +262,8 @@ end;
 //---------------------------------------------------------------------------
 procedure TWSVG.Clear;
 begin
-    m_UUID := '';
+    m_UUID     := '';
+    m_Encoding := '';
     m_pParser.Clear;
 end;
 //---------------------------------------------------------------------------
@@ -268,7 +275,8 @@ begin
         Exit;
 
     m_pParser.Assign(pOther.m_pParser);
-    m_UUID := pOther.m_UUID;
+    m_UUID     := pOther.m_UUID;
+    m_Encoding := pOther.m_Encoding;
 
     // update the options
     m_Options.m_TrustSVGSyntax := pOther.m_Options.m_TrustSVGSyntax;
@@ -311,6 +319,9 @@ begin
                 {$else}
                     pDocument := LoadXMLDocument(fileName);
                 {$endif}
+
+                // get the document encoding
+                m_Encoding := pDocument.Encoding;
 
                 {$ifdef DEBUG}
                     //LogNodeContent(pDocument.DocumentElement);
@@ -369,6 +380,9 @@ begin
                     pDocument := TXMLDocument.Create(nil);
                 {$endif}
                 pDocument.LoadFromStream(pStream);
+
+                // get the document encoding
+                m_Encoding := pDocument.Encoding;
 
                 {$ifdef DEBUG}
                     //LogNodeContent(pDocument.DocumentElement);

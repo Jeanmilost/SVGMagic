@@ -107,6 +107,7 @@ type
             m_Proportional:             Boolean;
             m_Antialiasing:             Boolean;
             m_FramePosChanging:         Boolean;
+            m_ForceOriginalSave:        Boolean;
             m_Opened:                   Boolean;
             m_OnError:                  Boolean;
             m_pCustomData:              Pointer;
@@ -120,6 +121,13 @@ type
              @returns(Library version, #ERROR on error)
             }
             function GetVersion: UnicodeString;
+
+            {*
+             Write raw data to string
+             @param(data Data to write to stream)
+             @param(pStream Stream to write to)
+            }
+            procedure WriteRawDataToStream(data: UnicodeString; pStream: TStream);
 
         protected
             {**
@@ -292,7 +300,7 @@ type
             procedure Assign(pOther: TPersistent); override;
 
             {**
-             Load SVG from string
+             Load svg from string
              @param(str String to load from)
             }
             procedure LoadFromStr(str: UnicodeString); virtual;
@@ -436,6 +444,11 @@ type
             property InkscapeClipboardFormat: Thandle read GetInkscapeClipboardFormat;
 
             {**
+             Get or set if the original SaveToFile function from the TGraphic class should be used
+            }
+            property ForceOriginalSave: Boolean read m_ForceOriginalSave write m_ForceOriginalSave;
+
+            {**
              Get or set the OnAnimate callback
             }
             property OnAnimate: ITfSVGAnimateEvent read m_fOnAnimate write m_fOnAnimate;
@@ -537,6 +550,7 @@ begin
     m_Proportional             := C_TWSVGGraphic_Default_Proportional;
     m_Antialiasing             := C_TWSVGGraphic_Default_Antialiasing;
     m_FramePosChanging         := False;
+    m_ForceOriginalSave        := False;
     m_Opened                   := False;
     m_OnError                  := False;
     m_pSVG                     := nil;
@@ -588,6 +602,21 @@ begin
         Exit('#ERROR');
 
     Result := TWLibraryVersion.ToStr;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGGraphic.WriteRawDataToStream(data: UnicodeString; pStream: TStream);
+var
+    pStrWriter: TStreamWriter;
+begin
+    pStrWriter := nil;
+
+    try
+        // write data to stream
+        pStrWriter := TStreamWriter.Create(pStream);
+        pStrWriter.Write(data);
+    finally
+        pStrWriter.Free;
+    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGGraphic.Draw(pCanvas: TCanvas; const rect: TRect);
@@ -943,6 +972,7 @@ begin
     m_Animate            := C_TWSVGGraphic_Default_Animate;
     m_Proportional       := C_TWSVGGraphic_Default_Proportional;
     m_Antialiasing       := C_TWSVGGraphic_Default_Antialiasing;
+    m_ForceOriginalSave  := False;
     m_Opened             := False;
     m_OnError            := False;
     m_pCustomData        := nil;
@@ -970,18 +1000,19 @@ begin
     pSource := pOther as TWSVGGraphic;
 
     // copy data from source
-    m_Data          := pSource.m_Data;
-    m_Width         := pSource.m_Width;
-    m_Height        := pSource.m_Height;
-    m_FramePos      := pSource.m_FramePos;
-    m_AnimSpeed     := pSource.m_AnimSpeed;
-    m_AnimLoopCount := pSource.m_AnimLoopCount;
-    m_AnimLoop      := pSource.m_AnimLoop;
-    m_Animate       := pSource.m_Animate;
-    m_Proportional  := pSource.m_Proportional;
-    m_Antialiasing  := pSource.m_Antialiasing;
-    m_Opened        := pSource.m_Opened;
-    m_OnError       := pSource.m_OnError;
+    m_Data              := pSource.m_Data;
+    m_Width             := pSource.m_Width;
+    m_Height            := pSource.m_Height;
+    m_FramePos          := pSource.m_FramePos;
+    m_AnimSpeed         := pSource.m_AnimSpeed;
+    m_AnimLoopCount     := pSource.m_AnimLoopCount;
+    m_AnimLoop          := pSource.m_AnimLoop;
+    m_Animate           := pSource.m_Animate;
+    m_Proportional      := pSource.m_Proportional;
+    m_Antialiasing      := pSource.m_Antialiasing;
+    m_ForceOriginalSave := pSource.m_ForceOriginalSave;
+    m_Opened            := pSource.m_Opened;
+    m_OnError           := pSource.m_OnError;
     m_pSVG.Assign(pSource.m_pSVG);
 
     m_pSVGRasterizer.EnableAnimation(pSource.m_pSVGRasterizer.IsAnimationEnabled);
@@ -1069,10 +1100,12 @@ var
         pStrStream: TStringStream;
         content:    UnicodeString;
     {$ifend}
-    pStrWriter: TStreamWriter;
-    data:       UnicodeString;
-    c:          WideChar;
-    i:          Integer;
+    encodingName, data: UnicodeString;
+    encoding:           TEncoding;
+    buffer, preamble:   TBytes;
+    c:                  WideChar;
+    i:                  Integer;
+    writeBOM:           Boolean;
 begin
     // no stream?
     if (not Assigned(pStream)) then
@@ -1111,17 +1144,62 @@ begin
         Inc(i);
     end;
 
-    // get the SVG data without the TWSVGGraphic prefixes
-    data       := TWStringHelper.Substr(m_Data, i);
-    pStrWriter := nil;
+    // convert encoding to lower case
+    {$if CompilerVersion <= 23}
+        encodingName := WideLowerCase(m_pSvg.Encoding);
+    {$else}
+        encodingName := m_pSvg.Encoding.ToLower;
+    {$ifend}
 
-    try
-        // write data to stream
-        pStrWriter := TStreamWriter.Create(pStream);
-        pStrWriter.Write(data);
-    finally
-        pStrWriter.Free;
+    // get the SVG data without the TWSVGGraphic prefixes
+    data := TWStringHelper.Substr(m_Data, i);
+
+    // convert the string respecting the encoding
+    if (m_ForceOriginalSave) then
+    begin
+        // force to original save system, write raw data
+        WriteRawDataToStream(data, pStream);
+        Exit;
+    end
+    else
+    if (Length(encodingName) = 0) or (encodingName = 'us-ascii') or (encodingName = 'iso-8859-1') then
+    begin
+        // default or ASCII encoding, write raw data
+        WriteRawDataToStream(data, pStream);
+        Exit;
+    end
+    else
+    if (encodingName = 'utf-8') then
+    begin
+        // utf8 encoding
+        data     := UTF8ToString(AnsiString(data));
+        encoding := TEncoding.UTF8;
+        writeBOM := False;
+    end
+    else
+    begin
+        // unknown encoding, write raw data
+        TWLogHelper.LogToCompiler('SaveToStream - unknown encoding - ' + encodingName);
+        WriteRawDataToStream(data, pStream);
+        Exit;
     end;
+
+    // encode the string and get a buffer containing it
+    buffer := encoding.GetBytes(data);
+
+    // do write a BOM before?
+    if writeBOM then
+    begin
+        // get BOM data
+        preamble := encoding.GetPreamble;
+
+        // write it
+        if (Length(preamble) > 0) then
+            pStream.WriteBuffer(preamble, Length(preamble));
+    end;
+
+    // write the string to the stream
+    pStream.WriteBuffer(buffer, Length(buffer));
 end;
 //---------------------------------------------------------------------------
 function TWSVGGraphic.GetClipboardFormat: Thandle;
