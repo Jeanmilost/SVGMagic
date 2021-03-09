@@ -395,7 +395,7 @@ function TWSVGGDIPlusRasterizer.DrawElements(const pHeader: TWSVGParser.IHeader;
 var
     pClonedElements:                                                                                            IWSmartPointer<TWSVGContainer.IElements>;
     pRenderer:                                                                                                  TWRenderer_GDIPlus;
-    pElement, pSrcElement, pLinkedElement:                                                                      TWSVGElement;
+    pElement, pLinkedElement:                                                                                   TWSVGElement;
     pClone:                                                                                                     IWSmartPointer<TWSVGElement>;
     pSwitch:                                                                                                    TWSVGSwitch;
     pGroup:                                                                                                     TWSVGGroup;

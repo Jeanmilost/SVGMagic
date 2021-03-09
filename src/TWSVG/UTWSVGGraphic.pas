@@ -1195,11 +1195,19 @@ begin
 
         // write it
         if (Length(preamble) > 0) then
-            pStream.WriteBuffer(preamble, Length(preamble));
+            {$if CompilerVersion <= 23}
+                pStream.WriteBuffer(preamble[0], Length(preamble));
+            {$else}
+                pStream.WriteBuffer(preamble, Length(preamble));
+            {$ifend}
     end;
 
     // write the string to the stream
-    pStream.WriteBuffer(buffer, Length(buffer));
+    {$if CompilerVersion <= 23}
+        pStream.WriteBuffer(buffer[0], Length(buffer));
+    {$else}
+        pStream.WriteBuffer(buffer, Length(buffer));
+    {$ifend}
 end;
 //---------------------------------------------------------------------------
 function TWSVGGraphic.GetClipboardFormat: Thandle;

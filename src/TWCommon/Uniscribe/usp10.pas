@@ -47,7 +47,7 @@ unit usp10;
 
 interface
 
-uses Windows;
+uses Winapi.Windows;
 
 const
   Usp10DLL = 'usp10.dll';

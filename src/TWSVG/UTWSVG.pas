@@ -394,7 +394,7 @@ begin
 
                     if (hRes <> S_OK) then
                     begin
-                        TWLogHelper.LogToCompiler('Load from file - FAILED - could not create GUID');
+                        TWLogHelper.LogToCompiler('Load from stream - FAILED - could not create GUID');
                         Exit(False);
                     end;
 
@@ -404,7 +404,7 @@ begin
                     Exit(True);
                 end;
             except
-                TWLogHelper.LogToCompiler('Load from file - FAILED - unexpected error - see dump below');
+                TWLogHelper.LogToCompiler('Load from stream - FAILED - unexpected error - see dump below');
                 TWLogHelper.Dump(pStream, 500);
                 Exit(False);
             end;
@@ -414,7 +414,7 @@ begin
         end;
     {$endif}
 
-    TWLogHelper.LogToCompiler('Load from file - FAILED - see dump below');
+    TWLogHelper.LogToCompiler('Load from stream - FAILED - see dump below');
     TWLogHelper.Dump(pStream, 500);
     Result := False;
 end;
