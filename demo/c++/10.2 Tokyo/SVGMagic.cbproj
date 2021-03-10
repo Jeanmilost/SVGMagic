@@ -118,7 +118,7 @@
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <LinkPackageStatics>rtl.lib;vcl.lib;TWSVG.lib;soaprtl.lib;dbrtl.lib;xmlrtl.lib;inet.lib;TWRendering.lib;TWCommon.lib;vclimg.lib</LinkPackageStatics>
-        <ILINK_LibraryPath>C:\Users\Public\Documents\Embarcadero\Studio\19.0\DCP\;$(BDS)\lib\win32\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <ILINK_LibraryPath>$(BDSCOMMONDIR)\DCP\;$(BDS)\lib\win32\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableHighDPI>true</AppEnableHighDPI>
@@ -133,13 +133,13 @@
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <LinkPackageStatics>rtl.lib;vcl.lib;TWSVG.lib;soaprtl.lib;dbrtl.lib;xmlrtl.lib;inet.lib;TWRendering.lib;TWCommon.lib;vclimg.lib</LinkPackageStatics>
-        <ILINK_LibraryPath>C:\Users\Public\Documents\Embarcadero\Studio\19.0\DCP\;$(BDS)\lib\win32\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <ILINK_LibraryPath>$(BDSCOMMONDIR)\DCP\;$(BDS)\lib\win32\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <LinkPackageStatics>rtl.lib;vcl.lib;TWSVG.lib;soaprtl.lib;dbrtl.lib;xmlrtl.lib;inet.lib;TWRendering.lib;TWCommon.lib;vclimg.lib</LinkPackageStatics>
-        <ILINK_LibraryPath>C:\Users\Public\Documents\Embarcadero\Studio\19.0\Dcp\Win64\;$(BDS)\lib\win64\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <ILINK_LibraryPath>$(BDSCOMMONDIR)\Dcp\Win64\;$(BDS)\lib\win64\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
     </PropertyGroup>
     <ItemGroup>
         <CppCompile Include="SVGMagic.cpp">

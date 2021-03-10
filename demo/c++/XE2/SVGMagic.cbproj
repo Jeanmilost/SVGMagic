@@ -107,7 +107,7 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
 			<LinkPackageStatics>rtl.lib;vcl.lib;TWSVG.lib;soaprtl.lib;dbrtl.lib;xmlrtl.lib;inet.lib;TWRendering.lib;TWCommon.lib;vclimg.lib</LinkPackageStatics>
-			<ILINK_LibraryPath>C:\Users\Public\Documents\RAD Studio\9.0\Dcp\;$(BDS)\lib\win32\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<ILINK_LibraryPath>$(BDSCOMMONDIR)\Dcp\;$(BDS)\lib\win32\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
 			<Defines>NDEBUG;$(Defines)</Defines>
@@ -115,11 +115,11 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
 			<LinkPackageStatics>rtl.lib;vcl.lib;TWSVG.lib;soaprtl.lib;dbrtl.lib;xmlrtl.lib;inet.lib;TWRendering.lib;TWCommon.lib;vclimg.lib</LinkPackageStatics>
-			<ILINK_LibraryPath>C:\Users\Public\Documents\RAD Studio\9.0\Dcp\Win64\;$(BDS)\lib\win64\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<ILINK_LibraryPath>$(BDSCOMMONDIR)\Dcp\Win64\;$(BDS)\lib\win64\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
 			<LinkPackageStatics>rtl.lib;vcl.lib;TWSVG.lib;soaprtl.lib;dbrtl.lib;xmlrtl.lib;inet.lib;TWRendering.lib;TWCommon.lib;vclimg.lib;dsnap.lib</LinkPackageStatics>
-			<ILINK_LibraryPath>C:\Users\Public\Documents\RAD Studio\9.0\Dcp\;$(BDS)\lib\win32\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<ILINK_LibraryPath>$(BDSCOMMONDIR)\Dcp\;$(BDS)\lib\win32\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 		</PropertyGroup>
 		<ItemGroup>
 			<CppCompile Include="..\Main.cpp">
