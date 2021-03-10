@@ -3,96 +3,116 @@
 <head>
 <title>SVG Magic: UTWMatrix: Record TWMatrix3x3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="PasDoc 0.15.0">
+<meta name="generator" content="PasDoc 0.16.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="StyleSheet" type="text/css" href="pasdoc.css">
 </head>
 <body>
-<table class="container"><tr><td class="navigation">
-<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<div class="container"><div class="navigation">
+<h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
 <span id="TWMatrix3x3"></span><h1 class="cio">Record TWMatrix3x3</h1>
 <div class="sections">
 <div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a  href="UTWMatrix.html">UTWMatrix</a></p>
+<a href="UTWMatrix.html">UTWMatrix</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
 <code>type TWMatrix3x3 = record</code></p>
 <h2 class="description">Description</h2>
 <p>
-3x3 matrix <br> <b>NOTE</b> The matrix table can be read in both mathematical or in-memory order. From a mathematical point of view, the m_Table content should be read as m_Table[x][y], whereas it should be read as m_Table[y][x] from the in-memory point of view. The both representation are equivalent and interchangeable, and may be used anytime if the same logical is used constantly. However, this may be highly confusing when you have to manipulate the source code, because the table items may appear to be crossed. For that reason, be aware of what you are doing if you have to modify it</p>
+3x3 matrix <br> <strong>NOTE</strong> The matrix table can be read in both mathematical or in-memory order. From a mathematical point of view, the m_Table content should be read as m_Table[x][y], whereas it should be read as m_Table[y][x] from the in-memory point of view. The both representation are equivalent and interchangeable, and may be used anytime if the same logical is used constantly. However, this may be highly confusing when you have to manipulate the source code, because the table items may appear to be crossed. For that reason, be aware of what you are doing if you have to modify it</p>
 <h2 class="overview">Overview</h2>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>constructor <b><a  href="UTWMatrix.TWMatrix3x3.html#Create">Create</a></b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <strong><a href="UTWMatrix.TWMatrix3x3.html#Create">Create</a></strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>); overload;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>constructor <b><a  href="UTWMatrix.TWMatrix3x3.html#Create">Create</a></b>(const _11, _12, _13, _21, _22, _23, _31, _32, _33: Double); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <strong><a href="UTWMatrix.TWMatrix3x3.html#Create">Create</a></strong>(const _11, _12, _13, _21, _22, _23, _31, _32, _33: Double); overload;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Differs">Differs</a></b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#Differs">Differs</a></strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWMatrix.TWMatrix3x3.html#GetDefault">GetDefault</a></b>: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWMatrix.TWMatrix3x3.html#GetDefault">GetDefault</a></strong>: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#GetHashCode">GetHashCode</a></b>(initValue: Integer): Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#GetHashCode">GetHashCode</a></strong>(initValue: Integer): Integer;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#IsEqual">IsEqual</a></b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#IsEqual">IsEqual</a></strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#IsIdentity">IsIdentity</a></b>: Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#IsIdentity">IsIdentity</a></strong>: Boolean; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Multiply">Multiply</a></b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#Multiply">Multiply</a></strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Rotate">Rotate</a></b>(angle: Single; const r: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#Rotate">Rotate</a></strong>(angle: Single; const r: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#RotateCenter">RotateCenter</a></b>(angle: Single; const center: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#RotateCenter">RotateCenter</a></strong>(angle: Single; const center: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Scale">Scale</a></b>(const s: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#Scale">Scale</a></strong>(const s: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Shear">Shear</a></b>(const s: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#Shear">Shear</a></strong>(const s: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Transform">Transform</a></b>(const vector: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#Transform">Transform</a></strong>(const vector: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWMatrix.TWMatrix3x3.html#Translate">Translate</a></b>(const t: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWMatrix.TWMatrix3x3.html#Translate">Translate</a></strong>(const t: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>procedure <b><a  href="UTWMatrix.TWMatrix3x3.html#Assign">Assign</a></b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWMatrix.TWMatrix3x3.html#Assign">Assign</a></strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>); inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a  href="UTWMatrix.TWMatrix3x3.html#SetIdentity">SetIdentity</a></b>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWMatrix.TWMatrix3x3.html#SetIdentity">SetIdentity</a></strong>; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class operator <b><a  href="UTWMatrix.TWMatrix3x3.html#Equal">Equal</a></b>(a, b: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class operator <strong><a href="UTWMatrix.TWMatrix3x3.html#Equal">Equal</a></strong>(a, b: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class operator <b><a  href="UTWMatrix.TWMatrix3x3.html#NotEqual">NotEqual</a></b>(a, b: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class operator <strong><a href="UTWMatrix.TWMatrix3x3.html#NotEqual">NotEqual</a></strong>(a, b: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>property <b><a  href="UTWMatrix.TWMatrix3x3.html#Table">Table</a></b>[x,y:NativeUInt]: Double read GetTableItem write SetTableItem;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWMatrix.TWMatrix3x3.html#Table">Table</a></strong>[x,y:NativeUInt]: Double read GetTableItem write SetTableItem;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <strong>Create</strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>); overload;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Copy constructor </p>
 <h6 class="description_section">Parameters</h6>
@@ -104,9 +124,10 @@ Copy constructor </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const _11, _12, _13, _21, _22, _23, _31, _32, _33: Double); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <strong>Create</strong>(const _11, _12, _13, _21, _22, _23, _31, _32, _33: Double); overload;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Constructor         </p>
 <h6 class="description_section">Parameters</h6>
@@ -134,9 +155,10 @@ Constructor         </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Differs"></span><code>function <b>Differs</b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Differs"></span><code>function <strong>Differs</strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Check if matrix content differs from another matrix  </p>
 <h6 class="description_section">Parameters</h6>
@@ -149,9 +171,10 @@ Check if matrix content differs from another matrix  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetDefault"></span><code>class function <b>GetDefault</b>: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetDefault"></span><code>class function <strong>GetDefault</strong>: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get the default matrix </p>
 <h6 class="description_section">Returns</h6>
@@ -159,9 +182,10 @@ Get the default matrix </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetHashCode"></span><code>function <b>GetHashCode</b>(initValue: Integer): Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetHashCode"></span><code>function <strong>GetHashCode</strong>(initValue: Integer): Integer;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get the hash code based on the class content  </p>
 <h6 class="description_section">Parameters</h6>
@@ -174,9 +198,10 @@ Get the hash code based on the class content  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IsEqual"></span><code>function <b>IsEqual</b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsEqual"></span><code>function <strong>IsEqual</strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Check if matrix content is equal to another matrix  </p>
 <h6 class="description_section">Parameters</h6>
@@ -189,9 +214,10 @@ Check if matrix content is equal to another matrix  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IsIdentity"></span><code>function <b>IsIdentity</b>: Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsIdentity"></span><code>function <strong>IsIdentity</strong>: Boolean; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Check if matrix is the identity matrix (meaning thus this matrix is &quot;empty&quot;) </p>
 <h6 class="description_section">Returns</h6>
@@ -199,11 +225,12 @@ Check if matrix is the identity matrix (meaning thus this matrix is &quot;empty&
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Multiply"></span><code>function <b>Multiply</b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Multiply"></span><code>function <strong>Multiply</strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Multiply a matrix by another matrix   <br> <b>NOTE</b> The other matrix is prepended to the current one, this means that, to obtain the following result: Mc = Ma * Mb the Multiply function should be used as follow: Mc := Mb.Multiply(Ma);</p>
+Multiply a matrix by another matrix   <br> <strong>NOTE</strong> The other matrix is prepended to the current one, this means that, to obtain the following result: Mc = Ma * Mb the Multiply function should be used as follow: Mc := Mb.Multiply(Ma);</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>other</dt>
@@ -214,11 +241,12 @@ Multiply a matrix by another matrix   <br> <b>NOTE</b> The other matrix is prepe
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Rotate"></span><code>function <b>Rotate</b>(angle: Single; const r: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Rotate"></span><code>function <strong>Rotate</strong>(angle: Single; const r: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Rotate matrix    <br> <b>NOTE</b> Rotation direction vector should be normalized before calling this function</p>
+Rotate matrix    <br> <strong>NOTE</strong> Rotation direction vector should be normalized before calling this function</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>angle</dt>
@@ -231,9 +259,10 @@ Rotate matrix    <br> <b>NOTE</b> Rotation direction vector should be normalized
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="RotateCenter"></span><code>function <b>RotateCenter</b>(angle: Single; const center: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="RotateCenter"></span><code>function <strong>RotateCenter</strong>(angle: Single; const center: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Rotate matrix based on a rotation center point   </p>
 <h6 class="description_section">Parameters</h6>
@@ -248,9 +277,10 @@ Rotate matrix based on a rotation center point   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Scale"></span><code>function <b>Scale</b>(const s: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Scale"></span><code>function <strong>Scale</strong>(const s: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Scale matrix  </p>
 <h6 class="description_section">Parameters</h6>
@@ -263,9 +293,10 @@ Scale matrix  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Shear"></span><code>function <b>Shear</b>(const s: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Shear"></span><code>function <strong>Shear</strong>(const s: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Shear matrix  </p>
 <h6 class="description_section">Parameters</h6>
@@ -278,9 +309,10 @@ Shear matrix  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Transform"></span><code>function <b>Transform</b>(const vector: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Transform"></span><code>function <strong>Transform</strong>(const vector: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWVector.TWVector2.html">TWVector2</a>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Transform a vector using matrix  </p>
 <h6 class="description_section">Parameters</h6>
@@ -293,9 +325,10 @@ Transform a vector using matrix  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Translate"></span><code>function <b>Translate</b>(const t: <a  href="UTWVector.TWVector2.html">TWVector2</a>): <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Translate"></span><code>function <strong>Translate</strong>(const t: <a href="UTWVector.TWVector2.html">TWVector2</a>): <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Translate matrix  </p>
 <h6 class="description_section">Parameters</h6>
@@ -308,9 +341,10 @@ Translate matrix  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const other: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <strong>Assign</strong>(const other: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Assign (i.e copy) matrix </p>
 <h6 class="description_section">Parameters</h6>
@@ -322,18 +356,20 @@ Assign (i.e copy) matrix </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SetIdentity"></span><code>procedure <b>SetIdentity</b>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetIdentity"></span><code>procedure <strong>SetIdentity</strong>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set matrix as identity</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Equal"></span><code>class operator <b>Equal</b>(a, b: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Equal"></span><code>class operator <strong>Equal</strong>(a, b: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Equality operator (allows operations on matrices like a = b)   </p>
 <h6 class="description_section">Parameters</h6>
@@ -348,9 +384,10 @@ Equality operator (allows operations on matrices like a = b)   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="NotEqual"></span><code>class operator <b>NotEqual</b>(a, b: <a  href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="NotEqual"></span><code>class operator <strong>NotEqual</strong>(a, b: <a href="UTWMatrix.TWMatrix3x3.html">TWMatrix3x3</a>): Boolean;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Not equality operator (allows operations on matrices like a &lt;&gt; b)   </p>
 <h6 class="description_section">Parameters</h6>
@@ -366,13 +403,14 @@ Not equality operator (allows operations on matrices like a &lt;&gt; b)   </p>
 <h3 class="detail">Properties</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Table"></span><code>property <b>Table</b>[x,y:NativeUInt]: Double read GetTableItem write SetTableItem;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Table"></span><code>property <strong>Table</strong>[x,y:NativeUInt]: Double read GetTableItem write SetTableItem;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Gets or sets the matrix table item. Example: Table[2, 0] := 12.33f; <br> <b>NOTE</b> Values for x and y doesn't exceed 2, otherwise an exception will be raised</p>
+Gets or sets the matrix table item. Example: Table[2, 0] := 12.33f; <br> <strong>NOTE</strong> Values for x and y doesn't exceed 2, otherwise an exception will be raised</p>
 </td></tr>
 </table>
-<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+<hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>
 </span>
-</td></tr></table></body></html>
+</div></div></body></html>

@@ -3,19 +3,19 @@
 <head>
 <title>SVG Magic: UTWHelpers: Record TWStringHelper</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="PasDoc 0.15.0">
+<meta name="generator" content="PasDoc 0.16.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="StyleSheet" type="text/css" href="pasdoc.css">
 </head>
 <body>
-<table class="container"><tr><td class="navigation">
-<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<div class="container"><div class="navigation">
+<h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
 <span id="TWStringHelper"></span><h1 class="cio">Record TWStringHelper</h1>
 <div class="sections">
 <div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a  href="UTWHelpers.html">UTWHelpers</a></p>
+<a href="UTWHelpers.html">UTWHelpers</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
 <code>type TWStringHelper = record</code></p>
@@ -26,10 +26,12 @@ Helper for string</p>
 <span id="PasDoc-Fields"></span><h3 class="summary">Fields</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>internal const <b><a  href="UTWHelpers.TWStringHelper.html#Empty">Empty</a></b> = '';</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>nested const <strong><a href="UTWHelpers.TWStringHelper.html#Empty">Empty</a></strong> = '';</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>internal const <b><a  href="UTWHelpers.TWStringHelper.html#m_NegExpMultip">m_NegExpMultip</a></b>: array [0..17] of Double =
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>nested const <strong><a href="UTWHelpers.TWStringHelper.html#m_NegExpMultip">m_NegExpMultip</a></strong>: array [0..17] of Double =
         (
             1, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.0000001, 0.00000001,
             0.000000001, 0.0000000001, 0.00000000001, 0.000000000001, 0.0000000000001,
@@ -37,7 +39,8 @@ Helper for string</p>
         );</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>internal const <b><a  href="UTWHelpers.TWStringHelper.html#m_PosExpMultip">m_PosExpMultip</a></b>: array [0..17] of Double =
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>nested const <strong><a href="UTWHelpers.TWStringHelper.html#m_PosExpMultip">m_PosExpMultip</a></strong>: array [0..17] of Double =
         (
             1, 10, 100, 1000, 10000, 100000, 1000000, 10000000,
             100000000, 1000000000, 10000000000, 100000000000, 1000000000000,
@@ -48,120 +51,147 @@ Helper for string</p>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#BoolToStr">BoolToStr</a></b>(value, asString: Boolean; compensate: Boolean = False): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#BoolToStr">BoolToStr</a></strong>(value, asString: Boolean; compensate: Boolean = False): UnicodeString; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#CanWrap">CanWrap</a></b>(const c: WideChar): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#CanWrap">CanWrap</a></strong>(const c: WideChar): Boolean; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#DelimitFillStr">DelimitFillStr</a></b>(const str: UnicodeString; wantedLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#DelimitFillStr">DelimitFillStr</a></strong>(const str: UnicodeString; wantedLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#DelimitStr">DelimitStr</a></b>(const str: UnicodeString; sideLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#DelimitStr">DelimitStr</a></strong>(const str: UnicodeString; sideLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#FillStrLeft">FillStrLeft</a></b>(const str: UnicodeString; fillLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#FillStrLeft">FillStrLeft</a></strong>(const str: UnicodeString; fillLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#FillStrRight">FillStrRight</a></b>(const str: UnicodeString; fillLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#FillStrRight">FillStrRight</a></strong>(const str: UnicodeString; fillLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#IndexOf">IndexOf</a></b>(const str: UnicodeString; ch: Char): Integer; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#IndexOf">IndexOf</a></strong>(const str: UnicodeString; ch: Char): Integer; inline; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#IsEmpty">IsEmpty</a></b>(const str: UnicodeString): Boolean; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#IsEmpty">IsEmpty</a></strong>(const str: UnicodeString): Boolean; inline; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#IsNumeric">IsNumeric</a></b>(digit: WideChar; isStrict: Boolean): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#IsNumeric">IsNumeric</a></strong>(digit: WideChar; isStrict: Boolean): Boolean; overload; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#IsNumeric">IsNumeric</a></b>(digit: AnsiChar; isStrict: Boolean): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#IsNumeric">IsNumeric</a></strong>(digit: AnsiChar; isStrict: Boolean): Boolean; overload; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#IsNumOrAscii">IsNumOrAscii</a></b>(digit: WideChar; numOnly: Boolean): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#IsNumOrAscii">IsNumOrAscii</a></strong>(digit: WideChar; numOnly: Boolean): Boolean; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#ReadFloat">ReadFloat</a></b>(const str: UnicodeString; var pos: NativeInt; var resVal: Single): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#ReadFloat">ReadFloat</a></strong>(const str: UnicodeString; var pos: NativeInt; var resVal: Single): Boolean; overload; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#ReadFloat">ReadFloat</a></b>&lt;TFlt, TInt&gt;(const str: UnicodeString; var pos: NativeInt; var resVal: TFlt): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#ReadFloat">ReadFloat</a></strong>&lt;TFlt, TInt&gt;(const str: UnicodeString; var pos: NativeInt; var resVal: TFlt): Boolean; overload; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#ReadFloat">ReadFloat</a></b>(const str: UnicodeString; var pos: NativeInt; var resVal: Double): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#ReadFloat">ReadFloat</a></strong>(const str: UnicodeString; var pos: NativeInt; var resVal: Double): Boolean; overload; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#ReadInt">ReadInt</a></b>&lt;TInt&gt;(const str: UnicodeString; var pos: NativeInt; var resVal: TInt): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#ReadInt">ReadInt</a></strong>&lt;TInt&gt;(const str: UnicodeString; var pos: NativeInt; var resVal: TInt): Boolean; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#ReadIntEx">ReadIntEx</a></b>&lt;TInt&gt;(const str: UnicodeString; var pos, validNumPos: NativeInt; var resVal: TInt; forFractalPart: Boolean): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#ReadIntEx">ReadIntEx</a></strong>&lt;TInt&gt;(const str: UnicodeString; var pos, validNumPos: NativeInt; var resVal: TInt; forFractalPart: Boolean): Boolean; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#SkipChars">SkipChars</a></b>(const str, chars: UnicodeString; var pos: NativeInt): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#SkipChars">SkipChars</a></strong>(const str, chars: UnicodeString; var pos: NativeInt): Boolean; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#StrToBool">StrToBool</a></b>(const str: UnicodeString): Boolean; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#StrToBool">StrToBool</a></strong>(const str: UnicodeString): Boolean; inline; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#Substr">Substr</a></b>(const str: UnicodeString; index, length: Integer): UnicodeString; overload; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#Substr">Substr</a></strong>(const str: UnicodeString; index, length: Integer): UnicodeString; overload; inline; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#Substr">Substr</a></b>(const str: UnicodeString; index: Integer): UnicodeString; overload; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#Substr">Substr</a></strong>(const str: UnicodeString; index: Integer): UnicodeString; overload; inline; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#ToLower">ToLower</a></b>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#ToLower">ToLower</a></strong>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#ToUpper">ToUpper</a></b>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#ToUpper">ToUpper</a></strong>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWStringHelper.html#Trim">Trim</a></b>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWStringHelper.html#Trim">Trim</a></strong>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Fields</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Empty"></span><code>internal const <b>Empty</b> = '';</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Empty"></span><code>nested const <strong>Empty</strong> = '';</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Empty string instance</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="m_NegExpMultip"></span><code>internal const <b>m_NegExpMultip</b>: array [0..17] of Double =
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="m_NegExpMultip"></span><code>nested const <strong>m_NegExpMultip</strong>: array [0..17] of Double =
         (
             1, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.0000001, 0.00000001,
             0.000000001, 0.0000000001, 0.00000000001, 0.000000000001, 0.0000000000001,
             0.00000000000001, 0.000000000000001, 0.0000000000000001, 0.00000000000000001
         );</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Negative exponent multiplier <br> <b>NOTE</b> Memory tables are used to quickly get exponent multiplier in several &quot;string to value&quot; conversions (pow is very slow)</p>
+Negative exponent multiplier <br> <strong>NOTE</strong> Memory tables are used to quickly get exponent multiplier in several &quot;string to value&quot; conversions (pow is very slow)</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="m_PosExpMultip"></span><code>internal const <b>m_PosExpMultip</b>: array [0..17] of Double =
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="m_PosExpMultip"></span><code>nested const <strong>m_PosExpMultip</strong>: array [0..17] of Double =
         (
             1, 10, 100, 1000, 10000, 100000, 1000000, 10000000,
             100000000, 1000000000, 10000000000, 100000000000, 1000000000000,
             10000000000000, 100000000000000, 1000000000000000, 10000000000000000, 100000000000000000
         );</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Positive exponent multiplier <br> <b>NOTE</b> Memory tables are used to quickly get exponent multiplier in several &quot;string to value&quot; conversions (pow is very slow)</p>
+Positive exponent multiplier <br> <strong>NOTE</strong> Memory tables are used to quickly get exponent multiplier in several &quot;string to value&quot; conversions (pow is very slow)</p>
 </td></tr>
 </table>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="BoolToStr"></span><code>class function <b>BoolToStr</b>(value, asString: Boolean; compensate: Boolean = False): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="BoolToStr"></span><code>class function <strong>BoolToStr</strong>(value, asString: Boolean; compensate: Boolean = False): UnicodeString; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Convert bool to string    </p>
 <h6 class="description_section">Parameters</h6>
@@ -178,16 +208,17 @@ Convert bool to string    </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="CanWrap"></span><code>class function <b>CanWrap</b>(const c: WideChar): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CanWrap"></span><code>class function <strong>CanWrap</strong>(const c: WideChar): Boolean; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Check if character can break a word <br> <b>NOTE</b> This a basic implementations considering that Chinese, Japanese and Korean letters can break words, but all others not. It does not take account of specific word wrap rules of these languages <br> <b>NOTE</b> For reference see: </p>
+Check if character can break a word <br> <strong>NOTE</strong> This a basic implementations considering that Chinese, Japanese and Korean letters can break words, but all others not. It does not take account of specific word wrap rules of these languages <br> <strong>NOTE</strong> For reference see: </p>
 
 <ul class="paragraph_spacing">
-  <li><p><a  href="http://en.wikipedia.org/wiki/Word_wrap">http://en.wikipedia.org/wiki/Word_wrap</a></p></li>
-  <li><p><a  href="http://en.wikipedia.org/wiki/Line_breaking_rules_in_East_Asian_language">http://en.wikipedia.org/wiki/Line_breaking_rules_in_East_Asian_language</a></p></li>
-  <li><p><a  href="http://jrgraphix.net/research/unicode_blocks.php">http://jrgraphix.net/research/unicode_blocks.php</a></p></li>
+  <li><p><a href="http://en.wikipedia.org/wiki/Word_wrap">http://en.wikipedia.org/wiki/Word_wrap</a></p></li>
+  <li><p><a href="http://en.wikipedia.org/wiki/Line_breaking_rules_in_East_Asian_language">http://en.wikipedia.org/wiki/Line_breaking_rules_in_East_Asian_language</a></p></li>
+  <li><p><a href="http://jrgraphix.net/research/unicode_blocks.php">http://jrgraphix.net/research/unicode_blocks.php</a></p></li>
 </ul>
 
 <p> </p>
@@ -195,11 +226,12 @@ Check if character can break a word <br> <b>NOTE</b> This a basic implementation
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="DelimitFillStr"></span><code>class function <b>DelimitFillStr</b>(const str: UnicodeString; wantedLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DelimitFillStr"></span><code>class function <strong>DelimitFillStr</strong>(const str: UnicodeString; wantedLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Delimit a string with a specified character, with as much character as needed to reach wanted string size E.g: if wanted length is 21 and delimiter '-' &mdash;&ndash;Hello World&mdash;&ndash; &mdash;&mdash;&ndash;Hello&mdash;&mdash;&ndash;     <br> <b>NOTE</b> If str length &gt;= wantedLen, result = str</p>
+Delimit a string with a specified character, with as much character as needed to reach wanted string size E.g: if wanted length is 21 and delimiter '-' &mdash;&ndash;Hello World&mdash;&ndash; &mdash;&mdash;&ndash;Hello&mdash;&mdash;&ndash;     <br> <strong>NOTE</strong> If str length &gt;= wantedLen, result = str</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>str</dt>
@@ -214,11 +246,12 @@ Delimit a string with a specified character, with as much character as needed to
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="DelimitStr"></span><code>class function <b>DelimitStr</b>(const str: UnicodeString; sideLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DelimitStr"></span><code>class function <strong>DelimitStr</strong>(const str: UnicodeString; sideLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Delimit a string with a specified character E.g: &mdash;- Hello World &mdash;-     <br> <b>NOTE</b> The length doesn't count the two spaces before and after the string</p>
+Delimit a string with a specified character E.g: &mdash;- Hello World &mdash;-     <br> <strong>NOTE</strong> The length doesn't count the two spaces before and after the string</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>str</dt>
@@ -233,11 +266,12 @@ Delimit a string with a specified character E.g: &mdash;- Hello World &mdash;-  
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="FillStrLeft"></span><code>class function <b>FillStrLeft</b>(const str: UnicodeString; fillLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="FillStrLeft"></span><code>class function <strong>FillStrLeft</strong>(const str: UnicodeString; fillLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Complete string length with selected character E.g. FillStrLeft(&quot;Hello&quot;, 10, '#') -&gt; &quot;#####Hello&quot;     <br> <b>NOTE</b> If string is already &gt;= length, it won't be modified</p>
+Complete string length with selected character E.g. FillStrLeft(&quot;Hello&quot;, 10, '#') -&gt; &quot;#####Hello&quot;     <br> <strong>NOTE</strong> If string is already &gt;= length, it won't be modified</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>str</dt>
@@ -252,11 +286,12 @@ Complete string length with selected character E.g. FillStrLeft(&quot;Hello&quot
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="FillStrRight"></span><code>class function <b>FillStrRight</b>(const str: UnicodeString; fillLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="FillStrRight"></span><code>class function <strong>FillStrRight</strong>(const str: UnicodeString; fillLen: NativeInt; delimiter: WideChar): UnicodeString; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Complete string length with selected character E.g. FillStrRight(&quot;Hello&quot;, 10, '#') -&gt; &quot;Hello#####&quot;     <br> <b>NOTE</b> If string is already &gt;= length, it won't be modified</p>
+Complete string length with selected character E.g. FillStrRight(&quot;Hello&quot;, 10, '#') -&gt; &quot;Hello#####&quot;     <br> <strong>NOTE</strong> If string is already &gt;= length, it won't be modified</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>str</dt>
@@ -271,9 +306,10 @@ Complete string length with selected character E.g. FillStrRight(&quot;Hello&quo
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IndexOf"></span><code>class function <b>IndexOf</b>(const str: UnicodeString; ch: Char): Integer; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IndexOf"></span><code>class function <strong>IndexOf</strong>(const str: UnicodeString; ch: Char): Integer; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get first char index found in a string   </p>
 <h6 class="description_section">Parameters</h6>
@@ -288,9 +324,10 @@ Get first char index found in a string   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IsEmpty"></span><code>class function <b>IsEmpty</b>(const str: UnicodeString): Boolean; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsEmpty"></span><code>class function <strong>IsEmpty</strong>(const str: UnicodeString): Boolean; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Check if a string is empty  </p>
 <h6 class="description_section">Parameters</h6>
@@ -303,16 +340,17 @@ Check if a string is empty  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IsNumeric"></span><code>class function <b>IsNumeric</b>(digit: WideChar; isStrict: Boolean): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsNumeric"></span><code>class function <strong>IsNumeric</strong>(digit: WideChar; isStrict: Boolean): Boolean; overload; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Check if a digit contains only chars that can be converted to number    <br> <b>NOTE</b> If strict mode is set to <code>False</code>, math symbols as e.g. '.' or '-' will also be accepted as valid numeric chars. This may be useful when IsNumeric() is used e.g. to determine if a string can be converted to number</p>
+Check if a digit contains only chars that can be converted to number    <br> <strong>NOTE</strong> If strict mode is set to <code>False</code>, math symbols as e.g. '.' or '-' will also be accepted as valid numeric chars. This may be useful when IsNumeric() is used e.g. to determine if a string can be converted to number</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>digit</dt>
 <dd>Digit to check</dd>
-<dt>strict</dt>
+<dt>isStrict</dt>
 <dd>If <code>True</code>, only chars from '0' to '9' will be accepted, see note</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
@@ -320,16 +358,17 @@ Check if a digit contains only chars that can be converted to number    <br> <b>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IsNumeric"></span><code>class function <b>IsNumeric</b>(digit: AnsiChar; isStrict: Boolean): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsNumeric"></span><code>class function <strong>IsNumeric</strong>(digit: AnsiChar; isStrict: Boolean): Boolean; overload; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Check if a digit contains only chars that can be converted to number    <br> <b>NOTE</b> If strict mode is set to <code>False</code>, math symbols as e.g. '.' or '-' will also be accepted as valid numeric chars. This may be useful when IsNumeric() is used e.g. to determine if a string can be converted to number</p>
+Check if a digit contains only chars that can be converted to number    <br> <strong>NOTE</strong> If strict mode is set to <code>False</code>, math symbols as e.g. '.' or '-' will also be accepted as valid numeric chars. This may be useful when IsNumeric() is used e.g. to determine if a string can be converted to number</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>digit</dt>
 <dd>Digit to check</dd>
-<dt>strict</dt>
+<dt>isStrict</dt>
 <dd>If <code>True</code>, only chars from '0' to '9' will be accepted, see note</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
@@ -337,9 +376,10 @@ Check if a digit contains only chars that can be converted to number    <br> <b>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IsNumOrAscii"></span><code>class function <b>IsNumOrAscii</b>(digit: WideChar; numOnly: Boolean): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsNumOrAscii"></span><code>class function <strong>IsNumOrAscii</strong>(digit: WideChar; numOnly: Boolean): Boolean; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Check if digit is numeric or ASCII alphabetical letter (from 'a' to 'z' and from 'A' to 'Z')   </p>
 <h6 class="description_section">Parameters</h6>
@@ -354,42 +394,46 @@ Check if digit is numeric or ASCII alphabetical letter (from 'a' to 'z' and from
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ReadFloat"></span><code>class function <b>ReadFloat</b>(const str: UnicodeString; var pos: NativeInt; var resVal: Single): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ReadFloat"></span><code>class function <strong>ReadFloat</strong>(const str: UnicodeString; var pos: NativeInt; var resVal: Single): Boolean; overload; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ReadFloat"></span><code>class function <b>ReadFloat</b>&lt;TFlt, TInt&gt;(const str: UnicodeString; var pos: NativeInt; var resVal: TFlt): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ReadFloat"></span><code>class function <strong>ReadFloat</strong>&lt;TFlt, TInt&gt;(const str: UnicodeString; var pos: NativeInt; var resVal: TFlt): Boolean; overload; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Read and parse next float/double in string. Will skip spaces and new lines in front of the number and will stop at number end     <br> <b>NOTE</b> Function was implemented as performance alternative to string stream and it 2x - 3x faster <br> <b>NOTE</b> This function should be only used with non localized strings (i.e for which separators are compatible with EN language) because the separators defined in the computer locale will be ignored, and only the EN version will be used</p>
+Read and parse next float/double in string. Will skip spaces and new lines in front of the number and will stop at number end     <br> <strong>NOTE</strong> Function was implemented as performance alternative to string stream and it 2x - 3x faster <br> <strong>NOTE</strong> This function should be only used with non localized strings (i.e for which separators are compatible with EN language) because the separators defined in the computer locale will be ignored, and only the EN version will be used</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>str</dt>
 <dd>String to read from</dd>
 <dt>pos</dt>
-<dd><b>[in, out]</b> Start/end position, end updated only on success</dd>
+<dd><strong>[in, out]</strong> Start/end position, end updated only on success</dd>
 <dt>resVal</dt>
-<dd><b>[out]</b> Variable to receive parsed value</dd>
+<dd><strong>[out]</strong> Variable to receive parsed value</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return"><code>True</code> if float/double was read from string, <code>False</code> if contained none</p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ReadFloat"></span><code>class function <b>ReadFloat</b>(const str: UnicodeString; var pos: NativeInt; var resVal: Double): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ReadFloat"></span><code>class function <strong>ReadFloat</strong>(const str: UnicodeString; var pos: NativeInt; var resVal: Double): Boolean; overload; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ReadInt"></span><code>class function <b>ReadInt</b>&lt;TInt&gt;(const str: UnicodeString; var pos: NativeInt; var resVal: TInt): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ReadInt"></span><code>class function <strong>ReadInt</strong>&lt;TInt&gt;(const str: UnicodeString; var pos: NativeInt; var resVal: TInt): Boolean; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Read and parse next int/int64 in string. Will skip spaces and new lines in front of the number and will stop at number end    </p>
 <h6 class="description_section">Parameters</h6>
@@ -397,18 +441,19 @@ Read and parse next int/int64 in string. Will skip spaces and new lines in front
 <dt>str</dt>
 <dd>String to read from</dd>
 <dt>pos</dt>
-<dd><b>[in, out]</b> Start/end position, end updated only on success</dd>
+<dd><strong>[in, out]</strong> Start/end position, end updated only on success</dd>
 <dt>resVal</dt>
-<dd><b>[out]</b> Variable to receive parsed value</dd>
+<dd><strong>[out]</strong> Variable to receive parsed value</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return"><code>True</code> if int was read from string, <code>False</code> if contained none</p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ReadIntEx"></span><code>class function <b>ReadIntEx</b>&lt;TInt&gt;(const str: UnicodeString; var pos, validNumPos: NativeInt; var resVal: TInt; forFractalPart: Boolean): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ReadIntEx"></span><code>class function <strong>ReadIntEx</strong>&lt;TInt&gt;(const str: UnicodeString; var pos, validNumPos: NativeInt; var resVal: TInt; forFractalPart: Boolean): Boolean; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Read and parse next int/int64 in string. Will skip spaces and new lines in front of the number and will stop at number end      </p>
 <h6 class="description_section">Parameters</h6>
@@ -416,11 +461,11 @@ Read and parse next int/int64 in string. Will skip spaces and new lines in front
 <dt>str</dt>
 <dd>String to read from</dd>
 <dt>pos</dt>
-<dd><b>[in, out]</b> Start/end position, end updated only on success</dd>
+<dd><strong>[in, out]</strong> Start/end position, end updated only on success</dd>
 <dt>validNumPos</dt>
-<dd><b>[out]</b> Will return position of last char used in number; e.g. if forFractalPart not all numbers maybe used in case of overflow, this will be set to last used number</dd>
+<dd><strong>[out]</strong> Will return position of last char used in number; e.g. if forFractalPart not all numbers maybe used in case of overflow, this will be set to last used number</dd>
 <dt>resVal</dt>
-<dd><b>[out]</b> Variable to receive parsed value</dd>
+<dd><strong>[out]</strong> Variable to receive parsed value</dd>
 <dt>forFractalPart</dt>
 <dd><code>True</code> if integer in fractal part of floating point, in that case result won't overlow and will read only whats possible, if false if number &gt; readed one, number can overflow</dd>
 </dl>
@@ -429,9 +474,10 @@ Read and parse next int/int64 in string. Will skip spaces and new lines in front
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SkipChars"></span><code>class function <b>SkipChars</b>(const str, chars: UnicodeString; var pos: NativeInt): Boolean; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SkipChars"></span><code>class function <strong>SkipChars</strong>(const str, chars: UnicodeString; var pos: NativeInt): Boolean; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Skip chars in a string, from the current pos until the next pos containing none of these chars    </p>
 <h6 class="description_section">Parameters</h6>
@@ -441,16 +487,17 @@ Skip chars in a string, from the current pos until the next pos containing none 
 <dt>chars</dt>
 <dd>Chars to skip</dd>
 <dt>pos</dt>
-<dd><b>[in, out]</b> Start pos in string, pos after skipped chars on function ends</dd>
+<dd><strong>[in, out]</strong> Start pos in string, pos after skipped chars on function ends</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return"><code>False</code> if string end is reached, otherwise <code>True</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="StrToBool"></span><code>class function <b>StrToBool</b>(const str: UnicodeString): Boolean; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="StrToBool"></span><code>class function <strong>StrToBool</strong>(const str: UnicodeString): Boolean; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Convert string to bool  </p>
 <h6 class="description_section">Parameters</h6>
@@ -463,16 +510,18 @@ Convert string to bool  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Substr"></span><code>class function <b>Substr</b>(const str: UnicodeString; index, length: Integer): UnicodeString; overload; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Substr"></span><code>class function <strong>Substr</strong>(const str: UnicodeString; index, length: Integer): UnicodeString; overload; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Substr"></span><code>class function <b>Substr</b>(const str: UnicodeString; index: Integer): UnicodeString; overload; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Substr"></span><code>class function <strong>Substr</strong>(const str: UnicodeString; index: Integer): UnicodeString; overload; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Gets a substring of a string    </p>
 <h6 class="description_section">Parameters</h6>
@@ -489,9 +538,10 @@ Gets a substring of a string    </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ToLower"></span><code>class function <b>ToLower</b>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToLower"></span><code>class function <strong>ToLower</strong>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Converts a string to lower case  </p>
 <h6 class="description_section">Parameters</h6>
@@ -504,9 +554,10 @@ Converts a string to lower case  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ToUpper"></span><code>class function <b>ToUpper</b>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToUpper"></span><code>class function <strong>ToUpper</strong>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Converts a string to upper case  </p>
 <h6 class="description_section">Parameters</h6>
@@ -519,9 +570,10 @@ Converts a string to upper case  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Trim"></span><code>class function <b>Trim</b>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Trim"></span><code>class function <strong>Trim</strong>(const str: UnicodeString): UnicodeString; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Trim a string  </p>
 <h6 class="description_section">Parameters</h6>
@@ -532,6 +584,6 @@ Trim a string  </p>
 <h6 class="description_section">Returns</h6>
 <p class="return">Trimmed string</p></td></tr>
 </table>
-<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+<hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>
 </span>
-</td></tr></table></body></html>
+</div></div></body></html>

@@ -146,7 +146,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\15.0\Bpl\TWRendering.bpl" Configuration="Release" Class="ProjectOutput">
+                <DeployFile LocalName="$(BDSCOMMONDIR)\Bpl\TWRendering.bpl" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>TWRendering.bpl</RemoteName>
                         <Overwrite>true</Overwrite>

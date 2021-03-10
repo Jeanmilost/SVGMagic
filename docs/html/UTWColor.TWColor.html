@@ -3,189 +3,239 @@
 <head>
 <title>SVG Magic: UTWColor: Record TWColor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="PasDoc 0.15.0">
+<meta name="generator" content="PasDoc 0.16.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="StyleSheet" type="text/css" href="pasdoc.css">
 </head>
 <body>
-<table class="container"><tr><td class="navigation">
-<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<div class="container"><div class="navigation">
+<h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
 <span id="TWColor"></span><h1 class="cio">Record TWColor</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section"><a class="section" href="#PasDoc-NestedTypes">Nested Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a  href="UTWColor.html">UTWColor</a></p>
+<a href="UTWColor.html">UTWColor</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
 <code>type TWColor = record</code></p>
 <h2 class="description">Description</h2>
 <p>
-Universal color class, supporting VCL, GDI and GDI+ colors and conversion tools <br> <b>NOTE</b> The code has been optimized to gain maximum possible speed, therefore, do not clean it unless you are really aware of what you are doing</p>
+Universal color class, supporting VCL, GDI and GDI+ colors and conversion tools <br> <strong>NOTE</strong> The code has been optimized to gain maximum possible speed, therefore, do not clean it unless you are really aware of what you are doing</p>
 <h2 class="overview">Overview</h2>
-<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<span id="PasDoc-NestedTypes"></span><h3 class="summary">Nested Types</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code><b><a  href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a></b> = (...);</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><strong><a href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a></strong> = (...);</code></td>
 </tr>
 </table>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>constructor <b><a  href="UTWColor.TWColor.html#Create">Create</a></b>(const pOther: <a  href="UTWColor.html#PWColor">PWColor</a>); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <strong><a href="UTWColor.TWColor.html#Create">Create</a></strong>(const pOther: <a href="UTWColor.html#PWColor">PWColor</a>); overload;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>constructor <b><a  href="UTWColor.TWColor.html#Create">Create</a></b>(red, green, blue, alpha: Byte); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <strong><a href="UTWColor.TWColor.html#Create">Create</a></strong>(red, green, blue, alpha: Byte); overload;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>constructor <b><a  href="UTWColor.TWColor.html#Create">Create</a></b>(red, green, blue: Byte); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <strong><a href="UTWColor.TWColor.html#Create">Create</a></strong>(red, green, blue: Byte); overload;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#Blend">Blend</a></b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>; level: Double): <a  href="UTWColor.TWColor.html">TWColor</a>; overload; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#Blend">Blend</a></strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>; level: Double): <a href="UTWColor.TWColor.html">TWColor</a>; overload; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#Blend">Blend</a></b>(red, green, blue, alpha: Byte; level: Single): <a  href="UTWColor.TWColor.html">TWColor</a>; overload; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#Blend">Blend</a></strong>(red, green, blue, alpha: Byte; level: Single): <a href="UTWColor.TWColor.html">TWColor</a>; overload; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#ChangeBrightness">ChangeBrightness</a></b>(brightness: Double): <a  href="UTWColor.TWColor.html">TWColor</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#ChangeBrightness">ChangeBrightness</a></strong>(brightness: Double): <a href="UTWColor.TWColor.html">TWColor</a>;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#Clone">Clone</a></b>: <a  href="UTWColor.TWColor.html">TWColor</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#Clone">Clone</a></strong>: <a href="UTWColor.TWColor.html">TWColor</a>; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#Differs">Differs</a></b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>): Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#Differs">Differs</a></strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>): Boolean; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#FromFunction">FromFunction</a></b>(functionStr: UnicodeString): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#FromFunction">FromFunction</a></strong>(functionStr: UnicodeString): Boolean;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#FromHex">FromHex</a></b>(const hex: UnicodeString; opacity: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a>; format: <a  href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a>): Boolean; overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#FromHex">FromHex</a></strong>(const hex: UnicodeString; opacity: <a href="UTWTypes.html#TWUInt32">TWUInt32</a>; format: <a href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a>): Boolean; overload;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#FromHex">FromHex</a></b>(const hex: UnicodeString; format: <a  href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a> ): Boolean; overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#FromHex">FromHex</a></strong>(const hex: UnicodeString; format: <a href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a> ): Boolean; overload;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetAlpha">GetAlpha</a></b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetAlpha">GetAlpha</a></strong>: Byte; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetBlue">GetBlue</a></b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetBlue">GetBlue</a></strong>: Byte; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWColor.TWColor.html#GetDefault">GetDefault</a></b>: <a  href="UTWColor.TWColor.html">TWColor</a>; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWColor.TWColor.html#GetDefault">GetDefault</a></strong>: <a href="UTWColor.TWColor.html">TWColor</a>; inline; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetGrayscale">GetGrayscale</a></b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetGrayscale">GetGrayscale</a></strong>: Byte; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetGreen">GetGreen</a></b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetGreen">GetGreen</a></strong>: Byte; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetHashCode">GetHashCode</a></b>(initValue: Integer): Integer; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetHashCode">GetHashCode</a></strong>(initValue: Integer): Integer; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetOpacity">GetOpacity</a></b>: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetOpacity">GetOpacity</a></strong>: <a href="UTWTypes.html#TWUInt32">TWUInt32</a>; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetRed">GetRed</a></b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetRed">GetRed</a></strong>: Byte; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetRGB555">GetRGB555</a></b>: Word; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetRGB555">GetRGB555</a></strong>: Word; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetRGB565">GetRGB565</a></b>: Word; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetRGB565">GetRGB565</a></strong>: Word; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#GetRGBColor">GetRGBColor</a></b>: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#GetRGBColor">GetRGBColor</a></strong>: <a href="UTWTypes.html#TWUInt32">TWUInt32</a>; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#IsEmpty">IsEmpty</a></b>: Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#IsEmpty">IsEmpty</a></strong>: Boolean; inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#IsEqual">IsEqual</a></b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>): Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#IsEqual">IsEqual</a></strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>): Boolean; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#ToFunction">ToFunction</a></b>(hsl, includeAlpha: Boolean; upperCase: Boolean = False; includeSpaces: Boolean = False): UnicodeString;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#ToFunction">ToFunction</a></strong>(hsl, includeAlpha: Boolean; upperCase: Boolean = False; includeSpaces: Boolean = False): UnicodeString;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#ToHex">ToHex</a></b>(upperCase: Boolean; const prefix: UnicodeString ='#'; format: <a  href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a> = <a  href="">IE_HF_RGB</a>): UnicodeString;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#ToHex">ToHex</a></strong>(upperCase: Boolean; const prefix: UnicodeString ='#'; format: <a href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a> = <a href="">IE_HF_RGB</a>): UnicodeString;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <b><a  href="UTWColor.TWColor.html#ValidateFunction">ValidateFunction</a></b>(functionStr: UnicodeString): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWColor.TWColor.html#ValidateFunction">ValidateFunction</a></strong>(functionStr: UnicodeString): Boolean;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#Assign">Assign</a></b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#Assign">Assign</a></strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>); inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#BlendAndApply">BlendAndApply</a></b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>; level: Double);</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#BlendAndApply">BlendAndApply</a></strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>; level: Double);</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#Clear">Clear</a></b>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#Clear">Clear</a></strong>; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#FromHSL">FromHSL</a></b>(hue, saturation, luminance: Word); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#FromHSL">FromHSL</a></strong>(hue, saturation, luminance: Word); inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#SetAlpha">SetAlpha</a></b>(alpha: Byte); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#SetAlpha">SetAlpha</a></strong>(alpha: Byte); inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#SetBlue">SetBlue</a></b>(blue: Byte); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#SetBlue">SetBlue</a></strong>(blue: Byte); inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#SetColor">SetColor</a></b>(red, green, blue: Byte; alpha: Byte = 255); overload; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#SetColor">SetColor</a></strong>(red, green, blue: Byte; alpha: Byte = 255); overload; inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#SetGreen">SetGreen</a></b>(green: Byte); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#SetGreen">SetGreen</a></strong>(green: Byte); inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#SetOpacity">SetOpacity</a></b>(opacity: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a>); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#SetOpacity">SetOpacity</a></strong>(opacity: <a href="UTWTypes.html#TWUInt32">TWUInt32</a>); inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#SetRed">SetRed</a></b>(red: Byte); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#SetRed">SetRed</a></strong>(red: Byte); inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#SetRGB555">SetRGB555</a></b>(const color: Word); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#SetRGB555">SetRGB555</a></strong>(const color: Word); inline;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#SetRGB565">SetRGB565</a></b>(const color: Word); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#SetRGB565">SetRGB565</a></strong>(const color: Word); inline;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>procedure <b><a  href="UTWColor.TWColor.html#ToHSL">ToHSL</a></b>(out hue, saturation, luminance: Word);</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWColor.TWColor.html#ToHSL">ToHSL</a></strong>(out hue, saturation, luminance: Word);</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class operator <b><a  href="UTWColor.TWColor.html#Equal">Equal</a></b>(a, b: <a  href="UTWColor.TWColor.html">TWColor</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class operator <strong><a href="UTWColor.TWColor.html#Equal">Equal</a></strong>(a, b: <a href="UTWColor.TWColor.html">TWColor</a>): Boolean;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class operator <b><a  href="UTWColor.TWColor.html#NotEqual">NotEqual</a></b>(a, b: <a  href="UTWColor.TWColor.html">TWColor</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class operator <strong><a href="UTWColor.TWColor.html#NotEqual">NotEqual</a></strong>(a, b: <a href="UTWColor.TWColor.html">TWColor</a>): Boolean;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>property <b><a  href="UTWColor.TWColor.html#A">A</a></b>: Byte read <a  href="UTWColor.TWColor.html#GetAlpha">GetAlpha</a> write <a  href="UTWColor.TWColor.html#SetAlpha">SetAlpha</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWColor.TWColor.html#A">A</a></strong>: Byte read <a href="UTWColor.TWColor.html#GetAlpha">GetAlpha</a> write <a href="UTWColor.TWColor.html#SetAlpha">SetAlpha</a>;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>property <b><a  href="UTWColor.TWColor.html#B">B</a></b>: Byte read <a  href="UTWColor.TWColor.html#GetBlue">GetBlue</a> write <a  href="UTWColor.TWColor.html#SetBlue">SetBlue</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWColor.TWColor.html#B">B</a></strong>: Byte read <a href="UTWColor.TWColor.html#GetBlue">GetBlue</a> write <a href="UTWColor.TWColor.html#SetBlue">SetBlue</a>;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>property <b><a  href="UTWColor.TWColor.html#G">G</a></b>: Byte read <a  href="UTWColor.TWColor.html#GetGreen">GetGreen</a> write <a  href="UTWColor.TWColor.html#SetGreen">SetGreen</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWColor.TWColor.html#G">G</a></strong>: Byte read <a href="UTWColor.TWColor.html#GetGreen">GetGreen</a> write <a href="UTWColor.TWColor.html#SetGreen">SetGreen</a>;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>property <b><a  href="UTWColor.TWColor.html#Grayscale">Grayscale</a></b>: Byte read <a  href="UTWColor.TWColor.html#GetGrayscale">GetGrayscale</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWColor.TWColor.html#Grayscale">Grayscale</a></strong>: Byte read <a href="UTWColor.TWColor.html#GetGrayscale">GetGrayscale</a>;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>property <b><a  href="UTWColor.TWColor.html#Opacity">Opacity</a></b>: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a> read <a  href="UTWColor.TWColor.html#GetOpacity">GetOpacity</a> write <a  href="UTWColor.TWColor.html#SetOpacity">SetOpacity</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWColor.TWColor.html#Opacity">Opacity</a></strong>: <a href="UTWTypes.html#TWUInt32">TWUInt32</a> read <a href="UTWColor.TWColor.html#GetOpacity">GetOpacity</a> write <a href="UTWColor.TWColor.html#SetOpacity">SetOpacity</a>;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>property <b><a  href="UTWColor.TWColor.html#R">R</a></b>: Byte read <a  href="UTWColor.TWColor.html#GetRed">GetRed</a> write <a  href="UTWColor.TWColor.html#SetRed">SetRed</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWColor.TWColor.html#R">R</a></strong>: Byte read <a href="UTWColor.TWColor.html#GetRed">GetRed</a> write <a href="UTWColor.TWColor.html#SetRed">SetRed</a>;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
-<h3 class="detail">Internal Types</h3>
+<h3 class="detail">Nested Types</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IEHexFormat"></span><code><b>IEHexFormat</b> = (...);</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEHexFormat"></span><code><strong>IEHexFormat</strong> = (...);</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Hexadecimal format enumeration      </p>
 <h6 class="description_section">Values</h6>
@@ -208,9 +258,10 @@ Hexadecimal format enumeration      </p>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const pOther: <a  href="UTWColor.html#PWColor">PWColor</a>); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <strong>Create</strong>(const pOther: <a href="UTWColor.html#PWColor">PWColor</a>); overload;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Copy constructor </p>
 <h6 class="description_section">Parameters</h6>
@@ -222,11 +273,12 @@ Copy constructor </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(red, green, blue, alpha: Byte); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <strong>Create</strong>(red, green, blue, alpha: Byte); overload;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Constructor     <br> <b>NOTE</b> Use an overload instead of a default parameter, otherwise the wrong code will be emitted in the .hpp files</p>
+Constructor     <br> <strong>NOTE</strong> Use an overload instead of a default parameter, otherwise the wrong code will be emitted in the .hpp files</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>red</dt>
@@ -242,9 +294,10 @@ Constructor     <br> <b>NOTE</b> Use an overload instead of a default parameter,
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(red, green, blue: Byte); overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <strong>Create</strong>(red, green, blue: Byte); overload;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Constructor   </p>
 <h6 class="description_section">Parameters</h6>
@@ -260,11 +313,12 @@ Constructor   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Blend"></span><code>function <b>Blend</b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>; level: Double): <a  href="UTWColor.TWColor.html">TWColor</a>; overload; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Blend"></span><code>function <strong>Blend</strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>; level: Double): <a href="UTWColor.TWColor.html">TWColor</a>; overload; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Blend colors    <br> <b>NOTE</b> Internal color will be returned if offset is set to 0.0f, other color if set to 1.0f</p>
+Blend colors    <br> <strong>NOTE</strong> Internal color will be returned if offset is set to 0.0f, other color if set to 1.0f</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>other</dt>
@@ -277,11 +331,12 @@ Blend colors    <br> <b>NOTE</b> Internal color will be returned if offset is se
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Blend"></span><code>function <b>Blend</b>(red, green, blue, alpha: Byte; level: Single): <a  href="UTWColor.TWColor.html">TWColor</a>; overload; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Blend"></span><code>function <strong>Blend</strong>(red, green, blue, alpha: Byte; level: Single): <a href="UTWColor.TWColor.html">TWColor</a>; overload; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Blend colors       <br> <b>NOTE</b> Internal color will be returned if offset is set to 0.0f, other color if set to 1.0f</p>
+Blend colors       <br> <strong>NOTE</strong> Internal color will be returned if offset is set to 0.0f, other color if set to 1.0f</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>red</dt>
@@ -300,9 +355,10 @@ Blend colors       <br> <b>NOTE</b> Internal color will be returned if offset is
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ChangeBrightness"></span><code>function <b>ChangeBrightness</b>(brightness: Double): <a  href="UTWColor.TWColor.html">TWColor</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ChangeBrightness"></span><code>function <strong>ChangeBrightness</strong>(brightness: Double): <a href="UTWColor.TWColor.html">TWColor</a>;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Change color brightness </p>
 <h6 class="description_section">Parameters</h6>
@@ -314,9 +370,10 @@ Change color brightness </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Clone"></span><code>function <b>Clone</b>: <a  href="UTWColor.TWColor.html">TWColor</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clone"></span><code>function <strong>Clone</strong>: <a href="UTWColor.TWColor.html">TWColor</a>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Clone color </p>
 <h6 class="description_section">Returns</h6>
@@ -324,9 +381,10 @@ Clone color </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Differs"></span><code>function <b>Differs</b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>): Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Differs"></span><code>function <strong>Differs</strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>): Boolean; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Check if color content differs from another color  </p>
 <h6 class="description_section">Parameters</h6>
@@ -339,9 +397,10 @@ Check if color content differs from another color  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="FromFunction"></span><code>function <b>FromFunction</b>(functionStr: UnicodeString): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="FromFunction"></span><code>function <strong>FromFunction</strong>(functionStr: UnicodeString): Boolean;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set color from a string containing a function (e.g. rgb(255, 0, 255))  </p>
 <h6 class="description_section">Parameters</h6>
@@ -354,9 +413,10 @@ Set color from a string containing a function (e.g. rgb(255, 0, 255))  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="FromHex"></span><code>function <b>FromHex</b>(const hex: UnicodeString; opacity: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a>; format: <a  href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a>): Boolean; overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="FromHex"></span><code>function <strong>FromHex</strong>(const hex: UnicodeString; opacity: <a href="UTWTypes.html#TWUInt32">TWUInt32</a>; format: <a href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a>): Boolean; overload;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set color from hexadecimal string    </p>
 <h6 class="description_section">Parameters</h6>
@@ -373,9 +433,10 @@ Set color from hexadecimal string    </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="FromHex"></span><code>function <b>FromHex</b>(const hex: UnicodeString; format: <a  href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a> ): Boolean; overload;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="FromHex"></span><code>function <strong>FromHex</strong>(const hex: UnicodeString; format: <a href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a> ): Boolean; overload;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set color from hexadecimal string   </p>
 <h6 class="description_section">Parameters</h6>
@@ -390,9 +451,10 @@ Set color from hexadecimal string   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetAlpha"></span><code>function <b>GetAlpha</b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetAlpha"></span><code>function <strong>GetAlpha</strong>: Byte; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get color alpha value </p>
 <h6 class="description_section">Returns</h6>
@@ -400,9 +462,10 @@ Get color alpha value </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetBlue"></span><code>function <b>GetBlue</b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetBlue"></span><code>function <strong>GetBlue</strong>: Byte; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get color blue component </p>
 <h6 class="description_section">Returns</h6>
@@ -410,9 +473,10 @@ Get color blue component </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetDefault"></span><code>class function <b>GetDefault</b>: <a  href="UTWColor.TWColor.html">TWColor</a>; inline; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetDefault"></span><code>class function <strong>GetDefault</strong>: <a href="UTWColor.TWColor.html">TWColor</a>; inline; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get the default color </p>
 <h6 class="description_section">Returns</h6>
@@ -420,9 +484,10 @@ Get the default color </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetGrayscale"></span><code>function <b>GetGrayscale</b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetGrayscale"></span><code>function <strong>GetGrayscale</strong>: Byte; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get grayscale value </p>
 <h6 class="description_section">Returns</h6>
@@ -430,9 +495,10 @@ Get grayscale value </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetGreen"></span><code>function <b>GetGreen</b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetGreen"></span><code>function <strong>GetGreen</strong>: Byte; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get color green component </p>
 <h6 class="description_section">Returns</h6>
@@ -440,9 +506,10 @@ Get color green component </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetHashCode"></span><code>function <b>GetHashCode</b>(initValue: Integer): Integer; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetHashCode"></span><code>function <strong>GetHashCode</strong>(initValue: Integer): Integer; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get the hash code based on the class content  </p>
 <h6 class="description_section">Parameters</h6>
@@ -455,9 +522,10 @@ Get the hash code based on the class content  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetOpacity"></span><code>function <b>GetOpacity</b>: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetOpacity"></span><code>function <strong>GetOpacity</strong>: <a href="UTWTypes.html#TWUInt32">TWUInt32</a>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get opacity </p>
 <h6 class="description_section">Returns</h6>
@@ -465,9 +533,10 @@ Get opacity </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetRed"></span><code>function <b>GetRed</b>: Byte; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetRed"></span><code>function <strong>GetRed</strong>: Byte; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get color red component </p>
 <h6 class="description_section">Returns</h6>
@@ -475,9 +544,10 @@ Get color red component </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetRGB555"></span><code>function <b>GetRGB555</b>: Word; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetRGB555"></span><code>function <strong>GetRGB555</strong>: Word; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get 16 bit (RGB 555) color </p>
 <h6 class="description_section">Returns</h6>
@@ -485,9 +555,10 @@ Get 16 bit (RGB 555) color </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetRGB565"></span><code>function <b>GetRGB565</b>: Word; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetRGB565"></span><code>function <strong>GetRGB565</strong>: Word; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get 16 bit (RGB 565) color </p>
 <h6 class="description_section">Returns</h6>
@@ -495,9 +566,10 @@ Get 16 bit (RGB 565) color </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetRGBColor"></span><code>function <b>GetRGBColor</b>: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetRGBColor"></span><code>function <strong>GetRGBColor</strong>: <a href="UTWTypes.html#TWUInt32">TWUInt32</a>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get RGB color </p>
 <h6 class="description_section">Returns</h6>
@@ -505,19 +577,21 @@ Get RGB color </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IsEmpty"></span><code>function <b>IsEmpty</b>: Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsEmpty"></span><code>function <strong>IsEmpty</strong>: Boolean; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Check if color is empty </p>
 <h6 class="description_section">Returns</h6>
-<p class="return"><code>True</code> if color is emply, otherwise <code>False</code></p></td></tr>
+<p class="return"><code>True</code> if color is empty, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="IsEqual"></span><code>function <b>IsEqual</b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>): Boolean; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IsEqual"></span><code>function <strong>IsEqual</strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>): Boolean; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Check if color content is equal to another color  </p>
 <h6 class="description_section">Parameters</h6>
@@ -530,9 +604,10 @@ Check if color content is equal to another color  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ToFunction"></span><code>function <b>ToFunction</b>(hsl, includeAlpha: Boolean; upperCase: Boolean = False; includeSpaces: Boolean = False): UnicodeString;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToFunction"></span><code>function <strong>ToFunction</strong>(hsl, includeAlpha: Boolean; upperCase: Boolean = False; includeSpaces: Boolean = False): UnicodeString;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get color as function (e.g. rgb(255, 0, 255))    </p>
 <h6 class="description_section">Parameters</h6>
@@ -549,9 +624,10 @@ Get color as function (e.g. rgb(255, 0, 255))    </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ToHex"></span><code>function <b>ToHex</b>(upperCase: Boolean; const prefix: UnicodeString ='#'; format: <a  href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a> = <a  href="">IE_HF_RGB</a>): UnicodeString;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToHex"></span><code>function <strong>ToHex</strong>(upperCase: Boolean; const prefix: UnicodeString ='#'; format: <a href="UTWColor.TWColor.html#IEHexFormat">IEHexFormat</a> = <a href="">IE_HF_RGB</a>): UnicodeString;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get color as formatted hexadecimal string    </p>
 <h6 class="description_section">Parameters</h6>
@@ -568,9 +644,10 @@ Get color as formatted hexadecimal string    </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ValidateFunction"></span><code>function <b>ValidateFunction</b>(functionStr: UnicodeString): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ValidateFunction"></span><code>function <strong>ValidateFunction</strong>(functionStr: UnicodeString): Boolean;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Check if a string contains a color function (e.g. rgb(255, 0, 255))  </p>
 <h6 class="description_section">Parameters</h6>
@@ -583,9 +660,10 @@ Check if a string contains a color function (e.g. rgb(255, 0, 255))  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <strong>Assign</strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Assign color </p>
 <h6 class="description_section">Parameters</h6>
@@ -597,9 +675,10 @@ Assign color </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="BlendAndApply"></span><code>procedure <b>BlendAndApply</b>(const other: <a  href="UTWColor.TWColor.html">TWColor</a>; level: Double);</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="BlendAndApply"></span><code>procedure <strong>BlendAndApply</strong>(const other: <a href="UTWColor.TWColor.html">TWColor</a>; level: Double);</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Blend color with other color, and apply result inside color directly  </p>
 <h6 class="description_section">Parameters</h6>
@@ -613,18 +692,20 @@ Blend color with other color, and apply result inside color directly  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <strong>Clear</strong>; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Clear color</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="FromHSL"></span><code>procedure <b>FromHSL</b>(hue, saturation, luminance: Word); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="FromHSL"></span><code>procedure <strong>FromHSL</strong>(hue, saturation, luminance: Word); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set color from HSL (hue, saturation, luminance) values   </p>
 <h6 class="description_section">Parameters</h6>
@@ -640,9 +721,10 @@ Set color from HSL (hue, saturation, luminance) values   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SetAlpha"></span><code>procedure <b>SetAlpha</b>(alpha: Byte); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetAlpha"></span><code>procedure <strong>SetAlpha</strong>(alpha: Byte); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set color alpha component </p>
 <h6 class="description_section">Parameters</h6>
@@ -654,9 +736,10 @@ Set color alpha component </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SetBlue"></span><code>procedure <b>SetBlue</b>(blue: Byte); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetBlue"></span><code>procedure <strong>SetBlue</strong>(blue: Byte); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set color blue component </p>
 <h6 class="description_section">Parameters</h6>
@@ -668,9 +751,10 @@ Set color blue component </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SetColor"></span><code>procedure <b>SetColor</b>(red, green, blue: Byte; alpha: Byte = 255); overload; inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetColor"></span><code>procedure <strong>SetColor</strong>(red, green, blue: Byte; alpha: Byte = 255); overload; inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set color    </p>
 <h6 class="description_section">Parameters</h6>
@@ -688,9 +772,10 @@ Set color    </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SetGreen"></span><code>procedure <b>SetGreen</b>(green: Byte); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetGreen"></span><code>procedure <strong>SetGreen</strong>(green: Byte); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set color green component </p>
 <h6 class="description_section">Parameters</h6>
@@ -702,9 +787,10 @@ Set color green component </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SetOpacity"></span><code>procedure <b>SetOpacity</b>(opacity: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a>); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetOpacity"></span><code>procedure <strong>SetOpacity</strong>(opacity: <a href="UTWTypes.html#TWUInt32">TWUInt32</a>); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set opacity </p>
 <h6 class="description_section">Parameters</h6>
@@ -716,9 +802,10 @@ Set opacity </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SetRed"></span><code>procedure <b>SetRed</b>(red: Byte); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetRed"></span><code>procedure <strong>SetRed</strong>(red: Byte); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set color red component </p>
 <h6 class="description_section">Parameters</h6>
@@ -730,9 +817,10 @@ Set color red component </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SetRGB555"></span><code>procedure <b>SetRGB555</b>(const color: Word); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetRGB555"></span><code>procedure <strong>SetRGB555</strong>(const color: Word); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set 16 bit (RGB 555) color </p>
 <h6 class="description_section">Parameters</h6>
@@ -744,9 +832,10 @@ Set 16 bit (RGB 555) color </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="SetRGB565"></span><code>procedure <b>SetRGB565</b>(const color: Word); inline;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetRGB565"></span><code>procedure <strong>SetRGB565</strong>(const color: Word); inline;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Set 16 bit (RGB 565) color </p>
 <h6 class="description_section">Parameters</h6>
@@ -758,27 +847,29 @@ Set 16 bit (RGB 565) color </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="ToHSL"></span><code>procedure <b>ToHSL</b>(out hue, saturation, luminance: Word);</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToHSL"></span><code>procedure <strong>ToHSL</strong>(out hue, saturation, luminance: Word);</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get color as HSL (hue, saturation, luminance) values   </p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>hue</dt>
-<dd><b>[out]</b> Hue level</dd>
+<dd><strong>[out]</strong> Hue level</dd>
 <dt>saturation</dt>
-<dd><b>[out]</b> Saturation level</dd>
+<dd><strong>[out]</strong> Saturation level</dd>
 <dt>luminance</dt>
-<dd><b>[out]</b> Luminance level</dd>
+<dd><strong>[out]</strong> Luminance level</dd>
 </dl>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Equal"></span><code>class operator <b>Equal</b>(a, b: <a  href="UTWColor.TWColor.html">TWColor</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Equal"></span><code>class operator <strong>Equal</strong>(a, b: <a href="UTWColor.TWColor.html">TWColor</a>): Boolean;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Equality operator (allows operations on colors like a = b)   </p>
 <h6 class="description_section">Parameters</h6>
@@ -793,9 +884,10 @@ Equality operator (allows operations on colors like a = b)   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="NotEqual"></span><code>class operator <b>NotEqual</b>(a, b: <a  href="UTWColor.TWColor.html">TWColor</a>): Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="NotEqual"></span><code>class operator <strong>NotEqual</strong>(a, b: <a href="UTWColor.TWColor.html">TWColor</a>): Boolean;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Not equality operator (allows operations on colors like a &lt;&gt; b)   </p>
 <h6 class="description_section">Parameters</h6>
@@ -811,58 +903,64 @@ Not equality operator (allows operations on colors like a &lt;&gt; b)   </p>
 <h3 class="detail">Properties</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="A"></span><code>property <b>A</b>: Byte read <a  href="UTWColor.TWColor.html#GetAlpha">GetAlpha</a> write <a  href="UTWColor.TWColor.html#SetAlpha">SetAlpha</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="A"></span><code>property <strong>A</strong>: Byte read <a href="UTWColor.TWColor.html#GetAlpha">GetAlpha</a> write <a href="UTWColor.TWColor.html#SetAlpha">SetAlpha</a>;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Gets or sets the color alpha component (from 0 to 255)</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="B"></span><code>property <b>B</b>: Byte read <a  href="UTWColor.TWColor.html#GetBlue">GetBlue</a> write <a  href="UTWColor.TWColor.html#SetBlue">SetBlue</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="B"></span><code>property <strong>B</strong>: Byte read <a href="UTWColor.TWColor.html#GetBlue">GetBlue</a> write <a href="UTWColor.TWColor.html#SetBlue">SetBlue</a>;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Gets or sets the color blue component (from 0 to 255)</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="G"></span><code>property <b>G</b>: Byte read <a  href="UTWColor.TWColor.html#GetGreen">GetGreen</a> write <a  href="UTWColor.TWColor.html#SetGreen">SetGreen</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="G"></span><code>property <strong>G</strong>: Byte read <a href="UTWColor.TWColor.html#GetGreen">GetGreen</a> write <a href="UTWColor.TWColor.html#SetGreen">SetGreen</a>;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Gets or sets the color green component (from 0 to 255)</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Grayscale"></span><code>property <b>Grayscale</b>: Byte read <a  href="UTWColor.TWColor.html#GetGrayscale">GetGrayscale</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Grayscale"></span><code>property <strong>Grayscale</strong>: Byte read <a href="UTWColor.TWColor.html#GetGrayscale">GetGrayscale</a>;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Gets the color grayscale</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="Opacity"></span><code>property <b>Opacity</b>: <a  href="UTWTypes.html#TWUInt32">TWUInt32</a> read <a  href="UTWColor.TWColor.html#GetOpacity">GetOpacity</a> write <a  href="UTWColor.TWColor.html#SetOpacity">SetOpacity</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Opacity"></span><code>property <strong>Opacity</strong>: <a href="UTWTypes.html#TWUInt32">TWUInt32</a> read <a href="UTWColor.TWColor.html#GetOpacity">GetOpacity</a> write <a href="UTWColor.TWColor.html#SetOpacity">SetOpacity</a>;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Gets or sets the color opacity, in percent (from 0 to 100)</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="R"></span><code>property <b>R</b>: Byte read <a  href="UTWColor.TWColor.html#GetRed">GetRed</a> write <a  href="UTWColor.TWColor.html#SetRed">SetRed</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="R"></span><code>property <strong>R</strong>: Byte read <a href="UTWColor.TWColor.html#GetRed">GetRed</a> write <a href="UTWColor.TWColor.html#SetRed">SetRed</a>;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Gets or sets the color red component (from 0 to 255)</p>
 </td></tr>
 </table>
-<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+<hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>
 </span>
-</td></tr></table></body></html>
+</div></div></body></html>

@@ -3,25 +3,25 @@
 <head>
 <title>SVG Magic: UTWSVGProperties: Class TWSVGPropMatrix</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="PasDoc 0.15.0">
+<meta name="generator" content="PasDoc 0.16.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="StyleSheet" type="text/css" href="pasdoc.css">
 </head>
 <body>
-<table class="container"><tr><td class="navigation">
-<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<div class="container"><div class="navigation">
+<h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
 <span id="TWSVGPropMatrix"></span><h1 class="cio">Class TWSVGPropMatrix</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-NestedTypes">Nested Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a  href="UTWSVGProperties.html">UTWSVGProperties</a></p>
+<a href="UTWSVGProperties.html">UTWSVGProperties</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
 <code>type TWSVGPropMatrix = class(<a class="normal" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>)</code></p>
 <h2 class="description">Description</h2>
 <p>
-Scalable Vector Graphics (SVG) matrix property <br> <b>NOTE</b> The matrices are written in SVG in the form: matrixType(a, b, c, d, e, f)
+Scalable Vector Graphics (SVG) matrix property <br> <strong>NOTE</strong> The matrices are written in SVG in the form: matrixType(a, b, c, d, e, f)
 
 <p>Here are how these values are distributed in the matrix: [ a c e ] [ b d f ] [ 0 0 1 ]
 
@@ -29,87 +29,87 @@ Scalable Vector Graphics (SVG) matrix property <br> <b>NOTE</b> The matrices are
 
 <p>In this case the values are distributed as follow: [ 1 0 x ] [ 0 1 y ] [ 0 0 1 ]
 
-<p>For further info, see: <a  href="https://www.w3.org/TR/SVG/coords.html#TransformMatrixDefined">https://www.w3.org/TR/SVG/coords.html#TransformMatrixDefined</a></p>
+<p>For further info, see: <a href="https://www.w3.org/TR/SVG/coords.html#TransformMatrixDefined">https://www.w3.org/TR/SVG/coords.html#TransformMatrixDefined</a></p>
 <span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
 <li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a></li>
 <li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a></li>
 <li class="thisitem">TWSVGPropMatrix</li></ul><h2 class="overview">Overview</h2>
-<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<span id="PasDoc-NestedTypes"></span><h3 class="summary">Nested Types</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#IEType">IEType</a></b> = (...);</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#IEType">IEType</a></strong> = (...);</code></td>
 </tr>
 </table>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#Create">Create</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#Create">Create</a></strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>destructor <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#Destroy">Destroy</a></b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#Destroy">Destroy</a></strong>; override;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#CreateInstance">CreateInstance</a></b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#CreateInstance">CreateInstance</a></strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; override;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#Parse">Parse</a></b>(const data: UnicodeString): Boolean; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#Parse">Parse</a></strong>(const data: UnicodeString): Boolean; override;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#Parse_Unoptimized">Parse_Unoptimized</a></b>(const data: UnicodeString): Boolean; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#Parse_Unoptimized">Parse_Unoptimized</a></strong>(const data: UnicodeString): Boolean; virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#Print">Print</a></b>(margin: Cardinal): UnicodeString; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#Print">Print</a></strong>(margin: Cardinal): UnicodeString; override;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#ToXml">ToXml</a></b>: UnicodeString; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#ToXml">ToXml</a></strong>: UnicodeString; override;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#GetMatrix">GetMatrix</a></b>: <a  href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a>; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#GetMatrix">GetMatrix</a></strong>: <a href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a>; virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#Assign">Assign</a></b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#Assign">Assign</a></strong>(const pOther: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#Clear">Clear</a></b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#Clear">Clear</a></strong>; override;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#Log">Log</a></b>(margin: Cardinal); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#Log">Log</a></strong>(margin: Cardinal); override;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#SetMatrix">SetMatrix</a></b>(pMatrix: <a  href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a>); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#SetMatrix">SetMatrix</a></strong>(pMatrix: <a href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a>); virtual;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#Matrix">Matrix</a></b>: <a  href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a> <a  href="UTWSVGItems.TWSVGProperty.html#Read">read</a> <a  href="UTWSVGProperties.TWSVGPropMatrix.html#GetMatrix">GetMatrix</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#Matrix">Matrix</a></strong>: <a href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a> <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> <a href="UTWSVGProperties.TWSVGPropMatrix.html#GetMatrix">GetMatrix</a>;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGProperties.TWSVGPropMatrix.html#MatrixType">MatrixType</a></b>: <a  href="UTWSVGProperties.TWSVGPropMatrix.html#IEType">IEType</a> <a  href="UTWSVGItems.TWSVGProperty.html#Read">read</a> m_Type write m_Type;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGProperties.TWSVGPropMatrix.html#MatrixType">MatrixType</a></strong>: <a href="UTWSVGProperties.TWSVGPropMatrix.html#IEType">IEType</a> <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> m_Type write m_Type;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
-<h3 class="detail">Internal Types</h3>
+<h3 class="detail">Nested Types</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="IEType"></span><code><b>IEType</b> = (...);</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEType"></span><code><strong>IEType</strong> = (...);</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -136,8 +136,8 @@ Matrix type enumeration       </p>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a  href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <strong>Create</strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -153,8 +153,8 @@ Constructor  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <strong>Destroy</strong>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -163,8 +163,8 @@ Destructor</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="CreateInstance"></span><code>function <b>CreateInstance</b>(pParent: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a  href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CreateInstance"></span><code>function <strong>CreateInstance</strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -179,8 +179,8 @@ Create new property instance  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Parse"></span><code>function <b>Parse</b>(const data: UnicodeString): Boolean; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Parse"></span><code>function <strong>Parse</strong>(const data: UnicodeString): Boolean; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -195,12 +195,12 @@ Parse data  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Parse_Unoptimized"></span><code>function <b>Parse_Unoptimized</b>(const data: UnicodeString): Boolean; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Parse_Unoptimized"></span><code>function <strong>Parse_Unoptimized</strong>(const data: UnicodeString): Boolean; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Parse data   <br> <b>NOTE</b> In this overload, the code clarity is favored on the execution speed. The reason why this function was kept is that it can be used as strongly tested alternative in case an unknown bug happen in the function used in production</p>
+Parse data   <br> <strong>NOTE</strong> In this overload, the code clarity is favored on the execution speed. The reason why this function was kept is that it can be used as strongly tested alternative in case an unknown bug happen in the function used in production</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>data</dt>
@@ -211,8 +211,8 @@ Parse data   <br> <b>NOTE</b> In this overload, the code clarity is favored on t
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Print"></span><code>function <b>Print</b>(margin: Cardinal): UnicodeString; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Print"></span><code>function <strong>Print</strong>(margin: Cardinal): UnicodeString; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -227,8 +227,8 @@ Print content to string  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="ToXml"></span><code>function <b>ToXml</b>: UnicodeString; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToXml"></span><code>function <strong>ToXml</strong>: UnicodeString; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -238,8 +238,8 @@ Get xml formatted string </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="GetMatrix"></span><code>function <b>GetMatrix</b>: <a  href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a>; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="GetMatrix"></span><code>function <strong>GetMatrix</strong>: <a href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -249,8 +249,8 @@ Get the matrix </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Assign"></span><code>procedure <b>Assign</b>(const pOther: <a  href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Assign"></span><code>procedure <strong>Assign</strong>(const pOther: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -264,8 +264,8 @@ Assign (i.e. copy) content from another item </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Clear"></span><code>procedure <b>Clear</b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Clear"></span><code>procedure <strong>Clear</strong>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -274,8 +274,8 @@ Clear</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Log"></span><code>procedure <b>Log</b>(margin: Cardinal); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Log"></span><code>procedure <strong>Log</strong>(margin: Cardinal); override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -289,8 +289,8 @@ Log content </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="SetMatrix"></span><code>procedure <b>SetMatrix</b>(pMatrix: <a  href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a>); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SetMatrix"></span><code>procedure <strong>SetMatrix</strong>(pMatrix: <a href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a>); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -305,8 +305,8 @@ Set the matrix </p>
 <h3 class="detail">Properties</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Matrix"></span><code>property <b>Matrix</b>: <a  href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a> <a  href="UTWSVGItems.TWSVGProperty.html#Read">read</a> <a  href="UTWSVGProperties.TWSVGPropMatrix.html#GetMatrix">GetMatrix</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Matrix"></span><code>property <strong>Matrix</strong>: <a href="UTWMatrix.html#PWMatrix3x3">PWMatrix3x3</a> <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> <a href="UTWSVGProperties.TWSVGPropMatrix.html#GetMatrix">GetMatrix</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -315,14 +315,14 @@ Get the matrix</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="MatrixType"></span><code>property <b>MatrixType</b>: <a  href="UTWSVGProperties.TWSVGPropMatrix.html#IEType">IEType</a> <a  href="UTWSVGItems.TWSVGProperty.html#Read">read</a> m_Type write m_Type;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="MatrixType"></span><code>property <strong>MatrixType</strong>: <a href="UTWSVGProperties.TWSVGPropMatrix.html#IEType">IEType</a> <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> m_Type write m_Type;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
 Get or set the matrix type</p>
 </td></tr>
 </table>
-<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+<hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>
 </span>
-</td></tr></table></body></html>
+</div></div></body></html>

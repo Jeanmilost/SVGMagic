@@ -836,7 +836,7 @@ type
              @value(IE_AR_XMidYMid Force uniform scaling. Align the midpoint X value of the element's
                                    viewBox with the midpoint X value of the viewport. Align the midpoint
                                    Y value of the element's viewBox with the midpoint Y value of the
-                                   viewport
+                                   viewport)
              @value(IE_AR_XMaxYMid Force uniform scaling. Align the <min-x>+<width> of the element's
                                    viewBox with the maximum X value of the viewport. Align the midpoint
                                    Y value of the element's viewBox with the midpoint Y value of the

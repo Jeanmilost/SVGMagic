@@ -3,19 +3,19 @@
 <head>
 <title>SVG Magic: UTWSVGComponentStyle: Class TWSVGComponentStyle</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="PasDoc 0.15.0">
+<meta name="generator" content="PasDoc 0.16.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="StyleSheet" type="text/css" href="pasdoc.css">
 </head>
 <body>
-<table class="container"><tr><td class="navigation">
-<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<div class="container"><div class="navigation">
+<h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
 <span id="TWSVGComponentStyle"></span><h1 class="cio">Class TWSVGComponentStyle</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalCRs">Internal Classes and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-InternalTypes">Internal Types</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-NestedCRs">Nested Classes and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-NestedTypes">Nested Types</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a  href="UTWSVGComponentStyle.html">UTWSVGComponentStyle</a></p>
+<a href="UTWSVGComponentStyle.html">UTWSVGComponentStyle</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
 <code>type TWSVGComponentStyle = class(TComponent)</code></p>
@@ -23,241 +23,243 @@
 <p>
 Component style</p>
 <span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
-<ul class="hierarchy"><li class="ancestor">TComponent</li>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="ancestor">TPersistent</li>
+<li class="ancestor">TComponent</li>
 <li class="thisitem">TWSVGComponentStyle</li></ul><h2 class="overview">Overview</h2>
-<span id="PasDoc-InternalCRs"></span><h3 class="summary">Internal Classes and Records</h3>
+<span id="PasDoc-NestedCRs"></span><h3 class="summary">Nested Classes and Records</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html">IWGlyph</a></b> = class(TObject)</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.IWGlyph.html">IWGlyph</a></strong> = class(TObject)</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWSVGComponentStyleHook.html">IWSVGComponentStyleHook</a></b> = class(TObject)</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.IWSVGComponentStyleHook.html">IWSVGComponentStyleHook</a></strong> = class(TObject)</code></td>
 </tr>
 </table>
-<span id="PasDoc-InternalTypes"></span><h3 class="summary">Internal Types</h3>
+<span id="PasDoc-NestedTypes"></span><h3 class="summary">Nested Types</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#ITfSVGAnimateEvent">ITfSVGAnimateEvent</a></b> = function (pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#ITfSVGAnimateEvent">ITfSVGAnimateEvent</a></strong> = function (pSender: TObject; pAnimDesc: <a href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IWSVGComponentStyleHooks">IWSVGComponentStyleHooks</a></b> = TObjectList&lt;<a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWSVGComponentStyleHook.html">IWSVGComponentStyleHook</a>&gt;;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IWSVGComponentStyleHooks">IWSVGComponentStyleHooks</a></strong> = TObjectList&lt;<a href="UTWSVGComponentStyle.TWSVGComponentStyle.IWSVGComponentStyleHook.html">IWSVGComponentStyleHook</a>&gt;;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IWTargets">IWTargets</a></b> = TList&lt;TWinControl&gt;;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IWTargets">IWTargets</a></strong> = TList&lt;TWinControl&gt;;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Fields"></span><h3 class="summary">Fields</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_DPIScale">m_DPIScale</a></b>:            Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_DPIScale">m_DPIScale</a></strong>:            Boolean;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_ParentPixelsPerInch">m_ParentPixelsPerInch</a></b>: Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_ParentPixelsPerInch">m_ParentPixelsPerInch</a></strong>: Integer;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_pCanvas">m_pCanvas</a></b>:             TCanvas;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_pCanvas">m_pCanvas</a></strong>:             TCanvas;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a></b>:    Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a></strong>:    Boolean;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_pHooks">m_pHooks</a></b>:              <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IWSVGComponentStyleHooks">IWSVGComponentStyleHooks</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_pHooks">m_pHooks</a></strong>:              <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IWSVGComponentStyleHooks">IWSVGComponentStyleHooks</a>;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PixelsPerInch">m_PixelsPerInch</a></b>:       Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PixelsPerInch">m_PixelsPerInch</a></strong>:       Integer;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_pOverlay">m_pOverlay</a></b>:            Vcl.Graphics.TBitmap;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_pOverlay">m_pOverlay</a></strong>:            Vcl.Graphics.TBitmap;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_RefPixelsPerInch">m_RefPixelsPerInch</a></b>:    Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_RefPixelsPerInch">m_RefPixelsPerInch</a></strong>:    Integer;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_RestorePaint">m_RestorePaint</a></b>:        Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_RestorePaint">m_RestorePaint</a></strong>:        Boolean;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code><b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_StartPixelsPerInch">m_StartPixelsPerInch</a></b>:  Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_StartPixelsPerInch">m_StartPixelsPerInch</a></strong>:  Integer;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Create">Create</a></b>(pOwner: TComponent); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Create">Create</a></strong>(pOwner: TComponent); override;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>destructor <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Destroy">Destroy</a></b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Destroy">Destroy</a></strong>; override;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoAnimate">DoAnimate</a></b>(pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoAnimate">DoAnimate</a></strong>(pSender: TObject; pAnimDesc: <a href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoProcessAdvancedPaint">DoProcessAdvancedPaint</a></b>(pTarget: TWinControl): Boolean; virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoProcessAdvancedPaint">DoProcessAdvancedPaint</a></strong>(pTarget: TWinControl): Boolean; virtual; abstract;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoScaleWithDPI">DoScaleWithDPI</a></b>: Boolean; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoScaleWithDPI">DoScaleWithDPI</a></strong>: Boolean; virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IsPixelsPerInchStored">IsPixelsPerInchStored</a></b>: Boolean; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IsPixelsPerInchStored">IsPixelsPerInchStored</a></strong>: Boolean; virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#BeforeDestruction">BeforeDestruction</a></b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#BeforeDestruction">BeforeDestruction</a></strong>; override;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#AddTarget">AddTarget</a></b>(pTarget: TWinControl); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#AddTarget">AddTarget</a></strong>(pTarget: TWinControl); virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#CalculateCheckGlyphRects">CalculateCheckGlyphRects</a></b>(pTarget: TWinControl; alignment: TLeftRight; var bgRect: TRect; var cbRect: TRect); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#CalculateCheckGlyphRects">CalculateCheckGlyphRects</a></strong>(pTarget: TWinControl; alignment: TLeftRight; var bgRect: TRect; var cbRect: TRect); virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoAddTarget">DoAddTarget</a></b>(pControl: TControl); virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoAddTarget">DoAddTarget</a></strong>(pControl: TControl); virtual; abstract;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoApplyDPIChange">DoApplyDPIChange</a></b>(oldDPI, newDPI: Integer); virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoApplyDPIChange">DoApplyDPIChange</a></strong>(oldDPI, newDPI: Integer); virtual; abstract;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoSaveOriginalSize">DoSaveOriginalSize</a></b>; virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoSaveOriginalSize">DoSaveOriginalSize</a></strong>; virtual; abstract;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoUpdateAnimStatus">DoUpdateAnimStatus</a></b>; virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DoUpdateAnimStatus">DoUpdateAnimStatus</a></strong>; virtual; abstract;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Draw">Draw</a></b>(hDC: THandle; pTarget: TWinControl); virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Draw">Draw</a></strong>(hDC: THandle; pTarget: TWinControl); virtual; abstract;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#FillBg">FillBg</a></b>(const rect: TRect; pTarget: TWinControl; pCanvas: TCanvas); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#FillBg">FillBg</a></strong>(const rect: TRect; pTarget: TWinControl; pCanvas: TCanvas); virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#InvalidateAllTargets">InvalidateAllTargets</a></b>; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#InvalidateAllTargets">InvalidateAllTargets</a></strong>; virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Loaded">Loaded</a></b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Loaded">Loaded</a></strong>; override;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#MeasureCheckGlyph">MeasureCheckGlyph</a></b>(dpiScale: Boolean; out width: Integer; out height: Integer; out xInner: Integer; out yInner: Integer); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#MeasureCheckGlyph">MeasureCheckGlyph</a></strong>(dpiScale: Boolean; out width: Integer; out height: Integer; out xInner: Integer; out yInner: Integer); virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Notification">Notification</a></b>(pComponent: TComponent; operation: TOperation); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Notification">Notification</a></strong>(pComponent: TComponent; operation: TOperation); override;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#OnFreeTarget">OnFreeTarget</a></b>(pTarget: TWinControl); virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#OnFreeTarget">OnFreeTarget</a></strong>(pTarget: TWinControl); virtual; abstract;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#ParentWndProc">ParentWndProc</a></b>(var message: TMessage); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#ParentWndProc">ParentWndProc</a></strong>(var message: TMessage); virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#RemoveTarget">RemoveTarget</a></b>(pTarget: TWinControl); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#RemoveTarget">RemoveTarget</a></strong>(pTarget: TWinControl); virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#RepaintAllTargets">RepaintAllTargets</a></b>; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#RepaintAllTargets">RepaintAllTargets</a></strong>; virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a></b>(value: Boolean; styleClass, targetClass: TClass); overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a></strong>(value: Boolean; styleClass, targetClass: TClass); overload; virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a></b>(value: Boolean); overload; virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a></strong>(value: Boolean); overload; virtual; abstract;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAnimate">SetAnimate</a></b>(value: Boolean); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAnimate">SetAnimate</a></strong>(value: Boolean); virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetDPIScale">SetDPIScale</a></b>(value: Boolean); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetDPIScale">SetDPIScale</a></strong>(value: Boolean); virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetEnabled">SetEnabled</a></b>(value: Boolean); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetEnabled">SetEnabled</a></strong>(value: Boolean); virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetPixelsPerInch">SetPixelsPerInch</a></b>(value: Integer); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetPixelsPerInch">SetPixelsPerInch</a></strong>(value: Integer); virtual;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#All">All</a></b>: Boolean read m_All write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a> default False;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#All">All</a></strong>: Boolean read m_All write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a> default False;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Animate">Animate</a></b>: Boolean read m_Animate write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAnimate">SetAnimate</a> default True;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Animate">Animate</a></strong>: Boolean read m_Animate write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAnimate">SetAnimate</a> default True;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DPIScale">DPIScale</a></b>: Boolean read <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_DPIScale">m_DPIScale</a> write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetDPIScale">SetDPIScale</a> default <a  href="UTWSVGComponentStyle.html#C_TWSVGComponentStyle_Default_DPIScale">C_TWSVGComponentStyle_Default_DPIScale</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#DPIScale">DPIScale</a></strong>: Boolean read <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_DPIScale">m_DPIScale</a> write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetDPIScale">SetDPIScale</a> default <a href="UTWSVGComponentStyle.html#C_TWSVGComponentStyle_Default_DPIScale">C_TWSVGComponentStyle_Default_DPIScale</a>;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Enabled">Enabled</a></b>: Boolean read m_Enabled write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetEnabled">SetEnabled</a> default True;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Enabled">Enabled</a></strong>: Boolean read m_Enabled write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetEnabled">SetEnabled</a> default True;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#OnAnimate">OnAnimate</a></b>: <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#ITfSVGAnimateEvent">ITfSVGAnimateEvent</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#OnAnimate">OnAnimate</a></strong>: <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#ITfSVGAnimateEvent">ITfSVGAnimateEvent</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#OnSVGComponentStyleDPIChanged">OnSVGComponentStyleDPIChanged</a></b>: <a  href="UTWSVGComponentStyle.html#TWfOnSVGComponentStyleDPIChanged">TWfOnSVGComponentStyleDPIChanged</a> read m_fOnSVGComponentStyleDPIChanged write m_fOnSVGComponentStyleDPIChanged;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#OnSVGComponentStyleDPIChanged">OnSVGComponentStyleDPIChanged</a></strong>: <a href="UTWSVGComponentStyle.html#TWfOnSVGComponentStyleDPIChanged">TWfOnSVGComponentStyleDPIChanged</a> read m_fOnSVGComponentStyleDPIChanged write m_fOnSVGComponentStyleDPIChanged;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#PerMonitorV2Mode">PerMonitorV2Mode</a></b>: Boolean read <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a> write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a> default True;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#PerMonitorV2Mode">PerMonitorV2Mode</a></strong>: Boolean read <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a> write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a> default True;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#PixelsPerInch">PixelsPerInch</a></b>: Integer read <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PixelsPerInch">m_PixelsPerInch</a> write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetPixelsPerInch">SetPixelsPerInch</a> stored <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IsPixelsPerInchStored">IsPixelsPerInchStored</a> nodefault;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#PixelsPerInch">PixelsPerInch</a></strong>: Integer read <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PixelsPerInch">m_PixelsPerInch</a> write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetPixelsPerInch">SetPixelsPerInch</a> stored <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IsPixelsPerInchStored">IsPixelsPerInchStored</a> nodefault;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Version">Version</a></b>: UnicodeString read GetVersion;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#Version">Version</a></strong>: UnicodeString read GetVersion;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
-<h3 class="detail">Internal Types</h3>
+<h3 class="detail">Nested Types</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="ITfSVGAnimateEvent"></span><code><b>ITfSVGAnimateEvent</b> = function (pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="ITfSVGAnimateEvent"></span><code><strong>ITfSVGAnimateEvent</strong> = function (pSender: TObject; pAnimDesc: <a href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean of object;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -276,8 +278,8 @@ Called when a SVG is about to be animated    </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="IWSVGComponentStyleHooks"></span><code><b>IWSVGComponentStyleHooks</b> = TObjectList&lt;<a  href="UTWSVGComponentStyle.TWSVGComponentStyle.IWSVGComponentStyleHook.html">IWSVGComponentStyleHook</a>&gt;;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="IWSVGComponentStyleHooks"></span><code><strong>IWSVGComponentStyleHooks</strong> = TObjectList&lt;<a href="UTWSVGComponentStyle.TWSVGComponentStyle.IWSVGComponentStyleHook.html">IWSVGComponentStyleHook</a>&gt;;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -286,8 +288,8 @@ Style hook list</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="IWTargets"></span><code><b>IWTargets</b> = TList&lt;TWinControl&gt;;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="IWTargets"></span><code><strong>IWTargets</strong> = TList&lt;TWinControl&gt;;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -297,80 +299,80 @@ Target list</p>
 <h3 class="detail">Fields</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_DPIScale"></span><code><b>m_DPIScale</b>:            Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_DPIScale"></span><code><strong>m_DPIScale</strong>:            Boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_ParentPixelsPerInch"></span><code><b>m_ParentPixelsPerInch</b>: Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_ParentPixelsPerInch"></span><code><strong>m_ParentPixelsPerInch</strong>: Integer;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_pCanvas"></span><code><b>m_pCanvas</b>:             TCanvas;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_pCanvas"></span><code><strong>m_pCanvas</strong>:             TCanvas;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_PerMonitorV2Mode"></span><code><b>m_PerMonitorV2Mode</b>:    Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_PerMonitorV2Mode"></span><code><strong>m_PerMonitorV2Mode</strong>:    Boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_pHooks"></span><code><b>m_pHooks</b>:              <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IWSVGComponentStyleHooks">IWSVGComponentStyleHooks</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_pHooks"></span><code><strong>m_pHooks</strong>:              <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IWSVGComponentStyleHooks">IWSVGComponentStyleHooks</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_PixelsPerInch"></span><code><b>m_PixelsPerInch</b>:       Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_PixelsPerInch"></span><code><strong>m_PixelsPerInch</strong>:       Integer;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_pOverlay"></span><code><b>m_pOverlay</b>:            Vcl.Graphics.TBitmap;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_pOverlay"></span><code><strong>m_pOverlay</strong>:            Vcl.Graphics.TBitmap;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_RefPixelsPerInch"></span><code><b>m_RefPixelsPerInch</b>:    Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_RefPixelsPerInch"></span><code><strong>m_RefPixelsPerInch</strong>:    Integer;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_RestorePaint"></span><code><b>m_RestorePaint</b>:        Boolean;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_RestorePaint"></span><code><strong>m_RestorePaint</strong>:        Boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="m_StartPixelsPerInch"></span><code><b>m_StartPixelsPerInch</b>:  Integer;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="m_StartPixelsPerInch"></span><code><strong>m_StartPixelsPerInch</strong>:  Integer;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -378,8 +380,8 @@ Target list</p>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(pOwner: TComponent); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <strong>Create</strong>(pOwner: TComponent); override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -393,8 +395,8 @@ Constructor </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <strong>Destroy</strong>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -403,8 +405,8 @@ Destructor</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoAnimate"></span><code>function <b>DoAnimate</b>(pSender: TObject; pAnimDesc: <a  href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoAnimate"></span><code>function <strong>DoAnimate</strong>(pSender: TObject; pAnimDesc: <a href="UTWSVGAnimationDescriptor.TWSVGAnimationDescriptor.html">TWSVGAnimationDescriptor</a>; pCustomData: Pointer): Boolean; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -423,8 +425,8 @@ Called while SVG animation is running    </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoProcessAdvancedPaint"></span><code>function <b>DoProcessAdvancedPaint</b>(pTarget: TWinControl): Boolean; virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoProcessAdvancedPaint"></span><code>function <strong>DoProcessAdvancedPaint</strong>(pTarget: TWinControl): Boolean; virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -439,8 +441,8 @@ Check if advanced paint should be done  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoScaleWithDPI"></span><code>function <b>DoScaleWithDPI</b>: Boolean; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoScaleWithDPI"></span><code>function <strong>DoScaleWithDPI</strong>: Boolean; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -450,8 +452,8 @@ Get if glyphs should be scaled with DPI </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="IsPixelsPerInchStored"></span><code>function <b>IsPixelsPerInchStored</b>: Boolean; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="IsPixelsPerInchStored"></span><code>function <strong>IsPixelsPerInchStored</strong>: Boolean; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -461,8 +463,8 @@ Check if pixels per inch value should be stored in DFM file </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="BeforeDestruction"></span><code>procedure <b>BeforeDestruction</b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="BeforeDestruction"></span><code>procedure <strong>BeforeDestruction</strong>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -471,8 +473,8 @@ Called before the component is freeing</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="AddTarget"></span><code>procedure <b>AddTarget</b>(pTarget: TWinControl); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="AddTarget"></span><code>procedure <strong>AddTarget</strong>(pTarget: TWinControl); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -486,8 +488,8 @@ Add a target control to the style </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="CalculateCheckGlyphRects"></span><code>procedure <b>CalculateCheckGlyphRects</b>(pTarget: TWinControl; alignment: TLeftRight; var bgRect: TRect; var cbRect: TRect); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="CalculateCheckGlyphRects"></span><code>procedure <strong>CalculateCheckGlyphRects</strong>(pTarget: TWinControl; alignment: TLeftRight; var bgRect: TRect; var cbRect: TRect); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -499,16 +501,16 @@ Calculate checkbox rects    </p>
 <dt>alignment</dt>
 <dd>Target component alignment</dd>
 <dt>bgRect</dt>
-<dd><b>[out]</b> Checkbox glyph background rect</dd>
+<dd><strong>[out]</strong> Checkbox glyph background rect</dd>
 <dt>cbRect</dt>
-<dd><b>[out]</b> Checkbox glyph rect</dd>
+<dd><strong>[out]</strong> Checkbox glyph rect</dd>
 </dl>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoAddTarget"></span><code>procedure <b>DoAddTarget</b>(pControl: TControl); virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoAddTarget"></span><code>procedure <strong>DoAddTarget</strong>(pControl: TControl); virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -522,8 +524,8 @@ Check if a newly added control should be added to skin engine, and add it if yes
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoApplyDPIChange"></span><code>procedure <b>DoApplyDPIChange</b>(oldDPI, newDPI: Integer); virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoApplyDPIChange"></span><code>procedure <strong>DoApplyDPIChange</strong>(oldDPI, newDPI: Integer); virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -539,8 +541,8 @@ Called when size should be recalculated due to a DPI change  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoSaveOriginalSize"></span><code>procedure <b>DoSaveOriginalSize</b>; virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoSaveOriginalSize"></span><code>procedure <strong>DoSaveOriginalSize</strong>; virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -549,8 +551,8 @@ Called when original component size should be saved (before any DPI change was a
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="DoUpdateAnimStatus"></span><code>procedure <b>DoUpdateAnimStatus</b>; virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="DoUpdateAnimStatus"></span><code>procedure <strong>DoUpdateAnimStatus</strong>; virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -559,8 +561,8 @@ Notify that the animation status has changed and should be updated</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="Draw"></span><code>procedure <b>Draw</b>(hDC: THandle; pTarget: TWinControl); virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="Draw"></span><code>procedure <strong>Draw</strong>(hDC: THandle; pTarget: TWinControl); virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -576,8 +578,8 @@ Draw the advanced paint on the target component  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="FillBg"></span><code>procedure <b>FillBg</b>(const rect: TRect; pTarget: TWinControl; pCanvas: TCanvas); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="FillBg"></span><code>procedure <strong>FillBg</strong>(const rect: TRect; pTarget: TWinControl; pCanvas: TCanvas); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -595,8 +597,8 @@ Fill a rect using the background color   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="InvalidateAllTargets"></span><code>procedure <b>InvalidateAllTargets</b>; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="InvalidateAllTargets"></span><code>procedure <strong>InvalidateAllTargets</strong>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -605,8 +607,8 @@ Invalidate all the targets</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="Loaded"></span><code>procedure <b>Loaded</b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="Loaded"></span><code>procedure <strong>Loaded</strong>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -615,8 +617,8 @@ Called on application starts, after DFM files were read and applied</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="MeasureCheckGlyph"></span><code>procedure <b>MeasureCheckGlyph</b>(dpiScale: Boolean; out width: Integer; out height: Integer; out xInner: Integer; out yInner: Integer); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="MeasureCheckGlyph"></span><code>procedure <strong>MeasureCheckGlyph</strong>(dpiScale: Boolean; out width: Integer; out height: Integer; out xInner: Integer; out yInner: Integer); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -626,20 +628,20 @@ Get measurements required to draw correctly a check glyph     </p>
 <dt>dpiScale</dt>
 <dd>If true returned measures should be scaled regarding to the DPI value</dd>
 <dt>width</dt>
-<dd><b>[out]</b> Menu style check glyph width in pixels</dd>
+<dd><strong>[out]</strong> Menu style check glyph width in pixels</dd>
 <dt>height</dt>
-<dd><b>[out]</b> Menu style check glyph height in pixels</dd>
+<dd><strong>[out]</strong> Menu style check glyph height in pixels</dd>
 <dt>xInner</dt>
-<dd><b>[out]</b> Menu style check glyph inner width in pixels</dd>
+<dd><strong>[out]</strong> Menu style check glyph inner width in pixels</dd>
 <dt>yInner</dt>
-<dd><b>[out]</b> Menu style check glyph inner height in pixels</dd>
+<dd><strong>[out]</strong> Menu style check glyph inner height in pixels</dd>
 </dl>
 </td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="Notification"></span><code>procedure <b>Notification</b>(pComponent: TComponent; operation: TOperation); override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="Notification"></span><code>procedure <strong>Notification</strong>(pComponent: TComponent; operation: TOperation); override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -655,8 +657,8 @@ Receive notification from the target control  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="OnFreeTarget"></span><code>procedure <b>OnFreeTarget</b>(pTarget: TWinControl); virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="OnFreeTarget"></span><code>procedure <strong>OnFreeTarget</strong>(pTarget: TWinControl); virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -670,8 +672,8 @@ Called when a target is freed </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="ParentWndProc"></span><code>procedure <b>ParentWndProc</b>(var message: TMessage); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ParentWndProc"></span><code>procedure <strong>ParentWndProc</strong>(var message: TMessage); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -685,8 +687,8 @@ Called when the Windows procedure is executed on the parent component </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="RemoveTarget"></span><code>procedure <b>RemoveTarget</b>(pTarget: TWinControl); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="RemoveTarget"></span><code>procedure <strong>RemoveTarget</strong>(pTarget: TWinControl); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -700,8 +702,8 @@ Remove a target control from the style </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="RepaintAllTargets"></span><code>procedure <b>RepaintAllTargets</b>; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="RepaintAllTargets"></span><code>procedure <strong>RepaintAllTargets</strong>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -710,8 +712,8 @@ Repaint all the targets</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetAll"></span><code>procedure <b>SetAll</b>(value: Boolean; styleClass, targetClass: TClass); overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetAll"></span><code>procedure <strong>SetAll</strong>(value: Boolean; styleClass, targetClass: TClass); overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -729,8 +731,8 @@ Enable or disable if all components mathcing with style are skinned   </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetAll"></span><code>procedure <b>SetAll</b>(value: Boolean); overload; virtual; abstract;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetAll"></span><code>procedure <strong>SetAll</strong>(value: Boolean); overload; virtual; abstract;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -744,8 +746,8 @@ Enable or disable if all components mathcing with style are skinned </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetAnimate"></span><code>procedure <b>SetAnimate</b>(value: Boolean); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetAnimate"></span><code>procedure <strong>SetAnimate</strong>(value: Boolean); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -759,8 +761,8 @@ Enable or disable if animations are running </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetDPIScale"></span><code>procedure <b>SetDPIScale</b>(value: Boolean); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetDPIScale"></span><code>procedure <strong>SetDPIScale</strong>(value: Boolean); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -774,8 +776,8 @@ Set image list DPI scale </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetEnabled"></span><code>procedure <b>SetEnabled</b>(value: Boolean); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetEnabled"></span><code>procedure <strong>SetEnabled</strong>(value: Boolean); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -789,8 +791,8 @@ Enable or disable the style </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetPixelsPerInch"></span><code>procedure <b>SetPixelsPerInch</b>(value: Integer); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="SetPixelsPerInch"></span><code>procedure <strong>SetPixelsPerInch</strong>(value: Integer); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -805,8 +807,8 @@ Set image list pixels per inch </p>
 <h3 class="detail">Properties</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="All"></span><code>property <b>All</b>: Boolean read m_All write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a> default False;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="All"></span><code>property <strong>All</strong>: Boolean read m_All write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAll">SetAll</a> default False;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -815,8 +817,8 @@ Enable or disable if all components on the form are skinned</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="Animate"></span><code>property <b>Animate</b>: Boolean read m_Animate write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAnimate">SetAnimate</a> default True;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="Animate"></span><code>property <strong>Animate</strong>: Boolean read m_Animate write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetAnimate">SetAnimate</a> default True;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -825,8 +827,8 @@ Enable or disable the animation</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="DPIScale"></span><code>property <b>DPIScale</b>: Boolean read <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_DPIScale">m_DPIScale</a> write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetDPIScale">SetDPIScale</a> default <a  href="UTWSVGComponentStyle.html#C_TWSVGComponentStyle_Default_DPIScale">C_TWSVGComponentStyle_Default_DPIScale</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="DPIScale"></span><code>property <strong>DPIScale</strong>: Boolean read <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_DPIScale">m_DPIScale</a> write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetDPIScale">SetDPIScale</a> default <a href="UTWSVGComponentStyle.html#C_TWSVGComponentStyle_Default_DPIScale">C_TWSVGComponentStyle_Default_DPIScale</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -835,8 +837,8 @@ Get or set if the image is scaled by the DPI value</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="Enabled"></span><code>property <b>Enabled</b>: Boolean read m_Enabled write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetEnabled">SetEnabled</a> default True;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="Enabled"></span><code>property <strong>Enabled</strong>: Boolean read m_Enabled write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetEnabled">SetEnabled</a> default True;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -845,8 +847,8 @@ Enable or disable the style</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="OnAnimate"></span><code>property <b>OnAnimate</b>: <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#ITfSVGAnimateEvent">ITfSVGAnimateEvent</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="OnAnimate"></span><code>property <strong>OnAnimate</strong>: <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#ITfSVGAnimateEvent">ITfSVGAnimateEvent</a> read m_fOnAnimate write m_fOnAnimate;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -855,8 +857,8 @@ Get or set the OnAnimate event</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="OnSVGComponentStyleDPIChanged"></span><code>property <b>OnSVGComponentStyleDPIChanged</b>: <a  href="UTWSVGComponentStyle.html#TWfOnSVGComponentStyleDPIChanged">TWfOnSVGComponentStyleDPIChanged</a> read m_fOnSVGComponentStyleDPIChanged write m_fOnSVGComponentStyleDPIChanged;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="OnSVGComponentStyleDPIChanged"></span><code>property <strong>OnSVGComponentStyleDPIChanged</strong>: <a href="UTWSVGComponentStyle.html#TWfOnSVGComponentStyleDPIChanged">TWfOnSVGComponentStyleDPIChanged</a> read m_fOnSVGComponentStyleDPIChanged write m_fOnSVGComponentStyleDPIChanged;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -865,8 +867,8 @@ Get or set OnSVGImageListDPIChanged event</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="PerMonitorV2Mode"></span><code>property <b>PerMonitorV2Mode</b>: Boolean read <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a> write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a> default True;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="PerMonitorV2Mode"></span><code>property <strong>PerMonitorV2Mode</strong>: Boolean read <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a> write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PerMonitorV2Mode">m_PerMonitorV2Mode</a> default True;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -875,8 +877,8 @@ Get or set if the per monitor v2 mode is used</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="PixelsPerInch"></span><code>property <b>PixelsPerInch</b>: Integer read <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PixelsPerInch">m_PixelsPerInch</a> write <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetPixelsPerInch">SetPixelsPerInch</a> stored <a  href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IsPixelsPerInchStored">IsPixelsPerInchStored</a> nodefault;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="PixelsPerInch"></span><code>property <strong>PixelsPerInch</strong>: Integer read <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#m_PixelsPerInch">m_PixelsPerInch</a> write <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#SetPixelsPerInch">SetPixelsPerInch</a> stored <a href="UTWSVGComponentStyle.TWSVGComponentStyle.html#IsPixelsPerInchStored">IsPixelsPerInchStored</a> nodefault;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -885,14 +887,14 @@ Get or set the pixels per inch value used to scale the image list content</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="Version"></span><code>property <b>Version</b>: UnicodeString read GetVersion;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="Version"></span><code>property <strong>Version</strong>: UnicodeString read GetVersion;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
 Get the library version number</p>
 </td></tr>
 </table>
-<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+<hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>
 </span>
-</td></tr></table></body></html>
+</div></div></body></html>

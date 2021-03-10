@@ -89,7 +89,7 @@ type
              @value(IE_AR_XMidYMid Force uniform scaling. Align the midpoint X value of the element's
                                    viewBox with the midpoint X value of the viewport. Align the midpoint
                                    Y value of the element's viewBox with the midpoint Y value of the
-                                   viewport
+                                   viewport)
              @value(IE_AR_XMaxYMid Force uniform scaling. Align the <min-x>+<width> of the element's
                                    viewBox with the maximum X value of the viewport. Align the midpoint
                                    Y value of the element's viewBox with the midpoint Y value of the
@@ -122,20 +122,20 @@ type
 
             {**
              Image aspect ratio reference
-             @value(IE_R_Meet Scale the graphic such that:
-                              - aspect ratio is preserved
-                              - the entire viewBox is visible within the viewport
-                              - the viewBox is scaled up as much as possible, while still meeting
-                                the other criteria
-                              In this case, if the aspect ratio of the graphic does not match the
-                              viewport, some of the viewport will extend beyond the bounds of the
-                              viewBox (i.e., the area into which the viewBox will draw will be
-                              smaller than the viewport))
-             @value(IE_R_Slice Scale the graphic such that:
+             @value(IE_IR_Meet Scale the graphic such that:
                                - aspect ratio is preserved
-                               - the entire viewport is covered by the viewBox
-                               - the viewBox is scaled down as much as possible, while still meeting
-                                 the other criteria)
+                               - the entire viewBox is visible within the viewport
+                               - the viewBox is scaled up as much as possible, while still meeting
+                                 the other criteria
+                               In this case, if the aspect ratio of the graphic does not match the
+                               viewport, some of the viewport will extend beyond the bounds of the
+                               viewBox (i.e., the area into which the viewBox will draw will be
+                               smaller than the viewport))
+             @value(IE_IR_Slice Scale the graphic such that:
+                                - aspect ratio is preserved
+                                - the entire viewport is covered by the viewBox
+                                - the viewBox is scaled down as much as possible, while still meeting
+                                  the other criteria)
             }
             IEImageAspectRatioRef =
             (

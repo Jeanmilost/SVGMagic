@@ -189,14 +189,14 @@
 					</VersionInfoKeys>
 				</Delphi.Personality>
 				<Deployment>
+					<DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
+						<Platform Name="OSX32"/>
+						<Platform Name="iOSSimulator"/>
+					</DeployFile>
 					<DeployFile LocalName="$(BDSCOMMONDIR)\Bpl\TWCommon.bpl" Configuration="Debug" Class="ProjectOutput">
 						<Platform Name="Win32">
 							<RemoteName>TWCommon.bpl</RemoteName>
 						</Platform>
-					</DeployFile>
-					<DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
-						<Platform Name="OSX32"/>
-						<Platform Name="iOSSimulator"/>
 					</DeployFile>
 					<DeployClass Name="DependencyPackage" Required="true">
 						<Platform Name="iOSDevice">

@@ -3,19 +3,19 @@
 <head>
 <title>SVG Magic: UTWGraphicPath: Class TWGraphicPathConverter.IConverter</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="PasDoc 0.15.0">
+<meta name="generator" content="PasDoc 0.16.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="StyleSheet" type="text/css" href="pasdoc.css">
 </head>
 <body>
-<table class="container"><tr><td class="navigation">
-<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<div class="container"><div class="navigation">
+<h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
 <span id="IConverter"></span><h1 class="cio">Class TWGraphicPathConverter.IConverter</h1>
 <div class="sections">
 <div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-EnclosingClass">Enclosing Class</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a  href="UTWGraphicPath.html">UTWGraphicPath</a></p>
+<a href="UTWGraphicPath.html">UTWGraphicPath</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
 <code>type IConverter = class(TObject)</code></p>
@@ -29,40 +29,40 @@ Convert path to output</p>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a  href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#Create">Create</a></b>; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <strong><a href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#Create">Create</a></strong>; virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>destructor <b><a  href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#Destroy">Destroy</a></b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <strong><a href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#Destroy">Destroy</a></strong>; override;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#Convert">Convert</a></b>(const instruction: <a  href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>; x, y: Integer; lastOp: <a  href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; var coordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var lastCurveEnd: <a  href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#Convert">Convert</a></strong>(const instruction: <a href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>; x, y: Integer; lastOp: <a href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; var coordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var lastCurveEnd: <a href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#Convert">Convert</a></b>(const instruction: <a  href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>; x, y: Integer; var coordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#Convert">Convert</a></strong>(const instruction: <a href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>; x, y: Integer; var coordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#OnConvert">OnConvert</a></b>(index: NativeUInt; x, y: Integer; point: Single; relative: Boolean; lastOp: <a  href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; var coordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var nextCoordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var curveStart: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var curveEnd: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var lastCurveEnd: <a  href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#OnConvert">OnConvert</a></strong>(index: NativeUInt; x, y: Integer; point: Single; relative: Boolean; lastOp: <a href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; var coordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var nextCoordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var curveStart: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var curveEnd: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var lastCurveEnd: <a href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
 </tr>
 <tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <b><a  href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#OnConvert">OnConvert</a></b>(index: NativeUInt; x, y: Integer; point: Single; relative: Boolean; var coordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var nextCoordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><code>function <strong><a href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#OnConvert">OnConvert</a></strong>(index: NativeUInt; x, y: Integer; point: Single; relative: Boolean; var coordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var nextCoordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
 </tr>
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#EnableRounding">EnableRounding</a></b>(value: Boolean); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWGraphicPath.TWGraphicPathConverter.IConverter.html#EnableRounding">EnableRounding</a></strong>(value: Boolean); virtual;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <strong>Create</strong>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -71,8 +71,8 @@ Constructor</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <strong>Destroy</strong>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -81,8 +81,8 @@ Destructor</p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Convert"></span><code>function <b>Convert</b>(const instruction: <a  href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>; x, y: Integer; lastOp: <a  href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; var coordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var lastCurveEnd: <a  href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Convert"></span><code>function <strong>Convert</strong>(const instruction: <a href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>; x, y: Integer; lastOp: <a href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; var coordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var lastCurveEnd: <a href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -98,17 +98,17 @@ Convert path instruction to output and update coordinate       </p>
 <dt>lastOp</dt>
 <dd>Last executed operation</dd>
 <dt>coordinate</dt>
-<dd><b>[in, out]</b> Current coordinate, new coordinate after conversion</dd>
+<dd><strong>[in, out]</strong> Current coordinate, new coordinate after conversion</dd>
 <dt>lastCurveEnd</dt>
-<dd><b>[in, out]</b> Last curve end, current curve end after conversion</dd>
+<dd><strong>[in, out]</strong> Last curve end, current curve end after conversion</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Convert"></span><code>function <b>Convert</b>(const instruction: <a  href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>; x, y: Integer; var coordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Convert"></span><code>function <strong>Convert</strong>(const instruction: <a href="UTWGraphicPath.TWPathCmd.html">TWPathCmd</a>; x, y: Integer; var coordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -122,15 +122,15 @@ Convert path instruction to output and update coordinate     </p>
 <dt>y</dt>
 <dd>Start y position in pixels</dd>
 <dt>coordinate</dt>
-<dd><b>[in, out]</b> current coordinate, new coordinate after conversion</dd>
+<dd><strong>[in, out]</strong> current coordinate, new coordinate after conversion</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="OnConvert"></span><code>function <b>OnConvert</b>(index: NativeUInt; x, y: Integer; point: Single; relative: Boolean; lastOp: <a  href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; var coordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var nextCoordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var curveStart: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var curveEnd: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var lastCurveEnd: <a  href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="OnConvert"></span><code>function <strong>OnConvert</strong>(index: NativeUInt; x, y: Integer; point: Single; relative: Boolean; lastOp: <a href="UTWGraphicPath.TWPathCmd.html#IEType">TWPathCmd.IEType</a>; var coordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var nextCoordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var curveStart: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var curveEnd: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var lastCurveEnd: <a href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -150,23 +150,23 @@ Called when a path curve instruction must be converted to output            </p>
 <dt>lastOp</dt>
 <dd>Last executed operation</dd>
 <dt>coordinate</dt>
-<dd><b>[in, out]</b> Current coordinate, new coordinate after conversion</dd>
+<dd><strong>[in, out]</strong> Current coordinate, new coordinate after conversion</dd>
 <dt>nextCoordinate</dt>
-<dd><b>[in, out]</b> Next calculated coordinate</dd>
+<dd><strong>[in, out]</strong> Next calculated coordinate</dd>
 <dt>curveStart</dt>
-<dd><b>[in, out]</b> Calculated curve start</dd>
+<dd><strong>[in, out]</strong> Calculated curve start</dd>
 <dt>curveEnd</dt>
-<dd><b>[in, out]</b> Calculated curve end</dd>
+<dd><strong>[in, out]</strong> Calculated curve end</dd>
 <dt>lastCurveEnd</dt>
-<dd><b>[in, out]</b> Last curve end, current curve end after conversion</dd>
+<dd><strong>[in, out]</strong> Last curve end, current curve end after conversion</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="OnConvert"></span><code>function <b>OnConvert</b>(index: NativeUInt; x, y: Integer; point: Single; relative: Boolean; var coordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>; var nextCoordinate: <a  href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="OnConvert"></span><code>function <strong>OnConvert</strong>(index: NativeUInt; x, y: Integer; point: Single; relative: Boolean; var coordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>; var nextCoordinate: <a href="UTWPoint.html#TWPointF">TWPointF</a>): Boolean; overload; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -184,17 +184,17 @@ Called when a path instruction must be converted to output        </p>
 <dt>relative</dt>
 <dd>If <code>True</code>, point is relative</dd>
 <dt>coordinate</dt>
-<dd><b>[in, out]</b> Current coordinate, new coordinate after conversion</dd>
+<dd><strong>[in, out]</strong> Current coordinate, new coordinate after conversion</dd>
 <dt>nextCoordinate</dt>
-<dd><b>[in, out]</b> Next calculated coordinate</dd>
+<dd><strong>[in, out]</strong> Next calculated coordinate</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="EnableRounding"></span><code>procedure <b>EnableRounding</b>(value: Boolean); virtual;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="EnableRounding"></span><code>procedure <strong>EnableRounding</strong>(value: Boolean); virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
@@ -206,6 +206,6 @@ Enable or disable rounding before adding value to output </p>
 </dl>
 </td></tr>
 </table>
-<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+<hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>
 </span>
-</td></tr></table></body></html>
+</div></div></body></html>

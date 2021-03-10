@@ -3,19 +3,19 @@
 <head>
 <title>SVG Magic: UTWHelpers: Record TWFileHelper</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="PasDoc 0.15.0">
+<meta name="generator" content="PasDoc 0.16.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="StyleSheet" type="text/css" href="pasdoc.css">
 </head>
 <body>
-<table class="container"><tr><td class="navigation">
-<h2>SVG Magic</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<div class="container"><div class="navigation">
+<h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
 <span id="TWFileHelper"></span><h1 class="cio">Record TWFileHelper</h1>
 <div class="sections">
 <div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section">Hierarchy</div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a  href="UTWHelpers.html">UTWHelpers</a></p>
+<a href="UTWHelpers.html">UTWHelpers</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
 <code>type TWFileHelper = record</code></p>
@@ -26,25 +26,30 @@ Helper for files</p>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWFileHelper.html#GetFileVersion">GetFileVersion</a></b>(const fileName: AnsiString; pFileVersion, pProductVersion: <a  href="UTWVersion.TWVersion.html">TWVersion</a>): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWFileHelper.html#GetFileVersion">GetFileVersion</a></strong>(const fileName: AnsiString; pFileVersion, pProductVersion: <a href="UTWVersion.TWVersion.html">TWVersion</a>): Boolean; overload; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWFileHelper.html#GetFileVersion">GetFileVersion</a></b>(const fileName: UnicodeString; pFileVersion, pProductVersion: <a  href="UTWVersion.TWVersion.html">TWVersion</a>): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWFileHelper.html#GetFileVersion">GetFileVersion</a></strong>(const fileName: UnicodeString; pFileVersion, pProductVersion: <a href="UTWVersion.TWVersion.html">TWVersion</a>): Boolean; overload; static;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWFileHelper.html#GetFileVersion">GetFileVersion</a></b>(const fileName: string): string; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWFileHelper.html#GetFileVersion">GetFileVersion</a></strong>(const fileName: string): string; overload; static;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>class function <b><a  href="UTWHelpers.TWFileHelper.html#GetFSPrefixedName">GetFSPrefixedName</a></b>(const path: UnicodeString): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWHelpers.TWFileHelper.html#GetFSPrefixedName">GetFSPrefixedName</a></strong>(const path: UnicodeString): UnicodeString; static;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetFileVersion"></span><code>class function <b>GetFileVersion</b>(const fileName: AnsiString; pFileVersion, pProductVersion: <a  href="UTWVersion.TWVersion.html">TWVersion</a>): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetFileVersion"></span><code>class function <strong>GetFileVersion</strong>(const fileName: AnsiString; pFileVersion, pProductVersion: <a href="UTWVersion.TWVersion.html">TWVersion</a>): Boolean; overload; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get the version of a file    </p>
 <h6 class="description_section">Parameters</h6>
@@ -52,25 +57,27 @@ Get the version of a file    </p>
 <dt>fileName</dt>
 <dd>File name for which version should be get</dd>
 <dt>pFileVersion</dt>
-<dd><b>[out]</b> File version</dd>
+<dd><strong>[out]</strong> File version</dd>
 <dt>pProductVersion</dt>
-<dd><b>[out]</b> File product version</dd>
+<dd><strong>[out]</strong> File product version</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetFileVersion"></span><code>class function <b>GetFileVersion</b>(const fileName: UnicodeString; pFileVersion, pProductVersion: <a  href="UTWVersion.TWVersion.html">TWVersion</a>): Boolean; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetFileVersion"></span><code>class function <strong>GetFileVersion</strong>(const fileName: UnicodeString; pFileVersion, pProductVersion: <a href="UTWVersion.TWVersion.html">TWVersion</a>): Boolean; overload; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetFileVersion"></span><code>class function <b>GetFileVersion</b>(const fileName: string): string; overload; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetFileVersion"></span><code>class function <strong>GetFileVersion</strong>(const fileName: string): string; overload; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
 Get the version of a file  </p>
 <h6 class="description_section">Parameters</h6>
@@ -83,11 +90,12 @@ Get the version of a file  </p>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="GetFSPrefixedName"></span><code>class function <b>GetFSPrefixedName</b>(const path: UnicodeString): UnicodeString; static;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetFSPrefixedName"></span><code>class function <strong>GetFSPrefixedName</strong>(const path: UnicodeString): UnicodeString; static;</code></td>
 </tr>
-<tr><td colspan="1">
+<tr><td colspan="2">
 <p>
-Return the properly prefixed unicode file name   <br> <b>NOTE</b> Needed for Win32 very long file paths</p>
+Return the properly prefixed unicode file name   <br> <strong>NOTE</strong> Needed for Win32 very long file paths</p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>path</dt>
@@ -96,6 +104,6 @@ Return the properly prefixed unicode file name   <br> <b>NOTE</b> Needed for Win
 <h6 class="description_section">Returns</h6>
 <p class="return">If the path is relative or has already a prefix, the path itself will be returned, if it's an absolute path with drive letter, \\\\?\\ will be appended, if it's a network path, \\\\?\\UNC will be added e.g. \\\\server\\drive = \\\\?\\UNC\\server\\drive</p></td></tr>
 </table>
-<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+<hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>
 </span>
-</td></tr></table></body></html>
+</div></div></body></html>
