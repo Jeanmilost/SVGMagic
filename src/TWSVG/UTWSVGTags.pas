@@ -74,7 +74,7 @@ const
     C_SVG_Prop_RY:                                     UnicodeString = 'ry';
     C_SVG_Prop_FX:                                     UnicodeString = 'fx';
     C_SVG_Prop_FY:                                     UnicodeString = 'fy';
-    C_SVG_Prop_Image_PreserveAspectRatio:              UnicodeString = 'preserveAspectRatio';
+    C_SVG_Prop_PreserveAspectRatio:                    UnicodeString = 'preserveAspectRatio';
     C_SVG_Prop_Font_Family:                            UnicodeString = 'font-family';
     C_SVG_Prop_Font_Size:                              UnicodeString = 'font-size';
     C_SVG_Prop_Font_Weight:                            UnicodeString = 'font-weight';

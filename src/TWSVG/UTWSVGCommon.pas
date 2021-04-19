@@ -327,7 +327,10 @@ begin
         Exit (IE_VT_Text)
     else
     if (name = C_SVG_Prop_Display) then
-        Exit (IE_VT_Enum);
+        Exit (IE_VT_Enum)
+    else
+    if (name = C_SVG_Prop_PreserveAspectRatio) then
+        Exit(IE_VT_Enum);
 
     Exit (IE_VT_Unknown)
 end;

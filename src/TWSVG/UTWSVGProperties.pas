@@ -27,6 +27,175 @@ uses System.Classes,
 
 type
     {**
+     Aspect ratio property, used to align a graphic component inside its view box
+    }
+    TWSVGPropAspectRatio = class(TWSVGProperty)
+        public type
+            {**
+             Image aspect ratio
+             @value(IE_AR_None Do not force uniform scaling. Scale the graphic content of the given
+                               element non-uniformly if necessary such that the element's bounding
+                               box exactly matches the viewport rectangle. Note that if <align> is
+                               none, then the optional <meetOrSlice> value is ignored)
+             @value(IE_AR_XMinYMin Force uniform scaling. Align the <min-x> of the element's viewBox
+                                   with the smallest X value of the viewport. Align the <min-y> of
+                                   the element's viewBox with the smallest Y value of the viewport)
+             @value(IE_AR_XMidYMin Force uniform scaling. Align the midpoint X value of the element's
+                                   viewBox with the midpoint X value of the viewport. Align the
+                                   <min-y> of the element's viewBox with the smallest Y value of the
+                                   viewport)
+             @value(IE_AR_XMaxYMin Force uniform scaling. Align the <min-x>+<width> of the element's
+                                   viewBox with the maximum X value of the viewport. Align the <min-y>
+                                   of the element's viewBox with the smallest Y value of the viewport)
+             @value(IE_AR_XMinYMid Force uniform scaling. Align the <min-x> of the element's viewBox
+                                   with the smallest X value of the viewport. Align the midpoint Y
+                                   value of the element's viewBox with the midpoint Y value of the
+                                   viewport)
+             @value(IE_AR_XMidYMid Force uniform scaling. Align the midpoint X value of the element's
+                                   viewBox with the midpoint X value of the viewport. Align the midpoint
+                                   Y value of the element's viewBox with the midpoint Y value of the
+                                   viewport)
+             @value(IE_AR_XMaxYMid Force uniform scaling. Align the <min-x>+<width> of the element's
+                                   viewBox with the maximum X value of the viewport. Align the midpoint
+                                   Y value of the element's viewBox with the midpoint Y value of the
+                                   viewport)
+             @value(IE_AR_XMinYMax Force uniform scaling. Align the <min-x> of the element's viewBox
+                                   with the smallest X value of the viewport. Align the <min-y>+<height>
+                                   of the element's viewBox with the maximum Y value of the viewport)
+             @value(IE_AR_XMidYMax Force uniform scaling. Align the midpoint X value of the element's
+                                   viewBox with the midpoint X value of the viewport. Align the
+                                   <min-y>+<height> of the element's viewBox with the maximum Y value
+                                   of the viewport)
+             @value(IE_AR_XMaxYMax Force uniform scaling. Align the <min-x>+<width> of the element's
+                                   viewBox with the maximum X value of the viewport. Align the
+                                   <min-y>+<height> of the element's viewBox with the maximum Y value
+                                   of the viewport)
+            }
+            IEAspectRatio =
+            (
+                IE_AR_None,
+                IE_AR_XMinYMin,
+                IE_AR_XMidYMin,
+                IE_AR_XMaxYMin,
+                IE_AR_XMinYMid,
+                IE_AR_XMidYMid,
+                IE_AR_XMaxYMid,
+                IE_AR_XMinYMax,
+                IE_AR_XMidYMax,
+                IE_AR_XMaxYMax
+            );
+
+            {**
+             Image aspect ratio reference
+             @value(IE_R_Meet Scale the graphic such that:
+                              - aspect ratio is preserved
+                              - the entire viewBox is visible within the viewport
+                              - the viewBox is scaled up as much as possible, while still meeting
+                                the other criteria
+                              In this case, if the aspect ratio of the graphic does not match the
+                              viewport, some of the viewport will extend beyond the bounds of the
+                              viewBox (i.e., the area into which the viewBox will draw will be
+                              smaller than the viewport))
+             @value(IE_R_Slice Scale the graphic such that:
+                               - aspect ratio is preserved
+                               - the entire viewport is covered by the viewBox
+                               - the viewBox is scaled down as much as possible, while still meeting
+                                 the other criteria)
+            }
+            IEReference =
+            (
+                IE_R_Meet,
+                IE_R_Slice
+            );
+
+        private
+            m_AspectRatio: IEAspectRatio;
+            m_Reference:   IEReference;
+
+        public
+            {**
+             Constructor
+             @param(pParent Parent item, orphan or root if @nil)
+             @param(pOptions SVG options)
+            }
+            constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+            {**
+             Destructor
+            }
+            destructor Destroy; override;
+
+            {**
+             Assign (i.e. copy) content from another item
+             @param(pOther Other item to copy from)
+            }
+            procedure Assign(const pOther: TWSVGItem); override;
+
+            {**
+             Clear
+            }
+            procedure Clear; override;
+
+            {**
+             Create new property instance
+             @param(pParent Parent item, orphan or root if @nil)
+             @returns(Property instance)
+            }
+            function CreateInstance(pParent: TWSVGItem): TWSVGProperty; override;
+
+            {**
+             Parse data
+             @param(data Data to parse)
+             @returns(@true on success, otherwise @false)
+            }
+            function Parse(const data: UnicodeString): Boolean; override;
+
+            {**
+             Log content
+             @param(margin Margin length in chars)
+            }
+            procedure Log(margin: Cardinal); override;
+
+            {**
+             Print content to string
+             @param(margin Margin length in chars)
+             @returns(Content)
+            }
+            function Print(margin: Cardinal): UnicodeString; override;
+
+            {**
+             Get xml formatted string
+             @returns(String)
+            }
+            function ToXml: UnicodeString; override;
+
+            {**
+             Convert aspect ratio to string
+             @param(aspectRatio Aspect ratio to convert)
+             @returns(Aspect ratio as string)
+            }
+            class function ToStr(aspectRatio: IEAspectRatio): UnicodeString; overload; static;
+
+            {**
+             Convert aspect ratio reference to string
+             @param(aspectRatio Aspect ratio reference to convert)
+             @returns(Aspect ratio reference as string)
+            }
+            class function ToStr(reference: IEReference): UnicodeString; overload; static;
+
+        public
+            {**
+             Get or set the image aspect ratio
+            }
+            property AspectRatio: IEAspectRatio read m_AspectRatio write m_AspectRatio;
+
+            {**
+             Get or set the image aspect ratio reference
+            }
+            property Reference: IEReference read m_Reference write m_Reference;
+    end;
+
+    {**
      Background property, used to determine how SVG background interacts with ancestor image. This
      property is rarely used (e.g. only recognized by IE10), and is useless except if filters are used
      too
@@ -982,6 +1151,191 @@ type
     end;
 
 implementation
+//---------------------------------------------------------------------------
+// TWSVGPropAspectRatio
+//---------------------------------------------------------------------------
+constructor TWSVGPropAspectRatio.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    ItemName      := C_SVG_Prop_PreserveAspectRatio;
+    m_AspectRatio := IE_AR_XMidYMid;
+    m_Reference   := IE_R_Meet;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGPropAspectRatio.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropAspectRatio.Assign(const pOther: TWSVGItem);
+var
+    pSource: TWSVGPropAspectRatio;
+begin
+    inherited Assign(pOther);
+
+    // invalid item?
+    if (not(pOther is TWSVGPropAspectRatio)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    // get source object
+    pSource := pOther as TWSVGPropAspectRatio;
+
+    // copy data from source
+    m_AspectRatio := pSource.m_AspectRatio;
+    m_Reference   := pSource.m_Reference;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropAspectRatio.Clear;
+begin
+    inherited Clear;
+
+    m_AspectRatio := IE_AR_XMidYMid;
+    m_Reference   := IE_R_Meet;
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropAspectRatio.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
+begin
+    Result := TWSVGPropAspectRatio.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropAspectRatio.Parse(const data: UnicodeString): Boolean;
+var
+    pValues: TWSVGCommon.IValues;
+    index:   NativeUInt;
+    item:    UnicodeString;
+    doBreak: Boolean;
+begin
+    pValues := nil;
+
+    try
+        pValues := TWSVGCommon.IValues.Create;
+
+        // get all values to parse (in case a reference is also defined)
+        TWStringHelper.Split(' ', data, pValues);
+
+        index   := 0;
+        doBreak := False;
+
+        // iterate through values to parse
+        for item in pValues do
+        begin
+            case (index) of
+                0:
+                begin
+                    if (item = C_SVG_Value_None) then
+                        m_AspectRatio := IE_AR_None
+                    else
+                    if (item = C_SVG_Value_XMinYMin) then
+                        m_AspectRatio := IE_AR_XMinYMin
+                    else
+                    if (item = C_SVG_Value_XMidYMin) then
+                        m_AspectRatio := IE_AR_XMidYMin
+                    else
+                    if (item = C_SVG_Value_XMaxYMin) then
+                        m_AspectRatio := IE_AR_XMaxYMin
+                    else
+                    if (item = C_SVG_Value_XMinYMid) then
+                        m_AspectRatio := IE_AR_XMinYMid
+                    else
+                    if (item = C_SVG_Value_XMidYMid) then
+                        m_AspectRatio := IE_AR_XMidYMid
+                    else
+                    if (item = C_SVG_Value_XMaxYMid) then
+                        m_AspectRatio := IE_AR_XMaxYMid
+                    else
+                    if (item = C_SVG_Value_XMinYMax) then
+                        m_AspectRatio := IE_AR_XMinYMax
+                    else
+                    if (item = C_SVG_Value_XMidYMax) then
+                        m_AspectRatio := IE_AR_XMidYMax
+                    else
+                    if (item = C_SVG_Value_XMaxYMax) then
+                        m_AspectRatio := IE_AR_XMaxYMax
+                    else
+                    begin
+                        TWLogHelper.LogToCompiler('Aspect ratio - unknown aspect ratio - ' + data);
+                        m_AspectRatio := IE_AR_XMidYMid;
+                    end;
+                end;
+
+                1:
+                begin
+                    if (item = C_SVG_Value_Meet) then
+                        m_Reference := IE_R_Meet
+                    else
+                    if (item = C_SVG_Value_Slice) then
+                        m_Reference := IE_R_Slice
+                    else
+                    begin
+                        TWLogHelper.LogToCompiler('Aspect ratio - unknown reference - ' + data);
+                        m_Reference := IE_R_Meet;
+                    end;
+                end;
+            else
+                TWLogHelper.LogToCompiler('Aspect ratio - malformed value - ' + data);
+                doBreak := True;
+            end;
+
+            if (doBreak) then
+                break;
+
+            Inc(index);
+        end;
+    finally
+        pValues.Free;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropAspectRatio.Log(margin: Cardinal);
+begin
+    TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - '
+            + ToStr(m_AspectRatio) + ' - ' + ToStr(m_Reference));
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropAspectRatio.Print(margin: Cardinal): UnicodeString;
+begin
+    Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + ToStr(m_AspectRatio)
+            + ' - ' + ToStr(m_Reference) + #13 + #10;
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropAspectRatio.ToXml: UnicodeString;
+begin
+    Result := ItemName + '=\"' + ToStr(m_AspectRatio) + ' ' + ToStr(m_Reference) + '\"';
+end;
+//---------------------------------------------------------------------------
+class function TWSVGPropAspectRatio.ToStr(aspectRatio: IEAspectRatio): UnicodeString;
+begin
+    case (aspectRatio) of
+        IE_AR_None:     Exit(C_SVG_Value_None);
+        IE_AR_XMinYMin: Exit(C_SVG_Value_XMinYMin);
+        IE_AR_XMidYMin: Exit(C_SVG_Value_XMidYMin);
+        IE_AR_XMaxYMin: Exit(C_SVG_Value_XMaxYMin);
+        IE_AR_XMinYMid: Exit(C_SVG_Value_XMinYMid);
+        IE_AR_XMidYMid: Exit(C_SVG_Value_XMidYMid);
+        IE_AR_XMaxYMid: Exit(C_SVG_Value_XMaxYMid);
+        IE_AR_XMinYMax: Exit(C_SVG_Value_XMinYMax);
+        IE_AR_XMidYMax: Exit(C_SVG_Value_XMidYMax);
+        IE_AR_XMaxYMax: Exit(C_SVG_Value_XMaxYMax);
+    else
+        raise Exception.CreateFmt('Unknown aspect ratio value - %d', [Integer(aspectRatio)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+class function TWSVGPropAspectRatio.ToStr(reference: IEReference): UnicodeString;
+begin
+    case (reference) of
+        IE_R_Meet:  Exit(C_SVG_Value_Meet);
+        IE_R_Slice: Exit(C_SVG_Value_Slice);
+    else
+        raise Exception.CreateFmt('Unknown aspect ratio reference value - %d', [Integer(reference)]);
+    end;
+end;
 //---------------------------------------------------------------------------
 // TWSVGPropBackground
 //---------------------------------------------------------------------------

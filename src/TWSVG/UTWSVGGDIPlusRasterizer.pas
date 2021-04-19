@@ -447,8 +447,6 @@ var
     fontWeight:                                                                                                 Cardinal;
     fontFamily, fontFamilyLowerCase:                                                                            UnicodeString;
     anchor:                                                                                                     IETextAnchor;
-    preserveAspectRatio:                                                                                        IEImageAspectRatio;
-    aspectRatioRef:                                                                                             IEImageAspectRatioRef;
     imageType:                                                                                                  IEImageType;
     pImageOptions:                                                                                              TWRenderer.IImageOptions;
     isXCoord, isClipped, bolder, lighter:                                                                       Boolean;
@@ -1826,8 +1824,8 @@ begin
                 pImageData := TWSmartPointer<TMemoryStream>.Create();
 
                 // extract properties from image
-                if (not GetImageProps(pImage, x, y, width, height, preserveAspectRatio, aspectRatioRef,
-                        imageType, pImageData, pAnimationData, animation.m_pCustomData))
+                if (not GetImageProps(pImage, x, y, width, height, imageType, pImageData, pAnimationData,
+                        animation.m_pCustomData))
                 then
                     Exit(False);
 

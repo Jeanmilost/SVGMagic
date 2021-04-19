@@ -67,83 +67,6 @@ type
             );
 
             {**
-             Image aspect ratio
-             @value(IE_AR_None Do not force uniform scaling. Scale the graphic content of the given
-                               element non-uniformly if necessary such that the element's bounding
-                               box exactly matches the viewport rectangle. Note that if <align> is
-                               none, then the optional <meetOrSlice> value is ignored)
-             @value(IE_AR_XMinYMin Force uniform scaling. Align the <min-x> of the element's viewBox
-                                   with the smallest X value of the viewport. Align the <min-y> of
-                                   the element's viewBox with the smallest Y value of the viewport)
-             @value(IE_AR_XMidYMin Force uniform scaling. Align the midpoint X value of the element's
-                                   viewBox with the midpoint X value of the viewport. Align the
-                                   <min-y> of the element's viewBox with the smallest Y value of the
-                                   viewport)
-             @value(IE_AR_XMaxYMin Force uniform scaling. Align the <min-x>+<width> of the element's
-                                   viewBox with the maximum X value of the viewport. Align the <min-y>
-                                   of the element's viewBox with the smallest Y value of the viewport)
-             @value(IE_AR_XMinYMid Force uniform scaling. Align the <min-x> of the element's viewBox
-                                   with the smallest X value of the viewport. Align the midpoint Y
-                                   value of the element's viewBox with the midpoint Y value of the
-                                   viewport)
-             @value(IE_AR_XMidYMid Force uniform scaling. Align the midpoint X value of the element's
-                                   viewBox with the midpoint X value of the viewport. Align the midpoint
-                                   Y value of the element's viewBox with the midpoint Y value of the
-                                   viewport)
-             @value(IE_AR_XMaxYMid Force uniform scaling. Align the <min-x>+<width> of the element's
-                                   viewBox with the maximum X value of the viewport. Align the midpoint
-                                   Y value of the element's viewBox with the midpoint Y value of the
-                                   viewport)
-             @value(IE_AR_XMinYMax Force uniform scaling. Align the <min-x> of the element's viewBox
-                                   with the smallest X value of the viewport. Align the <min-y>+<height>
-                                   of the element's viewBox with the maximum Y value of the viewport)
-             @value(IE_AR_XMidYMax Force uniform scaling. Align the midpoint X value of the element's
-                                   viewBox with the midpoint X value of the viewport. Align the
-                                   <min-y>+<height> of the element's viewBox with the maximum Y value
-                                   of the viewport)
-             @value(IE_AR_XMaxYMax Force uniform scaling. Align the <min-x>+<width> of the element's
-                                   viewBox with the maximum X value of the viewport. Align the
-                                   <min-y>+<height> of the element's viewBox with the maximum Y value
-                                   of the viewport)
-            }
-            IEImageAspectRatio =
-            (
-                IE_AR_None,
-                IE_AR_XMinYMin,
-                IE_AR_XMidYMin,
-                IE_AR_XMaxYMin,
-                IE_AR_XMinYMid,
-                IE_AR_XMidYMid,
-                IE_AR_XMaxYMid,
-                IE_AR_XMinYMax,
-                IE_AR_XMidYMax,
-                IE_AR_XMaxYMax
-            );
-
-            {**
-             Image aspect ratio reference
-             @value(IE_IR_Meet Scale the graphic such that:
-                               - aspect ratio is preserved
-                               - the entire viewBox is visible within the viewport
-                               - the viewBox is scaled up as much as possible, while still meeting
-                                 the other criteria
-                               In this case, if the aspect ratio of the graphic does not match the
-                               viewport, some of the viewport will extend beyond the bounds of the
-                               viewBox (i.e., the area into which the viewBox will draw will be
-                               smaller than the viewport))
-             @value(IE_IR_Slice Scale the graphic such that:
-                                - aspect ratio is preserved
-                                - the entire viewport is covered by the viewBox
-                                - the viewBox is scaled down as much as possible, while still meeting
-                                  the other criteria)
-            }
-            IEImageAspectRatioRef =
-            (
-                IE_IR_Meet,
-                IE_IR_Slice
-            );
-
-            {**
              Image type
              @value(IE_IT_Unknown image type is unknown)
              @value(IE_IT_PNG The image is a PNG image)
@@ -1380,12 +1303,155 @@ type
             end;
 
             {**
+             Aspect ratio type property item
+            }
+            IPropAspectRatioItem = class(IPropItem)
+                private
+                    m_Value: TWSVGPropAspectRatio.IEAspectRatio;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(value: TWSVGPropAspectRatio.IEAspectRatio;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropAspectRatioItem); virtual;
+
+                public
+                    {**
+                     Get or set value
+                    }
+                    property Value: TWSVGPropAspectRatio.IEAspectRatio read m_Value write m_Value;
+            end;
+
+            {**
+             Aspect ratio reference property item
+            }
+            IPropAspectRatioRefItem = class(IPropItem)
+                private
+                    m_Value: TWSVGPropAspectRatio.IEReference;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(value: TWSVGPropAspectRatio.IEReference;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropAspectRatioRefItem); virtual;
+
+                public
+                    {**
+                     Get or set value
+                    }
+                    property Value: TWSVGPropAspectRatio.IEReference read m_Value write m_Value;
+            end;
+
+            {**
+             Aspect ratio parameters structure
+            }
+            IAspectRatio = class(IPropItem)
+                private
+                    m_pAspectRatio: IPropAspectRatioItem;
+                    m_pReference:   IPropAspectRatioRefItem;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Load default properties
+                    }
+                    procedure Default; virtual;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IAspectRatio); virtual;
+
+                public
+                    {**
+                     Get the aspect ratio property
+                    }
+                    property AspectRatio: IPropAspectRatioItem read m_pAspectRatio;
+
+                    {**
+                     Get the aspect ratio reference property
+                    }
+                    property Reference: IPropAspectRatioRefItem read m_pReference;
+            end;
+
+            {**
              Group, switch or object properties
             }
             IProperties = class
                 private
-                    m_pStyle:  IStyle;
-                    m_pMatrix: IPropMatrixItem;
+                    m_pStyle:       IStyle;
+                    m_pMatrix:      IPropMatrixItem;
+                    m_pAspectRatio: IAspectRatio;
 
                 public
                     {**
@@ -1416,9 +1482,14 @@ type
                     property Style: IStyle read m_pStyle;
 
                     {**
-                     Get the matrix properties
+                     Get the matrix property
                     }
                     property Matrix: IPropMatrixItem read m_pMatrix;
+
+                    {**
+                     Get the aspect ratio properties
+                    }
+                    property AspectRatio: IAspectRatio read m_pAspectRatio;
             end;
 
             {**
@@ -1660,8 +1731,6 @@ type
              @param(y @bold([out]) Image start y position)
              @param(width @bold([out]) Image width)
              @param(height @bold([out]) Image height)
-             @param(preserveAspectRatio @bold([out]) Image aspect ratio)
-             @param(aspectRatioRef @bold([out]) Image aspect ratio reference)
              @param(imageType @bold([out]) Image type)
              @param(pImageData The stream which will contain the image data)
              @param(pAnimationData Animation data)
@@ -1669,8 +1738,7 @@ type
              @returns(@true on success, otherwise @false)
             }
             function GetImageProps(const pImage: TWSVGImage; out x: Single; out y: Single;
-                    out width: Single; out height: Single; out preserveAspectRatio: IEImageAspectRatio;
-                    out aspectRatioRef: IEImageAspectRatioRef; out imageType: IEImageType;
+                    out width: Single; out height: Single; out imageType: IEImageType;
                     pImageData: TMemoryStream; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
 
             {**
@@ -2417,7 +2485,8 @@ begin
     m_Value := TWSVGStroke.IELineCap.IE_LC_Default;
 end;
 //---------------------------------------------------------------------------
-constructor TWSVGRasterizer.IPropStrokeLineCapItem.Create(value: TWSVGStroke.IELineCap; rule: IEPropRule);
+constructor TWSVGRasterizer.IPropStrokeLineCapItem.Create(value: TWSVGStroke.IELineCap;
+        rule: IEPropRule);
 begin
     inherited Create(rule);
 
@@ -2477,7 +2546,8 @@ begin
     m_Value := TWSVGStroke.IELineJoin.IE_LJ_Default;
 end;
 //---------------------------------------------------------------------------
-constructor TWSVGRasterizer.IPropStrokeLineJoinItem.Create(value: TWSVGStroke.IELineJoin; rule: IEPropRule);
+constructor TWSVGRasterizer.IPropStrokeLineJoinItem.Create(value: TWSVGStroke.IELineJoin;
+        rule: IEPropRule);
 begin
     inherited Create(rule);
 
@@ -3272,20 +3342,177 @@ begin
             Min(255, Round(m_pOpacity.m_Value * alpha)));
 end;
 //---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropAspectRatioItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropAspectRatioItem.Create;
+begin
+    inherited Create;
+
+    m_Value := TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMidYMid;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropAspectRatioItem.Create(value: TWSVGPropAspectRatio.IEAspectRatio;
+        rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropAspectRatioItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropAspectRatioItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value := TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMidYMid;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropAspectRatioItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropAspectRatioItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropAspectRatioItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropAspectRatioItem;
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropAspectRatioItem.Merge(const pOther: IPropAspectRatioItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value := pOther.m_Value;
+            m_Rule  := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropAspectRatioRefItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropAspectRatioRefItem.Create;
+begin
+    inherited Create;
+
+    m_Value := TWSVGPropAspectRatio.IEReference.IE_R_Meet;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropAspectRatioRefItem.Create(value: TWSVGPropAspectRatio.IEReference;
+        rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropAspectRatioRefItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropAspectRatioRefItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value := TWSVGPropAspectRatio.IEReference.IE_R_Meet;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropAspectRatioRefItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropAspectRatioRefItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropAspectRatioRefItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropAspectRatioRefItem;
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropAspectRatioRefItem.Merge(const pOther: IPropAspectRatioRefItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default: Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value := pOther.m_Value;
+            m_Rule  := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IAspectRatio
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IAspectRatio.Create;
+begin
+    inherited Create;
+
+    m_pAspectRatio := IPropAspectRatioItem.Create;
+    m_pReference   := IPropAspectRatioRefItem.Create;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IAspectRatio.Destroy;
+begin
+    m_pAspectRatio.Free;
+    m_pReference.Free;
+
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IAspectRatio.Default;
+begin
+    m_pAspectRatio.Free;
+    m_pReference.Free;
+
+    m_pAspectRatio := IPropAspectRatioItem.Create   (TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMidYMid, IE_PR_Default);
+    m_pReference   := IPropAspectRatioRefItem.Create(TWSVGPropAspectRatio.IEReference.IE_R_Meet,        IE_PR_Default);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IAspectRatio.Merge(const pOther: IAspectRatio);
+begin
+    m_pAspectRatio.Merge(pOther.m_pAspectRatio);
+    m_pReference.Merge(pOther.m_pReference);
+end;
+//---------------------------------------------------------------------------
 // TWSVGRasterizer.IProperties
 //---------------------------------------------------------------------------
 constructor TWSVGRasterizer.IProperties.Create;
 begin
     inherited Create;
 
-    m_pStyle  := IStyle.Create;
-    m_pMatrix := IPropMatrixItem.Create;
+    m_pStyle       := IStyle.Create;
+    m_pMatrix      := IPropMatrixItem.Create;
+    m_pAspectRatio := IAspectRatio.Create;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGRasterizer.IProperties.Destroy;
 begin
     m_pStyle.Free;
     m_pMatrix.Free;
+    m_pAspectRatio.Free;
 
     inherited Destroy;
 end;
@@ -3293,6 +3520,7 @@ end;
 procedure TWSVGRasterizer.IProperties.Default;
 begin
     m_pStyle.Default;
+    m_pAspectRatio.Default;
 
     m_pMatrix.m_Value.SetIdentity;
     m_pMatrix.m_Rule := IE_PR_Default;
@@ -3302,6 +3530,7 @@ procedure TWSVGRasterizer.IProperties.Merge(const pOther: IProperties);
 begin
     m_pStyle.Merge(pOther.m_pStyle);
     m_pMatrix.Merge(pOther.m_pMatrix);
+    m_pAspectRatio.Merge(pOther.m_pAspectRatio);
 end;
 //---------------------------------------------------------------------------
 // TWSVGRasterizer.IAnimationData
@@ -4573,13 +4802,11 @@ begin
 end;
 //---------------------------------------------------------------------------
 function TWSVGRasterizer.GetImageProps(const pImage: TWSVGImage; out x: Single; out y: Single;
-        out width: Single; out height: Single; out preserveAspectRatio: IEImageAspectRatio;
-        out aspectRatioRef: IEImageAspectRatioRef; out imageType: IEImageType;
-        pImageData: TMemoryStream; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+        out width: Single; out height: Single; out imageType: IEImageType; pImageData: TMemoryStream;
+        pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
 var
     pProperty:               TWSVGProperty;
     pX, pY, pWidth, pHeight: TWSVGMeasure<Single>;
-    pAspectRatio:            TWSVGImage.IAspectRatio;
     pLink:                   TWSVGPropLink;
     pAnimation:              TWSVGAnimation;
     pValueAnimDesc:          IWSmartPointer<TWSVGValueAnimDesc>;
@@ -4595,13 +4822,11 @@ begin
         Exit(False);
 
     // set default values (in case no matching value is found in text)
-    x                   := 0.0;
-    y                   := 0.0;
-    width               := 0.0;
-    height              := 0.0;
-    preserveAspectRatio := IE_AR_XMidYMid;
-    aspectRatioRef      := IE_IR_Meet;
-    imageType           := IE_IT_Unknown;
+    x         := 0.0;
+    y         := 0.0;
+    width     := 0.0;
+    height    := 0.0;
+    imageType := IE_IT_Unknown;
 
     propCount := pImage.Count;
 
@@ -4664,40 +4889,6 @@ begin
 
             // set image height
             height := pHeight.Value.Value;
-        end
-        else
-        if ((pProperty.ItemName = C_SVG_Prop_Image_PreserveAspectRatio) and (pProperty is TWSVGImage.IAspectRatio)) then
-        begin
-            // get image aspect ratio
-            pAspectRatio := pProperty as TWSVGImage.IAspectRatio;
-
-            // found it?
-            if (not Assigned(pAspectRatio)) then
-                continue;
-
-            // set image aspect ratio
-            case (pAspectRatio.AspectRatio) of
-                TWSVGImage.IEAspectRatio.IE_AR_None:     preserveAspectRatio := IE_AR_None;
-                TWSVGImage.IEAspectRatio.IE_AR_XMinYMin: preserveAspectRatio := IE_AR_XMinYMin;
-                TWSVGImage.IEAspectRatio.IE_AR_XMidYMin: preserveAspectRatio := IE_AR_XMidYMin;
-                TWSVGImage.IEAspectRatio.IE_AR_XMaxYMin: preserveAspectRatio := IE_AR_XMaxYMin;
-                TWSVGImage.IEAspectRatio.IE_AR_XMinYMid: preserveAspectRatio := IE_AR_XMinYMid;
-                TWSVGImage.IEAspectRatio.IE_AR_XMidYMid: preserveAspectRatio := IE_AR_XMidYMid;
-                TWSVGImage.IEAspectRatio.IE_AR_XMaxYMid: preserveAspectRatio := IE_AR_XMaxYMid;
-                TWSVGImage.IEAspectRatio.IE_AR_XMinYMax: preserveAspectRatio := IE_AR_XMinYMax;
-                TWSVGImage.IEAspectRatio.IE_AR_XMidYMax: preserveAspectRatio := IE_AR_XMidYMax;
-                TWSVGImage.IEAspectRatio.IE_AR_XMaxYMax: preserveAspectRatio := IE_AR_XMaxYMax;
-            else
-                raise Exception.CreateFmt('Unknown aspect ratio value - %d', [Integer(pAspectRatio.AspectRatio)]);
-            end;
-
-            // set image aspect ratio reference
-            case (pAspectRatio.Reference) of
-                TWSVGImage.IEReference.IE_R_Meet:  aspectRatioRef := IE_IR_Meet;
-                TWSVGImage.IEReference.IE_R_Slice: aspectRatioRef := IE_IR_Slice;
-            else
-                raise Exception.CreateFmt('Unknown aspect ratio reference value - %d', [Integer(pAspectRatio.Reference)]);
-            end;
         end
         else
         if ((pProperty.ItemName = C_SVG_Prop_XLink_HRef) and (pProperty is TWSVGPropLink)) then
@@ -5042,6 +5233,7 @@ var
     pStyle:           TWSVGStyle;
     pTransformMatrix: TWSVGPropMatrix;
     pPropMatrixItem:  IWSmartPointer<IPropMatrixItem>;
+    pAspectRatio:     TWSVGPropAspectRatio;
     propCount, i:     NativeInt;
 begin
     if (not Assigned(pElement)) then
@@ -5086,6 +5278,22 @@ begin
                     (IPropMatrixItem.Create(pTransformMatrix.Matrix, pTransformMatrix.MatrixType,
                             IE_PR_Combine));
             pProperties.Matrix.Assign(pPropMatrixItem);
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_PreserveAspectRatio) and (pProperty is TWSVGPropAspectRatio)) then
+        begin
+            // get aspect ratio
+            pAspectRatio := pProperty as TWSVGPropAspectRatio;
+
+            // found it?
+            if (not Assigned(pAspectRatio)) then
+                continue;
+
+            // set image aspect ratio and reference
+            pProperties.m_pAspectRatio.m_pAspectRatio.m_Value := pAspectRatio.AspectRatio;
+            pProperties.m_pAspectRatio.m_pAspectRatio.m_Rule  := IE_PR_Default;
+            pProperties.m_pAspectRatio.m_pReference.m_Value   := pAspectRatio.Reference;
+            pProperties.m_pAspectRatio.m_pReference.m_Rule    := IE_PR_Default;
         end;
     end;
 

@@ -179,6 +179,14 @@ type
         class function Substr(const str: UnicodeString; index, length: Integer): UnicodeString; overload; inline; static;
 
         {**
+         Splits a string into sub-strings based on a delimiter
+         @param(delimiter Delimiter to use to split string)
+         @param(str String to split)
+         @param(strings @bold([out]) list containing resulting splitted strings (must be created before calling this function))
+        }
+        class procedure Split(const delimiter: WideChar; const str: UnicodeString; strings: TStrings); inline; static;
+
+        {**
          Converts a string to upper case
          @param(str Source string to convert)
          @returns(Converted string to uppercase)
@@ -1640,6 +1648,17 @@ begin
     {$else}
         Result := str.Substring(index, length);
     {$ifend}
+end;
+//---------------------------------------------------------------------------
+class procedure TWStringHelper.Split(const delimiter: WideChar; const str: UnicodeString; strings: TStrings);
+begin
+    if (not Assigned(strings)) then
+        Exit;
+
+   strings.Clear;
+   strings.Delimiter       := delimiter;
+   strings.StrictDelimiter := True;
+   strings.DelimitedText   := str;
 end;
 //---------------------------------------------------------------------------
 class function TWStringHelper.ToUpper(const str: UnicodeString): UnicodeString;
