@@ -1409,6 +1409,7 @@ type
                 private
                     m_pAspectRatio: IPropAspectRatioItem;
                     m_pReference:   IPropAspectRatioRefItem;
+                    m_pDefined:     IPropBoolItem;
 
                 public
                     {**
@@ -1442,6 +1443,11 @@ type
                      Get the aspect ratio reference property
                     }
                     property Reference: IPropAspectRatioRefItem read m_pReference;
+
+                    {**
+                     Get if the aspect ratio was defined in the source file for this element (Should be ignored if not)
+                    }
+                    property Defined: IPropBoolItem read m_pDefined;
             end;
 
             {**
@@ -1642,7 +1648,7 @@ type
             function GetSize(const pHeader: TWSVGParser.IHeader): TSize; overload; virtual;
 
             {**
-             Get view box from header
+             Get global svg view box from header
              @param(pHeader Header to extract from)
              @returns(View box)
             }
@@ -1655,12 +1661,13 @@ type
              @param(y @bold([out]) Element y position)
              @param(width @bold([out]) Element width )
              @param(height @bold([out]) Element height)
+             @param(viewBox @bold([out]) Viewbox to apply to element, should be combinated with aspect ratio)
              @param(pAnimationData Animation data)
              @param(pCustomData Custom data)
              @returns(@true on success, otherwise @false)
             }
             function GetPosAndSizeProps(const pElement: TWSVGElement; out x: Single; out y: Single;
-                    out width: Single; out height:Single; pAnimationData: IAnimationData;
+                    out width: Single; out height:Single; out viewBox: TWRectF; pAnimationData: IAnimationData;
                     pCustomData: Pointer): Boolean;
 
             {**
@@ -3472,12 +3479,14 @@ begin
 
     m_pAspectRatio := IPropAspectRatioItem.Create;
     m_pReference   := IPropAspectRatioRefItem.Create;
+    m_pDefined     := IPropBoolItem.Create;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGRasterizer.IAspectRatio.Destroy;
 begin
     m_pAspectRatio.Free;
     m_pReference.Free;
+    m_pDefined.Free;
 
     inherited Destroy;
 end;
@@ -3486,15 +3495,18 @@ procedure TWSVGRasterizer.IAspectRatio.Default;
 begin
     m_pAspectRatio.Free;
     m_pReference.Free;
+    m_pDefined.Free;
 
     m_pAspectRatio := IPropAspectRatioItem.Create   (TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMidYMid, IE_PR_Default);
     m_pReference   := IPropAspectRatioRefItem.Create(TWSVGPropAspectRatio.IEReference.IE_R_Meet,        IE_PR_Default);
+    m_pDefined     := IPropBoolItem.Create          (False,                                             IE_PR_Default);
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGRasterizer.IAspectRatio.Merge(const pOther: IAspectRatio);
 begin
     m_pAspectRatio.Merge(pOther.m_pAspectRatio);
     m_pReference.Merge(pOther.m_pReference);
+    m_pDefined.Merge(pOther.m_pDefined);
 end;
 //---------------------------------------------------------------------------
 // TWSVGRasterizer.IProperties
@@ -3892,10 +3904,12 @@ begin
 end;
 //---------------------------------------------------------------------------
 function TWSVGRasterizer.GetPosAndSizeProps(const pElement: TWSVGElement; out x: Single; out y: Single;
-        out width: Single; out height:Single; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+        out width: Single; out height:Single; out viewBox: TWRectF; pAnimationData: IAnimationData;
+        pCustomData: Pointer): Boolean;
 var
     pProperty:               TWSVGProperty;
     pX, pY, pWidth, pHeight: TWSVGMeasure<Single>;
+    pViewBox:                TWSVGPropRect;
     pAnimation:              TWSVGAnimation;
     pValueAnimDesc:          IWSmartPointer<TWSVGValueAnimDesc>;
     attribName:              UnicodeString;
@@ -3906,10 +3920,11 @@ begin
         Exit(False);
 
     // set default values (in case no matching value is found in rect)
-    x      := 0.0;
-    y      := 0.0;
-    width  := 0.0;
-    height := 0.0;
+    x       := 0.0;
+    y       := 0.0;
+    width   := 0.0;
+    height  := 0.0;
+    viewBox := Default(TWRectF);
 
     propCount := pElement.Count;
 
@@ -3972,6 +3987,22 @@ begin
 
             // set height
             height := pHeight.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_ViewBox) and (pProperty is TWSVGPropRect)) then
+        begin
+            // get view box
+            pViewBox := pProperty as TWSVGPropRect;
+
+            // found it?
+            if (not Assigned(pViewBox)) then
+                continue;
+
+            // set view box
+            viewBox.Left   := pViewBox.X;
+            viewBox.Top    := pViewBox.Y;
+            viewBox.Right  := pViewBox.X + pViewBox.Width;
+            viewBox.Bottom := pViewBox.Y + pViewBox.Height;
         end;
     end;
 
@@ -5294,6 +5325,8 @@ begin
             pProperties.m_pAspectRatio.m_pAspectRatio.m_Rule  := IE_PR_Default;
             pProperties.m_pAspectRatio.m_pReference.m_Value   := pAspectRatio.Reference;
             pProperties.m_pAspectRatio.m_pReference.m_Rule    := IE_PR_Default;
+            pProperties.m_pAspectRatio.m_pDefined.m_Value     := True;
+            pProperties.m_pAspectRatio.m_pDefined.m_Rule      := IE_PR_Default;
         end;
     end;
 

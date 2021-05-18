@@ -7157,7 +7157,7 @@ begin
     radius := pRadial.Radius;
 
     // check if radial gradient can be applied
-    if (not pGradientFactory.DoWrap(rect, radius)) then
+    if (not pGradientFactory.DoWrap(drawRect, radius)) then
         // nothing else to do
         Exit(True);
 
@@ -7385,7 +7385,7 @@ begin
     radius := pRadial.Radius;
 
     // check if radial gradient can be applied
-    if (not pGradientFactory.DoWrap(rect, radius)) then
+    if (not pGradientFactory.DoWrap(drawRect, radius)) then
         // nothing else to do
         Exit(True);
 
@@ -7629,7 +7629,7 @@ begin
     radius := pRadial.Radius;
 
     // check if radial gradient can be applied
-    if (not pGradientFactory.DoWrap(rect, radius)) then
+    if (not pGradientFactory.DoWrap(drawRect, radius)) then
         // nothing else to do
         Exit(True);
 
@@ -7858,7 +7858,7 @@ begin
     radius := pRadial.Radius;
 
     // check if radial gradient can be applied
-    if (not pGradientFactory.DoWrap(rect, radius)) then
+    if (not pGradientFactory.DoWrap(drawRect, radius)) then
         // nothing else to do
         Exit(True);
 
@@ -8568,7 +8568,7 @@ begin
     radius := pRadial.Radius;
 
     // check if radial gradient can be applied
-    if (not pGradientFactory.DoWrap(rect, radius)) then
+    if (not pGradientFactory.DoWrap(drawRect, radius)) then
         // nothing else to do
         Exit(True);
 
