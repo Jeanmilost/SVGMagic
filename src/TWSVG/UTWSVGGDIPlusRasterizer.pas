@@ -56,6 +56,34 @@ type
      @br @bold(NOTE) See http://www.w3.org/TR/SVGCompositing/
     }
     TWSVGGDIPlusRasterizer = class(TWSVGRasterizer)
+        private type
+            {**
+             Aspect ratio, allows to override and redefine current aspect ratio for children drawing
+            }
+            IAspectRatio = class
+                private
+                    m_ElementBox:  TWRectF; // original element view box as defined in the SVG file
+                    m_ViewBox:     TWRectF; // render view box onto the canvas, this area is clipped
+                    m_BoundingBox: TWRectF; // object bounding box, which will define drawing
+                                            // position and size relative to the view box
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                public
+                    property ElementBox:  TWRectF read m_ElementBox  write m_ElementBox;
+                    property ViewBox:     TWRectF read m_ViewBox     write m_ViewBox;
+                    property BoundingBox: TWRectF read m_BoundingBox write m_BoundingBox;
+            end;
+
         private
             m_GDIPlusToken: ULONG_PTR;
 
@@ -93,6 +121,7 @@ type
              @param(clippingMode If @true, a clip should be performed instead of a drawing)
              @param(useMode If @true, the current element to read is owned by an use link)
              @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
+             @param(pAspectRatio Aspect ratio override, ignored if @nil)
              @param(pCanvas GDI Canvas to draw on)
              @param(pGraphics GDI+ graphics area to draw on)
              @returns(@true on success, otherwise @false)
@@ -101,8 +130,8 @@ type
                     const pParentProps: TWSVGGDIPlusRasterizer.IProperties;
                     const pElements: TWSVGContainer.IElements; const pos: TPoint;
                     scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, useMode, intersection: Boolean;
-                    const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
-                    pGraphics: TGpGraphics): Boolean; overload;
+                    const animation: TWSVGRasterizer.IAnimation; pAspectRatio: IAspectRatio;
+                    pCanvas: TCanvas; pGraphics: TGpGraphics): Boolean; overload;
 
             {**
              Check if a clipping path should be applied and apply it if yes
@@ -120,6 +149,7 @@ type
              @param(useMode If @true, the current element to read is owned by an use link)
              @param(intersection If @true, and if clipping mode is enabled, perform an intersection instead of an union)
              @param(animation Animation params, containing e.g. position in percent (between 0 and 100))
+             @param(pAspectRatio Aspect ratio override, ignored if @nil)
              @param(pCanvas GDI Canvas to draw on)
              @param(pGraphics GDI+ graphics area to draw on)
              @param(pElement The element for which the clip path should be get)
@@ -130,8 +160,24 @@ type
                     const pParentProps: TWSVGGDIPlusRasterizer.IProperties;
                     const pElements: TWSVGContainer.IElements; const pos: TPoint;
                     scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, useMode: Boolean;
-                    const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
-                    pGraphics: TGpGraphics; pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
+                    const animation: TWSVGRasterizer.IAnimation; pAspectRatio: IAspectRatio;
+                    pCanvas: TCanvas; pGraphics: TGpGraphics; pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
+
+            {**
+             Populate aspect ratio from element properties
+             @param(pos Element position)
+             @param(width Element width)
+             @param(height Element height)
+             @param(scaleW Scale factor to apply to width)
+             @param(scaleH Scale factor to apply to height)
+             @param(elementViewBox Viewbox surrounding the element)
+             @param(pProps Element properties)
+             @param(pAspectRatio Aspect ratio to populate)
+             @returns(@true on success, otherwise @false)
+            }
+            function PopulateAspectRatio(pos: TPoint; width, height, scaleW, scaleH: Single;
+                    elementViewBox: TWRectF; pProps: TWSVGGDIPlusRasterizer.IProperties;
+                    pAspectRatio: IAspectRatio): Boolean;
 
             {**
              Get the closest square contained inside a rect
@@ -316,6 +362,18 @@ implementation
     const C_WMTM_Stamp: AnsiString = 'Z0QzNGZfIOjpM0RmQ0NndiBzIiVnRDE5akZ2P29wZ0zgUmPnNOdkY2Zm';
 {$endif}
 //---------------------------------------------------------------------------
+// TWSVGGDIPlusRasterizer.IAspectRatio
+//---------------------------------------------------------------------------
+constructor TWSVGGDIPlusRasterizer.IAspectRatio.Create;
+begin
+    inherited Create;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGGDIPlusRasterizer.IAspectRatio.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
 // TWSVGGDIPlusRasterizer
 //---------------------------------------------------------------------------
 constructor TWSVGGDIPlusRasterizer.Create(token: ULONG_PTR);
@@ -373,8 +431,8 @@ begin
                 pHeaderProps.Merge(pProperties);
 
                 Exit(DrawElements(pHeader, viewBox.ToGpRectF, pHeaderProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, False, False, False, animation, pCanvas,
-                        pGraphics));
+                        scaleH, antialiasing, switchMode, False, False, False, animation, nil,
+                        pCanvas, pGraphics));
             finally
                 {$ifdef TRIAL_BUILD}
                     // apply trial timesamp
@@ -390,66 +448,69 @@ end;
 function TWSVGGDIPlusRasterizer.DrawElements(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
         const pParentProps: TWSVGGDIPlusRasterizer.IProperties; const pElements: TWSVGContainer.IElements;
         const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, useMode, intersection: Boolean;
-        const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas;
+        const animation: TWSVGRasterizer.IAnimation; pAspectRatio: IAspectRatio; pCanvas: TCanvas;
         pGraphics: TGpGraphics): Boolean;
 var
-    pClonedElements:                                                                                            IWSmartPointer<TWSVGContainer.IElements>;
-    pRenderer:                                                                                                  TWRenderer_GDIPlus;
-    pElement, pLinkedElement:                                                                                   TWSVGElement;
-    pClone:                                                                                                     IWSmartPointer<TWSVGElement>;
-    pSwitch:                                                                                                    TWSVGSwitch;
-    pGroup:                                                                                                     TWSVGGroup;
-    pAction:                                                                                                    TWSVGAction;
-    pUse:                                                                                                       TWSVGUse;
-    pSymbol:                                                                                                    TWSVGSymbol;
-    pEmbeddedSVG:                                                                                               TWSVGSVG;
-    pPath:                                                                                                      TWSVGPath;
-    pRect:                                                                                                      TWSVGRect;
-    pCircle:                                                                                                    TWSVGCircle;
-    pEllipse:                                                                                                   TWSVGEllipse;
-    pLine:                                                                                                      TWSVGLine;
-    pPolygon:                                                                                                   TWSVGPolygon;
-    pPolyline:                                                                                                  TWSVGPolyline;
-    pImage:                                                                                                     TWSVGImage;
-    pText:                                                                                                      TWSVGText;
-    pProps:                                                                                                     IWSmartPointer<IProperties>;
-    pAnimationData:                                                                                             IWSmartPointer<IAnimationData>;
-    pGraphicsPath, pPolylinePath, pTextPath:                                                                    IWSmartPointer<TGpGraphicsPath>;
-    pMatrix:                                                                                                    IWSmartPointer<TGpMatrix>;
-    pPathConverter:                                                                                             IWSmartPointer<TWGraphicPathConverter_GDIPlus>;
-    pRectOptions:                                                                                               IWSmartPointer<TWRenderer.IRectOptions>;
-    pFill:                                                                                                      IWSmartPointer<TWFill>;
-    pStroke:                                                                                                    IWSmartPointer<TWStroke>;
-    paPen:                                                                                                      IWSmartPointer<TGpPen>;
-    pFont:                                                                                                      IWSmartPointer<TGpFont>;
-    pFontFamily:                                                                                                IWSmartPointer<TGPFontFamily>;
-    pTextFont:                                                                                                  IWSmartPointer<TFont>;
-    pTextFormat:                                                                                                IWSmartPointer<TGpStringFormat>;
-    pGradientFactory:                                                                                           IWSmartPointer<TWGDIPlusGradient>;
-    pRegion, pPrevRegion, pCurRegion:                                                                           IWSmartPointer<TGpRegion>;
-    pImageData:                                                                                                 IWSmartPointer<TMemoryStream>;
-    pGraphic:                                                                                                   TGraphic;
-    textMetrics:                                                                                                TEXTMETRIC;
-    charRange:                                                                                                  TCharacterRange;
-    charRegions:                                                                                                array of TGpRegion;
-    points:                                                                                                     TWRenderer_GDIPlus.IGDIPlusPointList;
-    pGpPen, pFakePen:                                                                                           TGpPen;
-    point, textPos:                                                                                             TGpPointF;
-    boundingBox, rectToDraw, charRect:                                                                          TGpRectF;
-    rect, imageRect:                                                                                            TWRectF;
-    iRect:                                                                                                      TRect;
-    svgPos, posFromProps:                                                                                       TPoint;
-    color:                                                                                                      TWColor;
-    outputMatrix:                                                                                               TWMatrix3x3;
-    dashPatternCount, i:                                                                                        NativeInt;
-    count:                                                                                                      NativeUInt;
-    x, y, initialX, initialY, x1, y1, x2, y2, r, rx, ry, d, dx, dy, width, height, dashFactor, coord, fontSize: Single;
-    fontWeight:                                                                                                 Cardinal;
-    fontFamily, fontFamilyLowerCase:                                                                            UnicodeString;
-    anchor:                                                                                                     IETextAnchor;
-    imageType:                                                                                                  IEImageType;
-    pImageOptions:                                                                                              TWRenderer.IImageOptions;
-    isXCoord, isClipped, bolder, lighter:                                                                       Boolean;
+    pClonedElements:                                                                                  IWSmartPointer<TWSVGContainer.IElements>;
+    pRenderer:                                                                                        TWRenderer_GDIPlus;
+    pElement, pLinkedElement:                                                                         TWSVGElement;
+    pClone:                                                                                           IWSmartPointer<TWSVGElement>;
+    pSwitch:                                                                                          TWSVGSwitch;
+    pGroup:                                                                                           TWSVGGroup;
+    pAction:                                                                                          TWSVGAction;
+    pUse:                                                                                             TWSVGUse;
+    pSymbol:                                                                                          TWSVGSymbol;
+    pEmbeddedSVG:                                                                                     TWSVGSVG;
+    pPath:                                                                                            TWSVGPath;
+    pRect:                                                                                            TWSVGRect;
+    pCircle:                                                                                          TWSVGCircle;
+    pEllipse:                                                                                         TWSVGEllipse;
+    pLine:                                                                                            TWSVGLine;
+    pPolygon:                                                                                         TWSVGPolygon;
+    pPolyline:                                                                                        TWSVGPolyline;
+    pImage:                                                                                           TWSVGImage;
+    pText:                                                                                            TWSVGText;
+    pProps:                                                                                           IWSmartPointer<IProperties>;
+    pAnimationData:                                                                                   IWSmartPointer<IAnimationData>;
+    pGraphicsPath, pPolylinePath, pTextPath:                                                          IWSmartPointer<TGpGraphicsPath>;
+    pMatrix:                                                                                          IWSmartPointer<TGpMatrix>;
+    pPathConverter:                                                                                   IWSmartPointer<TWGraphicPathConverter_GDIPlus>;
+    pRectOptions:                                                                                     IWSmartPointer<TWRenderer.IRectOptions>;
+    pFill:                                                                                            IWSmartPointer<TWFill>;
+    pStroke:                                                                                          IWSmartPointer<TWStroke>;
+    paPen:                                                                                            IWSmartPointer<TGpPen>;
+    pFont:                                                                                            IWSmartPointer<TGpFont>;
+    pFontFamily:                                                                                      IWSmartPointer<TGPFontFamily>;
+    pTextFont:                                                                                        IWSmartPointer<TFont>;
+    pTextFormat:                                                                                      IWSmartPointer<TGpStringFormat>;
+    pGradientFactory:                                                                                 IWSmartPointer<TWGDIPlusGradient>;
+    pRegion, pPrevRegion, pCurRegion, pPrevAspectRatioRegion:                                         IWSmartPointer<TGpRegion>;
+    pImageData:                                                                                       IWSmartPointer<TMemoryStream>;
+    pAspectRatioOverride:                                                                             IWSmartPointer<IAspectRatio>;
+    pAspectRatioToUse:                                                                                IAspectRatio;
+    pGraphic:                                                                                         TGraphic;
+    textMetrics:                                                                                      TEXTMETRIC;
+    charRange:                                                                                        TCharacterRange;
+    charRegions:                                                                                      array of TGpRegion;
+    points:                                                                                           TWRenderer_GDIPlus.IGDIPlusPointList;
+    pGpPen, pFakePen:                                                                                 TGpPen;
+    point, textPos:                                                                                   TGpPointF;
+    boundingBox, rectToDraw, charRect:                                                                TGpRectF;
+    rect, imageRect, elementViewBox:                                                                  TWRectF;
+    iRect:                                                                                            TRect;
+    svgPos, posFromProps:                                                                             TPoint;
+    color:                                                                                            TWColor;
+    outputMatrix:                                                                                     TWMatrix3x3;
+    dashPatternCount, i:                                                                              NativeInt;
+    count:                                                                                            NativeUInt;
+    x, y, initialX, initialY, x1, y1, x2, y2, r, rx, ry, d, dx, dy, width, height, dashFactor, coord: Single;
+    fontSize:                                                                                         Single;
+    fontWeight:                                                                                       Cardinal;
+    fontFamily, fontFamilyLowerCase:                                                                  UnicodeString;
+    anchor:                                                                                           IETextAnchor;
+    imageType:                                                                                        IEImageType;
+    pImageOptions:                                                                                    TWRenderer.IImageOptions;
+    isXCoord, isClipped, isAspectRatioClipped, bolder, lighter:                                       Boolean;
 begin
     // svg header should always be declared, otherwise svg data is malformed (NOTE svg header
     // element should exist even if the svg tag contains nothing else)
@@ -478,8 +539,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pGroup, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pGroup, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -506,7 +567,9 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pGroup, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                if (not GetPosAndSizeProps(pGroup, x, y, width, height, elementViewBox, pAnimationData,
+                        animation.m_pCustomData))
+                then
                     Exit(False);
 
                 // get the group position (in relation to the initial position)
@@ -514,8 +577,8 @@ begin
 
                 // draw group subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pGroup.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, False, False, useMode, intersection, animation, pCanvas,
-                        pGraphics))
+                        scaleW, scaleH, antialiasing, False, False, useMode, intersection, animation,
+                        pAspectRatio, pCanvas, pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -545,8 +608,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pSwitch, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pSwitch, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -573,7 +636,9 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pSwitch, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                if (not GetPosAndSizeProps(pSwitch, x, y, width, height, elementViewBox, pAnimationData,
+                        animation.m_pCustomData))
+                then
                     Exit(False);
 
                 // get the switch position (in relation to the initial position)
@@ -582,7 +647,7 @@ begin
                 // draw switch subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pSwitch.ElementList, posFromProps,
                         scaleW, scaleH, antialiasing, True, False, useMode, intersection, animation,
-                        pCanvas, pGraphics))
+                        pAspectRatio, pCanvas, pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -612,8 +677,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pAction, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pAction, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -640,7 +705,9 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pAction, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                if (not GetPosAndSizeProps(pAction, x, y, width, height, elementViewBox, pAnimationData,
+                        animation.m_pCustomData))
+                then
                     Exit(False);
 
                 // get the action position (in relation to the initial position)
@@ -649,7 +716,7 @@ begin
                 // draw action subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pAction.ElementList, posFromProps,
                         scaleW, scaleH, antialiasing, False, False, useMode, intersection, animation,
-                        pCanvas, pGraphics))
+                        pAspectRatio, pCanvas, pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -707,7 +774,9 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pUse, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                if (not GetPosAndSizeProps(pUse, x, y, width, height, elementViewBox, pAnimationData,
+                        animation.m_pCustomData))
+                then
                     Exit(False);
 
                 // get the group position (in relation to the initial position)
@@ -731,7 +800,7 @@ begin
                 // draw the cloned element
                 if (not DrawElements(pHeader, viewBox, pProps, pClonedElements, posFromProps, scaleW,
                         scaleH, antialiasing, switchMode, clippingMode, True, intersection, animation,
-                        pCanvas, pGraphics))
+                        pAspectRatio, pCanvas, pGraphics))
                 then
                     Exit(False);
 
@@ -755,8 +824,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pSymbol, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pSymbol, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -783,7 +852,9 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pSymbol, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                if (not GetPosAndSizeProps(pSymbol, x, y, width, height, elementViewBox, pAnimationData,
+                        animation.m_pCustomData))
+                then
                     Exit(False);
 
                 // get the symbol position (in relation to the initial position)
@@ -792,7 +863,7 @@ begin
                 // draw symbol subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pSymbol.ElementList, posFromProps,
                         scaleW, scaleH, antialiasing, switchMode, clippingMode, useMode, intersection,
-                        animation, pCanvas, pGraphics))
+                        animation, pAspectRatio, pCanvas, pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -822,8 +893,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pEmbeddedSVG, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pEmbeddedSVG, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -850,18 +921,33 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pEmbeddedSVG, x, y, width, height, pAnimationData,
-                        animation.m_pCustomData))
+                if (not GetPosAndSizeProps(pEmbeddedSVG, x, y, width, height, elementViewBox,
+                        pAnimationData, animation.m_pCustomData))
                 then
                     Exit(False);
 
                 // get the embedded SVG position (in relation to the initial position)
                 posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
 
+                // should apply an aspect ratio?
+                if ((pProps.AspectRatio.Defined.Value) and (not elementViewBox.IsEmpty)) then
+                begin
+                    pAspectRatioOverride := TWSmartPointer<IAspectRatio>.Create();
+                    pAspectRatioToUse    := pAspectRatioOverride;
+
+                    // calculate aspect ratio from svg properties and populate it
+                    if (not PopulateAspectRatio(posFromProps, width, height, scaleW, scaleH,
+                            elementViewBox, pProps, pAspectRatioOverride))
+                    then
+                        pAspectRatioToUse := pAspectRatio;
+                end
+                else
+                    pAspectRatioToUse := pAspectRatio;
+
                 // draw embedded SVG subelements
-                if (not DrawElements(pHeader, viewBox, pProps, pEmbeddedSVG.ElementList, posFromProps,
-                        scaleW, scaleH, antialiasing, False, False, useMode, intersection, animation,
-                        pCanvas, pGraphics))
+                if (not DrawElements(pHeader, viewBox, pProps, pEmbeddedSVG.ElementList,
+                        posFromProps, scaleW, scaleH, antialiasing, False, False, useMode, intersection,
+                        animation, pAspectRatioToUse, pCanvas, pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -891,8 +977,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pPath, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pPath, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -919,7 +1005,9 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pPath, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                if (not GetPosAndSizeProps(pPath, x, y, width, height, elementViewBox, pAnimationData,
+                        animation.m_pCustomData))
+                then
                     Exit(False);
 
                 // get the path position (in relation to the initial position)
@@ -931,9 +1019,20 @@ begin
                 // path is never drawn
                 pGraphicsPath := TWSmartPointer<TGpGraphicsPath>.Create(TGpGraphicsPath.Create);
 
-                rect        := Default(TWRectF);
-                rect.Right  := viewBox.Width;
-                rect.Bottom := viewBox.Height;
+                rect := Default(TWRectF);
+
+                // should apply an aspect ratio onto the path?
+                if (Assigned(pAspectRatio)) then
+                begin
+                    // use the aspect ratio bounding box position instead
+                    rect.Right  := pAspectRatio.m_BoundingBox.Width;
+                    rect.Bottom := pAspectRatio.m_BoundingBox.Height;
+                end
+                else
+                begin
+                    rect.Right  := viewBox.Width;
+                    rect.Bottom := viewBox.Height;
+                end;
 
                 pPathConverter :=
                         TWSmartPointer<TWGraphicPathConverter_GDIPlus>.Create
@@ -943,13 +1042,110 @@ begin
                 if (not pPathConverter.Process(rect, pPath.Commands)) then
                     Exit(False);
 
-                // calculate position at which svg element should be drawn
-                svgPos := CalculateFinalPos(posFromProps, viewBox, scaleW, scaleH);
-
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                isAspectRatioClipped := False;
+
+                // should apply an aspect ratio onto the path?
+                if (Assigned(pAspectRatio)) then
+                begin
+                    // the svg position is the aspect ratio bounding box position (already scaled)
+                    svgPos.X := Round(pAspectRatio.BoundingBox.Left);
+                    svgPos.Y := Round(pAspectRatio.BoundingBox.Top);
+
+                    pFakePen := nil;
+
+                    // create a fake pen. The color is not important, but the width will be used to
+                    // measure the path bounds. Without a such pen, the stroke may be calculated
+                    // incorrectly around the path. NOTE don't worry if the pen is nil, in this case
+                    // the GetBounds() function will measure from the middle of the stroke
+                    if (pProps.Style.Stroke.Width.Value > 0.0) then
+                    begin
+                        color.SetColor(clBlack);
+                        pFakePen := pRenderer.GetPen(color, pProps.Style.Stroke.Width.Value);
+                    end;
+
+                    // measure the path bounding box
+                    pGraphicsPath.GetBounds(boundingBox, nil, pFakePen);
+
+                    // resize and clip the path to fit the aspect ratio bounding box / viewbox
+                    if (pProps.AspectRatio.AspectRatio.Value = TWSVGPropAspectRatio.IEAspectRatio.IE_AR_None) then
+                        // no alignment, fit the path to the aspect ratio bounding box
+                        ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                                pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
+                    else
+                    if (pProps.AspectRatio.Reference.Value = TWSVGPropAspectRatio.IEReference.IE_R_Slice) then
+                    begin
+                        // slice path, first reset the transform matrix. This is required because the
+                        // aspect ratio viewbox is already scaled and should not be influenced by any
+                        // previously defined transform matrix
+                        pGraphics.ResetTransform();
+
+                        // get the current region
+                        pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create);
+                        pGraphics.GetClip(pPrevAspectRatioRegion);
+
+                        // create a new clip region around the aspect ratio viewbox
+                        pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pAspectRatio.ViewBox.ToGpRectF()));
+
+                        // set the clipping region, replace the existing one if any
+                        if (pPrevAspectRatioRegion.IsInfinite(pGraphics)) then
+                            pGraphics.SetClip(pRegion)
+                        else
+                            pGraphics.SetClip(pRegion, CombineModeReplace);
+
+                        // notify that the path was clipped
+                        isAspectRatioClipped := True;
+
+                        // calculate the transform matrix to apply, in order to fit the path in the
+                        // aspect ratio bounding box
+                        if (pAspectRatio.ElementBox.Width < pAspectRatio.ElementBox.Height) then
+                            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
+                                    pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
+                        else
+                        if (pAspectRatio.ElementBox.Width > pAspectRatio.ElementBox.Height) then
+                            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                                    pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics)
+                        else
+                        begin
+                            if (pAspectRatio.ViewBox.Width <= pAspectRatio.ViewBox.Width) then
+                                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                                        pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics)
+                            else
+                                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
+                                        pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics);
+                        end;
+                    end
+                    else
+                    begin
+                        // meet path, calculate the transform matrix to apply, in order to fit
+                        // the path in the aspect ratio bounding box
+                        if (pAspectRatio.ElementBox.Width < pAspectRatio.ElementBox.Height) then
+                            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                                    pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics)
+                        else
+                        if (pAspectRatio.ElementBox.Width > pAspectRatio.ElementBox.Height) then
+                            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
+                                    pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
+                        else
+                        begin
+                            if (pAspectRatio.ViewBox.Width <= pAspectRatio.ViewBox.Width) then
+                                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
+                                        pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
+                            else
+                                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                                        pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics);
+                        end;
+                    end;
+                end
+                else
+                begin
+                    // calculate position at which svg element should be drawn
+                    svgPos := CalculateFinalPos(posFromProps, viewBox, scaleW, scaleH);
+
+                    ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                end;
 
                 // do apply a clipping path?
                 if (clippingMode) then
@@ -1012,6 +1208,10 @@ begin
                         pRenderer.DrawPath(pGraphicsPath, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
 
+                // restore the previous cliping before aspect ratio, if any
+                if (isAspectRatioClipped) then
+                    pGraphics.SetClip(pPrevAspectRatioRegion, CombineModeReplace);
+
                 // restore the previous clipping, if any
                 if (isClipped) then
                     pGraphics.SetClip(pPrevRegion, CombineModeReplace);
@@ -1036,8 +1236,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pRect, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pRect, pPrevRegion);
 
                 pRectOptions := TWSmartPointer<TWRenderer.IRectOptions>.Create();
 
@@ -1182,8 +1382,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pCircle, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pCircle, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -1210,8 +1410,8 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pCircle, initialX, initialY, width, height, pAnimationData,
-                        animation.m_pCustomData))
+                if (not GetPosAndSizeProps(pCircle, initialX, initialY, width, height, elementViewBox,
+                        pAnimationData, animation.m_pCustomData))
                 then
                     Exit(False);
 
@@ -1310,8 +1510,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pEllipse, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pEllipse, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -1338,8 +1538,8 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pEllipse, initialX, initialY, width, height, pAnimationData,
-                        animation.m_pCustomData))
+                if (not GetPosAndSizeProps(pEllipse, initialX, initialY, width, height, elementViewBox,
+                        pAnimationData, animation.m_pCustomData))
                 then
                     Exit(False);
 
@@ -1461,7 +1661,9 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pLine, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+                if (not GetPosAndSizeProps(pLine, x, y, width, height, elementViewBox, pAnimationData,
+                        animation.m_pCustomData))
+                then
                     Exit(False);
 
                 // extract properties from line
@@ -1534,8 +1736,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pPolygon, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pPolygon, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -1562,7 +1764,7 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pPolygon, x, y, width, height, pAnimationData,
+                if (not GetPosAndSizeProps(pPolygon, x, y, width, height, elementViewBox, pAnimationData,
                         animation.m_pCustomData))
                 then
                     Exit(False);
@@ -1697,7 +1899,7 @@ begin
                     continue;
 
                 // extract position and size properties
-                if (not GetPosAndSizeProps(pPolyline, x, y, width, height, pAnimationData,
+                if (not GetPosAndSizeProps(pPolyline, x, y, width, height, elementViewBox, pAnimationData,
                         animation.m_pCustomData))
                 then
                     Exit(False);
@@ -1794,8 +1996,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pImage, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pImage, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -1914,8 +2116,8 @@ begin
                 pPrevRegion := TWSmartPointer<TGpRegion>.Create();
 
                 isClipped := ApplyClipPath(pHeader, viewBox, pParentProps, pElements, pos, scaleW,
-                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pCanvas,
-                        pGraphics, pText, pPrevRegion);
+                        scaleH, antialiasing, switchMode, clippingMode, useMode, animation, pAspectRatio,
+                        pCanvas, pGraphics, pText, pPrevRegion);
 
                 // configure animation
                 pAnimationData          := TWSmartPointer<IAnimationData>.Create();
@@ -2209,14 +2411,15 @@ end;
 function TWSVGGDIPlusRasterizer.ApplyClipPath(const pHeader: TWSVGParser.IHeader; const viewBox: TGpRectF;
         const pParentProps: TWSVGGDIPlusRasterizer.IProperties; const pElements: TWSVGContainer.IElements;
         const pos: TPoint; scaleW, scaleH: Single; antialiasing, switchMode, clippingMode, useMode: Boolean;
-        const animation: TWSVGRasterizer.IAnimation; pCanvas: TCanvas; pGraphics: TGpGraphics;
-        pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
+        const animation: TWSVGRasterizer.IAnimation; pAspectRatio: IAspectRatio; pCanvas: TCanvas;
+        pGraphics: TGpGraphics; pElement: TWSVGElement; prevRegion: TGpRegion): Boolean;
 var
     pClipPath:             TWSVGClipPath;
     pProps:                IWSmartPointer<IProperties>;
     pAnimationData:        IWSmartPointer<IAnimationData>;
     clipPathPos:           TPoint;
     x, y, width, height:   Single;
+    elementViewBox:        TWRectF;
     pIntersectionClipPath: TWSVGClipPath;
     intersect, clipResult: Boolean;
 begin
@@ -2257,8 +2460,8 @@ begin
             Exit(False);
 
         // extract position and size properties
-        if (not GetPosAndSizeProps(pIntersectionClipPath, x, y, width, height, pAnimationData,
-                animation.m_pCustomData))
+        if (not GetPosAndSizeProps(pIntersectionClipPath, x, y, width, height, elementViewBox,
+                pAnimationData, animation.m_pCustomData))
         then
             Exit(False);
 
@@ -2271,7 +2474,7 @@ begin
         // apply clipping
         clipResult := DrawElements(pHeader, viewBox, pProps, pIntersectionClipPath.ElementList,
                 clipPathPos, scaleW, scaleH, antialiasing, False, True, useMode, True, animation,
-                pCanvas, pGraphics);
+                pAspectRatio, pCanvas, pGraphics);
 
         intersect := clipResult;
     end;
@@ -2301,7 +2504,9 @@ begin
         Exit(False);
 
     // extract position and size properties
-    if (not GetPosAndSizeProps(pClipPath, x, y, width, height, pAnimationData, animation.m_pCustomData)) then
+    if (not GetPosAndSizeProps(pClipPath, x, y, width, height, elementViewBox, pAnimationData,
+            animation.m_pCustomData))
+    then
         Exit(False);
 
     // get the clip path position (in relation to the initial position)
@@ -2313,7 +2518,191 @@ begin
 
     // apply clipping
     Result := DrawElements(pHeader, viewBox, pProps, pClipPath.ElementList, clipPathPos, scaleW,
-            scaleH, antialiasing, False, True, useMode, intersect, animation, pCanvas, pGraphics) and clipResult;
+            scaleH, antialiasing, False, True, useMode, intersect, animation, pAspectRatio, pCanvas,
+            pGraphics) and clipResult;
+end;
+//---------------------------------------------------------------------------
+function TWSVGGDIPlusRasterizer.PopulateAspectRatio(pos: TPoint; width, height, scaleW, scaleH: Single;
+        elementViewBox: TWRectF; pProps: TWSVGGDIPlusRasterizer.IProperties; pAspectRatio: IAspectRatio): Boolean;
+var
+    aspectRatioViewBox, aspectRatioBoundingBox: TWRectF;
+    aspectBBoxWidth, aspectBBoxHeight:          Single;
+begin
+    // calculate the aspect ratio viewbox considering the scaling
+    aspectRatioViewBox.Left   := pos.X;
+    aspectRatioViewBox.Top    := pos.Y;
+    aspectRatioViewBox.Right  := pos.X + (width  * scaleW);
+    aspectRatioViewBox.Bottom := pos.Y + (height * scaleH);
+
+    // calculate the aspect ratio bounding box width and height
+    case pProps.AspectRatio.Reference.Value of
+        TWSVGPropAspectRatio.IEReference.IE_R_Slice:
+        begin
+            // sliced, search for bounding box orientation
+            if (elementViewBox.Width < elementViewBox.Height) then
+            begin
+                // portrait
+                aspectBBoxWidth  := aspectRatioViewBox.Width;
+                aspectBBoxHeight := elementViewBox.Height * (aspectRatioViewBox.Width / elementViewBox.Width);
+            end
+            else
+            if (elementViewBox.Width > elementViewBox.Height) then
+            begin
+                // landscape
+                aspectBBoxWidth  := elementViewBox.Width * (aspectRatioViewBox.Height / elementViewBox.Height);
+                aspectBBoxHeight := aspectRatioViewBox.Height;
+            end
+            else
+            begin
+                // squared, in this case use viewbox for calculation
+                if (aspectRatioViewBox.Width <= aspectRatioViewBox.Height) then
+                begin
+                    // portrait or squared
+                    aspectBBoxWidth  := elementViewBox.Width * (aspectRatioViewBox.Height / elementViewBox.Height);
+                    aspectBBoxHeight := aspectRatioViewBox.Height;
+                end
+                else
+                begin
+                    // landscape
+                    aspectBBoxWidth  := aspectRatioViewBox.Width;
+                    aspectBBoxHeight := elementViewBox.Height * (aspectRatioViewBox.Width / elementViewBox.Width);
+                end
+            end;
+        end;
+    else
+        // meet or default, search for bounding box orientation
+        if (elementViewBox.Width < elementViewBox.Height) then
+        begin
+            // portrait
+            aspectBBoxWidth  := elementViewBox.Width * (aspectRatioViewBox.Height / elementViewBox.Height);
+            aspectBBoxHeight := aspectRatioViewBox.Height;
+        end
+        else
+        if (elementViewBox.Width > elementViewBox.Height) then
+        begin
+            // landscape
+            aspectBBoxWidth  := aspectRatioViewBox.Width;
+            aspectBBoxHeight := elementViewBox.Height * (aspectRatioViewBox.Width / elementViewBox.Width);
+        end
+        else
+        begin
+            // squared, in this case use viewbox for calculation
+            if (aspectRatioViewBox.Width <= aspectRatioViewBox.Height) then
+            begin
+                // portrait or squared
+                aspectBBoxWidth  := aspectRatioViewBox.Width;
+                aspectBBoxHeight := elementViewBox.Height * (aspectRatioViewBox.Width / elementViewBox.Width);
+            end
+            else
+            begin
+                // landscape
+                aspectBBoxWidth  := elementViewBox.Width * (aspectRatioViewBox.Height / elementViewBox.Height);
+                aspectBBoxHeight := aspectRatioViewBox.Height;
+            end
+        end;
+    end;
+
+    // calculate the aspect ratio bounding box position relative to its viewbox
+    case pProps.AspectRatio.AspectRatio.Value of
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_None:
+        begin
+            // no aspect ratio, the content is just stretched in the viewbox
+            aspectRatioBoundingBox.Left   := pos.X;
+            aspectRatioBoundingBox.Top    := pos.Y;
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + (width  * scaleW);
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + (height * scaleH);
+        end;
+
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMinYMin:
+        begin
+            // left and top
+            aspectRatioBoundingBox.Left   := pos.X;
+            aspectRatioBoundingBox.Top    := pos.Y;
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + aspectBBoxWidth;
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + aspectBBoxHeight;
+        end;
+
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMidYMin:
+        begin
+            // centered and top
+            aspectRatioBoundingBox.Left   := pos.X + ((aspectRatioViewBox.Width - aspectBBoxWidth) / 2);
+            aspectRatioBoundingBox.Top    := pos.Y;
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + aspectBBoxWidth;
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + aspectBBoxHeight;
+        end;
+
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMaxYMin:
+        begin
+            // right and top
+            aspectRatioBoundingBox.Left   := pos.X + (aspectRatioViewBox.Width - aspectBBoxWidth);
+            aspectRatioBoundingBox.Top    := pos.Y;
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + aspectBBoxWidth;
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + aspectBBoxHeight;
+        end;
+
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMinYMid:
+        begin
+            // left and centered
+            aspectRatioBoundingBox.Left   := pos.X;
+            aspectRatioBoundingBox.Top    := pos.Y + ((aspectRatioViewBox.Height - aspectBBoxHeight) / 2);
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + aspectBBoxWidth;
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + aspectBBoxHeight;
+        end;
+
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMidYMid:
+        begin
+            // centered
+            aspectRatioBoundingBox.Left   := pos.X + ((aspectRatioViewBox.Width  - aspectBBoxWidth)  / 2);
+            aspectRatioBoundingBox.Top    := pos.Y + ((aspectRatioViewBox.Height - aspectBBoxHeight) / 2);
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + aspectBBoxWidth;
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + aspectBBoxHeight;
+        end;
+
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMaxYMid:
+        begin
+            // right and centered
+            aspectRatioBoundingBox.Left   := pos.X + ( aspectRatioViewBox.Width  - aspectBBoxWidth);
+            aspectRatioBoundingBox.Top    := pos.Y + ((aspectRatioViewBox.Height - aspectBBoxHeight) / 2);
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + aspectBBoxWidth;
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + aspectBBoxHeight;
+        end;
+
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMinYMax:
+        begin
+            // left and bottom
+            aspectRatioBoundingBox.Left   := pos.X;
+            aspectRatioBoundingBox.Top    := pos.Y + (aspectRatioViewBox.Height - aspectBBoxHeight);
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + aspectBBoxWidth;
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + aspectBBoxHeight;
+        end;
+
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMidYMax:
+        begin
+            // centered and bottom
+            aspectRatioBoundingBox.Left   := pos.X + ((aspectRatioViewBox.Width  - aspectBBoxWidth) / 2);
+            aspectRatioBoundingBox.Top    := pos.Y + ( aspectRatioViewBox.Height - aspectBBoxHeight);
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + aspectBBoxWidth;
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + aspectBBoxHeight;
+        end;
+
+        TWSVGPropAspectRatio.IEAspectRatio.IE_AR_XMaxYMax:
+        begin
+            // right and bottom
+            aspectRatioBoundingBox.Left   := pos.X + (aspectRatioViewBox.Width  - aspectBBoxWidth);
+            aspectRatioBoundingBox.Top    := pos.Y + (aspectRatioViewBox.Height - aspectBBoxHeight);
+            aspectRatioBoundingBox.Right  := aspectRatioBoundingBox.Left + aspectBBoxWidth;
+            aspectRatioBoundingBox.Bottom := aspectRatioBoundingBox.Top  + aspectBBoxHeight;
+        end;
+    else
+        Exit(False);
+    end;
+
+    // set aspect ratio view and bounding box
+    pAspectRatio.ElementBox  := elementViewBox;
+    pAspectRatio.ViewBox     := aspectRatioViewBox;
+    pAspectRatio.BoundingBox := aspectRatioBoundingBox;
+
+    Result := True;
 end;
 //---------------------------------------------------------------------------
 function TWSVGGDIPlusRasterizer.GetClosestSquare(const rect: TRect): TRect;
