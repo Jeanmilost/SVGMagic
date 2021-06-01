@@ -531,11 +531,11 @@ end;
 //---------------------------------------------------------------------------
 procedure TMainForm.OnAfterMonitorDpiChangedHandler(pSender: TObject; oldDPI, newDPI: Integer);
 begin
-    // TBitBtn doesn't refresh his glyph automatically, so force it to refresh
+    // TBitBtn doesn't refresh its glyph automatically, so force it to refresh
     acDemoTBitBtn.ImageIndex := -1;
     acDemoTBitBtn.ImageIndex :=  1;
 
-    // TSpeedBtn doesn't refresh his glyph automatically, so force it to refresh
+    // TSpeedBtn doesn't refresh its glyph automatically, so force it to refresh
     acDemoTSpeedBtn.ImageIndex := -1;
     acDemoTSpeedBtn.ImageIndex :=  1;
 end;

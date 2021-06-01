@@ -1652,7 +1652,7 @@ begin
         // configure dash style to custom (meaning that dash pattern should be used)
         pPen.SetDashStyle(DashStyleCustom);
 
-        // delta is the value to apply to correct the size used by the linecap. This is done his way
+        // delta is the value to apply to correct the size used by the linecap. This is done this way
         // because, when a linecap is selected, GDI+ may increase each dash pattern items by the
         // radius of each caps. To keep the pattern compatible with those written in the SVG, a
         // delta must be applied to compensate the difference

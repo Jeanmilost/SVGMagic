@@ -27,7 +27,7 @@ uses System.SysUtils,
 
 type
     {**
-     Called when image list detects a DPI change and should update his content
+     Called when image list detects a DPI change and should update its content
      @param(oldDPI Old DPI value)
      @param(newDPI New DPI value)
      @returns(@true if event was handled and should no longer be considered, otherwise @false)
@@ -716,7 +716,7 @@ begin
         pPictureItem := IWPictureItem.Create;
         pPictureItem.m_ColorKey.Assign(color);
 
-        // copy the SVG in the picture item, and update his size to match with the rendering size
+        // copy the SVG in the picture item, and update its size to match with the rendering size
         pPictureItem.m_pPicture.Assign(pSVG);
         pPictureItem.m_pPicture.Graphic.Width  := Width  - 1;
         pPictureItem.m_pPicture.Graphic.Height := Height - 1;

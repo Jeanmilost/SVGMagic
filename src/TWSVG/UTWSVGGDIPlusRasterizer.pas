@@ -271,6 +271,20 @@ type
                     scaleW, scaleH: Single): TPoint;
 
             {**
+             Apply aspect ratio
+             @param(pAspectRatio Aspect ratio to apply)
+             @param(pProps Element properties)
+             @param(boundingBox Bounding box surrounding the image for which the aspect ratio should be applied)
+             @param(pMatrix Image transformation matrix)
+             @param(pGraphics GDI+ graphics on which the image will be rendered)
+             @param(prevRegion Region applied to image before the aspect ratio was applied)
+             @returns(@true on success, otherwise @false)
+            }
+            function ApplyAspectRatio(const pAspectRatio: IAspectRatio;
+                    const pProps: TWSVGGDIPlusRasterizer.IProperties; const boundingBox: TGpRectF;
+                    const pMatrix: TGpMatrix; pGraphics: TGpGraphics; prevRegion: TGpRegion): Boolean;
+
+            {**
              Apply transformation matrix to GDI+ graphics
              @param(pMatrix Global matrix to apply)
              @param(pos SVG position)
@@ -860,10 +874,25 @@ begin
                 // get the symbol position (in relation to the initial position)
                 posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
 
+                // should apply an aspect ratio?
+                if ((pProps.AspectRatio.Defined.Value) and (not elementViewBox.IsEmpty)) then
+                begin
+                    pAspectRatioOverride := TWSmartPointer<IAspectRatio>.Create();
+                    pAspectRatioToUse    := pAspectRatioOverride;
+
+                    // calculate aspect ratio from svg properties and populate it
+                    if (not PopulateAspectRatio(posFromProps, width, height, scaleW, scaleH,
+                            elementViewBox, pProps, pAspectRatioOverride))
+                    then
+                        pAspectRatioToUse := pAspectRatio;
+                end
+                else
+                    pAspectRatioToUse := pAspectRatio;
+
                 // draw symbol subelements
                 if (not DrawElements(pHeader, viewBox, pProps, pSymbol.ElementList, posFromProps,
                         scaleW, scaleH, antialiasing, switchMode, clippingMode, useMode, intersection,
-                        animation, pAspectRatio, pCanvas, pGraphics))
+                        animation, pAspectRatioToUse, pCanvas, pGraphics))
                 then
                 begin
                     // restore the previous clipping, if any
@@ -1050,10 +1079,6 @@ begin
                 // should apply an aspect ratio onto the path?
                 if (Assigned(pAspectRatio)) then
                 begin
-                    // the svg position is the aspect ratio bounding box position (already scaled)
-                    svgPos.X := Round(pAspectRatio.BoundingBox.Left);
-                    svgPos.Y := Round(pAspectRatio.BoundingBox.Top);
-
                     pFakePen := nil;
 
                     // create a fake pen. The color is not important, but the width will be used to
@@ -1069,75 +1094,11 @@ begin
                     // measure the path bounding box
                     pGraphicsPath.GetBounds(boundingBox, nil, pFakePen);
 
-                    // resize and clip the path to fit the aspect ratio bounding box / viewbox
-                    if (pProps.AspectRatio.AspectRatio.Value = TWSVGPropAspectRatio.IEAspectRatio.IE_AR_None) then
-                        // no alignment, fit the path to the aspect ratio bounding box
-                        ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
-                                pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
-                    else
-                    if (pProps.AspectRatio.Reference.Value = TWSVGPropAspectRatio.IEReference.IE_R_Slice) then
-                    begin
-                        // slice path, first reset the transform matrix. This is required because the
-                        // aspect ratio viewbox is already scaled and should not be influenced by any
-                        // previously defined transform matrix
-                        pGraphics.ResetTransform();
+                    pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create();
 
-                        // get the current region
-                        pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create);
-                        pGraphics.GetClip(pPrevAspectRatioRegion);
-
-                        // create a new clip region around the aspect ratio viewbox
-                        pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pAspectRatio.ViewBox.ToGpRectF()));
-
-                        // set the clipping region, replace the existing one if any
-                        if (pPrevAspectRatioRegion.IsInfinite(pGraphics)) then
-                            pGraphics.SetClip(pRegion)
-                        else
-                            pGraphics.SetClip(pRegion, CombineModeReplace);
-
-                        // notify that the path was clipped
-                        isAspectRatioClipped := True;
-
-                        // calculate the transform matrix to apply, in order to fit the path in the
-                        // aspect ratio bounding box
-                        if (pAspectRatio.ElementBox.Width < pAspectRatio.ElementBox.Height) then
-                            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
-                                    pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
-                        else
-                        if (pAspectRatio.ElementBox.Width > pAspectRatio.ElementBox.Height) then
-                            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
-                                    pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics)
-                        else
-                        begin
-                            if (pAspectRatio.ViewBox.Width <= pAspectRatio.ViewBox.Width) then
-                                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
-                                        pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics)
-                            else
-                                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
-                                        pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics);
-                        end;
-                    end
-                    else
-                    begin
-                        // meet path, calculate the transform matrix to apply, in order to fit
-                        // the path in the aspect ratio bounding box
-                        if (pAspectRatio.ElementBox.Width < pAspectRatio.ElementBox.Height) then
-                            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
-                                    pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics)
-                        else
-                        if (pAspectRatio.ElementBox.Width > pAspectRatio.ElementBox.Height) then
-                            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
-                                    pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
-                        else
-                        begin
-                            if (pAspectRatio.ViewBox.Width <= pAspectRatio.ViewBox.Width) then
-                                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
-                                        pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
-                            else
-                                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
-                                        pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics);
-                        end;
-                    end;
+                    // apply aspect ratio and get the previous clipping region, if any
+                    isAspectRatioClipped := ApplyAspectRatio(pAspectRatio, pProps, boundingBox,
+                            pMatrix, pGraphics, pPrevAspectRatioRegion);
                 end
                 else
                 begin
@@ -1341,11 +1302,25 @@ begin
                     // set svg element to final size
                     pMatrix.Scale(scaleW, scaleH, MatrixOrderAppend);
 
-                    // calculate position at which svg element should be drawn
-                    svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
+                    isAspectRatioClipped := False;
 
-                    // set svg element to final location (applying user position and viewbox correction)
-                    pMatrix.Translate(svgPos.X, svgPos.Y, MatrixOrderAppend);
+                    // should apply an aspect ratio onto the rectangle?
+                    if (Assigned(pAspectRatio)) then
+                    begin
+                        pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create();
+
+                        // apply aspect ratio and get the previous clipping region, if any
+                        isAspectRatioClipped := ApplyAspectRatio(pAspectRatio, pProps, rectToDraw,
+                                pMatrix, pGraphics, pPrevAspectRatioRegion);
+                    end
+                    else
+                    begin
+                        // calculate position at which svg element should be drawn
+                        svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
+
+                        // set svg element to final location (applying user position and viewbox correction)
+                        pMatrix.Translate(svgPos.X, svgPos.Y, MatrixOrderAppend);
+                    end;
 
                     // apply transformation matrix to rectangle
                     outputMatrix := TWMatrix3x3.Create(pMatrix);
@@ -1356,6 +1331,10 @@ begin
 
                     // draw rectangle
                     pRenderer.DrawRect(TWRectF.Create(rectToDraw, False), pRectOptions, pGraphics, iRect);
+
+                    // restore the previous cliping before aspect ratio, if any
+                    if (isAspectRatioClipped) then
+                        pGraphics.SetClip(pPrevAspectRatioRegion, CombineModeReplace);
                 end;
 
                 // restore the previous clipping, if any
@@ -1426,13 +1405,33 @@ begin
                 // calculate diameter
                 d := r * 2.0;
 
-                // calculate position at which svg element should be drawn
-                svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
-
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                isAspectRatioClipped := False;
+
+                // should apply an aspect ratio onto the circle?
+                if (Assigned(pAspectRatio)) then
+                begin
+                    // get the bounding box surrounding the circle (before transformation)
+                    boundingBox.X      := x - r;
+                    boundingBox.Y      := y - r;
+                    boundingBox.Width  := d;
+                    boundingBox.Height := d;
+
+                    pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create();
+
+                    // apply aspect ratio and get the previous clipping region, if any
+                    isAspectRatioClipped := ApplyAspectRatio(pAspectRatio, pProps, boundingBox,
+                            pMatrix, pGraphics, pPrevAspectRatioRegion);
+                end
+                else
+                begin
+                    // calculate position at which svg element should be drawn
+                    svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
+
+                    ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                end;
 
                 // do apply a clipping path?
                 if (clippingMode) then
@@ -1467,6 +1466,11 @@ begin
                             or (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid))
                     then
                     begin
+                        // todo FIXME -cCheck -cBug -oJean: There is something wrong in the way the
+                        //                                  bounding box width and height are calculated,
+                        //                                  should not include the x and y positions.
+                        //                                  Also check if may be merged with the aspect
+                        //                                  ratio bounding box calculation above
                         boundingBox.X      := x             - r;
                         boundingBox.Y      := y             - r;
                         boundingBox.Width  := boundingBox.X + d;
@@ -1485,6 +1489,10 @@ begin
                     if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
                         pRenderer.DrawEllipse(x - r, y - r, d, d, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
+
+                // restore the previous cliping before aspect ratio, if any
+                if (isAspectRatioClipped) then
+                    pGraphics.SetClip(pPrevAspectRatioRegion, CombineModeReplace);
 
                 // restore the previous clipping, if any
                 if (isClipped) then
@@ -1555,13 +1563,33 @@ begin
                 dx := rx * 2.0;
                 dy := ry * 2.0;
 
-                // calculate position at which svg element should be drawn
-                svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
-
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                isAspectRatioClipped := False;
+
+                // should apply an aspect ratio onto the ellipse?
+                if (Assigned(pAspectRatio)) then
+                begin
+                    // get the bounding box surrounding the ellipse (before transformation)
+                    boundingBox.X      := x - rx;
+                    boundingBox.Y      := y - ry;
+                    boundingBox.Width  := dx;
+                    boundingBox.Height := dy;
+
+                    pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create();
+
+                    // apply aspect ratio and get the previous clipping region, if any
+                    isAspectRatioClipped := ApplyAspectRatio(pAspectRatio, pProps, boundingBox,
+                            pMatrix, pGraphics, pPrevAspectRatioRegion);
+                end
+                else
+                begin
+                    // calculate position at which svg element should be drawn
+                    svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
+
+                    ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                end;
 
                 // do apply a clipping path?
                 if (clippingMode) then
@@ -1596,6 +1624,11 @@ begin
                             or (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid))
                     then
                     begin
+                        // todo FIXME -cCheck -cBug -oJean: There is something wrong in the way the
+                        //                                  bounding box width and height are calculated,
+                        //                                  should not include the x and y positions.
+                        //                                  Also check if may be merged with the aspect
+                        //                                  ratio bounding box calculation above
                         boundingBox.X      := x             - rx;
                         boundingBox.Y      := y             - ry;
                         boundingBox.Width  := boundingBox.X + dx;
@@ -1614,6 +1647,10 @@ begin
                     if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
                         pRenderer.DrawEllipse(x - rx, y - ry, dx, dy, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
+
+                // restore the previous cliping before aspect ratio, if any
+                if (isAspectRatioClipped) then
+                    pGraphics.SetClip(pPrevAspectRatioRegion, CombineModeReplace);
 
                 // restore the previous clipping, if any
                 if (isClipped) then
@@ -1676,16 +1713,8 @@ begin
                 x2 := x2 + x;
                 y2 := y2 + y;
 
-                // calculate position at which svg element should be drawn
-                svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
-
-                pMatrix := TWSmartPointer<TGpMatrix>.Create();
-                pProps.Matrix.Value.ToGpMatrix(pMatrix);
-
-                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
-
-                // calculate the circle bounding box
-                if (pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid) then
+                // calculate the line bounding box
+                if ((pProps.Style.Stroke.Brush.BrushType <> E_BT_Solid) or Assigned(pAspectRatio)) then
                 begin
                     if (x1 > x2) then
                     begin
@@ -1710,11 +1739,37 @@ begin
                     end;
                 end;
 
+                pMatrix := TWSmartPointer<TGpMatrix>.Create();
+                pProps.Matrix.Value.ToGpMatrix(pMatrix);
+
+                isAspectRatioClipped := False;
+
+                // should apply an aspect ratio onto the line?
+                if (Assigned(pAspectRatio)) then
+                begin
+                    pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create();
+
+                    // apply aspect ratio and get the previous clipping region, if any
+                    isAspectRatioClipped := ApplyAspectRatio(pAspectRatio, pProps, boundingBox,
+                            pMatrix, pGraphics, pPrevAspectRatioRegion);
+                end
+                else
+                begin
+                    // calculate position at which svg element should be drawn
+                    svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
+
+                    ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                end;
+
                 pStroke := TWSmartPointer<TWStroke>.Create();
 
                 // draw the line
                 if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
                     pRenderer.DrawLine(x1, y1, x2, y2, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
+
+                // restore the previous cliping before aspect ratio, if any
+                if (isAspectRatioClipped) then
+                    pGraphics.SetClip(pPrevAspectRatioRegion, CombineModeReplace);
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -1804,13 +1859,27 @@ begin
                     Inc(count);
                 end;
 
-                // calculate position at which svg element should be drawn
-                svgPos := CalculateFinalPos(posFromProps, viewBox, scaleW, scaleH);
-
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                isAspectRatioClipped := False;
+
+                // should apply an aspect ratio onto the polygon?
+                if (Assigned(pAspectRatio)) then
+                begin
+                    pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create();
+
+                    // apply aspect ratio and get the previous clipping region, if any
+                    isAspectRatioClipped := ApplyAspectRatio(pAspectRatio, pProps, boundingBox,
+                            pMatrix, pGraphics, pPrevAspectRatioRegion);
+                end
+                else
+                begin
+                    // calculate position at which svg element should be drawn
+                    svgPos := CalculateFinalPos(posFromProps, viewBox, scaleW, scaleH);
+
+                    ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                end;
 
                 // do apply a clipping path?
                 if (clippingMode) then
@@ -1852,6 +1921,10 @@ begin
                     if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
                         pRenderer.DrawPolygon(points, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
                 end;
+
+                // restore the previous cliping before aspect ratio, if any
+                if (isAspectRatioClipped) then
+                    pGraphics.SetClip(pPrevAspectRatioRegion, CombineModeReplace);
 
                 // restore the previous clipping, if any
                 if (isClipped) then
@@ -1940,13 +2013,27 @@ begin
                     Inc(count);
                 end;
 
-                // calculate position at which svg element should be drawn
-                svgPos := CalculateFinalPos(posFromProps, viewBox, scaleW, scaleH);
-
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                isAspectRatioClipped := False;
+
+                // should apply an aspect ratio onto the lines?
+                if (Assigned(pAspectRatio)) then
+                begin
+                    pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create();
+
+                    // apply aspect ratio and get the previous clipping region, if any
+                    isAspectRatioClipped := ApplyAspectRatio(pAspectRatio, pProps, boundingBox,
+                            pMatrix, pGraphics, pPrevAspectRatioRegion);
+                end
+                else
+                begin
+                    // calculate position at which svg element should be drawn
+                    svgPos := CalculateFinalPos(posFromProps, viewBox, scaleW, scaleH);
+
+                    ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+                end;
 
                 pFill := TWSmartPointer<TWFill>.Create();
 
@@ -1975,6 +2062,10 @@ begin
                 // draw the lines
                 if (GetPen(pProps.Style, viewBox, boundingBox, scaleW, scaleH, pRenderer, pStroke)) then
                     pRenderer.DrawLines(points, pStroke, pGraphics, TWRectF.Create(boundingBox, False));
+
+                // restore the previous cliping before aspect ratio, if any
+                if (isAspectRatioClipped) then
+                    pGraphics.SetClip(pPrevAspectRatioRegion, CombineModeReplace);
 
                 // is switch mode enabled?
                 if (switchMode) then
@@ -2026,24 +2117,35 @@ begin
                 pImageData := TWSmartPointer<TMemoryStream>.Create();
 
                 // extract properties from image
-                if (not GetImageProps(pImage, x, y, width, height, imageType, pImageData, pAnimationData,
-                        animation.m_pCustomData))
+                if (not GetImageProps(pImage, x, y, width, height, elementViewBox, imageType,
+                        pImageData, pAnimationData, animation.m_pCustomData))
                 then
                     Exit(False);
 
                 // get the image position (in relation to the initial position)
                 posFromProps := TPoint.Create(Round(pos.X + (x * scaleW)), Round(pos.Y + (y * scaleH)));
 
-                // calculate position at which svg element should be drawn
-                svgPos := CalculateFinalPos(posFromProps, viewBox, scaleW, scaleH);
+                pAspectRatioToUse := nil;
+
+                // should apply an aspect ratio?
+                if ((pProps.AspectRatio.Defined.Value) and (not elementViewBox.IsEmpty)) then
+                begin
+                    pAspectRatioOverride := TWSmartPointer<IAspectRatio>.Create();
+                    pAspectRatioToUse    := pAspectRatioOverride;
+
+                    // calculate aspect ratio from svg properties and populate it
+                    if (not PopulateAspectRatio(posFromProps, width, height, scaleW, scaleH,
+                            elementViewBox, pProps, pAspectRatioOverride))
+                    then
+                        pAspectRatioToUse := nil;
+                end;
 
                 pMatrix := TWSmartPointer<TGpMatrix>.Create();
                 pProps.Matrix.Value.ToGpMatrix(pMatrix);
 
-                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
-
-                pGraphic      := nil;
-                pImageOptions := nil;
+                pGraphic             := nil;
+                pImageOptions        := nil;
+                isAspectRatioClipped := False;
 
                 try
                     // get the image to draw
@@ -2058,18 +2160,63 @@ begin
 
                     // if no height defined, use the image height instead
                     if (height = 0) then
-                        height := pGraphic.Width;
+                        height := pGraphic.Height;
 
-                    // set the image rect
-                    imageRect        := Default(TWRectF);
-                    imageRect.Right  := width;
-                    imageRect.Bottom := height;
+                    // should apply an aspect ratio onto the image?
+                    if (Assigned(pAspectRatioToUse)) then
+                    begin
+                        pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create();
 
-                    // set the draw rect
-                    rect.Left   := 0;
-                    rect.Top    := 0;
-                    rect.Right  := width;
-                    rect.Bottom := height;
+                        // do clip the image?
+                        if (pProps.AspectRatio.Reference.Value = TWSVGPropAspectRatio.IEReference.IE_R_Slice) then
+                        begin
+                            // first reset the transform matrix. This is required because the aspect
+                            // ratio viewbox is already scaled and should not be influenced by any
+                            // previously defined transform matrix
+                            pGraphics.ResetTransform();
+
+                            // save the current region
+                            pGraphics.GetClip(pPrevAspectRatioRegion);
+
+                            // create a new clip region around the aspect ratio viewbox
+                            pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pAspectRatioToUse.ViewBox.ToGpRectF()));
+
+                            // set the clipping region, replace the existing one if any
+                            if (pPrevAspectRatioRegion.IsInfinite(pGraphics)) then
+                                pGraphics.SetClip(pRegion)
+                            else
+                                pGraphics.SetClip(pRegion, CombineModeReplace);
+
+                            // notify that the image was clipped
+                            isAspectRatioClipped := True;
+                        end;
+
+                        // set the image rect
+                        imageRect        := Default(TWRectF);
+                        imageRect.Right  := pGraphic.Width;
+                        imageRect.Bottom := pGraphic.Height;
+
+                        // set the target rect in which the image will be drawn
+                        rect := pAspectRatioToUse.BoundingBox;
+                    end
+                    else
+                    begin
+                        // calculate position at which svg element should be drawn
+                        svgPos := CalculateFinalPos(posFromProps, viewBox, scaleW, scaleH);
+
+                        ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
+
+                        // set the image rect
+                        imageRect        := Default(TWRectF);
+                        imageRect.Right  := width;
+                        imageRect.Bottom := height;
+
+                        // set the draw rect
+                        rect.Left   := 0;
+                        rect.Top    := 0;
+                        rect.Right  := width;
+                        rect.Bottom := height;
+                    end;
 
                     // set the image options
                     pImageOptions             := TWRenderer.IImageOptions.Create;
@@ -2086,6 +2233,10 @@ begin
 
                     if (Assigned(pGraphic)) then
                         pGraphic.Free;
+
+                    // restore the previous cliping before aspect ratio, if any
+                    if (isAspectRatioClipped) then
+                        pGraphics.SetClip(pPrevAspectRatioRegion, CombineModeReplace);
 
                     // restore the previous clipping, if any
                     if (isClipped) then
@@ -2149,14 +2300,6 @@ begin
                 then
                     Exit(False);
 
-                // calculate position at which svg element should be drawn
-                svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
-
-                pMatrix := TWSmartPointer<TGpMatrix>.Create();
-                pProps.Matrix.Value.ToGpMatrix(pMatrix);
-
-                ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
-
                 // configure the font to use. NOTE be careful, the SVG font size matches with the
                 // GDI font HEIGHT property, and not with the font SIZE
                 pTextFont        :=  TWSmartPointer<TFont>.Create();
@@ -2183,6 +2326,32 @@ begin
                     IE_TA_End:    pTextFormat.SetAlignment(StringAlignmentFar);
                 else
                     raise Exception.CreateFmt('Unknown text anchor value - %d', [Integer(anchor)]);
+                end;
+
+                pMatrix := TWSmartPointer<TGpMatrix>.Create();
+                pProps.Matrix.Value.ToGpMatrix(pMatrix);
+
+                isAspectRatioClipped := False;
+
+                // should apply an aspect ratio onto the lines?
+                if (Assigned(pAspectRatio)) then
+                begin
+                    // measure the rect surrounding the text (before transformation)
+                    pGraphics.MeasureString(pText.Text, Length(pText.Text), pFont, viewBox,
+                            pTextFormat, boundingBox);
+
+                    pPrevAspectRatioRegion := TWSmartPointer<TGpRegion>.Create();
+
+                    // apply aspect ratio and get the previous clipping region, if any
+                    isAspectRatioClipped := ApplyAspectRatio(pAspectRatio, pProps, boundingBox,
+                            pMatrix, pGraphics, pPrevAspectRatioRegion);
+                end
+                else
+                begin
+                    // calculate position at which svg element should be drawn
+                    svgPos := CalculateFinalPos(pos, viewBox, scaleW, scaleH);
+
+                    ApplyMatrix(pMatrix, svgPos, scaleW, scaleH, pGraphics);
                 end;
 
                 // measure the rect surrounding the text
@@ -2251,7 +2420,7 @@ begin
                         // calculate the real text position. This is required, because the GDI+ will
                         // draw the text from the left top corner of the bounding box, and will add
                         // an extra pad space before the first letter, whereas the SVG coordinates
-                        // represent the text from his baseline, and starting immediately on the
+                        // represent the text from its baseline, and starting immediately on the
                         // first letter, without padding
                         textPos.X := x - charRect.X;
                         textPos.Y := y - textMetrics.tmAscent;
@@ -2296,7 +2465,7 @@ begin
                         // calculate the real text position. This is required, because the GDI+ will
                         // draw the text from the left top corner of the bounding box, and will add
                         // an extra pad space before the first letter, whereas the SVG coordinates
-                        // represent the text from his baseline, and starting immediately on the
+                        // represent the text from its baseline, and starting immediately on the
                         // first letter, without padding
                         textPos.X := x - charRect.X;
                         textPos.Y := y - textMetrics.tmAscent;
@@ -2391,6 +2560,10 @@ begin
                         pRenderer.DrawString(pText.Text, textPos, pFont, pFill, pGraphics,
                                 TWRectF.Create(boundingBox, True));
                 end;
+
+                // restore the previous cliping before aspect ratio, if any
+                if (isAspectRatioClipped) then
+                    pGraphics.SetClip(pPrevAspectRatioRegion, CombineModeReplace);
 
                 // restore the previous clipping, if any
                 if (isClipped) then
@@ -2839,7 +3012,7 @@ begin
     pBrush.Vector.GradientStart := TWVector2.Create(vectorLimits.Left,  vectorLimits.Top);
     pBrush.Vector.GradientEnd   := TWVector2.Create(vectorLimits.Right, vectorLimits.Bottom);
 
-    // apply the spread method (it's the manner how the gradient behaves out of his bounds limits)
+    // apply the spread method (it's the manner how the gradient behaves out of its bounds limits)
     case (pGradient.SpreadMethod) of
         TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad:     pBrush.WrapMode := E_WM_Clamp;
         TWSVGGradient.IEGradientSpreadMethod.IE_GS_Reflect: pBrush.WrapMode := E_WM_TileFlipXY;
@@ -2936,7 +3109,7 @@ begin
         pBrush.GradientUnit := E_GU_ObjectBoundingBox;
     end;
 
-    // apply the spread method (it's the manner how the gradient behaves out of his bounds limits)
+    // apply the spread method (it's the manner how the gradient behaves out of its bounds limits)
     case (pGradient.SpreadMethod) of
         TWSVGGradient.IEGradientSpreadMethod.IE_GS_Pad:     pBrush.WrapMode := E_WM_Clamp;
         TWSVGGradient.IEGradientSpreadMethod.IE_GS_Reflect: pBrush.WrapMode := E_WM_TileFlipXY;
@@ -3154,6 +3327,89 @@ begin
     Result.Y := pos.Y - Trunc(viewBox.Y * scaleH);
 end;
 //---------------------------------------------------------------------------
+function TWSVGGDIPlusRasterizer.ApplyAspectRatio(const pAspectRatio: IAspectRatio;
+        const pProps: TWSVGGDIPlusRasterizer.IProperties; const boundingBox: TGpRectF;
+        const pMatrix: TGpMatrix; pGraphics: TGpGraphics; prevRegion: TGpRegion): Boolean;
+var
+    pRegion: IWSmartPointer<TGpRegion>;
+    svgPos:  TPoint;
+begin
+    // the svg position is the aspect ratio bounding box position (already scaled)
+    svgPos.X := Round(pAspectRatio.BoundingBox.Left);
+    svgPos.Y := Round(pAspectRatio.BoundingBox.Top);
+
+    Result := False;
+
+    // resize and clip the image to fit the aspect ratio bounding box / viewbox
+    if (pProps.AspectRatio.AspectRatio.Value = TWSVGPropAspectRatio.IEAspectRatio.IE_AR_None) then
+        // no alignment, fit the image to the aspect ratio bounding box
+        ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
+    else
+    if (pProps.AspectRatio.Reference.Value = TWSVGPropAspectRatio.IEReference.IE_R_Slice) then
+    begin
+        // slice image, first reset the transform matrix. This is required because the
+        // aspect ratio viewbox is already scaled and should not be influenced by any
+        // previously defined transform matrix
+        pGraphics.ResetTransform();
+
+        // save the current region
+        pGraphics.GetClip(prevRegion);
+
+        // create a new clip region around the aspect ratio viewbox
+        pRegion := TWSmartPointer<TGpRegion>.Create(TGpRegion.Create(pAspectRatio.ViewBox.ToGpRectF()));
+
+        // set the clipping region, replace the existing one if any
+        if (prevRegion.IsInfinite(pGraphics)) then
+            pGraphics.SetClip(pRegion)
+        else
+            pGraphics.SetClip(pRegion, CombineModeReplace);
+
+        // notify that the image was clipped
+        Result := True;
+
+        // calculate the transform matrix to apply, in order to fit the image in the
+        // aspect ratio bounding box
+        if (pAspectRatio.ElementBox.Width < pAspectRatio.ElementBox.Height) then
+            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
+                    pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
+        else
+        if (pAspectRatio.ElementBox.Width > pAspectRatio.ElementBox.Height) then
+            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                    pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics)
+        else
+        begin
+            if (pAspectRatio.ViewBox.Width <= pAspectRatio.ViewBox.Width) then
+                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                        pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics)
+            else
+                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
+                        pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics);
+        end;
+    end
+    else
+    begin
+        // meet image, calculate the transform matrix to apply, in order to fit
+        // the image in the aspect ratio bounding box
+        if (pAspectRatio.ElementBox.Width < pAspectRatio.ElementBox.Height) then
+            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                    pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics)
+        else
+        if (pAspectRatio.ElementBox.Width > pAspectRatio.ElementBox.Height) then
+            ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
+                    pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
+        else
+        begin
+            if (pAspectRatio.ViewBox.Width <= pAspectRatio.ViewBox.Width) then
+                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Height / boundingBox.Height,
+                        pAspectRatio.BoundingBox.Height / boundingBox.Height, pGraphics)
+            else
+                ApplyMatrix(pMatrix, svgPos, pAspectRatio.BoundingBox.Width / boundingBox.Width,
+                        pAspectRatio.BoundingBox.Width / boundingBox.Width, pGraphics);
+        end;
+    end;
+end;
+//---------------------------------------------------------------------------
 procedure TWSVGGDIPlusRasterizer.ApplyMatrix(const pMatrix: TGpMatrix; const pos: TPoint;
         scaleW, scaleH: Single; pGraphics: TGpGraphics);
 var
@@ -3172,7 +3428,7 @@ begin
     // set svg element to final location (applying user position and viewbox correction)
     pTransformMatrix.Translate(pos.X, pos.Y, MatrixOrderAppend);
 
-    // apply transformation matrix to path
+    // apply transformation matrix to graphics
     pGraphics.SetTransform(pTransformMatrix);
 end;
 //---------------------------------------------------------------------------

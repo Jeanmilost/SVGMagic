@@ -297,7 +297,7 @@ type
             function GetHashCode(initValue: Integer): Integer; reintroduce; virtual;
 
             {**
-             Check if linear gradient vector is empty (i.e. if his content has no effect on the drawing)
+             Check if linear gradient vector is empty (i.e. if its content has no effect on the drawing)
              @returns(@true if gradient vector is empty, otherwise @false)
             }
             function IsEmpty: Boolean; virtual;
@@ -373,7 +373,7 @@ type
             function GetHashCode(initValue: Integer): Integer; reintroduce; virtual; abstract;
 
             {**
-             Check if brush is empty (i.e. if his content has no effect on the drawing)
+             Check if brush is empty (i.e. if its content has no effect on the drawing)
              @returns(@true if brush is empty, otherwise @false)
             }
             function IsEmpty: Boolean; virtual; abstract;
@@ -443,7 +443,7 @@ type
             procedure SetColor(const pColor: PWColor); virtual;
 
             {**
-             Check if brush is empty (i.e. if his content has no effect on the drawing)
+             Check if brush is empty (i.e. if its content has no effect on the drawing)
              @returns(@true if brush is empty, otherwise @false)
             }
             function IsEmpty: Boolean; override;
@@ -517,7 +517,7 @@ type
             function GetHashCode(initValue: Integer): Integer; override;
 
             {**
-             Check if brush is empty (i.e. if his content has no effect on the drawing)
+             Check if brush is empty (i.e. if its content has no effect on the drawing)
              @returns(@true if brush is empty, otherwise @false)
             }
             function IsEmpty: Boolean; override;
@@ -602,7 +602,7 @@ type
             function GetHashCode(initValue: Integer): Integer; override;
 
             {**
-             Check if brush is empty (i.e. if his content has no effect on the drawing)
+             Check if brush is empty (i.e. if its content has no effect on the drawing)
              @returns(@true if brush is empty, otherwise @false)
             }
             function IsEmpty: Boolean; override;
@@ -669,7 +669,7 @@ type
             function GetHashCode(initValue: Integer): Integer; override;
 
             {**
-             Check if brush is empty (i.e. if his content has no effect on the drawing)
+             Check if brush is empty (i.e. if its content has no effect on the drawing)
              @returns(@true if brush is empty, otherwise @false)
             }
             function IsEmpty: Boolean; override;
@@ -753,7 +753,7 @@ type
             procedure Assign(const pOther: TWFill); virtual;
 
             {**
-             Check if fill is empty (i.e. if his content has no effect on the drawing)
+             Check if fill is empty (i.e. if its content has no effect on the drawing)
              @returns(@true if fill is empty, otherwise @false)
             }
             function IsEmpty: Boolean; virtual;
@@ -866,7 +866,7 @@ type
             function GetHashCode(initValue: Integer): Integer; reintroduce; virtual;
 
             {**
-             Check if stroke is empty (i.e. if his content has no effect on the drawing)
+             Check if stroke is empty (i.e. if its content has no effect on the drawing)
              @returns(@true if stroke is empty, otherwise @false)
             }
             function IsEmpty: Boolean; virtual;

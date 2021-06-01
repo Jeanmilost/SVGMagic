@@ -968,7 +968,7 @@ type
              @param(pixelFormat Bitmap pixel format in case bitmap should be created)
              @param(pBits @bold([out]) Array of bits that contains the bitmap pixels if function succeeded)
              @returns(Cached bitmap)
-             @br @bold(NOTE) Bitmap will be recreated in case his dc, width, height or pixel format
+             @br @bold(NOTE) Bitmap will be recreated in case its dc, width, height or pixel format
                              was modified
             }
             function GetCachedDIBBitmap(key: IEBitmapKey; hDC: THandle; var width, height: LONG;
@@ -1415,7 +1415,7 @@ type
     }
     TWImageHelper = record
         {**
-         Convert a bitmap to a PNG using GDI, taking care of preserving his alpha channel
+         Convert a bitmap to a PNG using GDI, taking care of preserving its alpha channel
          @param(pSrc Source bitmap)
          @returns(PNG image, @nil if failed or on error)
         }
@@ -1433,7 +1433,7 @@ type
                 useGDIPlus: Boolean): Boolean; static;
 
         {**
-         Calculate and get the best image size keeping his proportions
+         Calculate and get the best image size keeping its proportions
          @param(wSrc The image width to resize (must be > 0))
          @param(hSrc The image height to resize (must be > 0))
          @param(wDestMax @bold([in, out]) As in, the max required width of the resized image. As out,
@@ -1464,7 +1464,7 @@ type
          @param(pStream Stream to copy to clipboard)
          @param(length Length in stream to copy to clipboard)
          @returns(@true on success, otherwise @false)
-         @br @bold(NOTE) The stream will be copied from his current position
+         @br @bold(NOTE) The stream will be copied from its current position
         }
         class function StreamTo(hFormat: THandle; pStream: TStream; len: NativeUInt): Boolean; static;
 
@@ -3233,7 +3233,7 @@ begin
     if (rectX < 0) then
     begin
         // update horizontal values. Adds rectX because adding a negative number is equivalent to
-        // subtract his absolute value
+        // subtract its absolute value
         Inc(rectWidth, rectX);
         rectX := 0;
     end;
@@ -3242,7 +3242,7 @@ begin
     if (rectY < 0) then
     begin
         // update vertical values. Adds rectY because adding a negative number is equivalent to
-        // subtract his absolute value
+        // subtract its absolute value
         Inc(rectHeight, rectY);
         rectY := 0;
     end;
@@ -5123,7 +5123,7 @@ begin
 
         // force alpha vale to 0xff on each pixel in case the alpha transparency is not supported by
         // the source graphic. Unfortunately this is required, because the GDI seems to not respect
-        // the alpha channel in this case, and reset his value to 0 after the graphic is drawn on
+        // the alpha channel in this case, and reset its value to 0 after the graphic is drawn on
         // the overlay
         if (not pGraphic.SupportsPartialTransparency) then
             // iterate through overlay lines
@@ -5839,7 +5839,7 @@ begin
         // get the closest parent form
         pParentForm := TWVCLHelper.GetParentForm(pOwner as TControl);
 
-        // if parent form was found, get his pixels per inch value
+        // if parent form was found, get its pixels per inch value
         if (Assigned(pParentForm) and (pParentForm is TForm)) then
             Exit((pParentForm as TForm).PixelsPerInch);
     end;

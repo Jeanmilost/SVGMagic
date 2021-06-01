@@ -54,7 +54,7 @@ type
     TWSVGRasterizer = class
         public type
             {**
-             Properties rules, determine how the prop item should be used in relation with his parent
+             Properties rules, determine how the prop item should be used in relation with its parent
              @value(IE_PR_Default The default value is used)
              @value(IE_PR_Inherit The value is inherited from the parent, set to default if no parent)
              @value(IE_PR_Combine The value is merged with the value contained in the parent)
@@ -1738,6 +1738,7 @@ type
              @param(y @bold([out]) Image start y position)
              @param(width @bold([out]) Image width)
              @param(height @bold([out]) Image height)
+             @param(viewBox @bold([out]) Viewbox to apply to image, should be combinated with aspect ratio)
              @param(imageType @bold([out]) Image type)
              @param(pImageData The stream which will contain the image data)
              @param(pAnimationData Animation data)
@@ -1745,7 +1746,7 @@ type
              @returns(@true on success, otherwise @false)
             }
             function GetImageProps(const pImage: TWSVGImage; out x: Single; out y: Single;
-                    out width: Single; out height: Single; out imageType: IEImageType;
+                    out width: Single; out height: Single; out viewBox: TWRectF; out imageType: IEImageType;
                     pImageData: TMemoryStream; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
 
             {**
@@ -4068,7 +4069,7 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
                     continue;
 
@@ -4288,7 +4289,7 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
                     continue;
 
@@ -4454,7 +4455,7 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
                     continue;
 
@@ -4626,7 +4627,7 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
                     continue;
 
@@ -4802,7 +4803,7 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
                     continue;
 
@@ -4833,11 +4834,12 @@ begin
 end;
 //---------------------------------------------------------------------------
 function TWSVGRasterizer.GetImageProps(const pImage: TWSVGImage; out x: Single; out y: Single;
-        out width: Single; out height: Single; out imageType: IEImageType; pImageData: TMemoryStream;
-        pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+        out width: Single; out height: Single; out viewBox: TWRectF; out imageType: IEImageType;
+        pImageData: TMemoryStream; pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
 var
     pProperty:               TWSVGProperty;
     pX, pY, pWidth, pHeight: TWSVGMeasure<Single>;
+    pViewBox:                TWSVGPropRect;
     pLink:                   TWSVGPropLink;
     pAnimation:              TWSVGAnimation;
     pValueAnimDesc:          IWSmartPointer<TWSVGValueAnimDesc>;
@@ -4857,6 +4859,7 @@ begin
     y         := 0.0;
     width     := 0.0;
     height    := 0.0;
+    viewBox   := Default(TWRectF);
     imageType := IE_IT_Unknown;
 
     propCount := pImage.Count;
@@ -4920,6 +4923,22 @@ begin
 
             // set image height
             height := pHeight.Value.Value;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_ViewBox) and (pProperty is TWSVGPropRect)) then
+        begin
+            // get view box
+            pViewBox := pProperty as TWSVGPropRect;
+
+            // found it?
+            if (not Assigned(pViewBox)) then
+                continue;
+
+            // set view box
+            viewBox.Left   := pViewBox.X;
+            viewBox.Top    := pViewBox.Y;
+            viewBox.Right  := pViewBox.X + pViewBox.Width;
+            viewBox.Bottom := pViewBox.Y + pViewBox.Height;
         end
         else
         if ((pProperty.ItemName = C_SVG_Prop_XLink_HRef) and (pProperty is TWSVGPropLink)) then
@@ -5027,7 +5046,7 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
                     continue;
 
@@ -5235,7 +5254,7 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
                     continue;
 
@@ -5942,7 +5961,7 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pValueAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pValueAnimDesc, position)) then
                     continue;
 
@@ -5996,11 +6015,11 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pEnumAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pEnumAnimDesc, position)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pEnumAnimDesc, position)) then
                     continue;
 
@@ -6033,7 +6052,7 @@ begin
                 if (not PopulateAnimation(pAnimation, attribName, pColorAnimDesc, True, pCustomData)) then
                     continue;
 
-                // is animation running (i.e. between his start and end position)
+                // is animation running (i.e. between its start and end position)
                 if (not GetAnimPos(pAnimationData, pColorAnimDesc, position)) then
                     continue;
 
@@ -7136,7 +7155,7 @@ begin
         if (attribName <> C_SVG_Animation_Transform) then
             continue;
 
-        // is animation running? (i.e between his start and end position)
+        // is animation running? (i.e between its start and end position)
         if (not GetAnimPos(pAnimationData, pAnimDesc, position)) then
             continue;
 

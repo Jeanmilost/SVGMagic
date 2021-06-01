@@ -518,7 +518,7 @@ type
                              because a stroke property is also considered as 'none' by default,
                              but in this case the inheritance rules are applied, while the stroke
                              will be effectively applied with an empty color, and will not inherit
-                             from his parent, if this property is set to true
+                             from its parent, if this property is set to true
             }
             property NoStroke: Boolean read m_NoStroke write m_NoStroke;
 
@@ -538,7 +538,7 @@ type
      A Scalable Vector Graphics (SVG) style is a set of properties that affect the manner how a
      drawing will be made. A style should at least contain a fill color and/or a stroke color, but
      may also contain several details about the drawing behavior, like e.g. the stroke miter limits,
-     ... When an item isn't declared in the current style, his values are inherited from the closest
+     ... When an item isn't declared in the current style, its values are inherited from the closest
      parent style that exposes this item
     @br @bold(NOTE) The style may be exposed as a distinct property, e.g. <path style="fill:#8b4c4c;..." />,
                     or as a list of several properties, e.g. <path fill="#8b4c4c" ... />"

@@ -18,7 +18,7 @@ type
         m_Type: NativeUInt;
 
         {**
-         Generic info, in case a subject should send additional specific info to his observer
+         Generic info, in case a subject should send additional specific info to its observer
         }
         m_pInfo: Pointer
     end;

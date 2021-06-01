@@ -192,7 +192,7 @@ type
              @br @bold(NOTE) This function makes certain operations on the options.m_pFont pointer
                              directly. By doing this, the original source font object is modified,
                              even if restored after function ends. This may affect source object,
-                             such as e.g. calling his OnFontChange event
+                             such as e.g. calling its OnFontChange event
             }
             class function GetFontSizeToFit(const text: UnicodeString; const rect: TWRectF;
                     const pOptions: TWRenderer.ITextOptions; minWrapFontSize, minFontSize: Cardinal;

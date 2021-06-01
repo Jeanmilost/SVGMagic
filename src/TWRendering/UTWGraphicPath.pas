@@ -48,7 +48,7 @@ type
             );
 
             {**
-             List of points making up the command, his content depends of the command itself. For
+             List of points making up the command, its content depends of the command itself. For
              example, a IE_IT_MoveTo command will contain 2 points, where points[0] is the x
              coordinate and points[1] the y coordinate to go to
             }

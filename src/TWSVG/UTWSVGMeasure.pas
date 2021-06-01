@@ -19,7 +19,7 @@ uses System.TypInfo,
 
 type
     {**
-     Scalable Vector Graphics (SVG) measure, it's a value with his unit, as e.g. x="0px"
+     Scalable Vector Graphics (SVG) measure, it's a value with its unit, as e.g. x="0px"
     }
     TWSVGMeasure<T> = class(TWSVGProperty)
         public type

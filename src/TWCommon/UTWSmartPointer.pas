@@ -33,7 +33,7 @@ type
                                #)
      @br @bold(NOTE) Unlike their C++ counterparts, and unfortunately, I could not find a correct
                      way to implement the Release() function. This was not possible because the
-                     smart pointer must be declared using his interface, e.g.
+                     smart pointer must be declared using its interface, e.g.
                      pClass: IWSmartPointer<TMyClass>, to work as expected. Doing that, any direct
                      call to pClass invokes internally the owned pointer, so there is no further
                      conversion needed, but in other hand, any conversion like

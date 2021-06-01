@@ -166,7 +166,7 @@ type
              @param(rx Ellipse radius on x coordinate)
              @param(ry Ellipse radius on y coordinate)
              @param(onBoundary @bold([out]) If true, the point is exactly on the boundary of the ellipse)
-             @returns(@true if point is inside the ellipse or on his boundary, otherwise @false)
+             @returns(@true if point is inside the ellipse or on its boundary, otherwise @false)
             }
             class function PointInEllipse(x, y, h, k, rx, ry: Single; out onBoundary: Boolean): Boolean; inline; static;
 

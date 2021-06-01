@@ -34,7 +34,7 @@ const
 
 type
     {**
-     Called when component style detects a DPI change and should update his content
+     Called when component style detects a DPI change and should update its content
      @param(oldDPI Old DPI value)
      @param(newDPI New DPI value)
      @returns(@true if event was handled and should no longer be considered, otherwise @false)
