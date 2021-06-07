@@ -42,8 +42,9 @@ const
     //---------------------------------------------------------------------------
     // Global defines
     //---------------------------------------------------------------------------
-    C_SVG_Default_Color:   TColor               = clBlack;
-    C_SVG_Default_Display: TWSVGStyle.IEDisplay = TWSVGStyle.IEDisplay.IE_DI_Inline;
+    C_SVG_Default_Color:      TColor                             = clBlack;
+    C_SVG_Default_Display:    TWSVGStyle.IPropDisplay.IEValue    = TWSVGStyle.IPropDisplay.IEValue.IE_V_Inline;
+    C_SVG_Default_Visibility: TWSVGStyle.IPropVisibility.IEValue = TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible;
     //---------------------------------------------------------------------------
 
 type
@@ -616,7 +617,7 @@ type
             }
             IPropDisplayItem = class(IPropItem)
                 private
-                    m_Value: TWSVGStyle.IEDisplay;
+                    m_Value: TWSVGStyle.IPropDisplay.IEValue;
 
                 public
                     {**
@@ -629,7 +630,7 @@ type
                      @param(value Item value)
                      @param(rule Rule to apply to item)
                     }
-                    constructor Create(value: TWSVGStyle.IEDisplay;
+                    constructor Create(value: TWSVGStyle.IPropDisplay.IEValue;
                             rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
 
                     {**
@@ -658,7 +659,57 @@ type
                     {**
                      Get or set value
                     }
-                    property Value: TWSVGStyle.IEDisplay read m_Value write m_Value;
+                    property Value: TWSVGStyle.IPropDisplay.IEValue read m_Value write m_Value;
+            end;
+
+            {**
+             Visibility property item
+            }
+            IPropVisibilityItem = class(IPropItem)
+                private
+                    m_Value: TWSVGStyle.IPropVisibility.IEValue;
+
+                public
+                    {**
+                     Constructor
+                    }
+                    constructor Create; reintroduce; overload; virtual;
+
+                    {**
+                     Constructor
+                     @param(value Item value)
+                     @param(rule Rule to apply to item)
+                    }
+                    constructor Create(value: TWSVGStyle.IPropVisibility.IEValue;
+                            rule: IEPropRule = IE_PR_Inherit); reintroduce; overload; virtual;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Clear the item content
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: IPropItem); override;
+
+                    {**
+                     Merge property with another property
+                     @param(pOther Other property to merge with)
+                    }
+                    procedure Merge(const pOther: IPropVisibilityItem); virtual;
+
+                public
+                    {**
+                     Get or set value
+                    }
+                    property Value: TWSVGStyle.IPropVisibility.IEValue read m_Value write m_Value;
             end;
 
             {**
@@ -1229,6 +1280,7 @@ type
                     m_pFilter:      IFilter;
                     m_pOpacity:     IPropFloatItem;
                     m_pDisplayMode: IPropDisplayItem;
+                    m_pVisibility:  IPropVisibilityItem;
                     m_Width:        NativeInt;
                     m_Height:       NativeInt;
 
@@ -1286,6 +1338,11 @@ type
                      Get the display mode property
                     }
                     property DisplayMode: IPropDisplayItem read m_pDisplayMode;
+
+                    {**
+                     Get the visibility property
+                    }
+                    property Visibility: IPropVisibilityItem read m_pVisibility;
 
                     {**
                      Get the width
@@ -2616,7 +2673,7 @@ begin
     m_Value := C_SVG_Default_Display;
 end;
 //---------------------------------------------------------------------------
-constructor TWSVGRasterizer.IPropDisplayItem.Create(value: TWSVGStyle.IEDisplay; rule: IEPropRule);
+constructor TWSVGRasterizer.IPropDisplayItem.Create(value: TWSVGStyle.IPropDisplay.IEValue; rule: IEPropRule);
 begin
     inherited Create(rule);
 
@@ -2652,6 +2709,67 @@ begin
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGRasterizer.IPropDisplayItem.Merge(const pOther: IPropDisplayItem);
+begin
+    case (m_Rule) of
+        IE_PR_Default:
+            Exit;
+
+        IE_PR_Inherit:
+        begin
+            m_Value := pOther.m_Value;
+            m_Rule  := IE_PR_Default;
+            Exit;
+        end;
+    else
+        raise Exception.CreateFmt('Merge items - unknown rule - %d', [Integer(m_Rule)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGRasterizer.IPropVisibilityItem
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropVisibilityItem.Create;
+begin
+    inherited Create;
+
+    m_Value := C_SVG_Default_Visibility;
+end;
+//---------------------------------------------------------------------------
+constructor TWSVGRasterizer.IPropVisibilityItem.Create(value: TWSVGStyle.IPropVisibility.IEValue; rule: IEPropRule);
+begin
+    inherited Create(rule);
+
+    m_Value := value;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGRasterizer.IPropVisibilityItem.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropVisibilityItem.Clear;
+begin
+    inherited Clear;
+
+    m_Value := C_SVG_Default_Visibility;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropVisibilityItem.Assign(const pOther: IPropItem);
+var
+    pSource: IPropVisibilityItem;
+begin
+    inherited Assign(pOther);
+
+    if (not(pOther is IPropVisibilityItem)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    pSource := pOther as IPropVisibilityItem;
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGRasterizer.IPropVisibilityItem.Merge(const pOther: IPropVisibilityItem);
 begin
     case (m_Rule) of
         IE_PR_Default:
@@ -3277,6 +3395,7 @@ begin
     m_pFilter      := IFilter.Create;
     m_pOpacity     := IPropFloatItem.Create;
     m_pDisplayMode := IPropDisplayItem.Create;
+    m_pVisibility  := IPropVisibilityItem.Create;
     m_Width        := 0;
     m_Height       := 0;
 end;
@@ -3288,6 +3407,7 @@ begin
     m_pFilter.Free;
     m_pOpacity.Free;
     m_pDisplayMode.Free;
+    m_pVisibility.Free;
 
     inherited Destroy;
 end;
@@ -3303,6 +3423,9 @@ begin
 
     m_pDisplayMode.Free;
     m_pDisplayMode := IPropDisplayItem.Create(C_SVG_Default_Display, IE_PR_Default);
+
+    m_pVisibility.Free;
+    m_pVisibility := IPropVisibilityItem.Create(C_SVG_Default_Visibility, IE_PR_Default);
 
     m_Width  := 0;
     m_Height := 0;
@@ -5361,6 +5484,7 @@ var
     pColor:                      TWSVGPropColor;
     pLink:                       TWSVGPropLink;
     pDisplay:                    TWSVGStyle.IPropDisplay;
+    pVisibility:                 TWSVGStyle.IPropVisibility;
     pFillRule:                   TWSVGFill.IPropRule;
     pLineCap:                    TWSVGStroke.IPropLineCap;
     pLineJoin:                   TWSVGStroke.IPropLineJoin;
@@ -5432,12 +5556,34 @@ begin
             else
             begin
                 // is explicitly tagged as inherited?
-                if (pDisplay.Values[0] = TWSVGStyle.IEDisplay.IE_DI_Inherit) then
+                if (pDisplay.Values[0] = Integer(TWSVGStyle.IPropDisplay.IEValue.IE_V_Inherit)) then
                     // do nothing (will be implicitly inherited in this case)
                     continue;
 
-                pProperties.m_pStyle.m_pDisplayMode.m_Value := pDisplay.Values[0];
+                pProperties.m_pStyle.m_pDisplayMode.m_Value := TWSVGStyle.IPropDisplay.IEValue(pDisplay.Values[0]);
                 pProperties.m_pStyle.m_pDisplayMode.m_Rule  := IE_PR_Default;
+            end
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Visibility) and (pProperty is TWSVGStyle.IPropVisibility)) then
+        begin
+            // get visibility
+            pVisibility := pProperty as TWSVGStyle.IPropVisibility;
+
+            // found it?
+            if (not Assigned(pVisibility)) then
+                continue;
+
+            // set visibility
+            if (pVisibility.Count = 0) then
+            begin
+                pProperties.m_pStyle.m_pVisibility.m_Value := C_SVG_Default_Visibility;
+                pProperties.m_pStyle.m_pVisibility.m_Rule  := IE_PR_Default;
+            end
+            else
+            begin
+                pProperties.m_pStyle.m_pVisibility.m_Value := TWSVGStyle.IPropVisibility.IEValue(pVisibility.Values[0]);
+                pProperties.m_pStyle.m_pVisibility.m_Rule  := IE_PR_Default;
             end
         end
         else
@@ -6030,8 +6176,15 @@ begin
                 if (attribName = C_SVG_Prop_Display) then
                 begin
                     // do modify the display attribute
-                    pProperties.m_pStyle.m_pDisplayMode.m_Value := TWSVGStyle.IEDisplay(Trunc(animPos));
+                    pProperties.m_pStyle.m_pDisplayMode.m_Value := TWSVGStyle.IPropDisplay.IEValue(Trunc(animPos));
                     pProperties.m_pStyle.m_pDisplayMode.m_Rule  := IE_PR_Default;
+                end
+                else
+                if (attribName = C_SVG_Prop_Visibility) then
+                begin
+                    // do modify the visibility attribute
+                    pProperties.m_pStyle.m_pVisibility.m_Value := TWSVGStyle.IPropVisibility.IEValue(Trunc(animPos));
+                    pProperties.m_pStyle.m_pVisibility.m_Rule  := IE_PR_Default;
                 end;
 
                 break;
@@ -7220,21 +7373,22 @@ function TWSVGRasterizer.PopulateAnimation(const pAnimation: TWSVGAnimation; out
         pAnimDesc: TWSVGAnimationDescriptor; callOnAnimate: Boolean;
         pCustomData: Pointer): Boolean;
 var
-    pProperty:                                                TWSVGProperty;
-    pAttribName:                                              TWSVGAnimation.IPropAttributeName;
-    pRepeatCount:                                             TWSVGAnimation.IPropRepeatCount;
-    pAnimType:                                                TWSVGAnimation.IPropAnimTransformType;
-    pAdditiveMode:                                            TWSVGAnimation.IPropAdditiveMode;
-    pCalcMode:                                                TWSVGAnimation.IPropCalcMode;
-    pValueDesc:                                               TWSVGValueAnimDesc;
-    pMatrixDesc:                                              TWSVGMatrixAnimDesc;
-    pColorDesc:                                               TWSVGColorAnimDesc;
-    pEnumDesc:                                                TWSVGEnumAnimDesc;
-    pFrom, pTo, pBy, pValues:                                 TWSVGAttribute<Single>;
-    pFromColor, pToColor, pByColor, pValuesColor:             TWSVGPropColor;
-    pFromDisplay, pToDisplay, pByDisplay, pValuesDisplay:     TWSVGStyle.IPropDisplay;
-    pBegin, pEnd, pDuration:                                  TWSVGPropTime;
-    propCount, fromCount, toCount, byCount, valueCount, i, j: NativeInt;
+    pProperty:                                                        TWSVGProperty;
+    pAttribName:                                                      TWSVGAnimation.IPropAttributeName;
+    pRepeatCount:                                                     TWSVGAnimation.IPropRepeatCount;
+    pAnimType:                                                        TWSVGAnimation.IPropAnimTransformType;
+    pAdditiveMode:                                                    TWSVGAnimation.IPropAdditiveMode;
+    pCalcMode:                                                        TWSVGAnimation.IPropCalcMode;
+    pValueDesc:                                                       TWSVGValueAnimDesc;
+    pMatrixDesc:                                                      TWSVGMatrixAnimDesc;
+    pColorDesc:                                                       TWSVGColorAnimDesc;
+    pEnumDesc:                                                        TWSVGEnumAnimDesc;
+    pFrom, pTo, pBy, pValues:                                         TWSVGAttribute<Single>;
+    pFromColor, pToColor, pByColor, pValuesColor:                     TWSVGPropColor;
+    pFromDisplay, pToDisplay, pByDisplay, pValuesDisplay:             TWSVGStyle.IPropDisplay;
+    pFromVisibility, pToVisibility, pByVisibility, pValuesVisibility: TWSVGStyle.IPropVisibility;
+    pBegin, pEnd, pDuration:                                          TWSVGPropTime;
+    propCount, fromCount, toCount, byCount, valueCount, i, j:         NativeInt;
 begin
     attribName := '';
 
@@ -7391,6 +7545,24 @@ begin
                             // set from value
                             pEnumDesc.AddFrom(Integer(pFromDisplay.Values[j]));
                     end
+                    else
+                    if (pProperty is TWSVGStyle.IPropVisibility) then
+                    begin
+                        // get animation from property
+                        pFromVisibility := pProperty as TWSVGStyle.IPropVisibility;
+
+                        // found it?
+                        if (not Assigned(pFromVisibility)) then
+                            continue;
+
+                        // get from value count
+                        fromCount := pFromVisibility.Count;
+
+                        // iterate through all from values
+                        for j := 0 to fromCount - 1 do
+                            // set from value
+                            pEnumDesc.AddFrom(Integer(pFromVisibility.Values[j]));
+                    end;
                 end;
             else
                 raise Exception.CreateFmt('Read animation - found unknown or unsupported data type - % d - attribute name - %s',
@@ -7528,6 +7700,24 @@ begin
                             // set to value
                             pEnumDesc.AddTo(Integer(pToDisplay.Values[j]));
                     end
+                    else
+                    if (pProperty is TWSVGStyle.IPropVisibility) then
+                    begin
+                        // get animation to property
+                        pToVisibility := pProperty as TWSVGStyle.IPropVisibility;
+
+                        // found it?
+                        if (not Assigned(pToVisibility)) then
+                            continue;
+
+                        // get to value count
+                        toCount := pToVisibility.Count;
+
+                        // iterate through all to values
+                        for j := 0 to toCount - 1 do
+                            // set to value
+                            pEnumDesc.AddTo(Integer(pToVisibility.Values[j]));
+                    end;
                 end;
             else
                 raise Exception.CreateFmt('Read animation - found unknown or unsupported data type - % d - attribute name - %s',
@@ -7647,7 +7837,7 @@ begin
                     if (not Assigned(pEnumDesc)) then
                         continue;
 
-                    // is by property a list of attributes?
+                    // is by property a list of known enumerated values?
                     if (pProperty is TWSVGStyle.IPropDisplay) then
                     begin
                         // get animation by property
@@ -7665,6 +7855,24 @@ begin
                             // set by value
                             pEnumDesc.AddBy(Integer(pByDisplay.Values[j]));
                     end
+                    else
+                    if (pProperty is TWSVGStyle.IPropVisibility) then
+                    begin
+                        // get animation by property
+                        pByVisibility := pProperty as TWSVGStyle.IPropVisibility;
+
+                        // found it?
+                        if (not Assigned(pByVisibility)) then
+                            continue;
+
+                        // get by value count
+                        byCount := pByVisibility.Count;
+
+                        // iterate through all by values
+                        for j := 0 to byCount - 1 do
+                            // set by value
+                            pEnumDesc.AddBy(Integer(pByVisibility.Values[j]));
+                    end;
                 end;
             else
                 raise Exception.CreateFmt('Read animation - found unknown or unsupported data type - % d - attribute name - %s',
@@ -7885,7 +8093,7 @@ begin
                     if (not Assigned(pEnumDesc)) then
                         continue;
 
-                    // is values property a list of attributes?
+                    // is values property a known enumerator?
                     if (pProperty is TWSVGStyle.IPropDisplay) then
                     begin
                         // get animation values property
@@ -7902,6 +8110,23 @@ begin
                         for j := 0 to valueCount - 1 do
                             pEnumDesc.AddValue(Integer(pValuesDisplay.Values[j]));
                     end
+                    else
+                    if (pProperty is TWSVGStyle.IPropVisibility) then
+                    begin
+                        // get animation values property
+                        pValuesVisibility := pProperty as TWSVGStyle.IPropVisibility;
+
+                        // found it?
+                        if (not Assigned(pValuesVisibility)) then
+                            continue;
+
+                        // get values count
+                        valueCount := pValuesVisibility.Count;
+
+                        // iterate through all values
+                        for j := 0 to valueCount - 1 do
+                            pEnumDesc.AddValue(Integer(pValuesVisibility.Values[j]));
+                    end;
                 end;
             else
                 raise Exception.CreateFmt('Read animation - found unknown or unsupported data type - % d - attribute name - %s',

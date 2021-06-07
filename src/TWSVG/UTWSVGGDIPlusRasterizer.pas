@@ -575,9 +575,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -644,9 +648,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -713,9 +721,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -782,9 +794,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -860,9 +876,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -944,9 +964,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -1028,9 +1052,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -1224,9 +1252,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract properties from rectangle
@@ -1383,9 +1415,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -1540,9 +1576,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -1692,9 +1732,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -1813,9 +1857,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -1966,9 +2014,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract position and size properties
@@ -2109,9 +2161,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 pImageData := TWSmartPointer<TMemoryStream>.Create();
@@ -2289,9 +2345,13 @@ begin
 
                 pProps.Merge(pParentProps);
 
-                // is element visible? (NOTE for now the only supported mode is "none". All other
-                // modes are considered as fully visible)
-                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+                // can display element? (NOTE for now the only supported mode is "none". All other modes are
+                // considered as fully visible)
+                if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+                    continue;
+
+                // is element visible?
+                if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
                     continue;
 
                 // extract properties from text
@@ -2627,9 +2687,13 @@ begin
 
         pProps.Merge(pParentProps);
 
-        // is element visible? (NOTE for now the only supported mode is "none". All other modes are
+        // can display element? (NOTE for now the only supported mode is "none". All other modes are
         // considered as fully visible)
-        if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+        if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+            Exit(False);
+
+        // is element visible?
+        if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
             Exit(False);
 
         // extract position and size properties
@@ -2671,9 +2735,13 @@ begin
 
     pProps.Merge(pParentProps);
 
-    // is element visible? (NOTE for now the only supported mode is "none". All other modes are
+    // can display element? (NOTE for now the only supported mode is "none". All other modes are
     // considered as fully visible)
-    if (pProps.Style.DisplayMode.Value = TWSVGStyle.IEDisplay.IE_DI_None) then
+    if (pProps.Style.DisplayMode.Value = TWSVGStyle.IPropDisplay.IEValue.IE_V_None) then
+        Exit(False);
+
+    // is element visible?
+    if (pProps.Style.Visibility.Value <> TWSVGStyle.IPropVisibility.IEValue.IE_V_Visible) then
         Exit(False);
 
     // extract position and size properties

@@ -83,6 +83,7 @@ const
     C_SVG_Prop_XLink_HRef:                             UnicodeString = 'xlink:href';
     C_SVG_Prop_HRef:                                   UnicodeString = 'href';
     C_SVG_Prop_Display:                                UnicodeString = 'display';
+    C_SVG_Prop_Visibility:                             UnicodeString = 'visibility';
     C_SVG_Prop_Filter:                                 UnicodeString = 'filter';
     C_SVG_Prop_ClipPath:                               UnicodeString = 'clip-path';
     C_SVG_Value_New:                                   UnicodeString = 'new';
@@ -124,6 +125,9 @@ const
     C_SVG_Value_Start:                                 UnicodeString = 'start';
     C_SVG_Value_Middle:                                UnicodeString = 'middle';
     C_SVG_Value_End:                                   UnicodeString = 'end';
+    C_SVG_Value_Visible:                               UnicodeString = 'visible';
+    C_SVG_Value_Hidden:                                UnicodeString = 'hidden';
+    C_SVG_Value_Collapse:                              UnicodeString = 'collapse';
     C_SVG_Value_XMinYMin:                              UnicodeString = 'xMinYMin';
     C_SVG_Value_XMidYMin:                              UnicodeString = 'xMidYMin';
     C_SVG_Value_XMaxYMin:                              UnicodeString = 'xMaxYMin';

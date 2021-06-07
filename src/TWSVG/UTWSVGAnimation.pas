@@ -1757,7 +1757,7 @@ var
     pRepeatCount:                                                IPropRepeatCount;
     pFillMode:                                                   IPropFillMode;
     pColorValues, pFromAsColor, pToAsColor:                      TWSVGPropColor;
-    pDisplayValues, pFromAsDisplay, pToAsDisplay:                TWSVGStyle.IPropDisplay;
+    pEnumValues, pFromAsEnum, pToAsEnum:                         TWSVGPropEnum;
     pFromAsValues, pToAsValues, pValues, pKeySplines, pKeyTimes: TWSVGAttribute<Single>;
     pBegin, pEnd, pDuration, pMin, pMax, pRepeatDur:             TWSVGPropTime;
     pRestart:                                                    IPropRestart;
@@ -1934,59 +1934,68 @@ begin
 
         TWSVGCommon.IEValueType.IE_VT_Enum:
         begin
-            if (attribName = C_SVG_Prop_Display) then
+            useValues   := False;
+            pEnumValues := nil;
+
+            try
+                if (attribName = C_SVG_Prop_Display) then
+                    pEnumValues := TWSVGStyle.IPropDisplay.Create(Self, m_pOptions)
+                else
+                if (attribName = C_SVG_Prop_Visibility) then
+                    pEnumValues := TWSVGStyle.IPropVisibility.Create(Self, m_pOptions);
+
+                // read animate transform values property (optional)
+                if (Assigned(pEnumValues) and pEnumValues.Read(C_SVG_Animation_Values, pNode)) then
+                begin
+                    useValues      := True;
+                    m_pProperties.Add(pEnumValues);
+                    pEnumValues := nil;
+                end;
+            finally
+                pEnumValues.Free;
+            end;
+
+            // in the context of an animation, from, to and by properties should be ignored if a value list
+            // is provided, see:
+            // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/values
+            if (not useValues) then
             begin
-                useValues      := False;
-                pDisplayValues := nil;
+                pFromAsEnum := nil;
 
                 try
-                    pDisplayValues := TWSVGStyle.IPropDisplay.Create(Self, m_pOptions);
+                    if (attribName = C_SVG_Prop_Display) then
+                        pFromAsEnum := TWSVGStyle.IPropDisplay.Create(Self, m_pOptions)
+                    else
+                    if (attribName = C_SVG_Prop_Visibility) then
+                        pFromAsEnum := TWSVGStyle.IPropVisibility.Create(Self, m_pOptions);
 
-                    // read animate transform values property (optional)
-                    if (pDisplayValues.Read(C_SVG_Animation_Values, pNode)) then
+                    // read from property (optional)
+                    if (Assigned(pFromAsEnum) and pFromAsEnum.Read(C_SVG_Animation_From, pNode)) then
                     begin
-                        useValues      := True;
-                        m_pProperties.Add(pDisplayValues);
-                        pDisplayValues := nil;
+                        m_pProperties.Add(pFromAsEnum);
+                        pFromAsEnum := nil;
                     end;
                 finally
-                    pDisplayValues.Free;
+                    pFromAsEnum.Free;
                 end;
 
-                // in the context of an animation, from, to and by properties should be ignored if a value list
-                // is provided, see:
-                // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/values
-                if (not useValues) then
-                begin
-                    pFromAsDisplay := nil;
+                pToAsEnum := nil;
 
-                    try
-                        pFromAsDisplay := TWSVGStyle.IPropDisplay.Create(Self, m_pOptions);
+                try
+                    if (attribName = C_SVG_Prop_Display) then
+                        pToAsEnum := TWSVGStyle.IPropDisplay.Create(Self, m_pOptions)
+                    else
+                    if (attribName = C_SVG_Prop_Visibility) then
+                        pToAsEnum := TWSVGStyle.IPropVisibility.Create(Self, m_pOptions);
 
-                        // read from property (optional)
-                        if (pFromAsDisplay.Read(C_SVG_Animation_From, pNode)) then
-                        begin
-                            m_pProperties.Add(pFromAsDisplay);
-                            pFromAsDisplay := nil;
-                        end;
-                    finally
-                        pFromAsDisplay.Free;
+                    // read to property (optional)
+                    if (Assigned(pToAsEnum) and pToAsEnum.Read(C_SVG_Animation_To, pNode)) then
+                    begin
+                        m_pProperties.Add(pToAsEnum);
+                        pToAsEnum := nil;
                     end;
-
-                    pToAsDisplay := nil;
-
-                    try
-                        pToAsDisplay := TWSVGStyle.IPropDisplay.Create(Self, m_pOptions);
-
-                        // read to property (optional)
-                        if (pToAsDisplay.Read(C_SVG_Animation_To, pNode)) then
-                        begin
-                            m_pProperties.Add(pToAsDisplay);
-                            pToAsDisplay := nil;
-                        end;
-                    finally
-                        pToAsDisplay.Free;
-                    end;
+                finally
+                    pToAsEnum.Free;
                 end;
             end;
         end;

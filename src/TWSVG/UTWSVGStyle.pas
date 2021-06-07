@@ -546,66 +546,46 @@ type
     TWSVGStyle = class(TWSVGProperty)
         public type
             {**
-             Display enumeration
-             @value(IE_DI_None Indicates that the element should not be rendered)
-             @value(IE_DI_Inherit Indicates that the rendering of the element depends on the parent property)
-             @br @bold(NOTE) All other values means that the element should be rendered. These values
-                             may also affect the direct rendering in offscreen canvases
-            }
-            IEDisplay =
-            (
-                IE_DI_Inline, // by default the display is inline
-                IE_DI_Block,
-                IE_DI_ListItem,
-                IE_DI_RunIn,
-                IE_DI_Compact,
-                IE_DI_Marker,
-                IE_DI_Table,
-                IE_DI_InlineTable,
-                IE_DI_TableRowGroup,
-                IE_DI_TableHeaderGroup,
-                IE_DI_TableFooterGroup,
-                IE_DI_TableRow,
-                IE_DI_TableColumnGroup,
-                IE_DI_TableColumn,
-                IE_DI_TableCell,
-                IE_DI_TableCaption,
-                IE_DI_None,
-                IE_DI_Inherit
-            );
-
-            {**
              Display property
             }
-            IPropDisplay = class(TWSVGProperty)
+            IPropDisplay = class(TWSVGPropEnum)
                 public type
-                    IValues = array of IEDisplay;
-
-                private
-                    m_Values: IValues;
+                    {**
+                     Display enumeration
+                     @value(IE_V_None Indicates that the element should not be rendered)
+                     @value(IE_V_Inherit Indicates that the rendering of the element depends on the parent property)
+                     @br @bold(NOTE) All other values means that the element should be rendered. These values
+                                     may also affect the direct rendering in offscreen canvases
+                    }
+                    IEValue =
+                    (
+                        IE_V_Inline, // by default the display is inline
+                        IE_V_Block,
+                        IE_V_ListItem,
+                        IE_V_RunIn,
+                        IE_V_Compact,
+                        IE_V_Marker,
+                        IE_V_Table,
+                        IE_V_InlineTable,
+                        IE_V_TableRowGroup,
+                        IE_V_TableHeaderGroup,
+                        IE_V_TableFooterGroup,
+                        IE_V_TableRow,
+                        IE_V_TableColumnGroup,
+                        IE_V_TableColumn,
+                        IE_V_TableCell,
+                        IE_V_TableCaption,
+                        IE_V_None,
+                        IE_V_Inherit
+                    );
 
                 protected
                     {**
-                     Get value at index
-                     @param(index Value index to get)
-                     @returns(Value at index)
-                     @raises(Exception if index is out of bounds)
+                     Convert value to string
+                     @param(value Value to convert)
+                     @returns(Value as string)
                     }
-                    function GetValue(index: Cardinal): IEDisplay; virtual;
-
-                    {**
-                     Set value at index
-                     @param(index Value index)
-                     @param(value Value)
-                     @raises(Exception if index is out of bounds)
-                    }
-                    procedure SetValue(index: Cardinal; value: IEDisplay); virtual;
-
-                    {**
-                     Get the value count
-                     @returns(Value count)
-                    }
-                    function GetValueCount: Cardinal; virtual;
+                    function ValueToStr(value: Integer): UnicodeString; override;
 
                 public
                     {**
@@ -621,28 +601,11 @@ type
                     destructor Destroy; override;
 
                     {**
-                     Assign (i.e. copy) content from another item
-                     @param(pOther Other item to copy from)
-                    }
-                    procedure Assign(const pOther: TWSVGItem); override;
-
-                    {**
-                     Clear
-                    }
-                    procedure Clear; override;
-
-                    {**
                      Create new property instance
                      @param(pParent Parent item, orphan or root if @nil)
                      @returns(Property instance)
                     }
                     function CreateInstance(pParent: TWSVGItem): TWSVGProperty; override;
-
-                    {**
-                     Add a display value
-                     @param(display Display value)
-                    }
-                    procedure Add(display: IEDisplay); virtual;
 
                     {**
                      Parse data
@@ -652,42 +615,72 @@ type
                     function Parse(const data: UnicodeString): Boolean; override;
 
                     {**
-                     Log content
-                     @param(margin Margin length in chars)
-                    }
-                    procedure Log(margin: Cardinal); override;
-
-                    {**
-                     Print content to string
-                     @param(margin Margin length in chars)
-                     @returns(Content)
-                    }
-                    function Print(margin: Cardinal): UnicodeString; override;
-
-                    {**
-                     Get xml formatted string
-                     @returns(String)
-                    }
-                    function ToXml: UnicodeString; override;
-
-                    {**
                      Convert display value to string
-                     @param(display Display value to convert)
-                     @returns(Display value as string)
+                     @param(value Value to convert)
+                     @returns(Value as string)
                     }
-                    class function ToStr(display: IEDisplay): UnicodeString; static;
+                    class function ToStr(value: IEValue): UnicodeString; static;
+            end;
+
+            {**
+             Visibility property
+            }
+            IPropVisibility = class(TWSVGPropEnum)
+                public type
+                    {**
+                     Value enumeration
+                     @value(IE_V_Visible Indicates that the element will be painted)
+                     @value(IE_V_Hidden Indicates that the element will not be painted)
+                     @value(IE_V_Collapse This value is equal to hidden)
+                    }
+                    IEValue =
+                    (
+                        IE_V_Visible,
+                        IE_V_Hidden,
+                        IE_V_Collapse
+                    );
+
+                protected
+                    {**
+                     Convert value to string
+                     @param(value Value to convert)
+                     @returns(Value as string)
+                    }
+                    function ValueToStr(value: Integer): UnicodeString; override;
 
                 public
                     {**
-                     Get or set the value at index. Example: display := Values[0];
-                     @br @bold(NOTE) An exception will be raised if index is out of bounds
+                     Constructor
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @param(pOptions SVG options)
                     }
-                    property Values[index: Cardinal]: IEDisplay read GetValue write SetValue;
+                    constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
 
                     {**
-                     Get the value count
+                     Destructor
                     }
-                    property Count: Cardinal read GetValueCount;
+                    destructor Destroy; override;
+
+                    {**
+                     Create new property instance
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @returns(Property instance)
+                    }
+                    function CreateInstance(pParent: TWSVGItem): TWSVGProperty; override;
+
+                    {**
+                     Parse data
+                     @param(data Data to parse)
+                     @returns(@true on success, otherwise @false)
+                    }
+                    function Parse(const data: UnicodeString): Boolean; override;
+
+                    {**
+                     Convert visibility value to string
+                     @param(value Value to convert)
+                     @returns(Value as string)
+                    }
+                    class function ToStr(value: IEValue): UnicodeString; static;
             end;
 
         private
@@ -1643,6 +1636,8 @@ end;
 constructor TWSVGStyle.IPropDisplay.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
 begin
     inherited Create(pParent, pOptions);
+
+    ItemName := C_SVG_Prop_Display;
 end;
 //---------------------------------------------------------------------------
 destructor TWSVGStyle.IPropDisplay.Destroy;
@@ -1650,69 +1645,14 @@ begin
     inherited Destroy;
 end;
 //---------------------------------------------------------------------------
-function TWSVGStyle.IPropDisplay.GetValue(index: Cardinal): IEDisplay;
+function TWSVGStyle.IPropDisplay.ValueToStr(value: Integer): UnicodeString;
 begin
-    if (Integer(index) >= Length(m_Values)) then
-        raise Exception.Create('Index is out of bounds');
-
-    Result := m_Values[index];
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGStyle.IPropDisplay.SetValue(index: Cardinal; value: IEDisplay);
-begin
-    if (Integer(index) >= Length(m_Values)) then
-        raise Exception.Create('Index is out of bounds');
-
-    m_Values[index] := value;
-end;
-//---------------------------------------------------------------------------
-function TWSVGStyle.IPropDisplay.GetValueCount: Cardinal;
-begin
-    Result := Length(m_Values);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGStyle.IPropDisplay.Assign(const pOther: TWSVGItem);
-var
-    pSource:         IPropDisplay;
-    displayCount, i: Integer;
-begin
-    inherited Assign(pOther);
-
-    // invalid item?
-    if (not(pOther is IPropDisplay)) then
-    begin
-        Clear;
-        Exit;
-    end;
-
-    // get source object
-    pSource := pOther as IPropDisplay;
-
-    // get the value count from source and prepare array to copy values
-    displayCount := pSource.Count;
-    SetLength(m_Values, displayCount);
-
-    // copy display types from source
-    for i := 0 to displayCount - 1 do
-        m_Values[i] := pSource.m_Values[i];
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGStyle.IPropDisplay.Clear;
-begin
-    inherited Clear;
-
-    SetLength(m_Values, 0);
+    Result := ToStr(IEValue(value));
 end;
 //---------------------------------------------------------------------------
 function TWSVGStyle.IPropDisplay.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
 begin
     Result := IPropDisplay.Create(pParent, m_pOptions);
-end;
-//---------------------------------------------------------------------------
-procedure TWSVGStyle.IPropDisplay.Add(display: IEDisplay);
-begin
-    SetLength(m_Values, Length(m_Values) + 1);
-    m_Values[Length(m_Values) - 1] := display
 end;
 //---------------------------------------------------------------------------
 function TWSVGStyle.IPropDisplay.Parse(const data: UnicodeString): Boolean;
@@ -1731,62 +1671,62 @@ begin
         // iterate through values to parse
         for item in pValues do
             if (item = C_SVG_Value_Inline) then
-                Add(IE_DI_Inline)
+                Add(Integer(IE_V_Inline))
             else
             if (item = C_SVG_Value_Block) then
-                Add(IE_DI_Block)
+                Add(Integer(IE_V_Block))
             else
             if (item = C_SVG_Value_List_Item) then
-                Add(IE_DI_ListItem)
+                Add(Integer(IE_V_ListItem))
             else
             if (item = C_SVG_Value_Run_In) then
-                Add(IE_DI_RunIn)
+                Add(Integer(IE_V_RunIn))
             else
             if (item = C_SVG_Value_Compact) then
-                Add(IE_DI_Compact)
+                Add(Integer(IE_V_Compact))
             else
             if (item = C_SVG_Value_Marker) then
-                Add(IE_DI_Marker)
+                Add(Integer(IE_V_Marker))
             else
             if (item = C_SVG_Value_Table) then
-                Add(IE_DI_Table)
+                Add(Integer(IE_V_Table))
             else
             if (item = C_SVG_Value_Inline_Table) then
-                Add(IE_DI_InlineTable)
+                Add(Integer(IE_V_InlineTable))
             else
             if (item = C_SVG_Value_Table_Row_Group) then
-                Add(IE_DI_TableRowGroup)
+                Add(Integer(IE_V_TableRowGroup))
             else
             if (item = C_SVG_Value_Table_Header_Group) then
-                Add(IE_DI_TableHeaderGroup)
+                Add(Integer(IE_V_TableHeaderGroup))
             else
             if (item = C_SVG_Value_Table_Footer_Group) then
-                Add(IE_DI_TableFooterGroup)
+                Add(Integer(IE_V_TableFooterGroup))
             else
             if (item = C_SVG_Value_Table_Row) then
-                Add(IE_DI_TableRow)
+                Add(Integer(IE_V_TableRow))
             else
             if (item = C_SVG_Value_Table_Column_Group) then
-                Add(IE_DI_TableColumnGroup)
+                Add(Integer(IE_V_TableColumnGroup))
             else
             if (item = C_SVG_Value_Table_Column) then
-                Add(IE_DI_TableColumn)
+                Add(Integer(IE_V_TableColumn))
             else
             if (item = C_SVG_Value_Table_Cell) then
-                Add(IE_DI_TableCell)
+                Add(Integer(IE_V_TableCell))
             else
             if (item = C_SVG_Value_Table_Caption) then
-                Add(IE_DI_TableCaption)
+                Add(Integer(IE_V_TableCaption))
             else
             if (item = C_SVG_Value_None) then
-                Add(IE_DI_None)
+                Add(Integer(IE_V_None))
             else
             if (item = C_SVG_Value_Inherit) then
-                Add(IE_DI_Inherit)
+                Add(Integer(IE_V_Inherit))
             else
             begin
                 TWLogHelper.LogToCompiler('Parse display - unknown value - ' + item);
-                Add(IE_DI_Inline);
+                Add(Integer(IE_V_Inline));
             end;
     finally
         pValues.Free;
@@ -1795,107 +1735,99 @@ begin
     Result := True;
 end;
 //---------------------------------------------------------------------------
-procedure TWSVGStyle.IPropDisplay.Log(margin: Cardinal);
-var
-    str:             UnicodeString;
-    displayCount, i: Integer;
+class function TWSVGStyle.IPropDisplay.ToStr(value: IEValue): UnicodeString;
 begin
-    displayCount := Length(m_Values);
-
-    // no value to log?
-    if (displayCount = 0) then
-        Exit;
-
-    // iterate through display values
-    for i := 0 to displayCount - 1 do
-    begin
-        // first value?
-        if (i = 0) then
-            str := str + ', ';
-
-        str := str + ToStr(m_Values[i]);
-    end;
-
-    TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + str);
-end;
-//---------------------------------------------------------------------------
-function TWSVGStyle.IPropDisplay.Print(margin: Cardinal): UnicodeString;
-var
-    displayCount, i: Integer;
-begin
-    displayCount := Length(m_Values);
-
-    // no value to print?
-    if (displayCount = 0) then
-        Exit ('');
-
-    // format property name
-    Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ';
-
-    // iterate through display values
-    for i := 0 to displayCount - 1 do
-    begin
-        // first value?
-        if (i = 0) then
-            Result := Result + ', ';
-
-        Result := Result + ToStr(m_Values[i]);
-    end;
-
-    // close the formatted string
-    Result := Result + #13 + #10;
-end;
-//---------------------------------------------------------------------------
-function TWSVGStyle.IPropDisplay.ToXml: UnicodeString;
-var
-    displayCount, i: Integer;
-begin
-    displayCount := Length(m_Values);
-
-    // no value to export?
-    if (displayCount = 0) then
-        Exit ('');
-
-    // format property name
-    Result := ItemName + '=\"';
-
-    // iterate through display values
-    for i := 0 to displayCount - 1 do
-    begin
-        // first value?
-        if (i = 0) then
-            Result := Result + ';';
-
-        Result := Result + ToStr(m_Values[i]);
-    end;
-
-    // close the formatted string
-    Result := Result + '\"';
-end;
-//---------------------------------------------------------------------------
-class function TWSVGStyle.IPropDisplay.ToStr(display: IEDisplay): UnicodeString;
-begin
-    case (display) of
-        IE_DI_Inline:           Exit (C_SVG_Value_Inline);
-        IE_DI_Block:            Exit (C_SVG_Value_Block);
-        IE_DI_ListItem:         Exit (C_SVG_Value_List_Item);
-        IE_DI_RunIn:            Exit (C_SVG_Value_Run_In);
-        IE_DI_Compact:          Exit (C_SVG_Value_Compact);
-        IE_DI_Marker:           Exit (C_SVG_Value_Marker);
-        IE_DI_Table:            Exit (C_SVG_Value_Table);
-        IE_DI_InlineTable:      Exit (C_SVG_Value_Inline_Table);
-        IE_DI_TableRowGroup:    Exit (C_SVG_Value_Table_Row_Group);
-        IE_DI_TableHeaderGroup: Exit (C_SVG_Value_Table_Header_Group);
-        IE_DI_TableFooterGroup: Exit (C_SVG_Value_Table_Footer_Group);
-        IE_DI_TableRow:         Exit (C_SVG_Value_Table_Row);
-        IE_DI_TableColumnGroup: Exit (C_SVG_Value_Table_Column_Group);
-        IE_DI_TableColumn:      Exit (C_SVG_Value_Table_Column);
-        IE_DI_TableCell:        Exit (C_SVG_Value_Table_Cell);
-        IE_DI_TableCaption:     Exit (C_SVG_Value_Table_Caption);
-        IE_DI_None:             Exit (C_SVG_Value_None);
-        IE_DI_Inherit:          Exit (C_SVG_Value_Inherit);
+    case (value) of
+        IE_V_Inline:           Exit (C_SVG_Value_Inline);
+        IE_V_Block:            Exit (C_SVG_Value_Block);
+        IE_V_ListItem:         Exit (C_SVG_Value_List_Item);
+        IE_V_RunIn:            Exit (C_SVG_Value_Run_In);
+        IE_V_Compact:          Exit (C_SVG_Value_Compact);
+        IE_V_Marker:           Exit (C_SVG_Value_Marker);
+        IE_V_Table:            Exit (C_SVG_Value_Table);
+        IE_V_InlineTable:      Exit (C_SVG_Value_Inline_Table);
+        IE_V_TableRowGroup:    Exit (C_SVG_Value_Table_Row_Group);
+        IE_V_TableHeaderGroup: Exit (C_SVG_Value_Table_Header_Group);
+        IE_V_TableFooterGroup: Exit (C_SVG_Value_Table_Footer_Group);
+        IE_V_TableRow:         Exit (C_SVG_Value_Table_Row);
+        IE_V_TableColumnGroup: Exit (C_SVG_Value_Table_Column_Group);
+        IE_V_TableColumn:      Exit (C_SVG_Value_Table_Column);
+        IE_V_TableCell:        Exit (C_SVG_Value_Table_Cell);
+        IE_V_TableCaption:     Exit (C_SVG_Value_Table_Caption);
+        IE_V_None:             Exit (C_SVG_Value_None);
+        IE_V_Inherit:          Exit (C_SVG_Value_Inherit);
     else
-        raise Exception.CreateFmt('Unknown display - %d', [Integer(display)]);
+        raise Exception.CreateFmt('Unknown value - %d', [Integer(value)]);
+    end;
+end;
+//---------------------------------------------------------------------------
+// TWSVGStyle.IPropVisibility
+//---------------------------------------------------------------------------
+constructor TWSVGStyle.IPropVisibility.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    ItemName := C_SVG_Prop_Visibility;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGStyle.IPropVisibility.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGStyle.IPropVisibility.ValueToStr(value: Integer): UnicodeString;
+begin
+    Result := ToStr(IEValue(value));
+end;
+//---------------------------------------------------------------------------
+function TWSVGStyle.IPropVisibility.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
+begin
+    Result := IPropVisibility.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+function TWSVGStyle.IPropVisibility.Parse(const data: UnicodeString): Boolean;
+var
+    pValues: TWSVGCommon.IValues;
+    item:    UnicodeString;
+begin
+    pValues := nil;
+
+    try
+        pValues := TWSVGCommon.IValues.Create;
+
+        // get all values to parse (in case of visibility list)
+        TWSVGCommon.ExtractValues(data, 1, Length(data), pValues, not m_pOptions.m_TrustSVGSyntax);
+
+        // iterate through values to parse
+        for item in pValues do
+            if (item = C_SVG_Value_Visible) then
+                Add(Integer(IE_V_Visible))
+            else
+            if (item = C_SVG_Value_Hidden) then
+                Add(Integer(IE_V_Hidden))
+            else
+            if (item = C_SVG_Value_Collapse) then
+                Add(Integer(IE_V_Collapse))
+            else
+            begin
+                TWLogHelper.LogToCompiler('Parse visibility - unknown value - ' + item);
+                Add(Integer(IE_V_Visible));
+            end;
+    finally
+        pValues.Free;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+class function TWSVGStyle.IPropVisibility.ToStr(value: IEValue): UnicodeString;
+begin
+    case (value) of
+        IE_V_Visible:  Exit (C_SVG_Value_Visible);
+        IE_V_Hidden:   Exit (C_SVG_Value_Hidden);
+        IE_V_Collapse: Exit (C_SVG_Value_Collapse);
+    else
+        raise Exception.CreateFmt('Unknown value - %d', [Integer(value)]);
     end;
 end;
 //---------------------------------------------------------------------------
@@ -1938,6 +1870,9 @@ begin
         Exit(True)
     else
     if ((name = C_SVG_Prop_Display) and ParseStyle(name, value)) then
+        Exit(True)
+    else
+    if ((name = C_SVG_Prop_Visibility) and ParseStyle(name, value)) then
         Exit(True)
     else
     if ((name = C_SVG_Prop_Opacity) and ParseStyle(name, value)) then
@@ -2001,6 +1936,7 @@ var
     pColor:                    TWSVGPropColor;
     pBg:                       TWSVGPropBackground;
     pDisplay:                  IPropDisplay;
+    pVisibility:               IPropVisibility;
     pLink:                     TWSVGPropLink;
     color:                     TWColor;
     data:                      UnicodeString;
@@ -2058,7 +1994,7 @@ begin
         pDisplay := nil;
 
         try
-            // create measure property and populate with opacity
+            // read display property
             pDisplay          := IPropDisplay.Create(Self, m_pOptions);
             pDisplay.ItemName := name;
             pDisplay.Parse(pData^);
@@ -2066,6 +2002,24 @@ begin
             pDisplay := nil;
         finally
             pDisplay.Free;
+        end;
+
+        Exit(True);
+    end
+    else
+    if (name = C_SVG_Prop_Visibility) then
+    begin
+        pVisibility := nil;
+
+        try
+            // read visibility property
+            pVisibility          := IPropVisibility.Create(Self, m_pOptions);
+            pVisibility.ItemName := name;
+            pVisibility.Parse(pData^);
+            m_pProperties.Add(pVisibility);
+            pVisibility := nil;
+        finally
+            pVisibility.Free;
         end;
 
         Exit(True);
@@ -2246,6 +2200,7 @@ end;
 {$endif}
 var
     display,
+    visibility,
     opacity,
     gradientStopColor,
     gradientStopOpacity,
@@ -2272,6 +2227,11 @@ begin
     display := TWSVGCommon.GetAttribute(pNode, C_SVG_Prop_Display, C_SVG_Global_Error);
     if (display <> C_SVG_Global_Error) then
         ParseStyle(C_SVG_Prop_Display, display);
+
+    // get visibility
+    visibility := TWSVGCommon.GetAttribute(pNode, C_SVG_Prop_Visibility, C_SVG_Global_Error);
+    if (visibility <> C_SVG_Global_Error) then
+        ParseStyle(C_SVG_Prop_Visibility, visibility);
 
     // get global opacity
     opacity := TWSVGCommon.GetAttribute(pNode, C_SVG_Prop_Opacity, C_SVG_Global_Error);

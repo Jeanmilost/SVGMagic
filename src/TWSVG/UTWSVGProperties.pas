@@ -27,6 +27,107 @@ uses System.Classes,
 
 type
     {**
+     Enumerable property
+    }
+    TWSVGPropEnum = class(TWSVGProperty)
+        public type
+            IValues = array of Integer;
+
+        protected
+            m_Values: IValues;
+
+            {**
+             Get value at index
+             @param(index Value index to get)
+             @returns(Value at index)
+             @raises(Exception if index is out of bounds)
+            }
+            function GetValue(index: Cardinal): Integer; virtual;
+
+            {**
+             Set value at index
+             @param(index Value index)
+             @param(value Value)
+             @raises(Exception if index is out of bounds)
+            }
+            procedure SetValue(index: Cardinal; value: Integer); virtual;
+
+            {**
+             Get the value count
+             @returns(Value count)
+            }
+            function GetValueCount: Cardinal; virtual;
+
+            {**
+             Convert value to string
+             @param(value Value to convert)
+             @returns(Value as string)
+            }
+            function ValueToStr(value: Integer): UnicodeString; virtual;
+
+        public
+            {**
+             Constructor
+             @param(pParent Parent item, orphan or root if @nil)
+             @param(pOptions SVG options)
+            }
+            constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+            {**
+             Destructor
+            }
+            destructor Destroy; override;
+
+            {**
+             Assign (i.e. copy) content from another item
+             @param(pOther Other item to copy from)
+            }
+            procedure Assign(const pOther: TWSVGItem); override;
+
+            {**
+             Clear
+            }
+            procedure Clear; override;
+
+            {**
+             Add a value
+             @param(value Value to add)
+            }
+            procedure Add(value: Integer); virtual;
+
+            {**
+             Log content
+             @param(margin Margin length in chars)
+            }
+            procedure Log(margin: Cardinal); override;
+
+            {**
+             Print content to string
+             @param(margin Margin length in chars)
+             @returns(Content)
+            }
+            function Print(margin: Cardinal): UnicodeString; override;
+
+            {**
+             Get xml formatted string
+             @returns(String)
+            }
+            function ToXml: UnicodeString; override;
+
+        public
+            {**
+             Get or set the value at index. Example: value := Values[0];
+             @br @bold(NOTE) An exception will be thrown if index is out of bounds
+            }
+            property Values[index: Cardinal]: Integer read GetValue write SetValue;
+
+            {**
+             Get the value count
+            }
+            property Count: Cardinal read GetValueCount;
+    end;
+
+    {**
      Aspect ratio property, used to align a graphic component inside its view box
     }
     TWSVGPropAspectRatio = class(TWSVGProperty)
@@ -1151,6 +1252,161 @@ type
     end;
 
 implementation
+//---------------------------------------------------------------------------
+// TWSVGPropEnum
+//---------------------------------------------------------------------------
+constructor TWSVGPropEnum.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGPropEnum.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropEnum.ValueToStr(value: Integer): UnicodeString;
+begin
+    Result := IntToStr(value);
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropEnum.GetValue(index: Cardinal): Integer;
+begin
+    if (Integer(index) >= Length(m_Values)) then
+        raise Exception.Create('Index is out of bounds');
+
+    Result := m_Values[index];
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropEnum.SetValue(index: Cardinal; value: Integer);
+begin
+    if (Integer(index) >= Length(m_Values)) then
+        raise Exception.Create('Index is out of bounds');
+
+    m_Values[index] := value;
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropEnum.GetValueCount: Cardinal;
+begin
+    Result := Length(m_Values);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropEnum.Assign(const pOther: TWSVGItem);
+var
+    pSource:  TWSVGPropEnum;
+    count, i: Integer;
+begin
+    inherited Assign(pOther);
+
+    // invalid item?
+    if (not(pOther is TWSVGPropEnum)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    // get source object
+    pSource := pOther as TWSVGPropEnum;
+
+    // get the value count from source and prepare array to copy values
+    count := pSource.Count;
+    SetLength(m_Values, count);
+
+    // copy values from source
+    for i := 0 to count - 1 do
+        m_Values[i] := pSource.m_Values[i];
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropEnum.Clear;
+begin
+    inherited Clear;
+
+    SetLength(m_Values, 0);
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropEnum.Add(value: Integer);
+begin
+    SetLength(m_Values, Length(m_Values) + 1);
+    m_Values[Length(m_Values) - 1] := value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGPropEnum.Log(margin: Cardinal);
+var
+    str:      UnicodeString;
+    count, i: Integer;
+begin
+    count := Length(m_Values);
+
+    // no value to log?
+    if (count = 0) then
+        Exit;
+
+    // iterate through values
+    for i := 0 to count - 1 do
+    begin
+        // first value?
+        if (i = 0) then
+            str := str + ', ';
+
+        str := str + ValueToStr(m_Values[i]);
+    end;
+
+    TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + str);
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropEnum.Print(margin: Cardinal): UnicodeString;
+var
+    count, i: Integer;
+begin
+    count := Length(m_Values);
+
+    // no value to print?
+    if (count = 0) then
+        Exit ('');
+
+    // format property name
+    Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ';
+
+    // iterate through values
+    for i := 0 to count - 1 do
+    begin
+        // first value?
+        if (i = 0) then
+            Result := Result + ', ';
+
+        Result := Result + ValueToStr(m_Values[i]);
+    end;
+
+    // close the formatted string
+    Result := Result + #13 + #10;
+end;
+//---------------------------------------------------------------------------
+function TWSVGPropEnum.ToXml: UnicodeString;
+var
+    count, i: Integer;
+begin
+    count := Length(m_Values);
+
+    // no value to export?
+    if (count = 0) then
+        Exit ('');
+
+    // format property name
+    Result := ItemName + '=\"';
+
+    // iterate through values
+    for i := 0 to count - 1 do
+    begin
+        // first value?
+        if (i = 0) then
+            Result := Result + ';';
+
+        Result := Result + ValueToStr(m_Values[i]);
+    end;
+
+    // close the formatted string
+    Result := Result + '\"';
+end;
 //---------------------------------------------------------------------------
 // TWSVGPropAspectRatio
 //---------------------------------------------------------------------------

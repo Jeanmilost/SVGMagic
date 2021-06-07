@@ -329,6 +329,9 @@ begin
     if (name = C_SVG_Prop_Display) then
         Exit (IE_VT_Enum)
     else
+    if (name = C_SVG_Prop_Visibility) then
+        Exit (IE_VT_Enum)
+    else
     if (name = C_SVG_Prop_PreserveAspectRatio) then
         Exit(IE_VT_Enum);
 
