@@ -78,7 +78,9 @@ const
     C_SVG_Prop_Font_Family:                            UnicodeString = 'font-family';
     C_SVG_Prop_Font_Size:                              UnicodeString = 'font-size';
     C_SVG_Prop_Font_Weight:                            UnicodeString = 'font-weight';
+    C_SVG_Prop_Font_Style:                             UnicodeString = 'font-style';
     C_SVG_Prop_Text_Anchor:                            UnicodeString = 'text-anchor';
+    C_SVG_Prop_Text_Decoration:                        UnicodeString = 'text-decoration';
     C_SVG_Prop_Transform:                              UnicodeString = 'transform';
     C_SVG_Prop_XLink_HRef:                             UnicodeString = 'xlink:href';
     C_SVG_Prop_HRef:                                   UnicodeString = 'href';
@@ -96,6 +98,10 @@ const
     C_SVG_Value_PC:                                    UnicodeString = 'pc';
     C_SVG_Value_PT:                                    UnicodeString = 'pt';
     C_SVG_Value_PX:                                    UnicodeString = 'px';
+    C_SVG_Value_Deg:                                   UnicodeString = 'deg';
+    C_SVG_Value_Grad:                                  UnicodeString = 'grad';
+    C_SVG_Value_Rad:                                   UnicodeString = 'rad';
+    C_SVG_Value_Turn:                                  UnicodeString = 'turn';
     C_SVG_Value_Percent:                               UnicodeString = '%';
     C_SVG_Value_None:                                  UnicodeString = 'none';
     C_SVG_Value_Inherit:                               UnicodeString = 'inherit';
@@ -143,6 +149,9 @@ const
     C_SVG_Value_Text_Weight_Bold:                      UnicodeString = 'bold';
     C_SVG_Value_Text_Weight_Bolder:                    UnicodeString = 'bolder';
     C_SVG_Value_Text_Weight_Lighter:                   UnicodeString = 'lighter';
+    C_SVG_Value_Text_Font_Style_Normal:                UnicodeString = 'normal';
+    C_SVG_Value_Text_Font_Style_Italic:                UnicodeString = 'italic';
+    C_SVG_Value_Text_Font_Style_Oblique:               UnicodeString = 'oblique';
     C_SVG_Link_URL:                                    UnicodeString = 'url';
     C_SVG_Path_MoveTo_Absolute                                       = 'M';
     C_SVG_Path_MoveTo_Relative                                       = 'm';

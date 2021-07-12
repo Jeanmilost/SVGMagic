@@ -1816,6 +1816,8 @@ type
              @param(fontWeight @bold([out]) Text font weight)
              @param(bolder @bold([out]) If true, text font weight is bolder than current value)
              @param(lighter @bold([out]) If true, text font weight is lighter than current value)
+             @param(fontStyle @bold[out]) Font style)
+             @param(fontStyleAngle @bold[out]) Font style angle, in case font style is set to TWSVGText.IE_FS_Oblique)
              @param(anchor @bold([out]) Text anchor)
              @param(pAnimationData Animation data)
              @param(pCustomData Custom data)
@@ -1823,8 +1825,9 @@ type
             }
             function GetTextProps(const pText: TWSVGText; out x: Single; out y: Single;
                     out fontFamily: UnicodeString; out fontSize: Single; out fontWeight: Cardinal;
-                    out bolder: Boolean; out Lighter: Boolean; out anchor: IETextAnchor;
-                    pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+                    out bolder: Boolean; out lighter: Boolean; out fontStyle: TWSVGText.IEFontStyle;
+                    out fontStyleAngle: Single; out anchor: IETextAnchor; pAnimationData: IAnimationData;
+                    pCustomData: Pointer): Boolean;
 
             {**
              Get element properties
@@ -5201,13 +5204,15 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGRasterizer.GetTextProps(const pText: TWSVGText; out x: Single; out y: Single;
         out fontFamily: UnicodeString; out fontSize: Single; out fontWeight: Cardinal;
-        out bolder: Boolean; out Lighter: Boolean; out anchor: IETextAnchor;
-        pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
+        out bolder: Boolean; out lighter: Boolean; out fontStyle: TWSVGText.IEFontStyle;
+        out fontStyleAngle: Single; out anchor: IETextAnchor; pAnimationData: IAnimationData;
+        pCustomData: Pointer): Boolean;
 var
     pProperty:         TWSVGProperty;
     pX, pY, pFontSize: TWSVGMeasure<Single>;
     pFontFamily:       TWSVGPropText;
     pFontWeight:       TWSVGText.IFontWeight;
+    pFontStyle:        TWSVGText.IFontStyle;
     pAnchor:           TWSVGText.IAnchor;
     pAnimation:        TWSVGAnimation;
     pValueAnimDesc:    IWSmartPointer<TWSVGValueAnimDesc>;
@@ -5219,11 +5224,16 @@ begin
         Exit(False);
 
     // set default values (in case no matching value is found in text)
-    x          := 0.0;
-    y          := 0.0;
-    fontFamily := 'Arial';
-    fontSize   := 0.0;
-    anchor     := IE_TA_Start;
+    x              := 0.0;
+    y              := 0.0;
+    fontFamily     := 'Arial';
+    fontSize       := 0.0;
+    fontWeight     := 400;
+    bolder         := False;
+    lighter        := False;
+    fontStyle      := TWSVGText.IEFontStyle.IE_FS_Normal;
+    fontStyleAngle := 0.244; // 14°
+    anchor         := IE_TA_Start;
 
     propCount := pText.Count;
 
@@ -5301,6 +5311,20 @@ begin
             fontWeight := pFontWeight.Value;
             bolder     := pFontWeight.Bolder;
             lighter    := pFontWeight.Lighter;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Font_Style) and (pProperty is TWSVGText.IFontStyle)) then
+        begin
+            // get font style
+            pFontStyle := pProperty as TWSVGText.IFontStyle;
+
+            // found it?
+            if (not Assigned(pFontStyle)) then
+                continue;
+
+            // set font weight properties
+            fontStyle      := pFontStyle.Style;
+            fontStyleAngle := pFontStyle.Angle;
         end
         else
         if ((pProperty.ItemName = C_SVG_Prop_Text_Anchor) and (pProperty is TWSVGText.IAnchor)) then

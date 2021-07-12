@@ -185,6 +185,38 @@ type
             class function RadToDeg(const angle: Double): Double; inline; static;
 
             {**
+             Convert gradians to radians
+             @param(angle Angle in gradians)
+             @returns(Angle in radians)
+             @br @bold(NOTE) A gradian represents one hundredth of the right angle. One full circle equals 400grad
+            }
+            class function GradToRad(const angle: Double): Double; inline; static;
+
+            {**
+             Convert radians to gradians
+             @param(angle Angle in radians)
+             @returns(Angle in gradians)
+             @br @bold(NOTE) A gradian represents one hundredth of the right angle. One full circle equals 400grad
+            }
+            class function RadToGrad(const angle: Double): Double; inline; static;
+
+            {**
+             Convert turns to radians
+             @param(angle Angle in turns)
+             @returns(Angle in radians)
+             @br @bold(NOTE) A turn represents an angle in a number of turns. One full circle is 1 turn
+            }
+            class function TurnToRad(const angle: Double): Double; inline; static;
+
+            {**
+             Convert radians to turns
+             @param(angle Angle in radians)
+             @returns(Angle in turns)
+             @br @bold(NOTE) A turn represents an angle in a number of turns. One full circle is 1 turn
+            }
+            class function RadToTurn(const angle: Double): Double; inline; static;
+
+            {**
              Calculate intersection point between 2 lines
              @param(p1 Line 1 start position)
              @param(p2 Line 1 end position)
@@ -407,6 +439,26 @@ end;
 class function TWGeometryTools.RadToDeg(const angle: Double): Double;
 begin
     Result := ((angle * 180.0) / PI);
+end;
+//---------------------------------------------------------------------------
+class function TWGeometryTools.GradToRad(const angle: Double): Double;
+begin
+    Result := ((angle * PI) / 200.0);
+end;
+//---------------------------------------------------------------------------
+class function TWGeometryTools.RadToGrad(const angle: Double): Double;
+begin
+    Result := ((angle * 200.0) / PI);
+end;
+//---------------------------------------------------------------------------
+class function TWGeometryTools.TurnToRad(const angle: Double): Double;
+begin
+    Result := (angle * PI * 2.0);
+end;
+//---------------------------------------------------------------------------
+class function TWGeometryTools.RadToTurn(const angle: Double): Double;
+begin
+    Result := (angle / (PI * 2.0));
 end;
 //---------------------------------------------------------------------------
 class function TWGeometryTools.GetLineIntersectPoint(const p1, p2, p3, p4: TWVector2;

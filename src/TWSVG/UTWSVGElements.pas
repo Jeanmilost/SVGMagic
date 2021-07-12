@@ -15,7 +15,9 @@ uses System.SysUtils,
      {$else}
          Xml.XMLIntf,
      {$endif}
+     UTWMajorSettings,
      UTWGenericNumber,
+     UTWGeometryTools,
      UTWHelpers,
      UTWGraphicPath,
      UTWSVGTags,
@@ -1052,6 +1054,110 @@ type
                      Get or set if the text weight should be lighter than the current value
                     }
                     property Lighter: Boolean read m_Lighter write m_Lighter;
+            end;
+
+            {**
+             Text font style enumeration
+             @value(IE_FS_Normal Normal font style)
+             @value(IE_FS_Italic Italic font style)
+             @value(IE_FS_Oblique Oblique font style, same as italic but with an optional angle value)
+            }
+            IEFontStyle =
+            (
+                IE_FS_Normal,
+                IE_FS_Italic,
+                IE_FS_Oblique
+            );
+
+            {**
+             Text font style property
+            }
+            IFontStyle = class(TWSVGProperty)
+                private
+                    m_Style: IEFontStyle;
+                    m_Angle: Single;
+
+                protected
+                    {**
+                     Set angle
+                     @param(value Angle in radians between -(PI / 2) and (PI / 2))
+                    }
+                    procedure SetAngle(value: Single); virtual;
+
+                public
+                    {**
+                     Constructor
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @param(pOptions SVG options)
+                    }
+                    constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: TWSVGItem); override;
+
+                    {**
+                     Clear
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Create new property instance
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @returns(Property instance)
+                    }
+                    function CreateInstance(pParent: TWSVGItem): TWSVGProperty; override;
+
+                    {**
+                     Parse data
+                     @param(data Data to parse)
+                     @returns(@true on success, otherwise @false)
+                    }
+                    function Parse(const data: UnicodeString): Boolean; override;
+
+                    {**
+                     Log content
+                     @param(margin Margin length in chars)
+                    }
+                    procedure Log(margin: Cardinal); override;
+
+                    {**
+                     Print content to string
+                     @param(margin Margin length in chars)
+                     @returns(Content)
+                    }
+                    function Print(margin: Cardinal): UnicodeString; override;
+
+                    {**
+                     Get xml formatted string
+                     @returns(String)
+                    }
+                    function ToXml: UnicodeString; override;
+
+                    {**
+                     Convert style to string
+                     @param(style Style to convert)
+                     @returns(Style as string)
+                    }
+                    class function ToStr(style: IEFontStyle): UnicodeString; static;
+
+                public
+                    {**
+                     Get or set the font style
+                    }
+                    property Style: IEFontStyle read m_Style write m_Style;
+
+                    {**
+                     Get or set the angle in radians, if font style is oblique, between -(PI / 2) and (PI / 2)
+                    }
+                    property Angle: Single read m_Angle write SetAngle;
             end;
 
         private
@@ -3454,6 +3560,231 @@ begin
         Result := ItemName + '=\"' + IntToStr(m_Value) + '\"';
 end;
 //---------------------------------------------------------------------------
+// TWSVGText.IFontStyle
+//---------------------------------------------------------------------------
+constructor TWSVGText.IFontStyle.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    ItemName := C_SVG_Prop_Font_Style;
+    m_Style  := IE_FS_Normal;
+    m_Angle  := 0.244; // 14°
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGText.IFontStyle.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IFontStyle.SetAngle(value: Single);
+var
+    halfPi: Single;
+begin
+    halfPi := PI / 2.0;
+
+    // is angle too high?
+    if (value > halfPi) then
+    begin
+        m_Angle := halfPi;
+        Exit();
+    end;
+
+    // is angle too low?
+    if (value < -halfPi) then
+    begin
+        m_Angle := -halfPi;
+        Exit();
+    end;
+
+    m_Angle := value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IFontStyle.Assign(const pOther: TWSVGItem);
+var
+    pSource: IFontStyle;
+begin
+    inherited Assign(pOther);
+
+    // invalid item?
+    if (not(pOther is IFontStyle)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    // get source object
+    pSource := pOther as IFontStyle;
+
+    // copy data from source
+    m_Style := pSource.m_Style;
+    m_Angle := pSource.m_Angle;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IFontStyle.Clear;
+begin
+    inherited Clear;
+
+    m_Style := IE_FS_Normal;
+    m_Angle := 0.244; // 14°
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IFontStyle.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
+begin
+    Result := IFontStyle.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IFontStyle.Parse(const data: UnicodeString): Boolean;
+var
+    style, value, valUnit: UnicodeString;
+    c:                     WideChar;
+    angle:                 Single;
+    readValue, readUnit:   Boolean;
+begin
+    if (data = C_SVG_Value_Text_Font_Style_Normal) then
+        m_Style := IE_FS_Normal
+    else
+    if (data = C_SVG_Value_Text_Font_Style_Italic) then
+        m_Style := IE_FS_Italic
+    else
+    if (data = C_SVG_Value_Text_Font_Style_Oblique) then
+        m_Style := IE_FS_Oblique
+    else
+    begin
+        readValue := False;
+        readUnit  := False;
+
+        // iterate through the data chars
+        for c in data do
+        begin
+            // dispatch current char
+            case c of
+                ' ':
+                begin
+                    // style still not read (meaning that there is something to trim)?
+                    if (TWStringHelper.IsEmpty(style)) then
+                        continue;
+
+                    // from now the style value will be read
+                    readValue := True;
+                end;
+            else
+                // read the style or it's optional value
+                if (readValue) then
+                begin
+                    // is reading the number unit?
+                    if ((not readUnit) and (not TWStringHelper.IsNumeric(c, False))) then
+                        readUnit := True;
+
+                    // read the value and it's unit
+                    if (readUnit) then
+                        valUnit := valUnit + c
+                    else
+                        value := value + c;
+                end
+                else
+                    // read the style name
+                    style := style + c;
+            end;
+        end;
+
+        // check again the style (after trimming)
+        if (style = C_SVG_Value_Text_Font_Style_Normal) then
+            m_Style := IE_FS_Normal
+        else
+        if (style = C_SVG_Value_Text_Font_Style_Italic) then
+            m_Style := IE_FS_Italic
+        else
+        if (style = C_SVG_Value_Text_Font_Style_Oblique) then
+        begin
+            m_Style := IE_FS_Oblique;
+
+            if (not TWStringHelper.IsEmpty(value)) then
+            begin
+                // read angle
+                angle := StrToFloat(value, g_InternationalFormatSettings);
+
+                // convert angle to radians
+                if (not TWStringHelper.IsEmpty(valUnit)) then
+                begin
+                    if (valUnit = C_SVG_Value_Deg) then
+                        m_Angle := TWGeometryTools.DegToRad(angle)
+                    else
+                    if (valUnit = C_SVG_Value_Rad) then
+                        m_Angle := angle
+                    else
+                    if (valUnit = C_SVG_Value_Grad) then
+                        m_Angle := TWGeometryTools.GradToRad(angle)
+                    else
+                    if (valUnit = C_SVG_Value_Turn) then
+                        m_Angle := TWGeometryTools.TurnToRad(angle)
+                    else
+                    begin
+                        m_Angle := angle;
+                        TWLogHelper.LogToCompiler('Parse font style - invalid unit - assume value as in radians - '
+                                + valUnit);
+                    end;
+                end
+                else
+                    // by default assume the value as in degrees
+                    m_Angle := TWGeometryTools.DegToRad(angle);
+            end;
+        end
+        else
+        begin
+            m_Style := IE_FS_Normal;
+            m_Angle := 0.244; // 14°
+            TWLogHelper.LogToCompiler('Parse font style - invalid value - ' + data);
+        end;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IFontStyle.Log(margin: Cardinal);
+begin
+    if (m_Style = IE_FS_Oblique) then
+        TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - '
+                + ToStr(m_Style) + ' - angle - ' + FloatToStr(m_Angle, g_InternationalFormatSettings)
+                + C_SVG_Value_Rad)
+    else
+        TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + ToStr(m_Style));
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IFontStyle.Print(margin: Cardinal): UnicodeString;
+begin
+    if (m_Style = IE_FS_Oblique) then
+        Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + ToStr(m_Style)
+                + ' - angle - ' + FloatToStr(m_Angle, g_InternationalFormatSettings)
+                + C_SVG_Value_Rad + #13 + #10
+    else
+        Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + ToStr(m_Style) + #13 + #10;
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IFontStyle.ToXml: UnicodeString;
+begin
+    if (m_Style = IE_FS_Oblique) then
+    begin
+        if (m_Angle = 0.244) then
+            Result := ItemName + '=\"' + ToStr(m_Style) + '\"'
+        else
+            Result := ItemName + '=\"' + ToStr(m_Style) + ' '
+                    + FloatToStr(m_Angle, g_InternationalFormatSettings) + C_SVG_Value_Rad + '\"'
+    end
+    else
+        Result := ItemName + '=\"' + ToStr(m_Style) + '\"';
+end;
+//---------------------------------------------------------------------------
+class function TWSVGText.IFontStyle.ToStr(style: IEFontStyle): UnicodeString;
+begin
+    case (style) of
+        IE_FS_Normal:  Exit(C_SVG_Value_Text_Font_Style_Normal);
+        IE_FS_Italic:  Exit(C_SVG_Value_Text_Font_Style_Italic);
+        IE_FS_Oblique: Exit(C_SVG_Value_Text_Font_Style_Oblique);
+    else
+        raise Exception.CreateFmt('Unknown font style - %d', [Integer(style)]);
+    end;
+end;
+//---------------------------------------------------------------------------
 // TWSVGText
 //---------------------------------------------------------------------------
 constructor TWSVGText.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
@@ -3509,6 +3840,7 @@ var
     pFontSize:   TWSVGMeasure<Single>;
     pFontFamily: TWSVGPropText;
     pFontWeight: IFontWeight;
+    pFontStyle:  IFontStyle;
     pAnchor:     IAnchor;
     fontSize:    TWGenericNumber<Single>;
 begin
@@ -3572,6 +3904,24 @@ begin
         pFontWeight := nil;
     finally
         pFontWeight.Free;
+    end;
+
+    pFontStyle := nil;
+
+    try
+        // read the font style (optional)
+        pFontStyle := IFontStyle.Create(Self, m_pOptions);
+
+        if (not pFontStyle.Read(C_SVG_Prop_Font_Style, pNode)) then
+        begin
+            pFontStyle.ItemName := C_SVG_Prop_Font_Style;
+            pFontStyle.Style    := IE_FS_Normal;
+        end;
+
+        m_pProperties.Add(pFontStyle);
+        pFontStyle := nil;
+    finally
+        pFontStyle.Free;
     end;
 
     pAnchor := nil;

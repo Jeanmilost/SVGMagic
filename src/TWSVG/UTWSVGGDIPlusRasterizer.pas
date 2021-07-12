@@ -518,12 +518,14 @@ var
     dashPatternCount, i:                                                                              NativeInt;
     count:                                                                                            NativeUInt;
     x, y, initialX, initialY, x1, y1, x2, y2, r, rx, ry, d, dx, dy, width, height, dashFactor, coord: Single;
-    fontSize:                                                                                         Single;
+    fontSize, fontStyleAngle:                                                                         Single;
     fontWeight:                                                                                       Cardinal;
     fontFamily, fontFamilyLowerCase:                                                                  UnicodeString;
     anchor:                                                                                           IETextAnchor;
     imageType:                                                                                        IEImageType;
     pImageOptions:                                                                                    TWRenderer.IImageOptions;
+    fontStyle:                                                                                        TWSVGText.IEFontStyle;
+    gdiFontStyle:                                                                                     TFontStyles;
     isXCoord, isClipped, isAspectRatioClipped, bolder, lighter:                                       Boolean;
 begin
     // svg header should always be declared, otherwise svg data is malformed (NOTE svg header
@@ -2356,15 +2358,29 @@ begin
 
                 // extract properties from text
                 if (not GetTextProps(pText, x, y, fontFamily, fontSize, fontWeight, bolder, lighter,
-                        anchor, pAnimationData, animation.m_pCustomData))
+                        fontStyle, fontStyleAngle, anchor, pAnimationData, animation.m_pCustomData))
                 then
                     Exit(False);
+
+                gdiFontStyle := [];
+
+                // apply the font style svg property
+                case fontStyle of
+                    IE_FS_Italic:  gdiFontStyle := gdiFontStyle + [fsItalic];
+                    IE_FS_Oblique: gdiFontStyle := gdiFontStyle + [fsItalic];
+                end;
+
+                // apply the font weight (NOTE the font weight isn't well supported in GDI/GDI+,
+                // instead the text becomes bold if weight is equal or higher to 600, and nothing else)
+                if (fontWeight >= 600) then
+                    gdiFontStyle := gdiFontStyle + [fsBold];
 
                 // configure the font to use. NOTE be careful, the SVG font size matches with the
                 // GDI font HEIGHT property, and not with the font SIZE
                 pTextFont        :=  TWSmartPointer<TFont>.Create();
                 pTextFont.Name   :=  fontFamily;
                 pTextFont.Height := -Round(fontSize);
+                pTextFont.Style  :=  gdiFontStyle;
                 pFont            :=  TWSmartPointer<TGpFont>.Create(TGpFont.Create(pCanvas.Handle,
                         pTextFont.Handle));
 
