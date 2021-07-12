@@ -760,7 +760,7 @@ begin
         end;
 
         // found exponent?
-        if (c = 'e') then
+        if ((c = 'e') or (c = 'E')) then
         begin
             exponential := True;
             value       := value + 'e';

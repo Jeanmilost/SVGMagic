@@ -1299,10 +1299,10 @@ function TWRenderer.GetSymmetricRadius(const pRadius: IRadius; index: Cardinal):
 begin
     // search for index matching value
     case (index and 3) of
-        0:  Result := GetRadiusX(pRadius.m_RightTop);
-        1:  Result := GetRadiusX(pRadius.m_RightBottom);
-        2:  Result := GetRadiusX(pRadius.m_LeftBottom);
-        3:  Result := GetRadiusX(pRadius.m_LeftTop);
+        0: Result := GetRadiusX(pRadius.m_RightTop);
+        1: Result := GetRadiusX(pRadius.m_RightBottom);
+        2: Result := GetRadiusX(pRadius.m_LeftBottom);
+        3: Result := GetRadiusX(pRadius.m_LeftTop);
     else
         raise Exception.CreateFmt('Unknown index - %d', [index]);
     end;

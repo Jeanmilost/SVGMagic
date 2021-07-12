@@ -3975,7 +3975,7 @@ begin
     for i := 1 to dataLength do
         // found new instruction?
         if ((i > 1) and (((data[i] >= 'a') and (data[i] <= 'z')) or ((data[i] >= 'A') and (data[i] <= 'Z')))
-                and (data[i] <> 'e'))
+                and (data[i] <> 'e') and (data[i] <> 'E'))
         then
         begin
             // read instruction and add it to list. NOTE the AddCmd function offsets are 0 based
