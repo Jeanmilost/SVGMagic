@@ -96,6 +96,19 @@ type
             );
 
             {**
+             Text decoration
+             @value(IE_TD_Normal Text without decoration)
+             @value(IE_TD_Underline Underlined text)
+             @value(IE_TD_LineThrough Line through text)
+            }
+            IETextDecoration =
+            (
+                IE_TD_Normal,
+                IE_TD_Underline,
+                IE_TD_LineThrough
+            );
+
+            {**
              Animation parameters structure. Custom data will be transmitted in OnAnimate callback
             }
             IAnimation = record
@@ -1819,6 +1832,7 @@ type
              @param(fontStyle @bold[out]) Font style)
              @param(fontStyleAngle @bold[out]) Font style angle, in case font style is set to TWSVGText.IE_FS_Oblique)
              @param(anchor @bold([out]) Text anchor)
+             @param(decoration @bold([out]) Text decoration)
              @param(pAnimationData Animation data)
              @param(pCustomData Custom data)
              @returns(@true on success, otherwise @false)
@@ -1826,8 +1840,8 @@ type
             function GetTextProps(const pText: TWSVGText; out x: Single; out y: Single;
                     out fontFamily: UnicodeString; out fontSize: Single; out fontWeight: Cardinal;
                     out bolder: Boolean; out lighter: Boolean; out fontStyle: TWSVGText.IEFontStyle;
-                    out fontStyleAngle: Single; out anchor: IETextAnchor; pAnimationData: IAnimationData;
-                    pCustomData: Pointer): Boolean;
+                    out fontStyleAngle: Single; out anchor: IETextAnchor; out decoration: IETextDecoration;
+                    pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
 
             {**
              Get element properties
@@ -5205,8 +5219,8 @@ end;
 function TWSVGRasterizer.GetTextProps(const pText: TWSVGText; out x: Single; out y: Single;
         out fontFamily: UnicodeString; out fontSize: Single; out fontWeight: Cardinal;
         out bolder: Boolean; out lighter: Boolean; out fontStyle: TWSVGText.IEFontStyle;
-        out fontStyleAngle: Single; out anchor: IETextAnchor; pAnimationData: IAnimationData;
-        pCustomData: Pointer): Boolean;
+        out fontStyleAngle: Single; out anchor: IETextAnchor; out decoration: IETextDecoration;
+        pAnimationData: IAnimationData; pCustomData: Pointer): Boolean;
 var
     pProperty:         TWSVGProperty;
     pX, pY, pFontSize: TWSVGMeasure<Single>;
@@ -5214,6 +5228,7 @@ var
     pFontWeight:       TWSVGText.IFontWeight;
     pFontStyle:        TWSVGText.IFontStyle;
     pAnchor:           TWSVGText.IAnchor;
+    pDecoration:       TWSVGText.iDecoration;
     pAnimation:        TWSVGAnimation;
     pValueAnimDesc:    IWSmartPointer<TWSVGValueAnimDesc>;
     attribName:        UnicodeString;
@@ -5234,6 +5249,7 @@ begin
     fontStyle      := TWSVGText.IEFontStyle.IE_FS_Normal;
     fontStyleAngle := 0.244; // 14°
     anchor         := IE_TA_Start;
+    decoration     := IE_TD_Normal;
 
     propCount := pText.Count;
 
@@ -5343,6 +5359,25 @@ begin
                 TWSVGText.IEAnchor.IE_TA_End:    anchor := IE_TA_End;
             else
                 raise Exception.CreateFmt('Unknown text anchor value - %d', [Integer(pAnchor.Anchor)]);
+            end;
+        end
+        else
+        if ((pProperty.ItemName = C_SVG_Prop_Text_Decoration) and (pProperty is TWSVGText.IDecoration)) then
+        begin
+            // get text decoration
+            pDecoration := pProperty as TWSVGText.IDecoration;
+
+            // found it?
+            if (not Assigned(pDecoration)) then
+                continue;
+
+            // set text decoration
+            case (pDecoration.Value) of
+                TWSVGText.IEDecoration.IE_D_Normal:      decoration := IE_TD_Normal;
+                TWSVGText.IEDecoration.IE_D_Underline:   decoration := IE_TD_Underline;
+                TWSVGText.IEDecoration.IE_D_LineThrough: decoration := IE_TD_LineThrough;
+            else
+                raise Exception.CreateFmt('Unknown text decoration value - %d', [Integer(pDecoration.Value)]);
             end;
         end;
     end;

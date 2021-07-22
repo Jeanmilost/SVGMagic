@@ -522,6 +522,7 @@ var
     fontWeight:                                                                                       Cardinal;
     fontFamily, fontFamilyLowerCase:                                                                  UnicodeString;
     anchor:                                                                                           IETextAnchor;
+    decoration:                                                                                       IETextDecoration;
     imageType:                                                                                        IEImageType;
     pImageOptions:                                                                                    TWRenderer.IImageOptions;
     fontStyle:                                                                                        TWSVGText.IEFontStyle;
@@ -2358,7 +2359,7 @@ begin
 
                 // extract properties from text
                 if (not GetTextProps(pText, x, y, fontFamily, fontSize, fontWeight, bolder, lighter,
-                        fontStyle, fontStyleAngle, anchor, pAnimationData, animation.m_pCustomData))
+                        fontStyle, fontStyleAngle, anchor, decoration, pAnimationData, animation.m_pCustomData))
                 then
                     Exit(False);
 
@@ -2368,6 +2369,12 @@ begin
                 case fontStyle of
                     IE_FS_Italic:  gdiFontStyle := gdiFontStyle + [fsItalic];
                     IE_FS_Oblique: gdiFontStyle := gdiFontStyle + [fsItalic];
+                end;
+
+                // apply the text decoration svg property
+                case decoration of
+                    IE_TD_Underline:   gdiFontStyle := gdiFontStyle + [fsUnderline];
+                    IE_TD_LineThrough: gdiFontStyle := gdiFontStyle + [fsStrikeOut];
                 end;
 
                 // apply the font weight (NOTE the font weight isn't well supported in GDI/GDI+,

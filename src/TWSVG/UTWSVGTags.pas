@@ -152,6 +152,9 @@ const
     C_SVG_Value_Text_Font_Style_Normal:                UnicodeString = 'normal';
     C_SVG_Value_Text_Font_Style_Italic:                UnicodeString = 'italic';
     C_SVG_Value_Text_Font_Style_Oblique:               UnicodeString = 'oblique';
+    C_SVG_Value_Text_Decoration_Normal:                UnicodeString = 'normal';
+    C_SVG_Value_Text_Decoration_Underline:             UnicodeString = 'underline';
+    C_SVG_Value_Text_Decoration_Line_Through:          UnicodeString = 'line-through';
     C_SVG_Link_URL:                                    UnicodeString = 'url';
     C_SVG_Path_MoveTo_Absolute                                       = 'M';
     C_SVG_Path_MoveTo_Relative                                       = 'm';

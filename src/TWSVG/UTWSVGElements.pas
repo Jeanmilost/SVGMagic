@@ -967,6 +967,97 @@ type
             end;
 
             {**
+             Text decoration enumeration
+             @value(IE_D_Normal Text without decoration)
+             @value(IE_D_Underline Underlined text)
+             @value(IE_D_LineThrough Line through text)
+            }
+            IEDecoration =
+            (
+                IE_D_Normal,
+                IE_D_Underline,
+                IE_D_LineThrough
+            );
+
+            {**
+             Text decoration property
+            }
+            IDecoration = class(TWSVGProperty)
+                private
+                    m_Value: IEDecoration;
+
+                public
+                    {**
+                     Constructor
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @param(pOptions SVG options)
+                    }
+                    constructor Create(pParent: TWSVGItem; pOptions: PWSVGOptions); override;
+
+                    {**
+                     Destructor
+                    }
+                    destructor Destroy; override;
+
+                    {**
+                     Assign (i.e. copy) content from another item
+                     @param(pOther Other item to copy from)
+                    }
+                    procedure Assign(const pOther: TWSVGItem); override;
+
+                    {**
+                     Clear
+                    }
+                    procedure Clear; override;
+
+                    {**
+                     Create new property instance
+                     @param(pParent Parent item, orphan or root if @nil)
+                     @returns(Property instance)
+                    }
+                    function CreateInstance(pParent: TWSVGItem): TWSVGProperty; override;
+
+                    {**
+                     Parse data
+                     @param(data Data to parse)
+                     @returns(@true on success, otherwise @false)
+                    }
+                    function Parse(const data: UnicodeString): Boolean; override;
+
+                    {**
+                     Log content
+                     @param(margin Margin length in chars)
+                    }
+                    procedure Log(margin: Cardinal); override;
+
+                    {**
+                     Print content to string
+                     @param(margin Margin length in chars)
+                     @returns(Content)
+                    }
+                    function Print(margin: Cardinal): UnicodeString; override;
+
+                    {**
+                     Get xml formatted string
+                     @returns(String)
+                    }
+                    function ToXml: UnicodeString; override;
+
+                    {**
+                     Convert decoration to string
+                     @param(value Decoration to convert)
+                     @returns(Decoration as string)
+                    }
+                    class function ToStr(value: IEDecoration): UnicodeString; static;
+
+                public
+                    {**
+                     Get or set the text decoration
+                    }
+                    property Value: IEDecoration read m_Value write m_Value;
+            end;
+
+            {**
              Text font weight property
             }
             IFontWeight = class(TWSVGProperty)
@@ -3428,6 +3519,98 @@ begin
     end;
 end;
 //---------------------------------------------------------------------------
+// TWSVGText.IDecoration
+//---------------------------------------------------------------------------
+constructor TWSVGText.IDecoration.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
+begin
+    inherited Create(pParent, pOptions);
+
+    ItemName  := C_SVG_Prop_Text_Decoration;
+    m_Value   := IE_D_Normal;
+end;
+//---------------------------------------------------------------------------
+destructor TWSVGText.IDecoration.Destroy;
+begin
+    inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IDecoration.Assign(const pOther: TWSVGItem);
+var
+    pSource: IDecoration;
+begin
+    inherited Assign(pOther);
+
+    // invalid item?
+    if (not(pOther is IDecoration)) then
+    begin
+        Clear;
+        Exit;
+    end;
+
+    // get source object
+    pSource := pOther as IDecoration;
+
+    // copy data from source
+    m_Value := pSource.m_Value;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IDecoration.Clear;
+begin
+    inherited Clear;
+
+    m_Value := IE_D_Normal;
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IDecoration.CreateInstance(pParent: TWSVGItem): TWSVGProperty;
+begin
+    Result := IDecoration.Create(pParent, m_pOptions);
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IDecoration.Parse(const data: UnicodeString): Boolean;
+begin
+    if (data = C_SVG_Value_Text_Decoration_Normal) then
+        m_Value := IE_D_Normal
+    else
+    if (data = C_SVG_Value_Text_Decoration_Underline) then
+        m_Value := IE_D_Underline
+    else
+    if (data = C_SVG_Value_Text_Decoration_Line_Through) then
+        m_Value := IE_D_LineThrough
+    else
+    begin
+        TWLogHelper.LogToCompiler('Parse text decoration - unknown value - ' + data);
+        m_Value := IE_D_Normal;
+    end;
+
+    Result := True;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGText.IDecoration.Log(margin: Cardinal);
+begin
+    TWLogHelper.LogToCompiler(TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + ToStr(m_Value));
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IDecoration.Print(margin: Cardinal): UnicodeString;
+begin
+    Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + ToStr(m_Value) + #13 + #10;
+end;
+//---------------------------------------------------------------------------
+function TWSVGText.IDecoration.ToXml: UnicodeString;
+begin
+    Result := ItemName + '=\"' + ToStr(m_Value) + '\"';
+end;
+//---------------------------------------------------------------------------
+class function TWSVGText.IDecoration.ToStr(value: IEDecoration): UnicodeString;
+begin
+    case (value) of
+        IE_D_Normal:      Exit(C_SVG_Value_Text_Decoration_Normal);
+        IE_D_Underline:   Exit(C_SVG_Value_Text_Decoration_Underline);
+        IE_D_LineThrough: Exit(C_SVG_Value_Text_Decoration_Line_Through);
+    else
+        raise Exception.CreateFmt('Unknown text decoration value - %d', [Integer(value)]);
+    end;
+end;
+//---------------------------------------------------------------------------
 // TWSVGText.IFontWeight
 //---------------------------------------------------------------------------
 constructor TWSVGText.IFontWeight.Create(pParent: TWSVGItem; pOptions: PWSVGOptions);
@@ -3842,6 +4025,7 @@ var
     pFontWeight: IFontWeight;
     pFontStyle:  IFontStyle;
     pAnchor:     IAnchor;
+    pDecoration: IDecoration;
     fontSize:    TWGenericNumber<Single>;
 begin
     // no xml node?
@@ -3940,6 +4124,24 @@ begin
         pAnchor := nil;
     finally
         pAnchor.Free;
+    end;
+
+    pDecoration := nil;
+
+    try
+        // read the text decoration (optional)
+        pDecoration := IDecoration.Create(Self, m_pOptions);
+
+        if (not pDecoration.Read(C_SVG_Prop_Text_Decoration, pNode)) then
+        begin
+            pDecoration.ItemName := C_SVG_Prop_Text_Decoration;
+            pDecoration.Value    := IE_D_Normal;
+        end;
+
+        m_pProperties.Add(pDecoration);
+        pDecoration := nil;
+    finally
+        pDecoration.Free;
     end;
 
     // get text
