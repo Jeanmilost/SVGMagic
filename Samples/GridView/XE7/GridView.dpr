@@ -2,7 +2,7 @@ program GridView;
 
 uses
   Vcl.Forms,
-  Main in 'Main.pas' {MainForm};
+  Main in '..\Main.pas' {MainForm};
 
 {$R *.res}
 
