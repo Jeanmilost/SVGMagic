@@ -248,7 +248,7 @@ object WSVGImageListEditorDlg: TWSVGImageListEditorDlg
   object odOpenDlg: TOpenDialog
     DefaultExt = 'svg'
     Filter = 'Scalable Vector Graphic|*.svg'
-    Options = [ofPathMustExist, ofFileMustExist, ofEnableSizing]
+    Options = [ofAllowMultiSelect, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     Title = 'Open SVG file'
     Left = 128
     Top = 8

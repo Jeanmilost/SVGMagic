@@ -353,12 +353,23 @@ begin
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageListEditorDlg.btAddClick(pSender: TObject);
+var
+    fileName: UnicodeString;
 begin
     // open dialog box and check user result
     if (not odOpenDlg.Execute) then
         Exit;
 
-    AddImage(odOpenDlg.FileName);
+    // only one file selected?
+    if (odOpenDlg.Files.Count > 1) then
+    begin
+        // import images
+        for fileName in odOpenDlg.Files do
+            AddImage(fileName);
+    end
+    else
+        // import image
+        AddImage(odOpenDlg.FileName);
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageListEditorDlg.btEditClick(pSender: TObject);
