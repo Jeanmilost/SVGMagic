@@ -13,8 +13,13 @@ uses
     Winapi.Windows,
     Winapi.Messages,
     VirtualTrees,
-    VirtualTrees.Types,
-    VirtualTrees.DrawTree,
+    {$IF CompilerVersion >= 24}
+        VirtualTrees.Types,
+        {$if CompilerVersion <= 32}
+            // this header is added automatically since 10.3 Rio
+            VirtualTrees.DrawTree,
+        {$IFEND}
+    {$IFEND}
     Vcl.ImgList,
     UTWSVGGraphic,
     UTWSVGImageList;
