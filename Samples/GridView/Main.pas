@@ -13,6 +13,8 @@ uses
     Winapi.Windows,
     Winapi.Messages,
     VirtualTrees,
+    VirtualTrees.Types,
+    VirtualTrees.DrawTree,
     Vcl.ImgList,
     UTWSVGGraphic,
     UTWSVGImageList;
