@@ -12,6 +12,7 @@ uses DesignIntf,
      System.SysUtils,
      System.Variants,
      System.Classes,
+     System.Win.Registry,
      Vcl.Graphics,
      Vcl.Controls,
      Vcl.Forms,
@@ -54,6 +55,8 @@ type
             tbOpacity: TTrackBar;
             laOpacityTitle: TLabel;
 
+            procedure FormCreate(pSender: TObject);
+            procedure FormClose(pSender: TObject; var action: TCloseAction);
             procedure FormShow(pSender: TObject);
             procedure dgImageGridMouseDown(pSender: TObject; button: TMouseButton; shift: TShiftState;
                     x, y: Integer);
@@ -77,21 +80,32 @@ type
         private
             m_pImageList:              TWSVGImageList;
             m_pDesigner:               IDesigner;
+            m_RegKey:                  UnicodeString;
             m_Modified:                Boolean;
             m_ImageGridWndProc_Backup: TWndMethod;
 
         protected
             {**
-             Set image list
-             @param(pImageList Image list)
+             Read the form position from registry
             }
-            procedure SetImageList(pImageList: TWSVGImageList); virtual;
+            procedure ReadPosFromRegistry; virtual;
+
+            {**
+             Write the form position to registry
+            }
+            procedure WritePosToRegistry; virtual;
 
             {**
              Configure the image list grid in relation to the number of cells to show inside the client rect
              @param(cellCount Cell count to show in the grid)
             }
             procedure ConfigGrid(cellCount: Integer); virtual;
+
+            {**
+             Set image list
+             @param(pImageList Image list)
+            }
+            procedure SetImageList(pImageList: TWSVGImageList); virtual;
 
             {**
              Rebuild the view image list
@@ -185,6 +199,7 @@ begin
 
     m_pImageList := TWSVGImageList.Create(Self);
     m_pDesigner  := pDesigner;
+    m_RegKey     := '\Software\SVGMagic\ImgListEditor';
     m_Modified   := False;
 
     // hook the image grid windows procedure
@@ -203,6 +218,16 @@ begin
     FreeAndNil(m_pImageList);
 
     inherited Destroy;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGImageListEditorDlg.FormCreate(pSender: TObject);
+begin
+    ReadPosFromRegistry;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGImageListEditorDlg.FormClose(pSender: TObject; var action: TCloseAction);
+begin
+    WritePosToRegistry;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageListEditorDlg.FormShow(pSender: TObject);
@@ -651,6 +676,127 @@ begin
     m_pImageList.SetSVGColorKey(index, color);
 
     Touch;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGImageListEditorDlg.ReadPosFromRegistry;
+var
+    pRegistry:   TRegistry;
+    desktopRect: TRect;
+begin
+    // open registry instance
+    pRegistry := TRegistry.Create;
+
+    // succeeded?
+    if (not Assigned(pRegistry)) then
+    begin
+        Position := poDefaultPosOnly;
+        Exit;
+    end;
+
+    try
+        // set current user as root key
+        pRegistry.RootKey := HKEY_CURRENT_USER;
+
+        // open registry key
+        if (pRegistry.OpenKey(m_RegKey, True)) then
+        begin
+            // read the left value, if exists
+            if (pRegistry.ValueExists('left')) then
+                Left := pRegistry.ReadInteger('left')
+            else
+            begin
+                Position := poDefaultPosOnly;
+                Exit;
+            end;
+
+            // read the top value, if exists
+            if (pRegistry.ValueExists('top')) then
+                Top := pRegistry.ReadInteger('top')
+            else
+            begin
+                Position := poDefaultPosOnly;
+                Exit;
+            end;
+
+            // read the width, if exists
+            if (pRegistry.ValueExists('width')) then
+                Width := pRegistry.ReadInteger('width')
+            else
+            begin
+                Position := poDefaultPosOnly;
+                Exit;
+            end;
+
+            // read the height, if exists
+            if (pRegistry.ValueExists('height')) then
+                Height := pRegistry.ReadInteger('height')
+            else
+            begin
+                Position := poDefaultPosOnly;
+                Exit;
+            end;
+        end
+        else
+        begin
+            Position := poDefaultPosOnly;
+            exit;
+        end;
+
+        // get work area rect
+        desktopRect := Screen.DesktopRect;
+
+        // is form left out of screen?
+        if (Left < desktopRect.Left) then
+            Left := desktopRect.Left;
+
+        // is form top out of screen?
+        if (Top < desktopRect.Top) then
+            Top := desktopRect.Top;
+
+        // is form right out of screen?
+        if ((Left + Width) > desktopRect.Right) then
+            Left := desktopRect.Right - Width;
+
+        // is form bottom out of screen?
+        if ((Top + Height) > desktopRect.Bottom) then
+            Top := desktopRect.Bottom - Height;
+    Finally
+        pRegistry.CloseKey;
+        pRegistry.Free;
+    end;
+end;
+//---------------------------------------------------------------------------
+procedure TWSVGImageListEditorDlg.WritePosToRegistry;
+var
+pRegistry : TRegistry;
+begin
+    // open registry instance
+    pRegistry := TRegistry.Create;
+
+    // succeeded?
+    if (not Assigned(pRegistry)) then
+    begin
+        Position := poDefaultPosOnly;
+        Exit;
+    end;
+
+    try
+        // set current user as root key
+        pRegistry.RootKey := HKEY_CURRENT_USER;
+
+        // open registry key
+        if pRegistry.OpenKey(m_RegKey, True) then
+        begin
+            // write the form left, top, width and height in registry
+            pRegistry.WriteInteger('left',   Left);
+            pRegistry.WriteInteger('top',    Top);
+            pRegistry.WriteInteger('height', Height);
+            pRegistry.WriteInteger('width',  Width);
+        end;
+    Finally
+        pRegistry.CloseKey;
+        pRegistry.Free;
+    end;
 end;
 //---------------------------------------------------------------------------
 procedure TWSVGImageListEditorDlg.ConfigGrid(cellCount: Integer);
