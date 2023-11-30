@@ -268,8 +268,6 @@ begin
 end;
 //---------------------------------------------------------------------------
 function TWSVGAttribute<T>.Parse(const data: UnicodeString): Boolean;
-var
-    i: NativeUInt;
 begin
     // no value? (none is sometimes used to indicate that a particular attribute is not used, e.g.
     // stroke-dasharray="none" means that stroke not use dash array at all)
@@ -373,7 +371,7 @@ var
     animMatrixMode: Boolean;
     count, i:       NativeInt;
     value:          TValue;
-    valStr, str:    UnicodeString;
+    str:            UnicodeString;
 begin
     str := '';
 
@@ -428,7 +426,6 @@ var
     animMatrixMode: Boolean;
     count, i:       NativeInt;
     value:          TValue;
-    valStr, str:    UnicodeString;
 begin
     Result := '';
 
@@ -485,7 +482,6 @@ var
     animMatrixMode: Boolean;
     count, i:       NativeInt;
     value:          TValue;
-    valStr, str:    UnicodeString;
 begin
     // is matrix animation list of values?
     animMatrixMode := IsMatrixAnimMode;

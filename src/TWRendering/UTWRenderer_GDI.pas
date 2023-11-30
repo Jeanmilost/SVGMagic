@@ -221,8 +221,8 @@ type
                              session is closed or the font is removed using RemoveFont or RemoveFonts.
                              But be careful, this is true ONLY for GDI fonts, and NOT for GDI+
             }
-            function AddFont(const name: UnicodeString; pStream: TStream; fontLength: NativeUInt):
-                    THandle; overload; virtual;
+            function AddFont(const name: UnicodeString; pStream: TStream;
+                    fontLength: Cardinal): THandle; overload; override;
     end;
 
 implementation
@@ -1076,7 +1076,7 @@ begin
 end;
 //---------------------------------------------------------------------------
 function TWRenderer_GDI.AddFont(const name: UnicodeString; pStream: TStream;
-        fontLength: NativeUInt): THandle;
+        fontLength: Cardinal): THandle;
 begin
     // add custom font
     Result := TWControlFont.AddFont(name, pStream, fontLength);

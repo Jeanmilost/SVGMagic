@@ -263,14 +263,18 @@ type
              @param(value Value to convert)
              @returns(Generic number assigned to value)
             }
-            class operator Implicit(value: NativeInt): TWGenericNumber<T>; overload;
+            {$if CompilerVersion <= 35}
+                class operator Implicit(value: NativeInt): TWGenericNumber<T>; overload;
+            {$ifend}
 
             {**
              Implicit conversion from NativeUInt operator (allows operations on generic numbers like r := value)
              @param(value Value to convert)
              @returns(Generic number assigned to value)
             }
-            class operator Implicit(value: NativeUInt): TWGenericNumber<T>; overload;
+            {$if CompilerVersion <= 35}
+                class operator Implicit(value: NativeUInt): TWGenericNumber<T>; overload;
+            {$ifend}
 
             // NOTE don't defined the Explicit operators, in reference to this thread:
             // http://stackoverflow.com/questions/9546433/overload-operator-and-conversion-type
@@ -958,27 +962,31 @@ begin
     Result.Value := resVal.AsType<T>;
 end;
 //---------------------------------------------------------------------------
-class operator TWGenericNumber<T>.Implicit(value: NativeInt): TWGenericNumber<T>;
-var
-    resVal: TValue;
-begin
-    // convert value to generic values
-    resVal := TValue.From<NativeInt>(value);
+{$if CompilerVersion <= 35}
+    class operator TWGenericNumber<T>.Implicit(value: NativeInt): TWGenericNumber<T>;
+    var
+        resVal: TValue;
+    begin
+        // convert value to generic values
+        resVal := TValue.From<NativeInt>(value);
 
-    // set converted value to result
-    Result.Value := resVal.AsType<T>;
-end;
+        // set converted value to result
+        Result.Value := resVal.AsType<T>;
+    end;
+{$ifend}
 //---------------------------------------------------------------------------
-class operator TWGenericNumber<T>.Implicit(value: NativeUInt): TWGenericNumber<T>;
-var
-    resVal: TValue;
-begin
-    // convert value to generic values
-    resVal := TValue.From<NativeUInt>(value);
+{$if CompilerVersion <= 35}
+    class operator TWGenericNumber<T>.Implicit(value: NativeUInt): TWGenericNumber<T>;
+    var
+        resVal: TValue;
+    begin
+        // convert value to generic values
+        resVal := TValue.From<NativeUInt>(value);
 
-    // set converted value to result
-    Result.Value := resVal.AsType<T>;
-end;
+        // set converted value to result
+        Result.Value := resVal.AsType<T>;
+    end;
+{$ifend}
 //---------------------------------------------------------------------------
 function TWGenericNumber<T>.Kind: TTypeKind;
 var

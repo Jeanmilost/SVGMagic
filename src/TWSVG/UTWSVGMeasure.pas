@@ -159,8 +159,6 @@ implementation
 // TWSVGMeasure
 //---------------------------------------------------------------------------
 constructor TWSVGMeasure<T>.Create(pParent: TWSVGItem; pOptions: PWSVGOptions; inkscapeStyle: Boolean);
-var
-    value: TValue;
 begin
     inherited Create(pParent, pOptions);
 
