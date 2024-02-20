@@ -12,13 +12,13 @@
 <h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
 <span id="IPropDisplay"></span><h1 class="cio">Class TWSVGStyle.IPropDisplay</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-EnclosingClass">Enclosing Class</a></div><div class="one_section"><a class="section" href="#PasDoc-NestedTypes">Nested Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-EnclosingClass">Enclosing Class</a></div><div class="one_section"><a class="section" href="#PasDoc-NestedTypes">Nested Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
 <a href="UTWSVGStyle.html">UTWSVGStyle</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type IPropDisplay = class(<a class="normal" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>)</code></p>
+<code>type IPropDisplay = class(<a class="normal" href="UTWSVGProperties.TWSVGPropEnum.html">TWSVGPropEnum</a>)</code></p>
 <h2 class="description">Description</h2>
 <p>
 Display property</p>
@@ -26,13 +26,14 @@ Display property</p>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
 <li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a></li>
 <li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a></li>
+<li class="ancestor"><a class="normal" href="UTWSVGProperties.TWSVGPropEnum.html">TWSVGPropEnum</a></li>
 <li class="thisitem">TWSVGStyle.IPropDisplay</li></ul><span id="PasDoc-EnclosingClass"></span><h2 class="hierarchy">Enclosing Class</h2>
 <ul class="hierarchy"><li class="thisitem"><a class="ancestor" href="UTWSVGStyle.TWSVGStyle.html">TWSVGStyle</a></li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-NestedTypes"></span><h3 class="summary">Nested Types</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code><strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#IValues">IValues</a></strong> = array of IEDisplay;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#IEValue">IEValue</a></strong> = (...);</code></td>
 </tr>
 </table>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
@@ -55,65 +56,63 @@ Display property</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#Print">Print</a></strong>(margin: Cardinal): UnicodeString; override;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>class function <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#ToStr">ToStr</a></strong>(display: IEDisplay): UnicodeString; static;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#ToXml">ToXml</a></strong>: UnicodeString; override;</code></td>
+<td class="itemcode"><code>class function <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#ToStr">ToStr</a></strong>(value: <a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#IEValue">IEValue</a>): UnicodeString; static;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#GetValue">GetValue</a></strong>(index: Cardinal): IEDisplay; virtual;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>function <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#GetValueCount">GetValueCount</a></strong>: Cardinal; virtual;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#Add">Add</a></strong>(display: IEDisplay); virtual;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#Assign">Assign</a></strong>(const pOther: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#Clear">Clear</a></strong>; override;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#Log">Log</a></strong>(margin: Cardinal); override;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><code>procedure <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#SetValue">SetValue</a></strong>(index: Cardinal; value: IEDisplay); virtual;</code></td>
-</tr>
-</table>
-<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
-<table class="summary wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#Count">Count</a></strong>: Cardinal <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> <a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#GetValueCount">GetValueCount</a>;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#Values">Values</a></strong>[index:Cardinal]: IEDisplay <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> <a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#GetValue">GetValue</a> write <a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#SetValue">SetValue</a>;</code></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#ValueToStr">ValueToStr</a></strong>(value: Integer): UnicodeString; override;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Nested Types</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="IValues"></span><code><strong>IValues</strong> = array of IEDisplay;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="IEValue"></span><code><strong>IEValue</strong> = (...);</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+Display enumeration   <br> <strong>NOTE</strong> All other values means that the element should be rendered. These values may also affect the direct rendering in offscreen canvases</p>
+<h6 class="description_section">Values</h6>
+<ul>
+<li>
+<span id="IE_V_Inline">IE_V_Inline</span></li>
+<li>
+<span id="IE_V_Block">IE_V_Block</span>: by default the display is inline</li>
+<li>
+<span id="IE_V_ListItem">IE_V_ListItem</span></li>
+<li>
+<span id="IE_V_RunIn">IE_V_RunIn</span></li>
+<li>
+<span id="IE_V_Compact">IE_V_Compact</span></li>
+<li>
+<span id="IE_V_Marker">IE_V_Marker</span></li>
+<li>
+<span id="IE_V_Table">IE_V_Table</span></li>
+<li>
+<span id="IE_V_InlineTable">IE_V_InlineTable</span></li>
+<li>
+<span id="IE_V_TableRowGroup">IE_V_TableRowGroup</span></li>
+<li>
+<span id="IE_V_TableHeaderGroup">IE_V_TableHeaderGroup</span></li>
+<li>
+<span id="IE_V_TableFooterGroup">IE_V_TableFooterGroup</span></li>
+<li>
+<span id="IE_V_TableRow">IE_V_TableRow</span></li>
+<li>
+<span id="IE_V_TableColumnGroup">IE_V_TableColumnGroup</span></li>
+<li>
+<span id="IE_V_TableColumn">IE_V_TableColumn</span></li>
+<li>
+<span id="IE_V_TableCell">IE_V_TableCell</span></li>
+<li>
+<span id="IE_V_TableCaption">IE_V_TableCaption</span></li>
+<li>
+<span id="IE_V_None">IE_V_None</span>: Indicates that the element should not be rendered</li>
+<li>
+<span id="IE_V_Inherit">IE_V_Inherit</span>: Indicates that the rendering of the element depends on the parent property</li>
+</ul>
+</td></tr>
 </table>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
@@ -178,175 +177,34 @@ Parse data  </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Print"></span><code>function <strong>Print</strong>(margin: Cardinal): UnicodeString; override;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Print content to string  </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>margin</dt>
-<dd>Margin length in chars</dd>
-</dl>
-<h6 class="description_section">Returns</h6>
-<p class="return">Content</p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="ToStr"></span><code>class function <strong>ToStr</strong>(display: IEDisplay): UnicodeString; static;</code></td>
+<td class="itemcode"><span id="ToStr"></span><code>class function <strong>ToStr</strong>(value: <a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#IEValue">IEValue</a>): UnicodeString; static;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
 Convert display value to string  </p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
-<dt>display</dt>
-<dd>Display value to convert</dd>
-</dl>
-<h6 class="description_section">Returns</h6>
-<p class="return">Display value as string</p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="ToXml"></span><code>function <strong>ToXml</strong>: UnicodeString; override;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get xml formatted string </p>
-<h6 class="description_section">Returns</h6>
-<p class="return">String</p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="GetValue"></span><code>function <strong>GetValue</strong>(index: Cardinal): IEDisplay; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get value at index   </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>index</dt>
-<dd>Value index to get</dd>
-</dl>
-<h6 class="description_section">Returns</h6>
-<p class="return">Value at index</p><h6 class="description_section">Exceptions raised</h6>
-<dl class="exceptions_raised">
-<dt><code>Exception</code></dt>
-<dd>if index is out of bounds</dd>
-</dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="GetValueCount"></span><code>function <strong>GetValueCount</strong>: Cardinal; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get the value count </p>
-<h6 class="description_section">Returns</h6>
-<p class="return">Value count</p></td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Add"></span><code>procedure <strong>Add</strong>(display: IEDisplay); virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Add a display value </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>display</dt>
-<dd>Display value</dd>
-</dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Assign"></span><code>procedure <strong>Assign</strong>(const pOther: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Assign (i.e. copy) content from another item </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>pOther</dt>
-<dd>Other item to copy from</dd>
-</dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Clear"></span><code>procedure <strong>Clear</strong>; override;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Clear</p>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Log"></span><code>procedure <strong>Log</strong>(margin: Cardinal); override;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Log content </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>margin</dt>
-<dd>Margin length in chars</dd>
-</dl>
-</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
-<td class="itemcode"><span id="SetValue"></span><code>procedure <strong>SetValue</strong>(index: Cardinal; value: IEDisplay); virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Set value at index   </p>
-<h6 class="description_section">Parameters</h6>
-<dl class="parameters">
-<dt>index</dt>
-<dd>Value index</dd>
 <dt>value</dt>
-<dd>Value</dd>
+<dd>Value to convert</dd>
 </dl>
-<h6 class="description_section">Exceptions raised</h6>
-<dl class="exceptions_raised">
-<dt><code>Exception</code></dt>
-<dd>if index is out of bounds</dd>
-</dl>
-</td></tr>
-</table>
-<h3 class="detail">Properties</h3>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Count"></span><code>property <strong>Count</strong>: Cardinal <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> <a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#GetValueCount">GetValueCount</a>;</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Get the value count</p>
-</td></tr>
+<h6 class="description_section">Returns</h6>
+<p class="return">Value as string</p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Values"></span><code>property <strong>Values</strong>[index:Cardinal]: IEDisplay <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> <a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#GetValue">GetValue</a> write <a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html#SetValue">SetValue</a>;</code></td>
+<td class="visibility"><a href="legend.html"><img  src="protected.gif" alt="Protected" title="Protected"></a></td>
+<td class="itemcode"><span id="ValueToStr"></span><code>function <strong>ValueToStr</strong>(value: Integer): UnicodeString; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Get or set the value at index. Example: display := Values[0]; <br> <strong>NOTE</strong> An exception will be raised if index is out of bounds</p>
-</td></tr>
+Convert value to string  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>value</dt>
+<dd>Value to convert</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Value as string</p></td></tr>
 </table>
 <hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>
 </span>

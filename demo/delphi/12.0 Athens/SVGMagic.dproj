@@ -99,15 +99,13 @@
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
-        <DCC_UnitSearchPath>..\..\..\src\TWCommon\11.0 Alexandria\Win32\Release\;..\..\..\src\TWRendering\11.0 Alexandria\Win32\Release\;..\..\..\src\TWSVG\11.0 Alexandria\Win32\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\12.0 Athens\Win32\Release\;..\..\..\src\TWRendering\12.0 Athens\Win32\Release\;..\..\..\src\TWSVG\12.0 Athens\Win32\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <DCC_UnitSearchPath>..\..\..\src\TWCommon\11.0 Alexandria\Win64\Release\;..\..\..\src\TWRendering\11.0 Alexandria\Win64\Release\;..\..\..\src\TWSVG\11.0 Alexandria\Win64\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\12.0 Athens\Win64\Release\;..\..\..\src\TWRendering\12.0 Athens\Win64\Release\;..\..\..\src\TWSVG\12.0 Athens\Win64\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <BT_BuildType>Debug</BT_BuildType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -116,15 +114,13 @@
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
-        <DCC_UnitSearchPath>..\..\..\src\TWCommon\11.0 Alexandria\Win32\Debug\;..\..\..\src\TWRendering\11.0 Alexandria\Win32\Debug\;..\..\..\src\TWSVG\11.0 Alexandria\Win32\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\12.0 Athens\Win32\Debug\;..\..\..\src\TWRendering\12.0 Athens\Win32\Debug\;..\..\..\src\TWSVG\12.0 Athens\Win32\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <DCC_UnitSearchPath>..\..\..\src\TWCommon\11.0 Alexandria\Win64\Debug\;..\..\..\src\TWRendering\11.0 Alexandria\Win64\Debug\;..\..\..\src\TWSVG\11.0 Alexandria\Win64\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\12.0 Athens\Win64\Debug\;..\..\..\src\TWRendering\12.0 Athens\Win64\Debug\;..\..\..\src\TWSVG\12.0 Athens\Win64\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <BT_BuildType>Debug</BT_BuildType>
     </PropertyGroup>
     <ItemGroup>
@@ -155,10 +151,10 @@
                     <Source Name="MainSource">SVGMagic.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k270.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp270.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k290.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp290.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Platforms>
@@ -167,8 +163,6 @@
             </Platforms>
             <Deployment Version="4">
                 <DeployFile LocalName="..\Resources\150x150.png" Configuration="Debug" Class="UWP_DelphiLogo150"/>
-                <DeployFile LocalName="..\Resources\150x150.png" Configuration="Debug" Class="UWP_DelphiLogo150"/>
-                <DeployFile LocalName="..\Resources\44x44.png" Configuration="Debug" Class="UWP_DelphiLogo44"/>
                 <DeployFile LocalName="..\Resources\44x44.png" Configuration="Debug" Class="UWP_DelphiLogo44"/>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="iOSSimulator">

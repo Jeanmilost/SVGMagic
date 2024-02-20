@@ -273,8 +273,6 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\Resources\150x150.png" Configuration="Release" Class="UWP_CppLogo150"/>
-                <DeployFile LocalName="..\Resources\150x150.png" Configuration="Release" Class="UWP_CppLogo150"/>
-                <DeployFile LocalName="..\Resources\44x44.png" Configuration="Release" Class="UWP_CppLogo44"/>
                 <DeployFile LocalName="..\Resources\44x44.png" Configuration="Release" Class="UWP_CppLogo44"/>
                 <DeployFile LocalName=".\Win32\Debug\SVGMagic.exe" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName=".\Win32\Release\SVGMagic.exe" Configuration="Release" Class="ProjectOutput"/>

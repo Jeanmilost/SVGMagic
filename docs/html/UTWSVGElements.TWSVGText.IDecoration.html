@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>SVG Magic: UTWSVGElements: Class TWSVGImage</title>
+<title>SVG Magic: UTWSVGElements: Class TWSVGText.IDecoration</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="PasDoc 0.16.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -10,58 +10,72 @@
 <body>
 <div class="container"><div class="navigation">
 <h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
-<span id="TWSVGImage"></span><h1 class="cio">Class TWSVGImage</h1>
+<span id="IDecoration"></span><h1 class="cio">Class TWSVGText.IDecoration</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-EnclosingClass">Enclosing Class</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
 <a href="UTWSVGElements.html">UTWSVGElements</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type TWSVGImage = class(<a class="normal" href="UTWSVGElements.TWSVGShape.html">TWSVGShape</a>)</code></p>
+<code>type IDecoration = class(<a class="normal" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>)</code></p>
 <h2 class="description">Description</h2>
 <p>
-Scalable Vector Graphics (SVG) embedded image</p>
+Text decoration property</p>
 <span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
 <li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a></li>
-<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a></li>
-<li class="ancestor"><a class="normal" href="UTWSVGElements.TWSVGContainer.html">TWSVGContainer</a></li>
-<li class="ancestor"><a class="normal" href="UTWSVGElements.TWSVGShape.html">TWSVGShape</a></li>
-<li class="thisitem">TWSVGImage</li></ul><h2 class="overview">Overview</h2>
+<li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a></li>
+<li class="thisitem">TWSVGText.IDecoration</li></ul><span id="PasDoc-EnclosingClass"></span><h2 class="hierarchy">Enclosing Class</h2>
+<ul class="hierarchy"><li class="thisitem"><a class="ancestor" href="UTWSVGElements.TWSVGText.html">TWSVGText</a></li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <strong><a href="UTWSVGElements.TWSVGImage.html#Create">Create</a></strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
+<td class="itemcode"><code>constructor <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#Create">Create</a></strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>; pOptions: <a href="UTWSVGItems.html#PWSVGOptions">PWSVGOptions</a>); override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>destructor <strong><a href="UTWSVGElements.TWSVGImage.html#Destroy">Destroy</a></strong>; override;</code></td>
+<td class="itemcode"><code>destructor <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#Destroy">Destroy</a></strong>; override;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="UTWSVGElements.TWSVGImage.html#CreateInstance">CreateInstance</a></strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#CreateInstance">CreateInstance</a></strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="UTWSVGElements.TWSVGImage.html#Print">Print</a></strong>(margin: Cardinal): UnicodeString; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#Parse">Parse</a></strong>(const data: UnicodeString): Boolean; override;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="UTWSVGElements.TWSVGImage.html#Read">Read</a></strong>(const pNode: IXMLNode): Boolean; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#Print">Print</a></strong>(margin: Cardinal): UnicodeString; override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <strong><a href="UTWSVGElements.TWSVGImage.html#Assign">Assign</a></strong>(const pOther: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+<td class="itemcode"><code>class function <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#ToStr">ToStr</a></strong>(value: IEDecoration): UnicodeString; static;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <strong><a href="UTWSVGElements.TWSVGImage.html#Clear">Clear</a></strong>; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#ToXml">ToXml</a></strong>: UnicodeString; override;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <strong><a href="UTWSVGElements.TWSVGImage.html#Log">Log</a></strong>(margin: Cardinal); override;</code></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#Assign">Assign</a></strong>(const pOther: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>); override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#Clear">Clear</a></strong>; override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#Log">Log</a></strong>(margin: Cardinal); override;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <strong><a href="UTWSVGElements.TWSVGText.IDecoration.html#Value">Value</a></strong>: IEDecoration <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> m_Value write m_Value;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -96,18 +110,34 @@ Destructor</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="CreateInstance"></span><code>function <strong>CreateInstance</strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a href="UTWSVGItems.TWSVGElement.html">TWSVGElement</a>; override;</code></td>
+<td class="itemcode"><span id="CreateInstance"></span><code>function <strong>CreateInstance</strong>(pParent: <a href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a>): <a href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Create new element instance  </p>
+Create new property instance  </p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
 <dt>pParent</dt>
 <dd>Parent item, orphan or root if <code>Nil</code></dd>
 </dl>
 <h6 class="description_section">Returns</h6>
-<p class="return">Element instance</p></td></tr>
+<p class="return">Property instance</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Parse"></span><code>function <strong>Parse</strong>(const data: UnicodeString): Boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Parse data  </p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>data</dt>
+<dd>Data to parse</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -128,18 +158,29 @@ Print content to string  </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="Read"></span><code>function <strong>Read</strong>(const pNode: IXMLNode): Boolean; override;</code></td>
+<td class="itemcode"><span id="ToStr"></span><code>class function <strong>ToStr</strong>(value: IEDecoration): UnicodeString; static;</code></td>
 </tr>
 <tr><td colspan="2">
 <p>
-Read SVG element from xml  </p>
+Convert decoration to string  </p>
 <h6 class="description_section">Parameters</h6>
 <dl class="parameters">
-<dt>pNode</dt>
-<dd>Xml node containing SVG element to read</dd>
+<dt>value</dt>
+<dd>Decoration to convert</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
-<p class="return"><code>True</code> on success, otherwise <code>False</code></p></td></tr>
+<p class="return">Decoration as string</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ToXml"></span><code>function <strong>ToXml</strong>: UnicodeString; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get xml formatted string </p>
+<h6 class="description_section">Returns</h6>
+<p class="return">String</p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -179,6 +220,17 @@ Log content </p>
 <dt>margin</dt>
 <dd>Margin length in chars</dd>
 </dl>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Value"></span><code>property <strong>Value</strong>: IEDecoration <a href="UTWSVGItems.TWSVGProperty.html#Read">read</a> m_Value write m_Value;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get or set the text decoration</p>
 </td></tr>
 </table>
 <hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>

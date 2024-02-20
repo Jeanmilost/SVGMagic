@@ -86,23 +86,39 @@ Geometry tools</p>
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#Inside">Inside</a></strong>(const r1, r2: TRect): Boolean; inline; static;</code></td>
+<td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#GradToRad">GradToRad</a></strong>(const angle: Double): Double; inline; static;</code></td>
 </tr>
 <tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#Inside">Inside</a></strong>(const r1, r2: TRect): Boolean; inline; static;</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#Intersect">Intersect</a></strong>(const r1, r2: TRect): Boolean; inline; static;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#PointInEllipse">PointInEllipse</a></strong>(x, y, h, k, rx, ry: Single; out onBoundary: Boolean): Boolean; inline; static;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#PointInRect">PointInRect</a></strong>(x, y: Integer; const rect: TRect): Boolean; inline; static;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#RadToDeg">RadToDeg</a></strong>(const angle: Double): Double; inline; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#RadToGrad">RadToGrad</a></strong>(const angle: Double): Double; inline; static;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#RadToTurn">RadToTurn</a></strong>(const angle: Double): Double; inline; static;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="UTWGeometryTools.TWGeometryTools.html#TurnToRad">TurnToRad</a></strong>(const angle: Double): Double; inline; static;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -373,6 +389,22 @@ Calculate a point on a quadratic Bezier curve     </p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GradToRad"></span><code>class function <strong>GradToRad</strong>(const angle: Double): Double; inline; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert gradians to radians   <br> <strong>NOTE</strong> A gradian represents one hundredth of the right angle. One full circle equals 400grad</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>angle</dt>
+<dd>Angle in gradians</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Angle in radians</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><span id="Inside"></span><code>class function <strong>Inside</strong>(const r1, r2: TRect): Boolean; inline; static;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -432,7 +464,7 @@ Check if a point is inside an ellipse        </p>
 <dd><strong>[out]</strong> If true, the point is exactly on the boundary of the ellipse</dd>
 </dl>
 <h6 class="description_section">Returns</h6>
-<p class="return"><code>True</code> if point is inside the ellipse or on his boundary, otherwise <code>False</code></p></td></tr>
+<p class="return"><code>True</code> if point is inside the ellipse or on its boundary, otherwise <code>False</code></p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -469,6 +501,54 @@ Convert radians to degrees  </p>
 </dl>
 <h6 class="description_section">Returns</h6>
 <p class="return">Angle in degrees</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="RadToGrad"></span><code>class function <strong>RadToGrad</strong>(const angle: Double): Double; inline; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert radians to gradians   <br> <strong>NOTE</strong> A gradian represents one hundredth of the right angle. One full circle equals 400grad</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>angle</dt>
+<dd>Angle in radians</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Angle in gradians</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="RadToTurn"></span><code>class function <strong>RadToTurn</strong>(const angle: Double): Double; inline; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert radians to turns   <br> <strong>NOTE</strong> A turn represents an angle in a number of turns. One full circle is 1 turn</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>angle</dt>
+<dd>Angle in radians</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Angle in turns</p></td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="TurnToRad"></span><code>class function <strong>TurnToRad</strong>(const angle: Double): Double; inline; static;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Convert turns to radians   <br> <strong>NOTE</strong> A turn represents an angle in a number of turns. One full circle is 1 turn</p>
+<h6 class="description_section">Parameters</h6>
+<dl class="parameters">
+<dt>angle</dt>
+<dd>Angle in turns</dd>
+</dl>
+<h6 class="description_section">Returns</h6>
+<p class="return">Angle in radians</p></td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">

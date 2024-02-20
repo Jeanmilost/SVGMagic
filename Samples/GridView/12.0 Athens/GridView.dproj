@@ -96,13 +96,15 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <DCC_UnitSearchPath>..\..\..\src\TWCommon\11.0 Alexandria\Win32\Debug\;..\..\..\src\TWRendering\11.0 Alexandria\Win32\Debug\;..\..\..\src\TWSVG\11.0 Alexandria\Win32\Debug\;..\..\Common\Virtual-TreeView\Packages\RAD Studio 10.4+\Win32\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\12.0 Athens\Win32\Debug\;..\..\..\src\TWRendering\12.0 Athens\Win32\Debug\;..\..\..\src\TWSVG\12.0 Athens\Win32\Debug\;..\..\Common\Virtual-TreeView\Packages\RAD Studio 10.4+\Win32\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <DCC_UnitSearchPath>..\..\..\src\TWCommon\11.0 Alexandria\Win64\Debug\;..\..\..\src\TWRendering\11.0 Alexandria\Win64\Debug\;..\..\..\src\TWSVG\11.0 Alexandria\Win64\Debug\;..\..\Common\Virtual-TreeView\Packages\RAD Studio 10.4+\Win64\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\12.0 Athens\Win64\Debug\;..\..\..\src\TWRendering\12.0 Athens\Win64\Debug\;..\..\..\src\TWSVG\12.0 Athens\Win64\Debug\;..\..\Common\Virtual-TreeView\Packages\RAD Studio 10.4+\Win64\Debug\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -111,14 +113,16 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <DCC_UnitSearchPath>..\..\..\src\TWCommon\11.0 Alexandria\Win32\Release\;..\..\..\src\TWRendering\11.0 Alexandria\Win32\Release\;..\..\..\src\TWSVG\11.0 Alexandria\Win32\Release\;..\..\Common\Virtual-TreeView\Packages\RAD Studio 10.4+\Win32\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\12.0 Athens\Win32\Release\;..\..\..\src\TWRendering\12.0 Athens\Win32\Release\;..\..\..\src\TWSVG\12.0 Athens\Win32\Release\;..\..\Common\Virtual-TreeView\Packages\RAD Studio 10.4+\Win32\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <BT_BuildType>Debug</BT_BuildType>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <DCC_UnitSearchPath>..\..\..\src\TWCommon\11.0 Alexandria\Win64\Release\;..\..\..\src\TWRendering\11.0 Alexandria\Win64\Release\;..\..\..\src\TWSVG\11.0 Alexandria\Win64\Release\;..\..\Common\Virtual-TreeView\Packages\RAD Studio 10.4+\Win64\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\..\src\TWCommon\12.0 Athens\Win64\Release\;..\..\..\src\TWRendering\12.0 Athens\Win64\Release\;..\..\..\src\TWSVG\12.0 Athens\Win64\Release\;..\..\Common\Virtual-TreeView\Packages\RAD Studio 10.4+\Win64\Release\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <BT_BuildType>Debug</BT_BuildType>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -149,10 +153,10 @@
                     <Source Name="MainSource">GridView.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k210.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp210.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k210.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp210.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k290.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp290.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="4">

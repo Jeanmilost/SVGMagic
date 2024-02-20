@@ -317,7 +317,7 @@
     pAnotherClass := TWSmartPointer&lt;TAnotherClass&gt;<span class="pascal_float">.</span>Create;
 <span class="pascal_keyword">end</span>;</pre>
 
-<p> <br> <strong>NOTE</strong> Unlike their C++ counterparts, and unfortunately, I could not find a correct way to implement the Release() function. This was not possible because the smart pointer must be declared using his interface, e.g. pClass: IWSmartPointer&lt;TMyClass&gt;, to work as expected. Doing that, any direct call to pClass invokes internally the owned pointer, so there is no further conversion needed, but in other hand, any conversion like TWSmartPointer&lt;TMyClass&gt;(pClass) result to an access violation, because - I think - the conversion is done on the owned pointer instead of the smart pointer itself. For that reason, calling a function like TWSmartPointer&lt;TMyClass&gt;(pClass). Release is impossible, so a smart pointer may be used only for instances that will be always deleted on function ends, like e.g. option forms, but in case the pointer is needed to be released, a try...finally block should be used instead</p></td>
+<p> <br> <strong>NOTE</strong> Unlike their C++ counterparts, and unfortunately, I could not find a correct way to implement the Release() function. This was not possible because the smart pointer must be declared using its interface, e.g. pClass: IWSmartPointer&lt;TMyClass&gt;, to work as expected. Doing that, any direct call to pClass invokes internally the owned pointer, so there is no further conversion needed, but in other hand, any conversion like TWSmartPointer&lt;TMyClass&gt;(pClass) result to an access violation, because - I think - the conversion is done on the owned pointer instead of the smart pointer itself. For that reason, calling a function like TWSmartPointer&lt;TMyClass&gt;(pClass). Release is impossible, so a smart pointer may be used only for instances that will be always deleted on function ends, like e.g. option forms, but in case the pointer is needed to be released, a try...finally block should be used instead</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="UTWFillAndStroke.TWSolidBrush.html">TWSolidBrush</a></td>
@@ -560,84 +560,84 @@
 <td class="itemdesc"><p>Class to group and expose all SVG animation properties</p></td>
 </tr>
 <tr class="list">
-<td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGImage.IAspectRatio.html">TWSVGImage.IAspectRatio</a></td>
-<td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
-<td class="itemdesc"><p>Image aspect ratio property</p></td>
-</tr>
-<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGImageButton.TWSVGImageButton.html">TWSVGImageButton</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGImageButton.html">UTWSVGImageButton</a></td>
 <td class="itemdesc"><p>Image that acts as a button and supports animated SVG graphics</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGImageList.TWSVGImageList.html">TWSVGImageList</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGImageList.html">UTWSVGImageList</a></td>
 <td class="itemdesc"><p>Image list override that supports SVG graphics</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGImageListFactory.TWSVGImageListFactory.html">TWSVGImageListFactory</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGImageListFactory.html">UTWSVGImageListFactory</a></td>
 <td class="itemdesc"><p>Image list factory</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGItems.html">UTWSVGItems</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) item</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGLine.html">TWSVGLine</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) line</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGGradients.TWSVGLinearGradient.html">TWSVGLinearGradient</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGGradients.html">UTWSVGGradients</a></td>
 <td class="itemdesc"><p>SVG linear gradient, describes a linear gradient to apply to a fill or stroke</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGAnimationDescriptor.TWSVGMatrixAnimDesc.html">TWSVGMatrixAnimDesc</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGAnimationDescriptor.html">UTWSVGAnimationDescriptor</a></td>
 <td class="itemdesc"><p>SVG animation descriptor to use when the animation must be applied to a matrix <br> <strong>NOTE</strong> This descriptor also uses double as values, instead of WMatrix3x3, as it could be expected. The reason is that the data are written as follow in the SVG: &lt;animateTransform attributeType=&quot;xml&quot; attributeName=&quot;transform&quot; type=&quot;rotate&quot; from=&quot;0 20 20&quot; to=&quot;360 20 20&quot; dur=&quot;0.5s&quot; repeatCount=&quot;indefinite&quot;/&gt; As seen in the above example, a matrix animation is described as a type, that indicates which kind of matrix should be built, and several value list, that contain the data to apply to the matrix. But there are no matrix list, it's the reason why double type is used instead of matrix</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGMeasure.TWSVGMeasure.html">TWSVGMeasure</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGMeasure.html">UTWSVGMeasure</a></td>
-<td class="itemdesc"><p>Scalable Vector Graphics (SVG) measure, it's a value with his unit, as e.g. x=&quot;0px&quot;</p></td>
+<td class="itemdesc"><p>Scalable Vector Graphics (SVG) measure, it's a value with its unit, as e.g. x=&quot;0px&quot;</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGItems.TWSVGOptions.html">TWSVGOptions</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGItems.html">UTWSVGItems</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) options</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGParser.TWSVGParser.html">TWSVGParser</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGParser.html">UTWSVGParser</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) files parser <br> <strong>NOTE</strong> See <a href="http://www.w3.org/TR/SVGCompositing/">http://www.w3.org/TR/SVGCompositing/</a></p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGParser.TWSVGParser.IHeader.html">TWSVGParser.IHeader</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGParser.html">UTWSVGParser</a></td>
 <td class="itemdesc"><p>SVG header</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGPath.html">TWSVGPath</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) path</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGPathCmd.html">TWSVGPathCmd</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
 <td class="itemdesc"><p>A Scalable Vector Graphics (SVG) path command is an instruction composed by a command representing an action to be undertaken while the path is drawn, followed by the coordinates necessary to accomplish this command. E.g. an absolute &quot;move to&quot; path command will be written M18.285,1.5 in the SVG file <br> <strong>NOTE</strong> Several separators may be used to separate the coordinate values. Separators may be a blank space, a negative '-' char or a native separator, as e.g. ',' And many separators may be used in the same instruction to separate the values, e.g. c0,1.76-1.572,3.39-3.615,3.39</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGPolygon.html">TWSVGPolygon</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) polygon</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGPolyline.html">TWSVGPolyline</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) polyline</p></td>
+</tr>
+<tr class="list2">
+<td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropAspectRatio.html">TWSVGPropAspectRatio</a></td>
+<td class="itemunit"><a class="bold" href="UTWSVGProperties.html">UTWSVGProperties</a></td>
+<td class="itemdesc"><p>Aspect ratio property, used to align a graphic component inside its view box</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropBackground.html">TWSVGPropBackground</a></td>
@@ -650,16 +650,21 @@
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) color property</p></td>
 </tr>
 <tr class="list">
+<td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropEnum.html">TWSVGPropEnum</a></td>
+<td class="itemunit"><a class="bold" href="UTWSVGProperties.html">UTWSVGProperties</a></td>
+<td class="itemdesc"><p>Enumerable property</p></td>
+</tr>
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGItems.html">UTWSVGItems</a></td>
 <td class="itemdesc"><p>A Scalable Vector Graphics (SVG) property is a data contained in an element, indicating the value of a particular variable. For example, a fill color, a stroke width, ... <br> <strong>NOTE</strong> In Inkscape files, properties containing the namespace sodipodi can be ignored, they are reminiscent of the first Inkscape application version, when it was still called SodiPodi</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropLink.html">TWSVGPropLink</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGProperties.html">UTWSVGProperties</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) link property</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropMatrix.html">TWSVGPropMatrix</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGProperties.html">UTWSVGProperties</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) matrix property <br> <strong>NOTE</strong> The matrices are written in SVG in the form: matrixType(a, b, c, d, e, f)
@@ -672,65 +677,70 @@
 
 <p>For further info, see: <a href="https://www.w3.org/TR/SVG/coords.html#TransformMatrixDefined">https://www.w3.org/TR/SVG/coords.html#TransformMatrixDefined</a></p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropRect.html">TWSVGPropRect</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGProperties.html">UTWSVGProperties</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) rectangle property</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropText.html">TWSVGPropText</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGProperties.html">UTWSVGProperties</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) text property, can be e.g. an identifier, a url, ...</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropTime.html">TWSVGPropTime</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGProperties.html">UTWSVGProperties</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) date and time value</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropUnit.html">TWSVGPropUnit</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGProperties.html">UTWSVGProperties</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) unit property</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGProperties.TWSVGPropVersion.html">TWSVGPropVersion</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGProperties.html">UTWSVGProperties</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) version property</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGGradients.TWSVGRadialGradient.html">TWSVGRadialGradient</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGGradients.html">UTWSVGGradients</a></td>
 <td class="itemdesc"><p>SVG radial gradient, describes a radial gradient to apply to a fill or stroke</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGRadioButtonStyle.TWSVGRadioButtonStyle.html">TWSVGRadioButtonStyle</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRadioButtonStyle.html">UTWSVGRadioButtonStyle</a></td>
 <td class="itemdesc"><p>Style to apply to radiobutton</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGRadioButtonStyle.TWSVGRadioButtonStyle.IWRadioButtonCollection.html">TWSVGRadioButtonStyle.IWRadioButtonCollection</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRadioButtonStyle.html">UTWSVGRadioButtonStyle</a></td>
 <td class="itemdesc"><p>Radiobutton collection (can be shown in design time)</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGRadioButtonStyle.TWSVGRadioButtonStyle.IWRadioButtonCollectionItem.html">TWSVGRadioButtonStyle.IWRadioButtonCollectionItem</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRadioButtonStyle.html">UTWSVGRadioButtonStyle</a></td>
 <td class="itemdesc"><p>Radiobutton collection item</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.html">TWSVGRasterizer</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) rasterizer <br> <strong>NOTE</strong> See <a href="http://www.w3.org/TR/SVGCompositing/">http://www.w3.org/TR/SVGCompositing/</a></p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IAnimation.html">TWSVGRasterizer.IAnimation</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
 <td class="itemdesc"><p>Animation parameters structure. Custom data will be transmitted in OnAnimate callback</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IAnimationData.html">TWSVGRasterizer.IAnimationData</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
 <td class="itemdesc"><p>Animation data structure</p></td>
+</tr>
+<tr class="list">
+<td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IAspectRatio.html">TWSVGRasterizer.IAspectRatio</a></td>
+<td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
+<td class="itemdesc"><p>Aspect ratio parameters structure</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IBrush.html">TWSVGRasterizer.IBrush</a></td>
@@ -776,6 +786,16 @@
 <td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.ILinearGradientVector.html">TWSVGRasterizer.ILinearGradientVector</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
 <td class="itemdesc"><p>Linear gradient vector, it's a vector, defined by start and end points, onto which the gradient stops are matched, and to which the gradient normal is perpendicular (before applying any transform)</p></td>
+</tr>
+<tr class="list">
+<td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IPropAspectRatioItem.html">TWSVGRasterizer.IPropAspectRatioItem</a></td>
+<td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
+<td class="itemdesc"><p>Aspect ratio type property item</p></td>
+</tr>
+<tr class="list2">
+<td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IPropAspectRatioRefItem.html">TWSVGRasterizer.IPropAspectRatioRefItem</a></td>
+<td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
+<td class="itemdesc"><p>Aspect ratio reference property item</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IPropBoolItem.html">TWSVGRasterizer.IPropBoolItem</a></td>
@@ -833,54 +853,64 @@
 <td class="itemdesc"><p>Stroke line join property item</p></td>
 </tr>
 <tr class="list2">
+<td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IPropVisibilityItem.html">TWSVGRasterizer.IPropVisibilityItem</a></td>
+<td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
+<td class="itemdesc"><p>Visibility property item</p></td>
+</tr>
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IRadialGradient.html">TWSVGRasterizer.IRadialGradient</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
 <td class="itemdesc"><p>Radial gradient</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IStroke.html">TWSVGRasterizer.IStroke</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
 <td class="itemdesc"><p>* Stroke parameters structure</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGRasterizer.TWSVGRasterizer.IStyle.html">TWSVGRasterizer.IStyle</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGRasterizer.html">UTWSVGRasterizer</a></td>
 <td class="itemdesc"><p>Style parameters structure</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGRect.html">TWSVGRect</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) rectangle</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGShape.html">TWSVGShape</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
 <td class="itemdesc"><p>Scalable Vector Graphics (SVG) shape, it's a base for all the kind of shapes a SVG may contain, e.g. rect, ellipse, path, ...</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGStyle.TWSVGStroke.html">TWSVGStroke</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGStyle.html">UTWSVGStyle</a></td>
 <td class="itemdesc"><p>Style stroke properties <br> <strong>NOTE</strong> A stroke attribute may either contains a solid color value, or a link to a local or global define. The property may also indicate explicitly that no stroke must be processed. Be careful, the color is a RGB color, the stroke opacity level is written in another property (called &quot;stroke-opacity&quot;)</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGStyle.TWSVGStroke.IPropLineCap.html">TWSVGStroke.IPropLineCap</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGStyle.html">UTWSVGStyle</a></td>
 <td class="itemdesc"><p>Linecap property</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGStyle.TWSVGStroke.IPropLineJoin.html">TWSVGStroke.IPropLineJoin</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGStyle.html">UTWSVGStyle</a></td>
 <td class="itemdesc"><p>Line join property</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGStyle.TWSVGStyle.html">TWSVGStyle</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGStyle.html">UTWSVGStyle</a></td>
-<td class="itemdesc"><p>A Scalable Vector Graphics (SVG) style is a set of properties that affect the manner how a drawing will be made. A style should at least contain a fill color and/or a stroke color, but may also contain several details about the drawing behavior, like e.g. the stroke miter limits, ... When an item isn't declared in the current style, his values are inherited from the closest parent style that exposes this item <br> <strong>NOTE</strong> The style may be exposed as a distinct property, e.g. &lt;path style=&quot;fill:#8b4c4c;...&quot; /&gt;, or as a list of several properties, e.g. &lt;path fill=&quot;#8b4c4c&quot; ... /&gt;&quot;</p></td>
+<td class="itemdesc"><p>A Scalable Vector Graphics (SVG) style is a set of properties that affect the manner how a drawing will be made. A style should at least contain a fill color and/or a stroke color, but may also contain several details about the drawing behavior, like e.g. the stroke miter limits, ... When an item isn't declared in the current style, its values are inherited from the closest parent style that exposes this item <br> <strong>NOTE</strong> The style may be exposed as a distinct property, e.g. &lt;path style=&quot;fill:#8b4c4c;...&quot; /&gt;, or as a list of several properties, e.g. &lt;path fill=&quot;#8b4c4c&quot; ... /&gt;&quot;</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html">TWSVGStyle.IPropDisplay</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGStyle.html">UTWSVGStyle</a></td>
 <td class="itemdesc"><p>Display property</p></td>
+</tr>
+<tr class="list">
+<td class="itemname"><a class="bold" href="UTWSVGStyle.TWSVGStyle.IPropVisibility.html">TWSVGStyle.IPropVisibility</a></td>
+<td class="itemunit"><a class="bold" href="UTWSVGStyle.html">UTWSVGStyle</a></td>
+<td class="itemdesc"><p>Visibility property</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="UTWSVGComponentStyle.TWSVGStyleControlAccess.html">TWSVGStyleControlAccess</a></td>
@@ -916,6 +946,16 @@
 <td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGText.IAnchor.html">TWSVGText.IAnchor</a></td>
 <td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
 <td class="itemdesc"><p>Text anchor property</p></td>
+</tr>
+<tr class="list">
+<td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGText.IDecoration.html">TWSVGText.IDecoration</a></td>
+<td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
+<td class="itemdesc"><p>Text decoration property</p></td>
+</tr>
+<tr class="list2">
+<td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGText.IFontStyle.html">TWSVGText.IFontStyle</a></td>
+<td class="itemunit"><a class="bold" href="UTWSVGElements.html">UTWSVGElements</a></td>
+<td class="itemdesc"><p>Text font style property</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="UTWSVGElements.TWSVGText.IFontWeight.html">TWSVGText.IFontWeight</a></td>

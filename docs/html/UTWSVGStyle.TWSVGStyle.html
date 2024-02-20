@@ -12,7 +12,7 @@
 <h2><a href="index.html">SVG Magic</a></h2><ul><li><a href="AllUnits.html">Units</a></li><li><a href="ClassHierarchy.html">Class Hierarchy</a></li><li><a href="AllClasses.html">Classes, Interfaces, Objects and Records</a></li><li><a href="AllTypes.html">Types</a></li><li><a href="AllVariables.html">Variables</a></li><li><a href="AllConstants.html">Constants</a></li><li><a href="AllFunctions.html">Functions and Procedures</a></li><li><a href="AllIdentifiers.html">Identifiers</a></li></ul></div><div class="content">
 <span id="TWSVGStyle"></span><h1 class="cio">Class TWSVGStyle</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-NestedCRs">Nested Classes and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-NestedTypes">Nested Types</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-NestedCRs">Nested Classes and Records</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
 <a href="UTWSVGStyle.html">UTWSVGStyle</a></p>
@@ -21,7 +21,7 @@
 <code>type TWSVGStyle = class(<a class="normal" href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>)</code></p>
 <h2 class="description">Description</h2>
 <p>
-A Scalable Vector Graphics (SVG) style is a set of properties that affect the manner how a drawing will be made. A style should at least contain a fill color and/or a stroke color, but may also contain several details about the drawing behavior, like e.g. the stroke miter limits, ... When an item isn't declared in the current style, his values are inherited from the closest parent style that exposes this item <br> <strong>NOTE</strong> The style may be exposed as a distinct property, e.g. &lt;path style=&quot;fill:#8b4c4c;...&quot; /&gt;, or as a list of several properties, e.g. &lt;path fill=&quot;#8b4c4c&quot; ... /&gt;&quot;</p>
+A Scalable Vector Graphics (SVG) style is a set of properties that affect the manner how a drawing will be made. A style should at least contain a fill color and/or a stroke color, but may also contain several details about the drawing behavior, like e.g. the stroke miter limits, ... When an item isn't declared in the current style, its values are inherited from the closest parent style that exposes this item <br> <strong>NOTE</strong> The style may be exposed as a distinct property, e.g. &lt;path style=&quot;fill:#8b4c4c;...&quot; /&gt;, or as a list of several properties, e.g. &lt;path fill=&quot;#8b4c4c&quot; ... /&gt;&quot;</p>
 <span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
 <li class="ancestor"><a class="normal" href="UTWSVGItems.TWSVGItem.html">TWSVGItem</a></li>
@@ -31,14 +31,11 @@ A Scalable Vector Graphics (SVG) style is a set of properties that affect the ma
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code><strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html">IPropDisplay</a></strong> = class(<a href="UTWSVGItems.TWSVGProperty.html">TWSVGProperty</a>)</code></td>
+<td class="itemcode"><code><strong><a href="UTWSVGStyle.TWSVGStyle.IPropDisplay.html">IPropDisplay</a></strong> = class(<a href="UTWSVGProperties.TWSVGPropEnum.html">TWSVGPropEnum</a>)</code></td>
 </tr>
-</table>
-<span id="PasDoc-NestedTypes"></span><h3 class="summary">Nested Types</h3>
-<table class="summary wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code><strong><a href="UTWSVGStyle.TWSVGStyle.html#IEDisplay">IEDisplay</a></strong> = (...);</code></td>
+<tr class="list2">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code><strong><a href="UTWSVGStyle.TWSVGStyle.IPropVisibility.html">IPropVisibility</a></strong> = class(<a href="UTWSVGProperties.TWSVGPropEnum.html">TWSVGPropEnum</a>)</code></td>
 </tr>
 </table>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
@@ -112,56 +109,6 @@ A Scalable Vector Graphics (SVG) style is a set of properties that affect the ma
 </tr>
 </table>
 <h2 class="description">Description</h2>
-<h3 class="detail">Nested Types</h3>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><span id="IEDisplay"></span><code><strong>IEDisplay</strong> = (...);</code></td>
-</tr>
-<tr><td colspan="2">
-<p>
-Display enumeration   <br> <strong>NOTE</strong> All other values means that the element should be rendered. These values may also affect the direct rendering in offscreen canvases</p>
-<h6 class="description_section">Values</h6>
-<ul>
-<li>
-<span id="IE_DI_Inline">IE_DI_Inline</span></li>
-<li>
-<span id="IE_DI_Block">IE_DI_Block</span>: by default the display is inline</li>
-<li>
-<span id="IE_DI_ListItem">IE_DI_ListItem</span></li>
-<li>
-<span id="IE_DI_RunIn">IE_DI_RunIn</span></li>
-<li>
-<span id="IE_DI_Compact">IE_DI_Compact</span></li>
-<li>
-<span id="IE_DI_Marker">IE_DI_Marker</span></li>
-<li>
-<span id="IE_DI_Table">IE_DI_Table</span></li>
-<li>
-<span id="IE_DI_InlineTable">IE_DI_InlineTable</span></li>
-<li>
-<span id="IE_DI_TableRowGroup">IE_DI_TableRowGroup</span></li>
-<li>
-<span id="IE_DI_TableHeaderGroup">IE_DI_TableHeaderGroup</span></li>
-<li>
-<span id="IE_DI_TableFooterGroup">IE_DI_TableFooterGroup</span></li>
-<li>
-<span id="IE_DI_TableRow">IE_DI_TableRow</span></li>
-<li>
-<span id="IE_DI_TableColumnGroup">IE_DI_TableColumnGroup</span></li>
-<li>
-<span id="IE_DI_TableColumn">IE_DI_TableColumn</span></li>
-<li>
-<span id="IE_DI_TableCell">IE_DI_TableCell</span></li>
-<li>
-<span id="IE_DI_TableCaption">IE_DI_TableCaption</span></li>
-<li>
-<span id="IE_DI_None">IE_DI_None</span>: Indicates that the element should not be rendered</li>
-<li>
-<span id="IE_DI_Inherit">IE_DI_Inherit</span>: Indicates that the rendering of the element depends on the parent property</li>
-</ul>
-</td></tr>
-</table>
 <h3 class="detail">Methods</h3>
 <table class="detail wide_list">
 <tr class="list">
