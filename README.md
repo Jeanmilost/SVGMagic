@@ -20,4 +20,4 @@ Expected workflow is: Fork -> Patch -> Push -> Pull Request
 
 ## License
 
-Copyright (C) 2018 - 2021 Ursa Minor Ltd., All Rights Reserved
+Copyright (C) 2018 - 2025 Ursa Minor Ltd., All Rights Reserved
