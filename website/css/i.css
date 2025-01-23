@@ -1,0 +1,70 @@
+body {
+    position: relative;
+}
+
+section:before {
+    height: 60px;
+    content: "";
+    display: block;
+}
+
+.loader {
+    width: 100%;
+    padding: 100px 0 300px 0;
+    text-align: center;
+}
+
+.wrapper {
+    width: 100px;
+    margin: 4em auto 0;
+}
+
+.checkmark {
+    stroke: #007bff;
+    stroke-dashoffset: 745.74853515625;
+    stroke-dasharray: 745.74853515625;
+    animation: dash 4s ease-out forwards;
+}
+
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 745.74853515625;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.loader-status {
+    margin-top: 50px;
+}
+
+.container img {
+    margin-top: 20px;
+}
+
+.gradient_bg {
+    background-image: linear-gradient(red, green, blue);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,.9);
+}
+
+a {
+    color: #0064ff;
+}
+
+#releases p {
+    white-space: pre;
+}
+
+section#faq h3 {
+    margin: 1em 0 1em 0;
+}
+
+section#faq pre {
+    background-color: rgba(0,0,0,.03);
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    padding: 0rem 1rem;
+}
