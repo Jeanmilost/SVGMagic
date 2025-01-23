@@ -20,4 +20,4 @@ Expected workflow is: Fork -> Patch -> Push -> Pull Request
 
 ## License
 
-Copyright (C) 2018 - 2025 Ursa Minor Ltd., All Rights Reserved
+Since 2025, Ursa Minor Ltd. kindly opened the source code of the SVGMagic library. Now the code is under the MIT license.
