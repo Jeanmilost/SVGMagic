@@ -1632,7 +1632,7 @@ implementation
 //---------------------------------------------------------------------------
 class function TWStringHelper.Substr(const str: UnicodeString; index: Integer): UnicodeString;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // NOTE + 1 to compensate 1 based UnicodeString indexes
         Result := Copy(str, index + 1, Length(str));
     {$else}
@@ -1642,7 +1642,7 @@ end;
 //---------------------------------------------------------------------------
 class function TWStringHelper.Substr(const str: UnicodeString; index, length: Integer): UnicodeString;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // NOTE + 1 to compensate 1 based UnicodeString indexes
         Result := Copy(str, index + 1, length);
     {$else}
@@ -1663,7 +1663,7 @@ end;
 //---------------------------------------------------------------------------
 class function TWStringHelper.ToUpper(const str: UnicodeString): UnicodeString;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result := WideUpperCase(str);
     {$else}
         Result := str.ToUpper;
@@ -1672,7 +1672,7 @@ end;
 //---------------------------------------------------------------------------
 class function TWStringHelper.ToLower(const str: UnicodeString): UnicodeString;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result := WideLowerCase(str);
     {$else}
         Result := str.ToLower;
@@ -1681,7 +1681,7 @@ end;
 //---------------------------------------------------------------------------
 class function TWStringHelper.IndexOf(const str: UnicodeString; ch: Char): Integer;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // NOTE -1 to compensate 1 based UnicodeString indexes
         Result := System.Pos(ch, str) - 1;
     {$else}
@@ -1691,7 +1691,7 @@ end;
 //---------------------------------------------------------------------------
 class function TWStringHelper.IsEmpty(const str: UnicodeString): Boolean;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result := (str = Empty);
     {$else}
         Result := str.IsEmpty;
@@ -1700,7 +1700,7 @@ end;
 //---------------------------------------------------------------------------
 class function TWStringHelper.Trim(const str: UnicodeString): UnicodeString;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // NOTE full qualified name is required here to avoid to call TWStringHelper.Trim() infinitely
         Result := System.SysUtils.Trim(str);
     {$else}
@@ -2239,7 +2239,7 @@ begin
                     Exit(path);
 
                 // a network path, append UNC prefix
-                {$if CompilerVersion <= 23}
+                {$if CompilerVersion <= 24}
                     // NOTE + 1 to compensate 1 based UnicodeString indexes
                     Exit(C_TWFileHelper_FSUNCPrefix + Copy(path, 2, len));
                 {$else}

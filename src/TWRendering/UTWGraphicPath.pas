@@ -251,7 +251,7 @@ type
             {**
              Convert "move to" path instruction to output
             }
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 IMoveToConverter = class(TWGraphicPathConverter.IConverter)
             {$else}
                 IMoveToConverter = class(IConverter)
@@ -299,7 +299,7 @@ type
             {**
              Convert "line to" path instruction to output
             }
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 ILineToConverter = class(TWGraphicPathConverter.IConverter)
             {$else}
                 ILineToConverter = class(IConverter)
@@ -339,7 +339,7 @@ type
             {**
              Convert "horizontal line to" path instruction to output
             }
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 IHorzLineToConverter = class(TWGraphicPathConverter.IConverter)
             {$else}
                 IHorzLineToConverter = class(IConverter)
@@ -379,7 +379,7 @@ type
             {**
              Convert "vertical line to" path instruction to output
             }
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 IVertLineToConverter = class(TWGraphicPathConverter.IConverter)
             {$else}
                 IVertLineToConverter = class(IConverter)
@@ -419,7 +419,7 @@ type
             {**
              Convert "curve to" path instruction to output
             }
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 ICurveToConverter = class(TWGraphicPathConverter.IConverter)
             {$else}
                 ICurveToConverter = class(IConverter)
@@ -464,7 +464,7 @@ type
             {**
              Convert "smooth curve to" path instruction to output
             }
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 ISmoothCurveToConverter = class(TWGraphicPathConverter.IConverter)
             {$else}
                 ISmoothCurveToConverter = class(IConverter)
@@ -509,7 +509,7 @@ type
             {**
              Convert "quadratic bezier curve to" path instruction to output
             }
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 IQuadraticBezierCurveToConverter = class(TWGraphicPathConverter.IConverter)
             {$else}
                 IQuadraticBezierCurveToConverter = class(IConverter)
@@ -554,7 +554,7 @@ type
             {**
              Convert "smooth quadratic bezier curve to" path instruction to output
             }
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 ISmoothQuadraticBezierCurveToConverter = class(TWGraphicPathConverter.IConverter)
             {$else}
                 ISmoothQuadraticBezierCurveToConverter = class(IConverter)
@@ -599,7 +599,7 @@ type
             {**
              Convert "elliptical arc" path instruction to output
             }
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 IEllipticalArcConverter = class(TWGraphicPathConverter.IConverter)
             {$else}
                 IEllipticalArcConverter = class(IConverter)

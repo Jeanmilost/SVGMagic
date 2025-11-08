@@ -278,7 +278,7 @@ begin
         if (not pX.Read(C_SVG_Prop_X, pNode)) then
         begin
             pX.ItemName    := C_SVG_Prop_X;
-            pX.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_PX;
+            pX.MeasureUnit := IEUnit.IE_UN_PX;
             pX.Value       := 0.0;
         end;
 
@@ -297,7 +297,7 @@ begin
         if (not pY.Read(C_SVG_Prop_Y, pNode)) then
         begin
             pY.ItemName    := C_SVG_Prop_Y;
-            pY.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_PX;
+            pY.MeasureUnit := IEUnit.IE_UN_PX;
             pY.Value       := 0.0;
         end;
 

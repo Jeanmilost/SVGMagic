@@ -489,7 +489,7 @@ end;
 //---------------------------------------------------------------------------
 function TWPoint<T>.Invert: TWPoint<T>;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result.m_X := TWGenericNumber<T>(0.0) - m_X;
         Result.m_Y := TWGenericNumber<T>(0.0) - m_Y;
     {$else}
@@ -500,7 +500,7 @@ end;
 //---------------------------------------------------------------------------
 function TWPoint<T>.IsZero: Boolean;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result := ((m_X = TWGenericNumber<T>(0.0)) and (m_Y = TWGenericNumber<T>(0.0)));
     {$else}
         Result := ((m_X = 0.0) and (m_Y = 0.0));

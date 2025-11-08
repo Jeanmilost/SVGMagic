@@ -483,6 +483,10 @@ var
     g_pSVGGraphicFilter: TWSVGGraphicFilter;
 
 implementation
+
+uses
+  System.UITypes;
+
 //---------------------------------------------------------------------------
 // TWSVGGraphicFilter
 //---------------------------------------------------------------------------
@@ -1145,7 +1149,7 @@ begin
     end;
 
     // convert encoding to lower case
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         encodingName := WideLowerCase(m_pSvg.Encoding);
     {$else}
         encodingName := m_pSvg.Encoding.ToLower;
@@ -1195,7 +1199,7 @@ begin
 
         // write it
         if (Length(preamble) > 0) then
-            {$if CompilerVersion <= 23}
+            {$if CompilerVersion <= 24}
                 pStream.WriteBuffer(preamble[0], Length(preamble));
             {$else}
                 pStream.WriteBuffer(preamble, Length(preamble));
@@ -1203,7 +1207,7 @@ begin
     end;
 
     // write the string to the stream
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         pStream.WriteBuffer(buffer[0], Length(buffer));
     {$else}
         pStream.WriteBuffer(buffer, Length(buffer));

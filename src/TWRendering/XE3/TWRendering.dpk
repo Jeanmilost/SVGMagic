@@ -1,0 +1,51 @@
+package TWRendering;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$DEFINE USE_VCL}
+{$DEFINE USE_VERYSIMPLEXML}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Library containing generic functions to draw graphical objects on a canvas'}
+{$LIBSUFFIX '170'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl,
+  TWCommon;
+
+contains
+  UTWBlur in '..\UTWBlur.pas',
+  UTWControlFont in '..\UTWControlFont.pas',
+  UTWControlRenderer in '..\UTWControlRenderer.pas',
+  UTWGDIPlusGradient in '..\UTWGDIPlusGradient.pas',
+  UTWGraphicPath in '..\UTWGraphicPath.pas',
+  UTWRenderer in '..\UTWRenderer.pas',
+  UTWRenderer_GDI in '..\UTWRenderer_GDI.pas',
+  UTWRenderer_GDIPlus in '..\UTWRenderer_GDIPlus.pas',
+  UTWRendererCommon in '..\UTWRendererCommon.pas';
+
+end.

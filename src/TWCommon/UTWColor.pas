@@ -782,7 +782,7 @@ end;
 //---------------------------------------------------------------------------
 function TWColor.Substr(const str: UnicodeString; index, length: Integer): UnicodeString;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // NOTE + 1 to compensate 1 based UnicodeString indexes
         Result := Copy(str, index + 1, length);
     {$else}
@@ -792,7 +792,7 @@ end;
 //---------------------------------------------------------------------------
 class function TWColor.ToUpper(const str: UnicodeString): UnicodeString;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result := WideUpperCase(str);
     {$else}
         Result := str.ToUpper;
@@ -801,7 +801,7 @@ end;
 //---------------------------------------------------------------------------
 class function TWColor.ToLower(const str: UnicodeString): UnicodeString;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result := WideLowerCase(str);
     {$else}
         Result := str.ToLower;

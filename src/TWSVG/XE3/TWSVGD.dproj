@@ -1,0 +1,120 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{49117CC5-111B-4BD4-BB2C-4210B972EB99}</ProjectGuid>
+        <MainSource>TWSVGD.dpk</MainSource>
+        <ProjectVersion>14.4</ProjectVersion>
+        <FrameworkType>VCL</FrameworkType>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Release</Config>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <TargetedPlatforms>1</TargetedPlatforms>
+        <AppType>Package</AppType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
+        <DllSuffix>170</DllSuffix>
+        <DCC_UsePackage>rtl;TWSVG;designide;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UnitSearchPath>..\..\TWCommon\XE3\$(Platform)\$(Config);..\..\TWRendering\XE3\$(Platform)\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DesignOnlyPackage>true</DesignOnlyPackage>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <GenPackage>true</GenPackage>
+        <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
+        <DCC_Define>USE_VCL;USE_VERYSIMPLEXML;$(DCC_Define)</DCC_Define>
+        <GenDll>true</GenDll>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="TWSVG.dcp"/>
+        <DCCReference Include="designide.dcp"/>
+        <DCCReference Include="..\Dialogs\UTWSVGImageListEditorDlg.pas"/>
+        <DCCReference Include="..\UTWSVG_Editors.pas"/>
+        <DCCReference Include="..\UTWSVG_Register.pas"/>
+        <RcItem Include="..\Resources\Icons\checkbox_style_16x16.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TWSVGCheckBoxStyle16</ResourceId>
+        </RcItem>
+        <RcItem Include="..\Resources\Icons\checkbox_style_24x24.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TWSVGCheckBoxStyle</ResourceId>
+        </RcItem>
+        <RcItem Include="..\Resources\Icons\checkbox_style_32x32.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TWSVGCheckBoxStyle32</ResourceId>
+        </RcItem>
+        <RcItem Include="..\Resources\Icons\radiobutton_style_16x16.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TWSVGRadioButtonStyle16</ResourceId>
+        </RcItem>
+        <RcItem Include="..\Resources\Icons\radiobutton_style_24x24.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TWSVGRadioButtonStyle</ResourceId>
+        </RcItem>
+        <RcItem Include="..\Resources\Icons\radiobutton_style_32x32.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TWSVGRadioButtonStyle32</ResourceId>
+        </RcItem>
+        <RcItem Include="..\Resources\Icons\svg_listbox_16x16.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TWSVGImageList16</ResourceId>
+        </RcItem>
+        <RcItem Include="..\Resources\Icons\svg_listbox_24x24.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TWSVGImageList</ResourceId>
+        </RcItem>
+        <RcItem Include="..\Resources\Icons\svg_listbox_32x32.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TWSVGImageList32</ResourceId>
+        </RcItem>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType>Package</Borland.ProjectType>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">TWSVGD.dpk</Source>
+                </Source>
+                <Excluded_Packages>
+                </Excluded_Packages>
+            </Delphi.Personality>
+            <Deployment/>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+    <Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+</Project>

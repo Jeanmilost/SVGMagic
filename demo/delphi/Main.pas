@@ -13,7 +13,6 @@ uses
     System.SysUtils,
     System.Variants,
     System.Actions,
-    System.ImageList,
     Winapi.Windows,
     Winapi.Messages,
     Vcl.Graphics,

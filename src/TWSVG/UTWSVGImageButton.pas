@@ -237,6 +237,10 @@ type
     end;
 
 implementation
+
+uses
+  System.Types;
+
 //---------------------------------------------------------------------------
 constructor TWSVGImageButton.Create(pOwner: TComponent);
 begin

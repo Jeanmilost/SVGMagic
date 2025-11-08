@@ -1,0 +1,119 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{728CF33B-65ED-467B-AD54-4DEA4BEC4F1D}</ProjectGuid>
+        <MainSource>TWSVG.dpk</MainSource>
+        <ProjectVersion>14.4</ProjectVersion>
+        <FrameworkType>None</FrameworkType>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Release</Config>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <TargetedPlatforms>3</TargetedPlatforms>
+        <AppType>Package</AppType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
+        <DllSuffix>170</DllSuffix>
+        <RuntimeOnlyPackage>true</RuntimeOnlyPackage>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_Define>USE_VCL;USE_VERYSIMPLEXML;$(DCC_Define)</DCC_Define>
+        <GenDll>true</GenDll>
+        <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
+        <SanitizedProjectName>TWSVG</SanitizedProjectName>
+        <GenPackage>true</GenPackage>
+        <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_E>false</DCC_E>
+        <DCC_N>false</DCC_N>
+        <DCC_S>false</DCC_S>
+        <DCC_F>false</DCC_F>
+        <DCC_K>false</DCC_K>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="TWCommon.dcp"/>
+        <DCCReference Include="TWRendering.dcp"/>
+        <DCCReference Include="xmlrtl.dcp"/>
+        <DCCReference Include="soaprtl.dcp"/>
+        <DCCReference Include="..\UTWSVG.pas"/>
+        <DCCReference Include="..\UTWSVGAnimation.pas"/>
+        <DCCReference Include="..\UTWSVGAnimationDescriptor.pas"/>
+        <DCCReference Include="..\UTWSVGAttribute.pas"/>
+        <DCCReference Include="..\UTWSVGCheckBoxStyle.pas"/>
+        <DCCReference Include="..\UTWSVGCommon.pas"/>
+        <DCCReference Include="..\UTWSVGComponentStyle.pas"/>
+        <DCCReference Include="..\UTWSVGElements.pas"/>
+        <DCCReference Include="..\UTWSVGFrameCalculator.pas"/>
+        <DCCReference Include="..\UTWSVGGDIPlusRasterizer.pas"/>
+        <DCCReference Include="..\UTWSVGGradients.pas"/>
+        <DCCReference Include="..\UTWSVGGraphic.pas"/>
+        <DCCReference Include="..\UTWSVGImage.pas"/>
+        <DCCReference Include="..\UTWSVGImageButton.pas"/>
+        <DCCReference Include="..\UTWSVGImageList.pas"/>
+        <DCCReference Include="..\UTWSVGImageListFactory.pas"/>
+        <DCCReference Include="..\UTWSVGItems.pas"/>
+        <DCCReference Include="..\UTWSVGMeasure.pas"/>
+        <DCCReference Include="..\UTWSVGParser.pas"/>
+        <DCCReference Include="..\UTWSVGProperties.pas"/>
+        <DCCReference Include="..\UTWSVGRadioButtonStyle.pas"/>
+        <DCCReference Include="..\UTWSVGRasterizer.pas"/>
+        <DCCReference Include="..\UTWSVGStyle.pas"/>
+        <DCCReference Include="..\UTWSVGTags.pas"/>
+        <DCCReference Include="..\UTWSVGFilters.pas"/>
+        <DCCReference Include="..\VerySimpleXML\Source\Xml.VerySimple.pas"/>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType>Package</Borland.ProjectType>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">TWSVG.dpk</Source>
+                </Source>
+                <Excluded_Packages>
+                </Excluded_Packages>
+            </Delphi.Personality>
+            <Deployment/>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">True</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+    <Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+</Project>

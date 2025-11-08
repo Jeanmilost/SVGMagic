@@ -21,37 +21,37 @@ type
     {**
      Scalable Vector Graphics (SVG) measure, it's a value with its unit, as e.g. x="0px"
     }
-    TWSVGMeasure<T> = class(TWSVGProperty)
-        public type
-            {**
-             Unit enumeration
-             @value(IE_UN_Unknown Value for which unit is unknown)
-             @value(IE_UN_None Value without unit)
-             @value(IE_UN_CM Value expressed in centimeters)
-             @value(IE_UN_FT Value expressed in feet)
-             @value(IE_UN_IN Value expressed in inches)
-             @value(IE_UN_M Value expressed in meters)
-             @value(IE_UN_MM Value expressed in millimeters)
-             @value(IE_UN_PC Value expressed in picas)
-             @value(IE_UN_PT Value expressed in points)
-             @value(IE_UN_PX Value expressed in pixels)
-             @value(IE_UN_Percent Value expressed in percent)
-            }
-            IEUnit =
-            (
-                IE_UN_Unknown,
-                IE_UN_None,
-                IE_UN_CM,
-                IE_UN_FT,
-                IE_UN_IN,
-                IE_UN_M,
-                IE_UN_MM,
-                IE_UN_PC,
-                IE_UN_PT,
-                IE_UN_PX,
-                IE_UN_Percent
-            );
 
+    {**
+     Unit enumeration
+     @value(IE_UN_Unknown Value for which unit is unknown)
+     @value(IE_UN_None Value without unit)
+     @value(IE_UN_CM Value expressed in centimeters)
+     @value(IE_UN_FT Value expressed in feet)
+     @value(IE_UN_IN Value expressed in inches)
+     @value(IE_UN_M Value expressed in meters)
+     @value(IE_UN_MM Value expressed in millimeters)
+     @value(IE_UN_PC Value expressed in picas)
+     @value(IE_UN_PT Value expressed in points)
+     @value(IE_UN_PX Value expressed in pixels)
+     @value(IE_UN_Percent Value expressed in percent)
+    }
+    IEUnit =
+    (
+        IE_UN_Unknown,
+        IE_UN_None,
+        IE_UN_CM,
+        IE_UN_FT,
+        IE_UN_IN,
+        IE_UN_M,
+        IE_UN_MM,
+        IE_UN_PC,
+        IE_UN_PT,
+        IE_UN_PX,
+        IE_UN_Percent
+    );
+
+    TWSVGMeasure<T> = class(TWSVGProperty)
         private
             m_Unit:          IEUnit;
             m_Value:         TWGenericNumber<T>;
@@ -285,7 +285,7 @@ end;
 //---------------------------------------------------------------------------
 procedure TWSVGMeasure<T>.Log(margin: Cardinal);
 var
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         unitType: Integer;
     {$ifend}
     value:        TValue;
@@ -298,7 +298,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
                     valStr := IntToStr(value.AsUInt64)
                 else
@@ -311,7 +311,7 @@ begin
         raise Exception.CreateFmt('Unsupported type - %d', [Integer(value.Kind)]);
     end;
 
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // this code is stupid and useless, but required, because otherwise the hyper bugged RAD
         // Studio compiler will raise the very stupid, useless and unexpressive error:
         // [DCC Fatal Error] F2084 Internal Error: AV08B844DF-R0000000C-0
@@ -330,7 +330,7 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGMeasure<T>.Print(margin: Cardinal): UnicodeString;
 var
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         unitType: Integer;
     {$ifend}
     value:        TValue;
@@ -343,7 +343,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
                     valStr := IntToStr(value.AsUInt64)
                 else
@@ -358,7 +358,7 @@ begin
 
     Result := TWStringHelper.FillStrRight(ItemName, margin, ' ') + ' - ' + valStr;
 
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // this code is stupid and useless, but required, because otherwise the hyper bugged RAD
         // Studio compiler will raise the very stupid, useless and unexpressive error:
         // [DCC Fatal Error] F2084 Internal Error: AV08B844DF-R0000000C-0
@@ -376,7 +376,7 @@ end;
 //---------------------------------------------------------------------------
 function TWSVGMeasure<T>.ToXml: UnicodeString;
 var
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         unitType: Integer;
     {$ifend}
     value:        TValue;
@@ -390,7 +390,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
                     valStr := IntToStr(value.AsUInt64)
                 else
@@ -405,7 +405,7 @@ begin
 
     Result := ItemName;
 
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // this code is stupid and useless, but required, because otherwise the hyper bugged RAD
         // Studio compiler will raise the very stupid, useless and unexpressive error:
         // [DCC Fatal Error] F2084 Internal Error: AV08B844DF-R0000000C-0
@@ -417,7 +417,7 @@ begin
     if (m_InkscapeStyle) then
         Result := Result + ':' + valStr
     else
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         if (m_Unit = IEUnit(unitType)) then
     {$else}
         if (m_Unit = IE_UN_None) then

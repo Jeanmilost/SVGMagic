@@ -277,7 +277,7 @@ begin
     // get the used separator in case the attribute represents a matrix
     m_MatrixSeparator := TWSVGCommon.DetectSeparator(data, 1, Length(data));
 
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result := TWSVGCommon.ExtractValues<T>(data, TWSVGArray<T>(m_Values));
     {$else}
         Result := TWSVGCommon.ExtractValues<T>(data, m_Values);
@@ -403,7 +403,7 @@ begin
             tkInteger,
             tkInt64:
                 // search for signed or unsigned type
-                {$if CompilerVersion > 23}
+                {$if CompilerVersion > 24}
                     if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
                         str := str + IntToStr(value.AsUInt64)
                     else
@@ -460,7 +460,7 @@ begin
             tkInteger,
             tkInt64:
                 // search for signed or unsigned type
-                {$if CompilerVersion > 23}
+                {$if CompilerVersion > 24}
                     if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
                         Result := Result + IntToStr(value.AsUInt64)
                     else
@@ -514,7 +514,7 @@ begin
             tkInteger,
             tkInt64:
                 // search for signed or unsigned type
-                {$if CompilerVersion > 23}
+                {$if CompilerVersion > 24}
                     if ((value.TypeInfo.Name = 'Cardinal') or (value.TypeInfo.Name = 'NativeUInt')) then
                         Result := Result + IntToStr(value.AsUInt64)
                     else

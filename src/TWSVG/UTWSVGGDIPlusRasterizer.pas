@@ -14,7 +14,7 @@ uses System.SysUtils,
      System.Classes,
      System.Types,
      System.Math,
-     {$if CompilerVersion > 23}
+     {$if CompilerVersion > 24}
         System.NetEncoding,
      {$ifend}
      Soap.EncdDecd,
@@ -358,6 +358,10 @@ type
     end;
 
 implementation
+
+uses
+  System.UITypes;
+
 //---------------------------------------------------------------------------
 // Resources
 //---------------------------------------------------------------------------

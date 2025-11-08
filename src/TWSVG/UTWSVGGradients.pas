@@ -408,7 +408,7 @@ begin
         begin
             // set default value if position was omitted
             pOffset.ItemName    := C_SVG_Gradient_Stop_Offset;
-            pOffset.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_None;
+            pOffset.MeasureUnit := IEUnit.IE_UN_None;
             pOffset.Value       := 0.0;
         end;
 
@@ -838,7 +838,7 @@ begin
         begin
             // set default value if position was omitted
             pX1.ItemName    := C_SVG_Prop_X1;
-            pX1.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_None;
+            pX1.MeasureUnit := IEUnit.IE_UN_None;
             pX1.Value       := 0.0;
         end;
 
@@ -858,7 +858,7 @@ begin
         begin
             // set default value if position was omitted
             pY1.ItemName    := C_SVG_Prop_Y1;
-            pY1.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_None;
+            pY1.MeasureUnit := IEUnit.IE_UN_None;
             pY1.Value       := 0.0;
         end;
 
@@ -878,7 +878,7 @@ begin
         begin
             // set default value if position was omitted
             pX2.ItemName    := C_SVG_Prop_X2;
-            pX2.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_None;
+            pX2.MeasureUnit := IEUnit.IE_UN_None;
             pX2.Value       := 0.0;
         end;
 
@@ -898,7 +898,7 @@ begin
         begin
             // set default value if position was omitted
             pY2.ItemName    := C_SVG_Prop_Y2;
-            pY2.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_None;
+            pY2.MeasureUnit := IEUnit.IE_UN_None;
             pY2.Value       := 0.0;
         end;
 
@@ -962,7 +962,7 @@ begin
         begin
             // set default value if position was omitted
             pCx.ItemName    := C_SVG_Prop_CX;
-            pCx.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_None;
+            pCx.MeasureUnit := IEUnit.IE_UN_None;
             pCx.Value       := 0.0;
         end;
 
@@ -982,7 +982,7 @@ begin
         begin
             // set default value if position was omitted
             pCy.ItemName    := C_SVG_Prop_CY;
-            pCy.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_None;
+            pCy.MeasureUnit := IEUnit.IE_UN_None;
             pCy.Value       := 0.0;
         end;
 
@@ -1002,7 +1002,7 @@ begin
         begin
             // set default value if radius was omitted
             pR.ItemName    := C_SVG_Prop_R;
-            pR.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_None;
+            pR.MeasureUnit := IEUnit.IE_UN_None;
             pR.Value       := 0.0;
         end;
 
