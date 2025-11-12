@@ -33,7 +33,7 @@ type
     PTWFloat64 = ^TWFloat64;
 
     // TBytes type isn't defined for XE2 and earlier, so defines it
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         TBytes = array of byte;
     {$ifend}
 

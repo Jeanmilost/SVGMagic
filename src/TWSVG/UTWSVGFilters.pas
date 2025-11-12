@@ -567,7 +567,7 @@ begin
         begin
             // set default value if position was omitted
             pX.ItemName    := C_SVG_Prop_X;
-            pX.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_Percent;
+            pX.MeasureUnit := IEUnit.IE_UN_Percent;
             pX.Value       := 0.0;
         end;
 
@@ -587,7 +587,7 @@ begin
         begin
             // set default value if position was omitted
             pY.ItemName    := C_SVG_Prop_Y;
-            pY.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_Percent;
+            pY.MeasureUnit := IEUnit.IE_UN_Percent;
             pY.Value       := 0.0;
         end;
 
@@ -607,7 +607,7 @@ begin
         begin
             // set default value if position was omitted
             pWidth.ItemName    := C_SVG_Prop_Width;
-            pWidth.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_Percent;
+            pWidth.MeasureUnit := IEUnit.IE_UN_Percent;
             pWidth.Value       := 0.0;
         end;
 
@@ -627,7 +627,7 @@ begin
         begin
             // set default value if position was omitted
             pHeight.ItemName    := C_SVG_Prop_Height;
-            pHeight.MeasureUnit := TWSVGMeasure<Single>.IEUnit.IE_UN_Percent;
+            pHeight.MeasureUnit := IEUnit.IE_UN_Percent;
             pHeight.Value       := 0.0;
         end;
 

@@ -9,7 +9,7 @@ interface
 
 uses System.Classes,
      System.SysUtils,
-     {$if CompilerVersion <= 23}
+     {$if CompilerVersion <= 24}
         Vcl.ActnList,
      {$else}
         System.Actions,
@@ -560,7 +560,7 @@ begin
     pRadioButton := pTarget as TRadioButton;
 
     // is target radiobutton disabled?
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // not really correct, but Enabled property doesn't exist in base classes for this compiler version
         if (not pRadioButton.Enabled or (Assigned(pRadioButton.Action) and (pRadioButton.Action is TAction)
                 and not (pRadioButton.Action as TAction).Enabled))
@@ -625,7 +625,7 @@ begin
     CalculateCheckGlyphRects(pRadioButton, pRadioButton.Alignment, bgRect, cbRect);
 
     // is target radiobutton disabled?
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // not really correct, but Enabled property doesn't exist in base classes for this compiler version
         if (not pRadioButton.Enabled or (Assigned(pRadioButton.Action) and (pRadioButton.Action is TAction)
                 and not (pRadioButton.Action as TAction).Enabled))

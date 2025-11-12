@@ -9,9 +9,7 @@ interface
 
 uses System.Rtti,
      System.Types,
-     {$if CompilerVersion <= 23}
-        System.TypInfo,
-     {$ifend}
+     System.TypInfo,
      System.SysUtils,
      System.Math,
      System.Generics.Defaults,
@@ -767,7 +765,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((w.TypeInfo.Name = 'Cardinal') or (w.TypeInfo.Name = 'NativeUInt')) then
                     res := Sqrt(Power(w.AsUInt64, 2) + Power(h.AsUInt64, 2))
                 else
@@ -798,7 +796,7 @@ end;
 //---------------------------------------------------------------------------
 function TWRect<T>.Invert: TWRect<T>;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result.m_Left   := TWGenericNumber<T>(0.0) - m_Left;
         Result.m_Top    := TWGenericNumber<T>(0.0) - m_Top;
         Result.m_Right  := TWGenericNumber<T>(0.0) - m_Right;
@@ -844,7 +842,7 @@ end;
 //---------------------------------------------------------------------------
 function TWRect<T>.GetCenter: TWPoint<T>;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result := TWPoint<T>.Create(((m_Left + m_Right) / TWGenericNumber<T>(2.0)).Value,
                 ((m_Top + m_Bottom) / TWGenericNumber<T>(2.0)).Value);
     {$else}

@@ -5040,7 +5040,7 @@ begin
                         pColorLine[x].rgbBlue, pColorLine[x].rgbReserved);
 
                 // blend background pixel with outline
-                {$if CompilerVersion <= 23}
+                {$if CompilerVersion <= 24}
                     blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
                             pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved);
                     blendedColor := blendedColor.Blend(bgColor, fillOpacity);
@@ -5090,7 +5090,7 @@ begin
             begin
                 // blend background pixel with outline
                 if (Assigned(pStrokeBrush)) then
-                    {$if CompilerVersion <= 23}
+                    {$if CompilerVersion <= 24}
                     begin
                         blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
                                 pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved);
@@ -5104,7 +5104,7 @@ begin
                 else
                 begin
                     color.SetColor(255, 255, 255, 255);
-                    {$if CompilerVersion <= 23}
+                    {$if CompilerVersion <= 24}
                         blendedColor := TWColor.Create(pGeometryLine[x].rgbRed, pGeometryLine[x].rgbGreen,
                                 pGeometryLine[x].rgbBlue, pGeometryLine[x].rgbReserved);
                         blendedColor := blendedColor.Blend(color, strokeOpacity);

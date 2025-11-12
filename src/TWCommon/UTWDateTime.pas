@@ -573,7 +573,7 @@ begin
 
                 // convert and store value, and clear previously read value
                 SetLength(values, Length(values) + 1);
-                {$if CompilerVersion <= 23}
+                {$if CompilerVersion <= 24}
                     values[Length(values) - 1] := StrToInt64(value);
                 {$else}
                     values[Length(values) - 1] := StrToUInt64(value);
@@ -673,7 +673,7 @@ begin
 
         // convert and store last value
         SetLength(values, Length(values) + 1);
-        {$if CompilerVersion <= 23}
+        {$if CompilerVersion <= 24}
             values[Length(values) - 1] := StrToInt64(value);
         {$else}
             values[Length(values) - 1] := StrToUInt64(value);

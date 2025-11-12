@@ -1,0 +1,98 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{74FE0F5B-9FCC-49F9-94F3-B94671BAD594}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="TWCommon\XE3\TWCommon.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TWRendering\XE3\TWRendering.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TWSVG\XE3\TWSVG.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TWSVG\XE3\TWSVGD.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="TWCommon">
+        <MSBuild Projects="TWCommon\XE3\TWCommon.dproj"/>
+    </Target>
+    <Target Name="TWCommon:Clean">
+        <MSBuild Projects="TWCommon\XE3\TWCommon.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TWCommon:Make">
+        <MSBuild Projects="TWCommon\XE3\TWCommon.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TWRendering">
+        <MSBuild Projects="TWRendering\XE3\TWRendering.dproj"/>
+    </Target>
+    <Target Name="TWRendering:Clean">
+        <MSBuild Projects="TWRendering\XE3\TWRendering.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TWRendering:Make">
+        <MSBuild Projects="TWRendering\XE3\TWRendering.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TWSVG">
+        <MSBuild Projects="TWSVG\XE3\TWSVG.dproj"/>
+    </Target>
+    <Target Name="TWSVG:Clean">
+        <MSBuild Projects="TWSVG\XE3\TWSVG.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TWSVG:Make">
+        <MSBuild Projects="TWSVG\XE3\TWSVG.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TWSVGD">
+        <MSBuild Projects="TWSVG\XE3\TWSVGD.dproj"/>
+    </Target>
+    <Target Name="TWSVGD:Clean">
+        <MSBuild Projects="TWSVG\XE3\TWSVGD.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TWSVGD:Make">
+        <MSBuild Projects="TWSVG\XE3\TWSVGD.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="TWCommon;TWRendering;TWSVG;TWSVGD"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="TWCommon:Clean;TWRendering:Clean;TWSVG:Clean;TWSVGD:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="TWCommon:Make;TWRendering:Make;TWSVG:Make;TWSVGD:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+    <ItemGroup Condition="'$(BuildGroup)'=='ALL'">
+        <BuildGroupProject Include="TWRendering\XE3\TWRendering.dproj">
+            <ProjectGuid>{D2C38819-C701-49C1-A0D2-496709046847}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="TWSVG\XE3\TWSVGD.dproj">
+            <ProjectGuid>{49117CC5-111B-4BD4-BB2C-4210B972EB99}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="TWSVG\XE3\TWSVG.dproj">
+            <ProjectGuid>{728CF33B-65ED-467B-AD54-4DEA4BEC4F1D}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="TWCommon\XE3\TWCommon.dproj">
+            <ProjectGuid>{F225ABEA-5266-44BB-BA7E-D81C77A0F0A1}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+</Project>

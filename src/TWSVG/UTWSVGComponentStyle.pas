@@ -453,6 +453,10 @@ type
     TWSVGStyleWinControlAccess = class(TWinControl);
 
 implementation
+
+uses
+  System.UITypes;
+
 //---------------------------------------------------------------------------
 // TWSVGComponentStyle.IWGlyph
 //---------------------------------------------------------------------------

@@ -8,7 +8,7 @@ unit UTWGenericNumber;
 interface
 
 uses System.Rtti,
-     {$if CompilerVersion <= 23}
+     {$if CompilerVersion >= 23}
         System.TypInfo,
      {$ifend}
      System.SysUtils,
@@ -312,7 +312,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     resVal := left.AsUInt64 + right.AsUInt64
                 else
@@ -345,7 +345,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     resVal := left.AsUInt64 - right.AsUInt64
                 else
@@ -378,7 +378,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     resVal := left.AsUInt64 * right.AsUInt64
                 else
@@ -411,7 +411,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     resVal := left.AsUInt64 div right.AsUInt64
                 else
@@ -444,7 +444,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     resVal := left.AsUInt64 div right.AsUInt64
                 else
@@ -473,7 +473,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((val.TypeInfo.Name = 'Cardinal') or (val.TypeInfo.Name = 'NativeUInt')) then
                     resVal := -val.AsUInt64
                 else
@@ -502,7 +502,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((val.TypeInfo.Name = 'Cardinal') or (val.TypeInfo.Name = 'NativeUInt')) then
                     resVal := val.AsUInt64 + 1
                 else
@@ -528,7 +528,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((val.TypeInfo.Name = 'Cardinal') or (val.TypeInfo.Name = 'NativeUInt')) then
                     resVal := val.AsUInt64 - 1
                 else
@@ -558,7 +558,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     resVal := left.AsUInt64 shl right.AsUInt64
                 else
@@ -588,7 +588,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     resVal := left.AsUInt64 shr right.AsUInt64
                 else
@@ -618,7 +618,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     resVal := left.AsUInt64 xor right.AsUInt64
                 else
@@ -648,7 +648,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     resVal := left.AsUInt64 mod right.AsUInt64
                 else
@@ -721,7 +721,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     Result := (left.AsUInt64 = right.AsUInt64)
                 else
@@ -751,7 +751,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     Result := (left.AsUInt64 <> right.AsUInt64)
                 else
@@ -781,7 +781,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     Result := (left.AsUInt64 > right.AsUInt64)
                 else
@@ -811,7 +811,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     Result := (left.AsUInt64 >= right.AsUInt64)
                 else
@@ -841,7 +841,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     Result := (left.AsUInt64 < right.AsUInt64)
                 else
@@ -871,7 +871,7 @@ begin
         tkInteger,
         tkInt64:
             // search for signed or unsigned type
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 if ((left.TypeInfo.Name = 'Cardinal') or (left.TypeInfo.Name = 'NativeUInt')) then
                     Result := (left.AsUInt64 <= right.AsUInt64)
                 else

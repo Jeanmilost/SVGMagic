@@ -487,7 +487,7 @@ end;
 //---------------------------------------------------------------------------
 function TWSize<T>.Invert: TWSize<T>;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result.m_Width  := TWGenericNumber<T>(0.0) - m_Width;
         Result.m_Height := TWGenericNumber<T>(0.0) - m_Height;
     {$else}
@@ -498,7 +498,7 @@ end;
 //---------------------------------------------------------------------------
 function TWSize<T>.IsZero: Boolean;
 begin
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         Result := ((m_Width = TWGenericNumber<T>(0.0)) and (m_Height = TWGenericNumber<T>(0.0)));
     {$else}
         Result := ((m_Width = 0.0) and (m_Height = 0.0));

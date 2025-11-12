@@ -9,7 +9,7 @@ interface
 
 uses System.Classes,
      System.SysUtils,
-     {$if CompilerVersion <= 23}
+     {$if CompilerVersion <= 24}
         Vcl.ActnList,
      {$else}
         System.Actions,
@@ -620,7 +620,7 @@ begin
     pCheckBox := pTarget as TCheckBox;
 
     // is target checkbox disabled?
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // not really correct, but Enabled property doesn't exist in base classes for this compiler version
         if (not pCheckBox.Enabled or (Assigned(pCheckBox.Action) and (pCheckBox.Action is TAction)
                 and not (pCheckBox.Action as TAction).Enabled))
@@ -693,7 +693,7 @@ begin
     CalculateCheckGlyphRects(pCheckBox, pCheckBox.Alignment, bgRect, cbRect);
 
     // is target checkbox disabled?
-    {$if CompilerVersion <= 23}
+    {$if CompilerVersion <= 24}
         // not really correct, but Enabled property doesn't exist in base classes for this compiler version
         if (not pCheckBox.Enabled or (Assigned(pCheckBox.Action) and (pCheckBox.Action is TAction)
                 and not (pCheckBox.Action as TAction).Enabled))

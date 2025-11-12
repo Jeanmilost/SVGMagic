@@ -11,6 +11,7 @@ uses System.SysUtils,
      System.Classes,
      System.Math,
      System.Generics.Collections,
+     System.UITypes,
      Soap.EncdDecd,
      Vcl.Graphics,
      Winapi.Windows,
@@ -2090,6 +2091,12 @@ type
     end;
 
 implementation
+
+{$if compilerversion > 24}
+uses
+  System.NetEncoding;
+{$ifend}
+
 //---------------------------------------------------------------------------
 // TWSVGRasterizer.IPropItem
 //---------------------------------------------------------------------------
@@ -6467,7 +6474,7 @@ begin
                     continue;
 
                 // set x position
-                if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                if (pMeasure.MeasureUnit = IEUnit.IE_UN_Percent) then
                 begin
                     pFilter.m_pX.Value       := pMeasure.Value.Value * 0.01;
                     pFilter.m_pX.Rule        := IE_PR_Default;
@@ -6494,7 +6501,7 @@ begin
                     continue;
 
                 // set y position
-                if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                if (pMeasure.MeasureUnit = IEUnit.IE_UN_Percent) then
                 begin
                     pFilter.m_pY.Value       := pMeasure.Value.Value * 0.01;
                     pFilter.m_pY.Rule        := IE_PR_Default;
@@ -6521,7 +6528,7 @@ begin
                     continue;
 
                 // set width
-                if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                if (pMeasure.MeasureUnit = IEUnit.IE_UN_Percent) then
                 begin
                     pFilter.m_pWidth.Value   := pMeasure.Value.Value * 0.01;
                     pFilter.m_pWidth.Rule    := IE_PR_Default;
@@ -6548,7 +6555,7 @@ begin
                     continue;
 
                 // set height
-                if (pMeasure.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                if (pMeasure.MeasureUnit = IEUnit.IE_UN_Percent) then
                 begin
                     pFilter.m_pHeight.Value  := pMeasure.Value.Value * 0.01;
                     pFilter.m_pHeight.Rule   := IE_PR_Default;
@@ -6743,7 +6750,7 @@ begin
                     if (not Assigned(pX1)) then
                         continue;
 
-                    if (pX1.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pX1.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pBrush.m_pLinearGradient.m_Vector.m_Start.X := pX1.Value.Value / 100.0
                     else
                         pBrush.m_pLinearGradient.m_Vector.m_Start.X := pX1.Value.Value;
@@ -6758,7 +6765,7 @@ begin
                     if (not Assigned(pX2)) then
                         continue;
 
-                    if (pX2.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pX2.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pBrush.m_pLinearGradient.m_Vector.m_End.X := pX2.Value.Value / 100.0
                     else
                         pBrush.m_pLinearGradient.m_Vector.m_End.X := pX2.Value.Value;
@@ -6773,7 +6780,7 @@ begin
                     if (not Assigned(pY1)) then
                         continue;
 
-                    if (pY1.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pY1.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pBrush.m_pLinearGradient.m_Vector.m_Start.Y := pY1.Value.Value / 100.0
                     else
                         pBrush.m_pLinearGradient.m_Vector.m_Start.Y := pY1.Value.Value;
@@ -6788,7 +6795,7 @@ begin
                     if (not Assigned(pY2)) then
                         continue;
 
-                    if (pY2.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pY2.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pBrush.m_pLinearGradient.m_Vector.m_End.Y := pY2.Value.Value / 100.0
                     else
                         pBrush.m_pLinearGradient.m_Vector.m_End.Y := pY2.Value.Value;
@@ -7009,7 +7016,7 @@ begin
                         continue;
 
                     // read value, convert it between 0.0f and 1.0f if expressed in percent
-                    if (pCX.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pCX.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pBrush.m_pRadialGradient.m_CX := pCX.Value.Value / 100.0
                     else
                         pBrush.m_pRadialGradient.m_CX := pCX.Value.Value;
@@ -7025,7 +7032,7 @@ begin
                         continue;
 
                     // read value, convert it between 0.0f and 1.0f if expressed in percent
-                    if (pCY.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pCY.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pBrush.m_pRadialGradient.m_CY := pCY.Value.Value / 100.0
                     else
                         pBrush.m_pRadialGradient.m_CY := pCY.Value.Value;
@@ -7041,7 +7048,7 @@ begin
                         continue;
 
                     // read value, convert it between 0.0f and 1.0f if expressed in percent
-                    if (pR.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pR.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pBrush.m_pRadialGradient.m_R := pR.Value.Value / 100.0
                     else
                         pBrush.m_pRadialGradient.m_R := pR.Value.Value;
@@ -7057,7 +7064,7 @@ begin
                         continue;
 
                     // read value, convert it between 0.0f and 1.0f if expressed in percent
-                    if (pFX.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pFX.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pBrush.m_pRadialGradient.m_FX := pFX.Value.Value / 100.0
                     else
                         pBrush.m_pRadialGradient.m_FX := pFX.Value.Value;
@@ -7073,7 +7080,7 @@ begin
                         continue;
 
                     // read value, convert it between 0.0f and 1.0f if expressed in percent
-                    if (pFY.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pFY.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pBrush.m_pRadialGradient.m_FY := pFY.Value.Value / 100.0
                     else
                         pBrush.m_pRadialGradient.m_FY := pFY.Value.Value;
@@ -7311,7 +7318,7 @@ begin
                     if (not Assigned(pOffset)) then
                         continue;
 
-                    if (pOffset.MeasureUnit = TWSVGMeasure<Single>.IEUnit.IE_UN_Percent) then
+                    if (pOffset.MeasureUnit = IEUnit.IE_UN_Percent) then
                         pGradientStop.m_Offset := pOffset.Value.Value / 100.0
                     else
                         pGradientStop.m_Offset := pOffset.Value.Value;

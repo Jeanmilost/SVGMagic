@@ -10,6 +10,7 @@ interface
 uses System.SysUtils,
      System.Classes,
      System.Generics.Collections,
+     System.UITypes,
      Vcl.Graphics,
      Vcl.ImgList,
      Vcl.Controls,
@@ -224,7 +225,7 @@ type
         protected
             property ColorDepth;
             property DrawingStyle;
-            {$if CompilerVersion > 23}
+            {$if CompilerVersion > 24}
                 property GrayscaleFactor;
             {$ifend}
             property ImageType;
@@ -820,7 +821,7 @@ begin
                 imgNameBytes := TEncoding.UTF8.GetBytes(imgClassName);
                 size         := Length(imgNameBytes);
                 pStream.WriteBuffer(size, SizeOf(size));
-                {$if CompilerVersion <= 23}
+                {$if CompilerVersion <= 24}
                     pStream.WriteBuffer(PByte(imgNameBytes)^, size);
                 {$else}
                     pStream.Write(imgNameBytes, size);
@@ -896,7 +897,7 @@ begin
                 // read the image type from stream
                 if (size > 0) then
                 begin
-                    {$if CompilerVersion <= 23}
+                    {$if CompilerVersion <= 24}
                         SetLength(imgNameBytes, size{$if CompilerVersion < 20} + 1{$ifend});
                         pStream.ReadBuffer(PByte(imgNameBytes)^, size);
 
